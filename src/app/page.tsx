@@ -1,101 +1,189 @@
-import Image from "next/image";
+'use client';
 
-export default function Home() {
+import { useState } from 'react';
+import { Moon, Sun, ExternalLink, Globe } from 'lucide-react';
+import { Button } from "@/components/ui/Button";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/Card";
+import { Badge } from "@/components/ui/Badge";
+import { ProjectCard } from "@/components/ProjectCard";
+import { NavBar } from "@/components/ui/NavBar";
+
+export default function Portfolio() {
+  const [darkMode, setDarkMode] = useState(false);
+
+  const toggleDarkMode = () => {
+    setDarkMode(!darkMode);
+  };
+
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+    <div className={`min-h-screen ${darkMode ? 'bg-gray-900 text-white' : 'bg-gray-100 text-gray-900'}`}>
+      <header className="container mx-auto p-4 flex justify-between items-center">
+        <Button variant="ghost" size="icon" onClick={toggleDarkMode}>
+          {darkMode ? <Sun className="h-[1.2rem] w-[1.2rem]" /> : <Moon className="h-[1.2rem] w-[1.2rem]" />}
+        </Button>
+      </header>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
+      <main className="container mx-auto p-4 space-y-12">
+        {/* Introduction Section */}
+        <section className="space-y-4">
+          <div className="max-w-2xl mx-auto space-y-4">
+            <h1 className="text-5xl font-bold">
+              Hi, I'm Alberto Bort <span role="img" aria-label="waving hand">👋</span>
+            </h1>
+            <p className="text-xl">
+              Web developer and consultant with a passion for turning complex problems into simple, beautiful, and intuitive solutions.
+            </p>
+          </div>
+        </section>
+
+        {/* About Section */}
+        <section className="max-w-2xl mx-auto">
+          <h3 className="text-2xl font-bold mb-2">About</h3>
+          <p className="text-sm text-gray-800 dark:text-gray-200">
+            Passionate developer with extensive experience, I've developed the skills to provide much more than just web development. I deliver comprehensive end-to-end solutions tailored to businesses, ensuring that each project is not only functional but also optimized for user experience and performance. My expertise lies in leveraging the latest web technologies to help clients transform their digital ideas into reality.
+          </p>
+        </section>
+
+        {/* Skills Section */}
+        <section className="max-w-2xl mx-auto">
+          <h3 className="text-2xl font-bold mb-4">Skills</h3>
+          <div className="flex flex-wrap gap-2">
+            <Badge>React</Badge>
+            <Badge>Node.js</Badge>
+            <Badge>Express</Badge>
+            <Badge>MongoDB</Badge>
+            <Badge>TypeScript</Badge>
+            <Badge>Jest</Badge>
+            <Badge>Cypress</Badge>
+            <Badge>Docker</Badge>
+          </div>
+        </section>
+
+        {/* My Projects Section */}
+        <section>
+          <div className="flex justify-center">
+            <div className="inline-block bg-black text-white px-4 py-2 rounded-full mb-4 dark:bg-white dark:text-black">
+              My Projects
+            </div>
+          </div>
+          <h3 className="text-4xl font-bold text-center mb-2">Check out my latest work</h3>
+          <p className="text-center mb-6">
+            I have worked on a diverse range of projects, from simple websites to complex web applications. Below are a few of my most recent projects.
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <ProjectCard
+              imageSrc="/images/project1.jpg"
+              title="Perfil Profesional"
+              dates="Repository"
+              description="An interactive portfolio showcasing professional skills and past work. Optimized for performance and accessibility, perfect for highlighting digital expertise."
+              techStack={['HTML', 'CSS', 'JavaScript']}
+              tools={['GitHub Pages']}
+              actionText="Website"
+              actionLink="https://albope.github.io/perfil-profesional/"
             />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
+            <ProjectCard
+              imageSrc="/images/project2.jpg"
+              title="Travel Map Generator"
+              dates="Repository"
+              description="A tool for creating interactive travel maps, ideal for travelers or businesses in the tourism sector. Built with React and Mapbox for real-time visualization."
+              techStack={['React', 'Node.js']}
+              tools={['Mapbox']}
+              actionText="Website"
+              actionLink="https://travelmapgenerator.com/"
+            />
+            <ProjectCard
+              imageSrc="/images/project3.jpg"
+              title="Padel App"
+              dates="Repository"
+              description="A platform for organizing and managing padel games, offering match scheduling, results tracking, and tournament management. Built with React and Firebase."
+              techStack={['React', 'Firebase']}
+              tools={['Material UI']}
+              actionText="Website"
+              actionLink="https://padel-app-96e21.web.app/"
+            />
+            <ProjectCard
+              imageSrc="/images/project4.jpg"
+              title="Travel Map Tests"
+              dates="Repository"
+              description="Automated testing suite ensuring functionality and performance for the Travel Map Generator. Developed using Jest and React Testing Library."
+              techStack={['Jest', 'React Testing Library']}
+              tools={['CI/CD']}
+              actionText="GitHub"
+              actionLink="https://github.com/albope/travel-map-tests"
+            />
+          </div>
+        </section>
+
+        {/* Services and Pricing */}
+        <section>
+          <h3 className="text-2xl font-bold mb-4">Services & Pricing</h3>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <Card>
+              <CardHeader>
+                <CardTitle>Web Development</CardTitle>
+                <CardDescription>Custom web applications</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ul className="list-disc list-inside">
+                  <li>Frontend development</li>
+                  <li>Backend API development</li>
+                  <li>Database design</li>
+                </ul>
+              </CardContent>
+              <CardFooter>
+                <p className="text-lg font-bold">Starting at $20/hour</p>
+              </CardFooter>
+            </Card>
+            <Card>
+              <CardHeader>
+                <CardTitle>Web Testing</CardTitle>
+                <CardDescription>Comprehensive test suites</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ul className="list-disc list-inside">
+                  <li>Unit testing</li>
+                  <li>Integration testing</li>
+                  <li>End-to-end testing</li>
+                </ul>
+              </CardContent>
+              <CardFooter>
+                <p className="text-lg font-bold">Starting at $30/hour</p>
+              </CardFooter>
+            </Card>
+            <Card>
+              <CardHeader>
+                <CardTitle>Consultation</CardTitle>
+                <CardDescription>Expert advice and planning</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ul className="list-disc list-inside">
+                  <li>Architecture review</li>
+                  <li>Performance optimization</li>
+                  <li>Best practices implementation</li>
+                </ul>
+              </CardContent>
+              <CardFooter>
+                <p className="text-lg font-bold">$50/hour</p>
+              </CardFooter>
+            </Card>
+          </div>
+        </section>
+
+        {/* Contact Information */}
+        <section className="text-center">
+          <div className="flex justify-center">
+            <div className="inline-block bg-black text-white px-4 py-2 rounded-full mb-4 dark:bg-white dark:text-black">
+              Contact
+            </div>
+          </div>
+          <h3 className="text-4xl font-bold mb-4">Get in Touch</h3>
+          <p className="text-lg mb-4">
+            Ready to start your project?{' '}
+            <a href="mailto:albertobort@gmail.com" className="text-blue-500 underline">Contact me</a> for a free consultation.
+          </p>
+          <NavBar darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
+        </section>
       </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
     </div>
   );
 }
