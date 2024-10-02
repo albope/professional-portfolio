@@ -51,8 +51,8 @@ export default function Portfolio() {
         <section className="max-w-2xl mx-auto">
           <h3 className="text-2xl font-bold mb-2">About</h3>
           <p className="text-sm text-gray-800 dark:text-white">
-            Passionate developer with extensive experience, I have developed the skills to provide much more than just web development. 
-            I deliver comprehensive end-to-end solutions tailored to businesses, ensuring that each project is not only functional but also optimized for user experience and performance. 
+            Passionate developer with extensive experience, I have developed the skills to provide much more than just web development.
+            I deliver comprehensive end-to-end solutions tailored to businesses, ensuring that each project is not only functional but also optimized for user experience and performance.
             My expertise lies in leveraging the latest web technologies to help clients transform their digital ideas into reality.
           </p>
         </section>
@@ -92,7 +92,7 @@ export default function Portfolio() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Project 1 */}
             <ProjectCard
-              imageSrc="/professional-portfolio/Images/project1.jpg" 
+              imageSrc="project1.jpg" 
               title="Professional Profile"
               dates="Web development"
               description="An interactive portfolio showcasing professional skills and past work. Optimized for performance and accessibility, perfect for highlighting digital expertise."
@@ -103,7 +103,7 @@ export default function Portfolio() {
             />
             {/* Project 2 */}
             <ProjectCard
-              imageSrc="/professional-portfolio/Images/project2.jpg"
+              imageSrc="project2.jpg"
               title="Travel Map Generator"
               dates="Web development"
               description="A tool for creating interactive travel maps, ideal for travelers or businesses in the tourism sector. Built with React and Mapbox for real-time visualization."
@@ -114,7 +114,7 @@ export default function Portfolio() {
             />
             {/* Project 3 */}
             <ProjectCard
-              imageSrc="/professional-portfolio/Images/project3.jpg"
+              imageSrc="project3.jpg"
               title="Padel App"
               dates="App development"
               description="A platform for organizing and managing padel games, offering match scheduling, results tracking, and tournament management. Built with React and Firebase."
@@ -125,7 +125,7 @@ export default function Portfolio() {
             />
             {/* Project 4 */}
             <ProjectCard
-              imageSrc="/professional-portfolio/Images/project4.jpg"
+              imageSrc="project4.jpg"
               title="Test Web Automation"
               dates="Test Automation"
               description="Automated testing suite ensuring functionality and performance for the Travel Map Generator. Developed using Jest and React Testing Library."

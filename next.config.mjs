@@ -1,11 +1,6 @@
-const isProd = process.env.NODE_ENV === 'production';
-const repository = 'professional-portfolio';
-
+/** @type {import('next').NextConfig} */
 const nextConfig = {
-  assetPrefix: isProd ? `/${repository}/` : '',
-  basePath: isProd ? `/${repository}` : '',
-  trailingSlash: true,
-  output: 'export',
+  output: 'standalone',
   images: {
     unoptimized: true,
   },
