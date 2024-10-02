@@ -1,7 +1,9 @@
+// src/app/page.tsx
+
 'use client';
 
 import { useState } from 'react';
-import { Moon, Sun, ExternalLink, Globe } from 'lucide-react';
+import { Moon, Sun } from 'lucide-react';
 import { Button } from "@/components/ui/Button";
 import {
   Card,
@@ -35,7 +37,7 @@ export default function Portfolio() {
       </header>
 
       <main className="container mx-auto p-4 space-y-12">
-        {/* Introduction Section */}
+        {/* Introducción */}
         <section className="space-y-4">
           <div className="max-w-2xl mx-auto space-y-4">
             <h1 className="text-5xl font-bold">
@@ -47,15 +49,15 @@ export default function Portfolio() {
           </div>
         </section>
 
-        {/* About Section */}
+        {/* Sección About */}
         <section className="max-w-2xl mx-auto">
           <h3 className="text-2xl font-bold mb-2">About</h3>
-          <p className="text-sm text-gray-800 dark:text-gray-200">
+          <p className="text-sm text-gray-800 dark:text-white">
             Passionate developer with extensive experience, I've developed the skills to provide much more than just web development. I deliver comprehensive end-to-end solutions tailored to businesses, ensuring that each project is not only functional but also optimized for user experience and performance. My expertise lies in leveraging the latest web technologies to help clients transform their digital ideas into reality.
           </p>
         </section>
 
-        {/* Skills Section */}
+        {/* Sección Skills */}
         <section className="max-w-2xl mx-auto">
           <h3 className="text-2xl font-bold mb-4">Skills</h3>
           <div className="flex flex-wrap gap-2">
@@ -74,7 +76,7 @@ export default function Portfolio() {
           </div>
         </section>
 
-        {/* My Projects Section */}
+        {/* Sección My Projects */}
         <section>
           <div className="flex justify-center">
             <div className="inline-block bg-black text-white px-4 py-2 rounded-full mb-4 dark:bg-white dark:text-black">
@@ -88,8 +90,9 @@ export default function Portfolio() {
             I have worked on a diverse range of projects, from simple websites to complex web applications. Below are a few of my most recent projects.
           </p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Project 1 */}
             <ProjectCard
-              imageSrc="/images/project1.jpg"
+              imageSrc="/images/project1.jpg" // Reemplaza con la ruta real de tu imagen
               title="Professional Profile"
               dates="Web development"
               description="An interactive portfolio showcasing professional skills and past work. Optimized for performance and accessibility, perfect for highlighting digital expertise."
@@ -98,8 +101,9 @@ export default function Portfolio() {
               actionText="Website"
               actionLink="https://albope.github.io/perfil-profesional/"
             />
+            {/* Project 2 */}
             <ProjectCard
-              imageSrc="/images/project2.jpg"
+              imageSrc="/images/project2.jpg" // Reemplaza con la ruta real de tu imagen
               title="Travel Map Generator"
               dates="Web development"
               description="A tool for creating interactive travel maps, ideal for travelers or businesses in the tourism sector. Built with React and Mapbox for real-time visualization."
@@ -108,8 +112,9 @@ export default function Portfolio() {
               actionText="Website"
               actionLink="https://travelmapgenerator.com/"
             />
+            {/* Project 3 */}
             <ProjectCard
-              imageSrc="/images/project3.jpg"
+              imageSrc="/images/project3.jpg" // Reemplaza con la ruta real de tu imagen
               title="Padel App"
               dates="App development"
               description="A platform for organizing and managing padel games, offering match scheduling, results tracking, and tournament management. Built with React and Firebase."
@@ -118,8 +123,9 @@ export default function Portfolio() {
               actionText="Website"
               actionLink="https://padel-app-96e21.web.app/"
             />
+            {/* Project 4 */}
             <ProjectCard
-              imageSrc="/images/project4.jpg"
+              imageSrc="/images/project4.jpg" // Reemplaza con la ruta real de tu imagen
               title="Test Web Automation"
               dates="Test Automation"
               description="Automated testing suite ensuring functionality and performance for the Travel Map Generator. Developed using Jest and React Testing Library."
@@ -131,10 +137,11 @@ export default function Portfolio() {
           </div>
         </section>
 
-        {/* Services and Pricing */}
+        {/* Sección Services and Pricing */}
         <section>
           <h3 className="text-2xl font-bold mb-4">Services & Pricing</h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {/* Servicio 1 */}
             <Card>
               <CardHeader>
                 <CardTitle>Web Development</CardTitle>
@@ -151,6 +158,7 @@ export default function Portfolio() {
                 <p className="text-lg font-bold">Starting at $20/hour</p>
               </CardFooter>
             </Card>
+            {/* Servicio 2 */}
             <Card>
               <CardHeader>
                 <CardTitle>Web Testing</CardTitle>
@@ -167,6 +175,7 @@ export default function Portfolio() {
                 <p className="text-lg font-bold">Starting at $30/hour</p>
               </CardFooter>
             </Card>
+            {/* Servicio 3 */}
             <Card>
               <CardHeader>
                 <CardTitle>Consultation</CardTitle>
@@ -186,7 +195,7 @@ export default function Portfolio() {
           </div>
         </section>
 
-        {/* Contact Information */}
+        {/* Información de Contacto */}
         <section className="text-center">
           <div className="flex justify-center">
             <div className="inline-block bg-black text-white px-4 py-2 rounded-full mb-4 dark:bg-white dark:text-black">
