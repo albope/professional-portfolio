@@ -1,3 +1,5 @@
+// src/pages/index.tsx
+
 'use client';
 
 import { useState } from 'react';
@@ -20,6 +22,12 @@ export default function Portfolio() {
 
   const toggleDarkMode = () => {
     setDarkMode(!darkMode);
+  };
+
+  const handleEmailClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    const email = "albertobort@gmail.com";
+    window.location.href = `mailto:${email}`;
   };
 
   return (
@@ -202,7 +210,13 @@ export default function Portfolio() {
           <h3 className="text-4xl font-bold mb-4">Get in Touch</h3>
           <p className="text-lg mb-4">
             Ready to start your project?{' '}
-            <a href="mailto:albertobort@gmail.com" className="text-blue-500 underline">Contact me</a> for a free consultation.
+            <a 
+              href="#"
+              onClick={handleEmailClick} 
+              className="text-blue-500 underline"
+            >
+              Contact me
+            </a> for a free consultation.
           </p>
           <NavBar />
         </section>
