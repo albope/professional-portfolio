@@ -1,5 +1,3 @@
-// tailwind.config.js
-
 import type { Config } from "tailwindcss";
 
 const config: Config = {
@@ -11,7 +9,9 @@ const config: Config = {
   ],
   theme: {
     extend: {
-      // Puedes agregar extensiones al tema aquí si lo necesitas
+      fontFamily: {
+        sans: ['Inter', 'sans-serif'], // Añadir la fuente Inter
+      },
     },
   },
   plugins: [],

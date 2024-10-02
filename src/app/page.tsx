@@ -1,5 +1,3 @@
-// src/app/page.tsx
-
 'use client';
 
 import { useState } from 'react';
@@ -41,7 +39,7 @@ export default function Portfolio() {
         <section className="space-y-4">
           <div className="max-w-2xl mx-auto space-y-4">
             <h1 className="text-5xl font-bold">
-              Hi, I'm Alberto Bort <span role="img" aria-label="waving hand">👋</span>
+              Hi, I am Alberto Bort <span role="img" aria-label="waving hand">👋</span>
             </h1>
             <p className="text-xl">
               Web developer and consultant with a passion for turning complex problems into simple, beautiful, and intuitive solutions.
@@ -53,7 +51,9 @@ export default function Portfolio() {
         <section className="max-w-2xl mx-auto">
           <h3 className="text-2xl font-bold mb-2">About</h3>
           <p className="text-sm text-gray-800 dark:text-white">
-            Passionate developer with extensive experience, I've developed the skills to provide much more than just web development. I deliver comprehensive end-to-end solutions tailored to businesses, ensuring that each project is not only functional but also optimized for user experience and performance. My expertise lies in leveraging the latest web technologies to help clients transform their digital ideas into reality.
+            Passionate developer with extensive experience, I have developed the skills to provide much more than just web development. 
+            I deliver comprehensive end-to-end solutions tailored to businesses, ensuring that each project is not only functional but also optimized for user experience and performance. 
+            My expertise lies in leveraging the latest web technologies to help clients transform their digital ideas into reality.
           </p>
         </section>
 
@@ -92,7 +92,7 @@ export default function Portfolio() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Project 1 */}
             <ProjectCard
-              imageSrc="/images/project1.jpg" // Reemplaza con la ruta real de tu imagen
+              imageSrc="/professional-portfolio/Images/project1.jpg" 
               title="Professional Profile"
               dates="Web development"
               description="An interactive portfolio showcasing professional skills and past work. Optimized for performance and accessibility, perfect for highlighting digital expertise."
@@ -103,7 +103,7 @@ export default function Portfolio() {
             />
             {/* Project 2 */}
             <ProjectCard
-              imageSrc="/images/project2.jpg" // Reemplaza con la ruta real de tu imagen
+              imageSrc="/professional-portfolio/Images/project2.jpg"
               title="Travel Map Generator"
               dates="Web development"
               description="A tool for creating interactive travel maps, ideal for travelers or businesses in the tourism sector. Built with React and Mapbox for real-time visualization."
@@ -114,7 +114,7 @@ export default function Portfolio() {
             />
             {/* Project 3 */}
             <ProjectCard
-              imageSrc="/images/project3.jpg" // Reemplaza con la ruta real de tu imagen
+              imageSrc="/professional-portfolio/Images/project3.jpg"
               title="Padel App"
               dates="App development"
               description="A platform for organizing and managing padel games, offering match scheduling, results tracking, and tournament management. Built with React and Firebase."
@@ -125,7 +125,7 @@ export default function Portfolio() {
             />
             {/* Project 4 */}
             <ProjectCard
-              imageSrc="/images/project4.jpg" // Reemplaza con la ruta real de tu imagen
+              imageSrc="/professional-portfolio/Images/project4.jpg"
               title="Test Web Automation"
               dates="Test Automation"
               description="Automated testing suite ensuring functionality and performance for the Travel Map Generator. Developed using Jest and React Testing Library."
@@ -141,7 +141,6 @@ export default function Portfolio() {
         <section>
           <h3 className="text-2xl font-bold mb-4">Services & Pricing</h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {/* Servicio 1 */}
             <Card>
               <CardHeader>
                 <CardTitle>Web Development</CardTitle>
@@ -158,7 +157,6 @@ export default function Portfolio() {
                 <p className="text-lg font-bold">Starting at $20/hour</p>
               </CardFooter>
             </Card>
-            {/* Servicio 2 */}
             <Card>
               <CardHeader>
                 <CardTitle>Web Testing</CardTitle>
@@ -175,7 +173,6 @@ export default function Portfolio() {
                 <p className="text-lg font-bold">Starting at $30/hour</p>
               </CardFooter>
             </Card>
-            {/* Servicio 3 */}
             <Card>
               <CardHeader>
                 <CardTitle>Consultation</CardTitle>
