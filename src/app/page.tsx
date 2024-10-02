@@ -3,7 +3,14 @@
 import { useState } from 'react';
 import { Moon, Sun, ExternalLink, Globe } from 'lucide-react';
 import { Button } from "@/components/ui/Button";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/Card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle
+} from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import { ProjectCard } from "@/components/ProjectCard";
 import { NavBar } from "@/components/ui/NavBar";
@@ -19,7 +26,11 @@ export default function Portfolio() {
     <div className={`min-h-screen ${darkMode ? 'bg-gray-900 text-white' : 'bg-gray-100 text-gray-900'}`}>
       <header className="container mx-auto p-4 flex justify-between items-center">
         <Button variant="ghost" size="icon" onClick={toggleDarkMode}>
-          {darkMode ? <Sun className="h-[1.2rem] w-[1.2rem]" /> : <Moon className="h-[1.2rem] w-[1.2rem]" />}
+          {darkMode ? (
+            <Sun className="h-[1.2rem] w-[1.2rem]" />
+          ) : (
+            <Moon className="h-[1.2rem] w-[1.2rem]" />
+          )}
         </Button>
       </header>
 
@@ -56,6 +67,10 @@ export default function Portfolio() {
             <Badge>Jest</Badge>
             <Badge>Cypress</Badge>
             <Badge>Docker</Badge>
+            <Badge>Python</Badge>
+            <Badge>Machine Learning</Badge>
+            <Badge>TensorFlow</Badge>
+            <Badge>OpenAI API</Badge>
           </div>
         </section>
 
@@ -66,15 +81,17 @@ export default function Portfolio() {
               My Projects
             </div>
           </div>
-          <h3 className="text-4xl font-bold text-center mb-2">Check out my latest work</h3>
+          <h3 className="text-4xl font-bold text-center mb-2">
+            Check out my latest work
+          </h3>
           <p className="text-center mb-6">
             I have worked on a diverse range of projects, from simple websites to complex web applications. Below are a few of my most recent projects.
           </p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <ProjectCard
               imageSrc="/images/project1.jpg"
-              title="Perfil Profesional"
-              dates="Repository"
+              title="Professional Profile"
+              dates="Web development"
               description="An interactive portfolio showcasing professional skills and past work. Optimized for performance and accessibility, perfect for highlighting digital expertise."
               techStack={['HTML', 'CSS', 'JavaScript']}
               tools={['GitHub Pages']}
@@ -84,7 +101,7 @@ export default function Portfolio() {
             <ProjectCard
               imageSrc="/images/project2.jpg"
               title="Travel Map Generator"
-              dates="Repository"
+              dates="Web development"
               description="A tool for creating interactive travel maps, ideal for travelers or businesses in the tourism sector. Built with React and Mapbox for real-time visualization."
               techStack={['React', 'Node.js']}
               tools={['Mapbox']}
@@ -94,7 +111,7 @@ export default function Portfolio() {
             <ProjectCard
               imageSrc="/images/project3.jpg"
               title="Padel App"
-              dates="Repository"
+              dates="App development"
               description="A platform for organizing and managing padel games, offering match scheduling, results tracking, and tournament management. Built with React and Firebase."
               techStack={['React', 'Firebase']}
               tools={['Material UI']}
@@ -103,8 +120,8 @@ export default function Portfolio() {
             />
             <ProjectCard
               imageSrc="/images/project4.jpg"
-              title="Travel Map Tests"
-              dates="Repository"
+              title="Test Web Automation"
+              dates="Test Automation"
               description="Automated testing suite ensuring functionality and performance for the Travel Map Generator. Developed using Jest and React Testing Library."
               techStack={['Jest', 'React Testing Library']}
               tools={['CI/CD']}
@@ -181,7 +198,7 @@ export default function Portfolio() {
             Ready to start your project?{' '}
             <a href="mailto:albertobort@gmail.com" className="text-blue-500 underline">Contact me</a> for a free consultation.
           </p>
-          <NavBar darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
+          <NavBar />
         </section>
       </main>
     </div>
