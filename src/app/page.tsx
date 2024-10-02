@@ -19,6 +19,7 @@ import { NavBar } from "@/components/ui/NavBar";
 
 export default function Portfolio() {
   const [darkMode, setDarkMode] = useState(false);
+  const [tooltipVisible, setTooltipVisible] = useState(false);
 
   const toggleDarkMode = () => {
     setDarkMode(!darkMode);
@@ -213,10 +214,17 @@ export default function Portfolio() {
             <a 
               href="#"
               onClick={handleEmailClick} 
-              className="text-blue-500 underline"
+              className="text-blue-500 underline relative"
+              onMouseEnter={() => setTooltipVisible(true)}
+              onMouseLeave={() => setTooltipVisible(false)}
             >
               Contact me
             </a> for a free consultation.
+            {tooltipVisible && (
+              <span className="absolute left-1/2 transform -translate-x-1/2 -translate-y-8 mt-1 text-sm text-gray-700 bg-white border border-gray-300 rounded shadow-md p-1">
+                albertobort@gmail.com
+              </span>
+            )}
           </p>
           <NavBar />
         </section>
