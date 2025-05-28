@@ -1,15 +1,8 @@
-/* globals.css */
-
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
+/* src/app/globals.css */
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-/* Ajuste para mantener la consistencia de Tailwind */
-body {
-  font-family: 'Inter', sans-serif; /* Aplica la fuente Inter */
-}
 
 /* Clases utilitarias personalizadas */
 @layer utilities {

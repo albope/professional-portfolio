@@ -1,35 +1,55 @@
 // src/components/ui/Button.tsx
 
-import { ButtonHTMLAttributes } from 'react';
+import * as React from "react" // Importa React completo
+import { Slot } from "@radix-ui/react-slot" // Necesitaremos esta dependencia
+import { cva, type VariantProps } from "class-variance-authority";
 
-interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'outline' | 'ghost' | 'black';
-  size?: 'icon';
-  className?: string;
+import { cn } from "@/lib/utils";
+
+const buttonVariants = cva(
+  "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
+  {
+    variants: {
+      variant: {
+        default: "bg-slate-900 text-slate-50 hover:bg-slate-900/90 dark:bg-slate-50 dark:text-slate-900 dark:hover:bg-slate-50/90",
+        outline: "border border-input bg-background hover:bg-accent hover:text-accent-foreground",
+        ghost: "hover:bg-accent hover:text-accent-foreground",
+      },
+      size: {
+        default: "h-10 px-4 py-2",
+        sm: "h-9 rounded-md px-3",
+        lg: "h-11 rounded-md px-8",
+        icon: "h-10 w-10",
+      },
+    },
+    defaultVariants: {
+      variant: "default",
+      size: "default",
+    },
+  }
+)
+
+export interface ButtonProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
+    VariantProps<typeof buttonVariants> {
+  asChild?: boolean
 }
 
-export const Button: React.FC<ButtonProps> = ({ children, variant, size, className, ...props }) => {
-  const baseStyles = 'rounded transition';
-
-  let variantStyles = '';
-  if (variant === 'outline') {
-    variantStyles = 'border border-gray-300 text-gray-900 hover:bg-gray-100 dark:border-gray-600 dark:text-white dark:hover:bg-gray-800';
-  } else if (variant === 'ghost') {
-    variantStyles = 'bg-transparent text-gray-500 hover:bg-gray-200 dark:text-gray-400 dark:hover:bg-gray-700';
-  } else if (variant === 'black') {
-    variantStyles = 'bg-black text-white hover:bg-gray-800 dark:bg-white dark:text-black dark:hover:bg-gray-200';
-  } else {
-    variantStyles = 'text-white';
+// 1. Envolvemos el componente en React.forwardRef
+const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
+  ({ className, variant, size, asChild = false, ...props }, ref) => {
+    const Comp = asChild ? Slot : "button"
+    return (
+      <Comp
+        className={cn(buttonVariants({ variant, size, className }))}
+        // 2. Pasamos la ref al componente o elemento subyacente
+        ref={ref}
+        {...props}
+      />
+    )
   }
+)
+// 3. Asignamos un nombre para facilitar la depuración
+Button.displayName = "Button"
 
-  const sizeStyles = size === 'icon' ? 'w-10 h-10' : '';
-
-  return (
-    <button
-      className={`${baseStyles} ${variantStyles} ${sizeStyles} ${className}`}
-      {...props}
-    >
-      {children}
-    </button>
-  );
-};
+export { Button, buttonVariants }
