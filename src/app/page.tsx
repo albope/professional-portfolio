@@ -1,312 +1,104 @@
-'use client';
+// src/app/page.tsx (Splash Page - REFINADA CON FONDOS CLAROS)
+import Link from 'next/link';
+import { ChevronRight, Layers } from 'lucide-react'; 
+import { AnimatedTagline } from '@/components/ui/AnimatedTagline';
 
-import { useTheme } from 'next-themes';
-import { Moon, Sun, ArrowDown, UserCircle, DollarSign } from 'lucide-react'; 
-import Image from 'next/image';
-
-import { Button } from "@/components/ui/Button";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/Card";
-import { Badge } from "@/components/ui/Badge";
-import { ProjectCard } from "@/components/ProjectCard";
-import { NavBar } from "@/components/ui/NavBar";
-import { projectsData } from '@/data/projects';
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/Carousel";
-
-// Componente reutilizable para las secciones
-const Section = ({ children, className, id }: { children: React.ReactNode, className?: string, id?: string }) => (
-  <section id={id} className={`max-w-6xl mx-auto px-4 py-16 sm:py-24 ${className}`}>
-    {children}
-  </section>
-);
-
-// Componente reutilizable para los títulos de sección
-const SectionTitle = ({ children }: { children: React.ReactNode }) => (
-    <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-center mb-12">
-        {children}
-    </h2>
-);
-
-// Componente reutilizable para los separadores de sección
-const SectionSeparator = () => (
-    <div className="max-w-3xl mx-auto">
-        <hr className="border-slate-200 dark:border-slate-800" />
-    </div>
-);
-
-export default function Portfolio() {
-  const { theme, setTheme } = useTheme();
+export default function SplashPage() {
+  const actionLines = {
+    es: "Accede a mi portafolio y explora mis servicios.",
+    en: "Access my portfolio and explore my services."
+  };
 
   return (
-    <div className="min-h-screen"> 
-      <header className="container mx-auto p-4 flex justify-end items-center sticky top-0 z-50 bg-slate-50/80 dark:bg-slate-900/80 backdrop-blur-sm">
-        <Button variant="ghost" size="icon" onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}>
-          <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-          <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-          <span className="sr-only">Toggle theme</span>
-        </Button>
-      </header>
-
-      <main>
-        {/* ============================================ */}
-        {/* SECCIÓN DE INTRODUCCIÓN (HERO) ACTUALIZADA */}
-        {/* ============================================ */}
-        <section className="container mx-auto px-4 pt-8 pb-16 sm:pt-16 sm:pb-24 grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8 items-center">
-          {/* COLUMNA IZQUIERDA: Intro con imagen y Acciones */}
-          <div className="flex flex-col gap-6 text-center md:text-left">
-            <div className="flex flex-col md:flex-row items-center gap-6 text-center md:text-left mb-2">
-              <div className="relative w-32 h-32 md:w-36 md:h-36 shrink-0">
-                  <Image 
-                      src="/Images/Alberto_Bort.jfif" 
-                      alt="Foto de perfil de Alberto Bort"
-                      fill
-                      className="rounded-full object-cover shadow-md"
-                      priority
-                  />
-              </div>
-              <div className="flex flex-col">
-                  <h1 className="text-4xl sm:text-5xl font-bold tracking-tighter">
-                    Hi, I'm Alberto Bort 👋
-                  </h1>
-                  <p className="text-xl sm:text-2xl font-medium text-blue-600 dark:text-blue-500 mt-1">
-                    Web Developer & Travel Planner
-                  </p>
-              </div>
-            </div>
-            
-            <p className="text-lg md:text-xl text-slate-600 dark:text-slate-400">
-              I build intuitive digital solutions and craft unique travel itineraries. From complex web applications to perfectly planned trips, I turn ideas into reality.
-            </p>
-            <div className="mt-2 flex justify-center md:justify-start">
-                <NavBar />
-            </div>
-            <div className="flex flex-wrap gap-4 mt-2 justify-center md:justify-start">
-              <a href="#projects">
-                <Button size="lg">
-                  <ArrowDown className="mr-2 h-5 w-5" />
-                  My Work
-                </Button>
-              </a>
-              <a href="#pricing">
-                <Button size="lg" variant="outline">
-                   <DollarSign className="mr-2 h-5 w-5" />
-                  Services & Pricing
-                </Button>
-              </a>
-            </div>
-          </div>
-
-          {/* COLUMNA DERECHA: Promoción de Itinerarios */}
-          <div className="h-full">
-             <Card className="h-full transform transition-transform duration-300 hover:scale-105 hover:shadow-2xl">
-                <CardHeader>
-                    <Badge className="mb-2">New Service</Badge>
-                    <CardTitle className="text-2xl">Personalized Travel Itineraries</CardTitle>
-                    <CardDescription>Custom travel itineraries designed for you to discover cities like a local. Organized, detailed, and ready to enjoy.</CardDescription>
-                </CardHeader>
-                <CardContent>
-                    <Image 
-                        src="/Images/ny-itinerary.jpg" 
-                        alt="Itinerario de Nueva York"
-                        width={1200}
-                        height={800}
-                        className="rounded-lg shadow-md"
-                    />
-                </CardContent>
-                <CardFooter>
-                  <a href="/itinerario-nueva-york.pdf" target="_blank" rel="noopener noreferrer" className="w-full">
-                    <Button variant="outline" className="w-full">
-                      See Example (New York, PDF)
-                    </Button>
-                  </a>
-                </CardFooter>
-             </Card>
-          </div>
-        </section>
-
-        <SectionSeparator />
-
-        {/* Sección "About Me" */}
-        <Section id="about">
-          <div className="max-w-3xl mx-auto text-center">
-            <h2 className="text-3xl font-bold mb-4">About Me</h2>
-            <p className="text-slate-800 dark:text-slate-300 text-lg">
-              Passionate developer with extensive experience, I deliver comprehensive end-to-end solutions tailored to businesses, ensuring that each project is not only functional but also optimized for user experience and performance. My expertise lies in leveraging the latest web technologies to help clients transform their digital ideas into reality.
-            </p>
-          </div>
-        </Section>
+    <div 
+      className="flex flex-col items-center justify-center min-h-screen flex-grow
+                 overflow-hidden px-4 
+                 bg-slate-100 text-slate-800 relative transition-colors duration-300" 
+                 // FONDO: slate-100 (gris muy claro)
+                 // TEXTO: slate-800 (oscuro)
+    >
+      {/* Efecto de grid sutil en el fondo */}
+      <div className="absolute inset-0 z-0 opacity-50">
+        <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <pattern id="subtleGridPattern" width="25" height="25" patternUnits="userSpaceOnUse">
+              <path d="M 25 0 L 0 0 0 25" fill="none" className="stroke-slate-300" strokeWidth="0.5"/>
+            </pattern>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#subtleGridPattern)" />
+        </svg>
+      </div>
+      
+      <main 
+        className="relative z-10 flex flex-col items-center justify-center text-center 
+                   p-8 py-10 sm:p-12 md:p-16
+                   bg-white // FONDO DEL RECUADRO: blanco sólido
+                   border border-slate-200    
+                   rounded-2xl shadow-xl        
+                   max-w-lg w-full                
+                   animate-fade-in-up" 
+      >
+        <div className="mb-8 transform transition-transform duration-500 hover:scale-110 animate-fade-in-up [animation-delay:0.2s]">
+          <Layers className="w-12 h-12 text-blue-600 mx-auto" />
+        </div>
         
-        <SectionSeparator />
-        
-        {/* Sección "My Projects" */}
-        <Section id="projects">
-           <SectionTitle>My Latest Work</SectionTitle>
-           <div className="w-full max-w-4xl mx-auto">
-              <Carousel 
-                opts={{ align: "start", loop: true }}
-              >
-                <CarouselContent className="-ml-2">
-                  {projectsData.map((project, index) => (
-                    <CarouselItem key={index} className="pl-2 md:basis-1/2">
-                      <div className="p-1 h-full">
-                        <ProjectCard
-                          imageSrc={project.imageSrc}
-                          title={project.title}
-                          dates={project.category}
-                          description={project.description}
-                          techStack={project.techStack}
-                          tools={project.tools}
-                          actionText={project.actionText}
-                          actionLink={project.actionLink}
-                          repoLink={project.repoLink}
-                        />
-                      </div>
-                    </CarouselItem>
-                  ))}
-                </CarouselContent>
-                <CarouselPrevious className="hidden sm:inline-flex" />
-                <CarouselNext className="hidden sm:inline-flex" />
-              </Carousel>
-           </div>
-        </Section>
-        
-        <SectionSeparator />
-        
-        {/* SECCIÓN DE PRECIOS Y SERVICIOS */}
-        <Section id="pricing">
-          <SectionTitle>Services & Pricing</SectionTitle>
-          <p className="text-center text-slate-600 dark:text-slate-400 max-w-2xl mx-auto mb-12">
-            I offer flexible solutions for both your digital and travel needs. Find the perfect plan for your next project.
+        <div className="animate-fade-in-up [animation-delay:0.4s]">
+          <h1 className="text-4xl sm:text-5xl font-semibold text-slate-900 mb-3 tracking-tight">
+            Alberto Bort
+          </h1>
+        </div>
+
+        <div className="animate-fade-in-up [animation-delay:0.6s]">
+          <p className="text-lg sm:text-xl text-slate-600 mb-8 tracking-normal">
+            Digital Solutions Architect & Itinerary Designer
           </p>
-          <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <Card className="flex flex-col">
-              <CardHeader>
-                <CardTitle>Web & App Development</CardTitle>
-                <CardDescription>Custom digital solutions, from concept to deployment.</CardDescription>
-              </CardHeader>
-              <CardContent className="flex-grow">
-                <ul className="list-disc list-inside space-y-2">
-                  <li>Frontend & Backend Development</li>
-                  <li>Mobile-First & Responsive Design</li>
-                  <li>API Integration & Automation</li>
-                  <li>Performance Optimization & Testing</li>
-                </ul>
-              </CardContent>
-              <CardFooter>
-                <p className="text-lg font-bold">Starting at $45/hour</p>
-              </CardFooter>
-            </Card>
+        </div>
+        
+        <div className="animate-fade-in-up [animation-delay:0.8s] min-h-[2.5em] flex items-center justify-center">
+            <AnimatedTagline 
+              lines={actionLines} 
+              duration={4000}
+              className="text-md text-slate-500 mb-10" // Texto gris medio para la tagline animada
+            />
+        </div>
 
-            <Card className="flex flex-col border-2 border-blue-500 shadow-xl">
-              <CardHeader>
-                <Badge className="mb-2">Most Popular</Badge>
-                <CardTitle>Personalized Itineraries</CardTitle>
-                <CardDescription>Your perfect trip, planned to the last detail.</CardDescription>
-              </CardHeader>
-              <CardContent className="flex-grow">
-                <ul className="list-disc list-inside space-y-2">
-                  <li>Custom day-by-day routes</li>
-                  <li>Restaurant & activity recommendations</li>
-                  <li>Transportation & booking logistics</li>
-                  <li>Digital map & offline PDF guide</li>
-                </ul>
-              </CardContent>
-              <CardFooter>
-                <p className="text-lg font-bold">From $50 per Travel guide</p>
-              </CardFooter>
-            </Card>
-
-            <Card className="flex flex-col">
-              <CardHeader>
-                <CardTitle>Landing Page Development</CardTitle>
-                <CardDescription>High-impact pages that convert visitors into customers.</CardDescription>
-              </CardHeader>
-              <CardContent className="flex-grow">
-                <ul className="list-disc list-inside space-y-2">
-                  <li>Custom design based on your brand</li>
-                  <li>Fast, responsive, and mobile-first</li>
-                  <li>Integration with marketing tools</li>
-                  <li>Optimized for quick loading</li>
-                </ul>
-              </CardContent>
-              <CardFooter>
-                <p className="text-lg font-bold">From $150 (one-time)</p>
-              </CardFooter>
-            </Card>
-          </div>
-        </Section>
-
-        <SectionSeparator />
-
-        {/* Sección Skills con categorías */}
-        <Section>
-          <SectionTitle>Core Skills & Technologies</SectionTitle>
-          <div className="max-w-4xl mx-auto space-y-8">
-            <div className="text-center">
-              <h4 className="text-xl font-semibold mb-4">Frontend</h4>
-              <div className="flex flex-wrap gap-3 justify-center">
-                <Badge>React</Badge>
-                <Badge>Next.js</Badge>
-                <Badge>TypeScript</Badge>
-                <Badge>HTML5 & CSS3</Badge>
-                <Badge>Tailwind CSS</Badge>
-                <Badge>Material UI</Badge>
-              </div>
-            </div>
-            <div className="text-center">
-              <h4 className="text-xl font-semibold mb-4">Backend & Database</h4>
-              <div className="flex flex-wrap gap-3 justify-center">
-                <Badge>Node.js</Badge>
-                <Badge>Firebase</Badge>
-                <Badge>API REST</Badge>
-              </div>
-            </div>
-            <div className="text-center">
-              <h4 className="text-xl font-semibold mb-4">Testing & DevOps</h4>
-              <div className="flex flex-wrap gap-3 justify-center">
-                <Badge>Jest</Badge>
-                <Badge>React Testing Library</Badge>
-                <Badge>Cypress</Badge>
-                <Badge>Docker</Badge>
-                <Badge>CI/CD</Badge>
-                <Badge>Vercel</Badge>
-              </div>
-            </div>
-            <div className="text-center">
-              <h4 className="text-xl font-semibold mb-4">Tools & Planning</h4>
-              <div className="flex flex-wrap gap-3 justify-center">
-                <Badge>JIRA</Badge>
-                <Badge>Content Creation</Badge>
-                <Badge>Travel Planning</Badge>
-                <Badge>Web Development</Badge>
-                <Badge>App Development</Badge>
-                <Badge>Tech Consultancy</Badge>
-              </div>
-            </div>
-          </div>
-        </Section>
-
-        <SectionSeparator />
-
-        {/* Información de Contacto */}
-        <Section> {/* Quitado el text-center general para que el título esté centrado pero el contenido del div no */}
-            <SectionTitle>Get in Touch</SectionTitle>
-          <div className="max-w-xl mx-auto text-center"> {/* Contenedor para centrar el párrafo y el NavBar */}
-              <p className="text-lg mb-6 text-slate-600 dark:text-slate-400">
-                Ready to start a project?{' '}
-                <a 
-                  href="mailto:albertobort@gmail.com"
-                  className="font-medium text-blue-600 hover:underline dark:text-blue-500"
-                >
-                  Contact me
-                </a> for a free consultation or a custom travel itinerary.
-              </p>
-              <NavBar />
-          </div>
-        </Section>
+        <div className="w-full space-y-4 max-w-xs mx-auto animate-fade-in-up [animation-delay:1s]">
+          <Link href="/es" passHref className="block w-full">
+            <button 
+              className="w-full group relative flex items-center justify-center h-12 sm:h-14 px-6 
+                         bg-blue-600 rounded-lg
+                         text-sm sm:text-base font-medium text-white 
+                         transition-all duration-300 ease-out
+                         hover:bg-blue-700 hover:shadow-md focus:shadow-blue-500/50
+                         focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-white
+                         transform hover:-translate-y-0.5 active:translate-y-0"
+            >
+              <span className="mr-2 text-lg">🇪🇸</span>
+              Portafolio & servicios
+              <ChevronRight className="ml-auto h-5 w-5 text-slate-200 transition-transform duration-300 group-hover:text-white group-hover:translate-x-1" />
+            </button>
+          </Link>
+          <Link href="/en" passHref className="block w-full">
+            <button 
+              // NUEVO COLOR PARA EL BOTÓN INGLÉS
+              className="w-full group relative flex items-center justify-center h-12 sm:h-14 px-6
+                         bg-slate-700 rounded-lg // Color base: gris oscuro (slate-700)
+                         text-sm sm:text-base font-medium text-white 
+                         transition-all duration-300 ease-out
+                         hover:bg-slate-800 hover:shadow-md focus:shadow-slate-500/50 // Hover más oscuro
+                         focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 focus:ring-offset-white
+                         transform hover:-translate-y-0.5 active:translate-y-0"
+            >
+               <span className="mr-2 text-lg">🇬🇧</span>
+              Portfolio & services
+              <ChevronRight className="ml-auto h-5 w-5 text-slate-200 transition-transform duration-300 group-hover:text-white group-hover:translate-x-1" />
+            </button>
+          </Link>
+        </div>
       </main>
 
-      <footer className="text-center p-8 text-sm text-slate-500 border-t border-slate-200 dark:border-slate-800 mt-16 sm:mt-24">
-        © {new Date().getFullYear()} Alberto Bort. All rights reserved.
+      <footer className="relative z-10 text-center w-full text-slate-500 text-xs sm:text-sm py-10 animate-fade-in-up [animation-delay:1.2s]">
+        © {new Date().getFullYear()} Alberto Bort
       </footer>
     </div>
   );

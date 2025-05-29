@@ -1,0 +1,60 @@
+{
+  "hero": {
+    "greeting": "Hola, soy Alberto Bort 👋",
+    "title": "Desarrollador Web y Planificador de Viajes",
+    "description": "Construyo soluciones digitales intuitivas y diseño itinerarios de viaje únicos. Desde aplicaciones web complejas hasta viajes perfectamente planificados, convierto ideas en realidad."
+  },
+  "buttons": {
+    "my_work": "Mis Proyectos",
+    "services_pricing": "Servicios y Precios",
+    "view_example_pdf": "Ver Ejemplo (Nueva York, PDF)"
+  },
+  "itinerary_card": {
+    "badge": "Nuevo Servicio",
+    "title": "Itinerarios de Viaje Personalizados",
+    "description": "Planes de viaje a medida para descubrir ciudades como un local. Organizado, detallado y listo para disfrutar."
+  },
+  "sections": {
+    "about_me": "Sobre Mí",
+    "about_me_text": "Desarrollador apasionado con amplia experiencia, entrego soluciones integrales de extremo a extremo adaptadas a las empresas, asegurando que cada proyecto no solo sea funcional sino también optimizado para la experiencia del usuario y el rendimiento. Mi especialización radica en aprovechar las últimas tecnologías web para ayudar a los clientes a transformar sus ideas digitales en realidad.",
+    "latest_work": "Mis Últimos Trabajos",
+    "services_pricing_title": "Servicios y Precios",
+    "services_pricing_description": "Ofrezco soluciones flexibles tanto para tus necesidades digitales como de viaje. Encuentra el plan perfecto para tu próximo proyecto.",
+    "core_skills": "Habilidades y Tecnologías Principales",
+    "get_in_touch": "Ponte en Contacto",
+    "get_in_touch_description": "¿Listo para empezar un proyecto? Contáctame para una consulta gratuita o un itinerario de viaje personalizado."
+  },
+  "service_cards": {
+    "dev_title": "Desarrollo Web y Apps",
+    "dev_desc": "Soluciones digitales a medida, desde el concepto hasta el despliegue.",
+    "dev_features": [
+      "Desarrollo Frontend y Backend",
+      "Diseño Mobile-First y Responsivo",
+      "Integración de API y Automatización",
+      "Optimización de Rendimiento y Pruebas"
+    ],
+    "dev_price": "Desde €45/hora",
+    "itinerary_title": "Itinerarios Personalizados",
+    "itinerary_desc": "Tu viaje perfecto, planificado hasta el último detalle.",
+    "itinerary_features": [
+      "Rutas diarias personalizadas",
+      "Recomendaciones de restaurantes y actividades",
+      "Logística de transporte y reservas",
+      "Mapa digital y guía PDF offline"
+    ],
+    "itinerary_price": "Desde €50 poir guia de viaje",
+    "itinerary_badge": "Más Popular",
+    "landing_title": "Desarrollo de Landing Pages",
+    "landing_desc": "Páginas de alto impacto que convierten visitantes en clientes.",
+    "landing_features": [
+      "Diseño personalizado basado en tu marca",
+      "Rápida, responsiva y mobile-first",
+      "Integración con herramientas de marketing",
+      "Optimizada para carga rápida"
+    ],
+    "landing_price": "Desde €150 (pago único)"
+  },
+  "footer": {
+    "rights_reserved": "Todos los derechos reservados."
+  }
+}

@@ -1,12 +1,21 @@
 /* src/app/globals.css */
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Clases utilitarias personalizadas */
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
+/* Asegúrate de que aquí no haya reglas como:
+html, body {
+  height: auto !important; // Ejemplo de algo problemático
 }
+O algo que pueda resetear la altura de forma inesperada.
+*/
+
+/* Es bueno tener esto para un mejor box-sizing, Tailwind lo incluye en 'base' usualmente */
+/*
+html {
+  box-sizing: border-box;
+}
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+*/
