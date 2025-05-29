@@ -7,7 +7,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Badge } from "@/components/ui/Badge";
 import { ProjectCard } from "@/components/ProjectCard";
 import { NavBar } from "@/components/ui/NavBar";
-import { projectsData, ProjectData as ProjectBaseData } from '@/data/projects'; // Interfaz actualizada
+import { projectsData} from '@/data/projects'; // Interfaz actualizada
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/Carousel";
 import PortfolioHeader from '@/components/portfolio/PortfolioHeader';
 import { promises as fs } from 'fs';

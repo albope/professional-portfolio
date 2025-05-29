@@ -1,15 +1,14 @@
 // src/components/icons/FlagIcons.tsx
 import React from 'react';
 
-interface FlagProps extends React.SVGProps<SVGSVGElement> {
-  // Puedes añadir props específicas si las necesitas
-}
+// La interfaz FlagProps se elimina ya que no añade nuevos miembros a React.SVGProps<SVGSVGElement>
 
-export const SpanishFlagIcon = ({ className, ...props }: FlagProps) => (
+export const SpanishFlagIcon = ({ className, ...props }: React.SVGProps<SVGSVGElement>) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 75 50" // Proporción 3:2 de la bandera de España
     className={className}
+    aria-hidden="true" // Buena práctica para SVGs decorativos si el texto del botón ya describe la acción
     {...props}
   >
     <rect width="75" height="50" fill="#C60B1E" /> {/* Rojo */}
@@ -17,13 +16,14 @@ export const SpanishFlagIcon = ({ className, ...props }: FlagProps) => (
   </svg>
 );
 
-export const BritishFlagIcon = ({ className, ...props }: FlagProps) => (
+export const BritishFlagIcon = ({ className, ...props }: React.SVGProps<SVGSVGElement>) => (
   // Esta es una representación simplificada de la Union Jack para un icono.
   // Para una versión perfecta, considera usar una librería de iconos de banderas o un SVG más detallado.
   <svg
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 50 30" // Proporción 5:3 de la Union Jack
     className={className}
+    aria-hidden="true" // Buena práctica para SVGs decorativos
     {...props}
   >
     <defs>

@@ -15,13 +15,15 @@ interface AnimatedTaglineProps {
 
 const FADE_DURATION = 500; // Duración de la transición de opacidad en ms
 
-export const AnimatedTagline: React.FC<AnimatedTaglineProps> = ({ 
-  lines, 
-  langOrder = ['es', 'en'], 
+export const AnimatedTagline: React.FC<AnimatedTaglineProps> = ({
+  lines,
+  langOrder = ['es', 'en'],
   duration = 3500, // Tiempo total visible de una frase
   className = ""
 }) => {
-  const [currentIndex, setCurrentIndex] = useState(0);
+  // CORRECCIÓN: 'currentIndex' ahora es '_currentIndex' porque su valor directo no se lee.
+  // La lógica de actualización usando setCurrentIndex((prevIndex) => ...) sigue siendo válida.
+  const [_currentIndex, setCurrentIndex] = useState(0);
   const [currentText, setCurrentText] = useState(lines[langOrder[0]]);
   const [isVisible, setIsVisible] = useState(false); // Inicia invisible para hacer fade-in
 
@@ -35,23 +37,23 @@ export const AnimatedTagline: React.FC<AnimatedTaglineProps> = ({
       setIsVisible(false); // 1. Empieza a desvanecer
 
       setTimeout(() => { // 2. Espera a que termine el desvanecimiento
-        setCurrentIndex((prevIndex) => {
+        setCurrentIndex((prevIndex) => { // prevIndex es el valor actual del estado _currentIndex
           const nextIndex = (prevIndex + 1) % langOrder.length;
           setCurrentText(lines[langOrder[nextIndex]]);
-          return nextIndex;
+          return nextIndex; // Esto actualiza el estado _currentIndex
         });
         setIsVisible(true); // 3. Empieza a aparecer la nueva frase
-      }, FADE_DURATION); 
+      }, FADE_DURATION);
     }, duration + FADE_DURATION); // El ciclo completo es: visible (duration) + invisible (FADE_DURATION)
 
     return () => {
       clearTimeout(initialFadeInTimer);
       clearInterval(intervalId);
     };
-  }, [duration, lines, langOrder]);
+  }, [duration, lines, langOrder]); // _currentIndex no es necesario como dependencia aquí
 
   return (
-    <p 
+    <p
       className={`transition-opacity ease-in-out ${isVisible ? 'opacity-100' : 'opacity-0'} ${className}`}
       style={{ transitionDuration: `${FADE_DURATION}ms` }} // Aplica la duración del fade aquí
     >
