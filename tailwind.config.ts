@@ -11,17 +11,23 @@ const config: Config = {
   theme: {
     extend: {
       animation: {
-        'aurora-spin': 'aurora-spin 20s linear infinite alternate', // 'alternate' hace que la animación vaya y vuelva
-        'fade-in-up': 'fade-in-up 0.6s ease-out forwards', // Si ya lo tienes, no lo dupliques
+        'aurora-spin': 'aurora-spin 20s linear infinite', // Para el fondo aurora
+        'fade-in-up': 'fade-in-up 0.6s ease-out forwards',
+        'subtle-pulse': 'subtle-pulse 2.5s ease-in-out infinite alternate', // NUEVA animación para el icono
       },
       keyframes: {
         'aurora-spin': {
           '0%': { transform: 'rotate(0deg)' },
           '100%': { transform: 'rotate(360deg)' },
         },
-        'fade-in-up': { // Si ya lo tienes, no lo dupliques
+        'fade-in-up': {
           '0%': { opacity: '0', transform: 'translateY(20px)' },
           '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
+        'subtle-pulse': { // NUEVOS keyframes para la animación del icono
+          '0%': { transform: 'scale(1)' },
+          '50%': { transform: 'scale(1.05)' }, // Crece un 5%
+          '100%': { transform: 'scale(1)' },
         },
       },
       backgroundImage: {
