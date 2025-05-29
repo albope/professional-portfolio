@@ -1,5 +1,8 @@
+// src/app/page.tsx  <- REEMPLAZA EL CONTENIDO DE ESTE ARCHIVO
+
 import Link from 'next/link';
-import { ChevronRight, Spline } from 'lucide-react'; 
+// import Image from 'next/image'; // Ya no lo usamos si es un icono de Lucide
+import { ChevronRight, Atom } from 'lucide-react'; // Importamos Atom
 import { AnimatedTagline } from '@/components/ui/AnimatedTagline';
 
 export default function SplashPage() {
@@ -12,39 +15,38 @@ export default function SplashPage() {
     <div
       className="flex flex-col items-center justify-center min-h-screen flex-grow
                  overflow-hidden px-4
-                 bg-slate-900 text-slate-200 relative isolate" 
+                 bg-slate-950 text-slate-100 relative isolate"
     >
-      {/* FONDO DE AURORA */}
-      <div className="absolute inset-0 -z-10 overflow-hidden"> {/* z-index inferior para que esté detrás de todo */}
-        <div className="absolute left-1/2 top-1/2 h-[120rem] w-[120rem] -translate-x-1/2 -translate-y-1/2"> {/* Contenedor grande para la aurora */}
+      {/* FONDO DE AURORA MAXIMIZADO */}
+      <div className="absolute inset-0 -z-10 overflow-hidden">
+        <div className="absolute left-1/2 top-1/2 h-[150rem] w-[150rem] -translate-x-1/2 -translate-y-1/2">
           <div
-            className="absolute -top-1/4 left-[10%] h-[80rem] w-[80rem]
-                       bg-gradient-radial from-purple-600/30 via-transparent to-transparent  /* Opacidad reducida a /30 */
+            className="absolute -top-1/3 left-[5%] h-[100rem] w-[100rem]
+                       bg-gradient-radial from-purple-500/60 via-purple-600/10 to-transparent
                        animate-aurora-spin"
-            style={{ animationDuration: '28s', animationDelay: '-3s' }} // Duraciones y delays diferentes
+            style={{ animationDuration: '26s', animationDelay: '-4s' }}
           />
           <div
-            className="absolute -bottom-1/4 right-[10%] h-[70rem] w-[70rem]
-                       bg-gradient-radial from-sky-500/30 via-transparent to-transparent /* Opacidad reducida a /30 */
+            className="absolute -bottom-1/3 right-[5%] h-[100rem] w-[100rem]
+                       bg-gradient-radial from-sky-400/60 via-sky-500/10 to-transparent
                        animate-aurora-spin"
-            style={{ animationDuration: '24s', animationDelay: '-1s' }} // Duraciones y delays diferentes
+            style={{ animationDuration: '22s', animationDelay: '-2s' }}
           />
-           {/* Tercera luz para más profundidad (opcional) */}
           <div
-            className="absolute -bottom-1/3 left-[20%] h-[60rem] w-[60rem]
-                       bg-gradient-radial from-emerald-500/20 via-transparent to-transparent /* Opacidad muy baja */
+            className="absolute bottom-[15%] left-[15%] h-[80rem] w-[80rem]
+                       bg-gradient-radial from-emerald-400/50 via-emerald-500/5 to-transparent
                        animate-aurora-spin"
-            style={{ animationDuration: '30s', animationDelay: '-2s' }}
+            style={{ animationDuration: '30s', animationDelay: '-3s' }}
           />
         </div>
       </div>
 
-      {/* Efecto de grid sutil sobre la aurora pero detrás del contenido principal */}
-      <div className="absolute inset-0 -z-5 opacity-5 md:opacity-[0.03]"> {/* Aún más sutil */}
+      {/* Efecto de grid sutil (casi imperceptible o puedes quitarlo) */}
+      <div className="absolute inset-0 -z-5 opacity-[0.02]">
         <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
           <defs>
-            <pattern id="subtleGridPattern" width="35" height="35" patternUnits="userSpaceOnUse"> {/* Patrón más grande */}
-              <path d="M 35 0 L 0 0 0 35" fill="none" className="stroke-slate-700/50" strokeWidth="0.3"/> {/* Líneas más tenues */}
+            <pattern id="subtleGridPattern" width="40" height="40" patternUnits="userSpaceOnUse">
+              <path d="M 40 0 L 0 0 0 40" fill="none" className="stroke-slate-700" strokeWidth="0.2"/>
             </pattern>
           </defs>
           <rect width="100%" height="100%" fill="url(#subtleGridPattern)" />
@@ -56,14 +58,14 @@ export default function SplashPage() {
                    p-8 py-10 sm:p-12 md:p-16
                    w-full max-w-md md:max-w-lg
                    rounded-2xl md:rounded-3xl
-                   border border-slate-700/40  /* Borde más sutil */
-                   bg-slate-800/70 backdrop-blur-xl /* Blur más intenso, un poco más opaco el fondo */
-                   shadow-2xl shadow-black/40 /* Sombra más oscura y genérica para el fondo */
-                   animate-fade-in-up transform transition-all duration-300 hover:shadow-purple-500/20" // Sutil glow en hover
+                   border border-slate-700/30
+                   bg-slate-800/75 backdrop-blur-2xl
+                   shadow-2xl shadow-black/50
+                   animate-fade-in-up transform transition-all duration-300 hover:shadow-teal-400/15" // Glow del color del nuevo icono
       >
         <div className="mb-6 md:mb-8 transform transition-transform duration-500 hover:scale-110 animate-fade-in-up [animation-delay:0.2s]">
-          {/* ICONO SPLINE */}
-          <Spline className="w-14 h-14 md:w-16 md:h-16 text-sky-300 mx-auto" strokeWidth={1.25} />
+          {/* ICONO ATOM */}
+          <Atom className="w-14 h-14 md:w-16 md:h-16 text-teal-300 mx-auto" strokeWidth={1.5} />
         </div>
 
         <div className="animate-fade-in-up [animation-delay:0.4s]">
@@ -73,7 +75,7 @@ export default function SplashPage() {
         </div>
 
         <div className="animate-fade-in-up [animation-delay:0.6s]">
-          <p className="text-lg sm:text-xl text-slate-400 mb-8 tracking-normal">
+          <p className="text-lg sm:text-xl text-slate-300 mb-8 tracking-normal">
             Digital Solutions Architect & Itinerary Designer
           </p>
         </div>
@@ -82,7 +84,7 @@ export default function SplashPage() {
             <AnimatedTagline
               lines={actionLines}
               duration={4000}
-              className="text-md text-slate-400/80 mb-10"
+              className="text-md text-slate-400 mb-10"
             />
         </div>
 
@@ -90,14 +92,14 @@ export default function SplashPage() {
           <Link href="/es" passHref className="block w-full">
             <button
               className="w-full group relative flex items-center justify-center h-12 sm:h-14 px-6
-                         bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500
+                         bg-gradient-to-r from-teal-500 via-purple-500 to-pink-500 /* Gradiente ajustado */
+                         hover:from-teal-400 hover:via-purple-400 hover:to-pink-400
                          rounded-lg text-sm sm:text-base font-semibold text-white
                          transition-all duration-300 ease-out
-                         shadow-lg hover:shadow-purple-500/40 focus:shadow-purple-500/50
-                         focus:outline-none focus:ring-2 focus:ring-purple-400 focus:ring-offset-2 focus:ring-offset-slate-800
-                         transform hover:-translate-y-0.5 active:translate-y-0"
+                         shadow-lg hover:shadow-purple-400/50 focus:shadow-purple-400/50
+                         focus:outline-none focus:ring-2 focus:ring-purple-300 focus:ring-offset-2 focus:ring-offset-slate-900"
             >
-              <span className="mr-2 text-lg">🇪🇸</span>
+              <span className="mr-2 text-lg">🇪🇸</span> {/* Bandera Española */}
               Portafolio & servicios
               <ChevronRight className="ml-auto h-5 w-5 text-purple-200 transition-transform duration-300 group-hover:text-white group-hover:translate-x-1" />
             </button>
@@ -109,10 +111,9 @@ export default function SplashPage() {
                          rounded-lg text-sm sm:text-base font-semibold text-white
                          transition-all duration-300 ease-out
                          shadow-lg hover:shadow-slate-500/40 focus:shadow-slate-500/50
-                         focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-800
-                         transform hover:-translate-y-0.5 active:translate-y-0"
+                         focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-900"
             >
-               <span className="mr-2 text-lg">🇬🇧</span>
+               <span className="mr-2 text-lg">🇬🇧</span> {/* Bandera Británica */}
               Portfolio & services
               <ChevronRight className="ml-auto h-5 w-5 text-slate-300 transition-transform duration-300 group-hover:text-white group-hover:translate-x-1" />
             </button>
