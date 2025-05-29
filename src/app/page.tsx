@@ -12,7 +12,7 @@ import { NavBar } from "@/components/ui/NavBar";
 import { projectsData } from '@/data/projects';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/Carousel";
 
-// Componente reutilizable para las secciones con padding y ancla opcional
+// Componente reutilizable para las secciones
 const Section = ({ children, className, id }: { children: React.ReactNode, className?: string, id?: string }) => (
   <section id={id} className={`max-w-6xl mx-auto px-4 py-16 sm:py-24 ${className}`}>
     {children}
@@ -24,6 +24,13 @@ const SectionTitle = ({ children }: { children: React.ReactNode }) => (
     <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-center mb-12">
         {children}
     </h2>
+);
+
+// Componente reutilizable para los separadores de sección
+const SectionSeparator = () => (
+    <div className="max-w-3xl mx-auto">
+        <hr className="border-slate-200 dark:border-slate-800" />
+    </div>
 );
 
 export default function Portfolio() {
@@ -40,21 +47,39 @@ export default function Portfolio() {
       </header>
 
       <main>
-        {/* SECCIÓN DE INTRODUCCIÓN (HERO) */}
-        <section className="container mx-auto px-4 pt-8 pb-16 sm:pt-16 sm:pb-24 grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-          {/* COLUMNA IZQUIERDA: Intro y Acciones */}
+        {/* ============================================ */}
+        {/* SECCIÓN DE INTRODUCCIÓN (HERO) ACTUALIZADA */}
+        {/* ============================================ */}
+        <section className="container mx-auto px-4 pt-8 pb-16 sm:pt-16 sm:pb-24 grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8 items-center">
+          {/* COLUMNA IZQUIERDA: Intro con imagen y Acciones */}
           <div className="flex flex-col gap-6 text-center md:text-left">
-            <h1 className="text-5xl md:text-6xl font-bold tracking-tighter">
-              Alberto Bort
-            </h1>
-            <p className="text-2xl font-medium text-blue-600 dark:text-blue-500">
-              Web Developer & Travel Planner
-            </p>
+            <div className="flex flex-col md:flex-row items-center gap-6 text-center md:text-left mb-2">
+              <div className="relative w-32 h-32 md:w-36 md:h-36 shrink-0">
+                  <Image 
+                      src="/Images/Alberto_Bort.jfif" 
+                      alt="Foto de perfil de Alberto Bort"
+                      fill
+                      className="rounded-full object-cover shadow-md"
+                      priority
+                  />
+              </div>
+              <div className="flex flex-col">
+                  <h1 className="text-4xl sm:text-5xl font-bold tracking-tighter">
+                    Hi, I'm Alberto Bort 👋
+                  </h1>
+                  <p className="text-xl sm:text-2xl font-medium text-blue-600 dark:text-blue-500 mt-1">
+                    Web Developer & Travel Planner
+                  </p>
+              </div>
+            </div>
+            
             <p className="text-lg md:text-xl text-slate-600 dark:text-slate-400">
               I build intuitive digital solutions and craft unique travel itineraries. From complex web applications to perfectly planned trips, I turn ideas into reality.
             </p>
-            <NavBar />
-            <div className="flex flex-wrap gap-4 mt-4 justify-center md:justify-start">
+            <div className="mt-2 flex justify-center md:justify-start">
+                <NavBar />
+            </div>
+            <div className="flex flex-wrap gap-4 mt-2 justify-center md:justify-start">
               <a href="#projects">
                 <Button size="lg">
                   <ArrowDown className="mr-2 h-5 w-5" />
@@ -80,7 +105,7 @@ export default function Portfolio() {
                 </CardHeader>
                 <CardContent>
                     <Image 
-                        src="/Images/ny-itinerary.jpg"
+                        src="/Images/ny-itinerary.jpg" 
                         alt="Itinerario de Nueva York"
                         width={1200}
                         height={800}
@@ -98,8 +123,10 @@ export default function Portfolio() {
           </div>
         </section>
 
+        <SectionSeparator />
+
         {/* Sección "About Me" */}
-        <Section id="about" className="bg-slate-100 dark:bg-slate-800/50">
+        <Section id="about">
           <div className="max-w-3xl mx-auto text-center">
             <h2 className="text-3xl font-bold mb-4">About Me</h2>
             <p className="text-slate-800 dark:text-slate-300 text-lg">
@@ -107,6 +134,8 @@ export default function Portfolio() {
             </p>
           </div>
         </Section>
+        
+        <SectionSeparator />
         
         {/* Sección "My Projects" */}
         <Section id="projects">
@@ -140,8 +169,10 @@ export default function Portfolio() {
            </div>
         </Section>
         
-        {/* SECCIÓN DE PRECIOS Y SERVICIOS CON LA NUEVA TARJETA */}
-        <Section id="pricing" className="bg-slate-100 dark:bg-slate-800/50">
+        <SectionSeparator />
+        
+        {/* SECCIÓN DE PRECIOS Y SERVICIOS */}
+        <Section id="pricing">
           <SectionTitle>Services & Pricing</SectionTitle>
           <p className="text-center text-slate-600 dark:text-slate-400 max-w-2xl mx-auto mb-12">
             I offer flexible solutions for both your digital and travel needs. Find the perfect plan for your next project.
@@ -180,7 +211,7 @@ export default function Portfolio() {
                 </ul>
               </CardContent>
               <CardFooter>
-                <p className="text-lg font-bold">From $50 / travel day</p>
+                <p className="text-lg font-bold">From $50 per Travel guide</p>
               </CardFooter>
             </Card>
 
@@ -203,6 +234,8 @@ export default function Portfolio() {
             </Card>
           </div>
         </Section>
+
+        <SectionSeparator />
 
         {/* Sección Skills con categorías */}
         <Section>
@@ -244,31 +277,35 @@ export default function Portfolio() {
                 <Badge>JIRA</Badge>
                 <Badge>Content Creation</Badge>
                 <Badge>Travel Planning</Badge>
-                <Badge>Web development</Badge>
-                <Badge>App development</Badge>
+                <Badge>Web Development</Badge>
+                <Badge>App Development</Badge>
                 <Badge>Tech Consultancy</Badge>
               </div>
             </div>
           </div>
         </Section>
 
+        <SectionSeparator />
+
         {/* Información de Contacto */}
-        <Section className="text-center bg-slate-100 dark:bg-slate-800/50">
+        <Section> {/* Quitado el text-center general para que el título esté centrado pero el contenido del div no */}
             <SectionTitle>Get in Touch</SectionTitle>
-          <p className="text-lg mb-6 text-slate-600 dark:text-slate-400">
-            Ready to start a project?{' '}
-            <a 
-              href="mailto:albertobort@gmail.com"
-              className="font-medium text-blue-600 hover:underline dark:text-blue-500"
-            >
-              Contact me
-            </a> for a free consultation or a custom travel itinerary.
-          </p>
-          <NavBar />
+          <div className="max-w-xl mx-auto text-center"> {/* Contenedor para centrar el párrafo y el NavBar */}
+              <p className="text-lg mb-6 text-slate-600 dark:text-slate-400">
+                Ready to start a project?{' '}
+                <a 
+                  href="mailto:albertobort@gmail.com"
+                  className="font-medium text-blue-600 hover:underline dark:text-blue-500"
+                >
+                  Contact me
+                </a> for a free consultation or a custom travel itinerary.
+              </p>
+              <NavBar />
+          </div>
         </Section>
       </main>
 
-      <footer className="text-center p-8 text-sm text-slate-500">
+      <footer className="text-center p-8 text-sm text-slate-500 border-t border-slate-200 dark:border-slate-800 mt-16 sm:mt-24">
         © {new Date().getFullYear()} Alberto Bort. All rights reserved.
       </footer>
     </div>
