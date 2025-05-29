@@ -7,12 +7,12 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Badge } from "@/components/ui/Badge";
 import { ProjectCard } from "@/components/ProjectCard";
 import { NavBar } from "@/components/ui/NavBar";
-import { projectsData} from '@/data/projects'; // Interfaz actualizada
+import { projectsData } from '@/data/projects'; // Interfaz actualizada
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/Carousel";
 import PortfolioHeader from '@/components/portfolio/PortfolioHeader';
 import { promises as fs } from 'fs';
 import path from 'path';
-import { i18n } from '../../../i18n-config'; 
+import { i18n } from '../../../i18n-config';
 
 interface DictionaryProject {
   id: string;
@@ -79,18 +79,18 @@ const Section = ({ children, className, id }: { children: React.ReactNode, class
 
 // Componente reutilizable para los títulos de sección
 const SectionTitle = ({ children }: { children: React.ReactNode }) => (
-    <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-center mb-12">
-        {children}
-    </h2>
+  <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-center mb-12">
+    {children}
+  </h2>
 );
 
 const SectionSeparator = () => (
-    <div className="max-w-3xl mx-auto">
-        <hr className="border-slate-200 dark:border-slate-800" />
-    </div>
+  <div className="max-w-3xl mx-auto">
+    <hr className="border-slate-200 dark:border-slate-800" />
+  </div>
 );
 
-export default async function PortfolioPage({ params: { lang } }: { params: { lang: string }}) {
+export default async function PortfolioPage({ params: { lang } }: { params: { lang: string } }) {
   const dict = await getDictionary(lang);
 
   const localizedProjects = projectsData.map(projectBase => {
@@ -115,28 +115,28 @@ export default async function PortfolioPage({ params: { lang } }: { params: { la
           <div className="flex flex-col gap-6 text-center md:text-left order-1">
             <div className="flex flex-col md:flex-row items-center gap-6 text-center md:text-left mb-2">
               <div className="relative w-32 h-32 md:w-36 md:h-36 shrink-0">
-                  <Image
-                      src="/Images/Alberto_Bort.jfif"
-                      alt={dict.hero.greeting}
-                      fill
-                      className="rounded-full object-cover shadow-md"
-                      priority
-                  />
+                <Image
+                  src="/Images/alberto-bort-profile.jpg" // <-- NUEVO NOMBRE/FORMATO
+                  alt={dict.hero.greeting}
+                  fill
+                  className="rounded-full object-cover shadow-md"
+                  priority
+                />
               </div>
               <div className="flex flex-col">
-                  <h1 className="text-4xl sm:text-5xl font-bold tracking-tighter">
-                    {dict.hero.greeting}
-                  </h1>
-                  <p className="text-xl sm:text-2xl font-medium text-blue-600 dark:text-blue-500 mt-1">
-                    {dict.hero.title}
-                  </p>
+                <h1 className="text-4xl sm:text-5xl font-bold tracking-tighter">
+                  {dict.hero.greeting}
+                </h1>
+                <p className="text-xl sm:text-2xl font-medium text-blue-600 dark:text-blue-500 mt-1">
+                  {dict.hero.title}
+                </p>
               </div>
             </div>
             <p className="text-lg md:text-xl text-slate-600 dark:text-slate-400">
               {dict.hero.description}
             </p>
             <div className="mt-2 flex justify-center md:justify-start">
-                <NavBar />
+              <NavBar />
             </div>
             <div className="flex flex-wrap gap-4 mt-2 justify-center md:justify-start">
               <a href="#projects">
@@ -147,8 +147,8 @@ export default async function PortfolioPage({ params: { lang } }: { params: { la
               </a>
               <a href="#pricing">
                 <Button size="lg" variant="outline">
-                   <DollarSign className="mr-2 h-5 w-5" />
-                   {dict.buttons.services_pricing}
+                  <DollarSign className="mr-2 h-5 w-5" />
+                  {dict.buttons.services_pricing}
                 </Button>
               </a>
             </div>
@@ -156,29 +156,29 @@ export default async function PortfolioPage({ params: { lang } }: { params: { la
 
           {/* COLUMNA DERECHA: TARJETA ITINERARIO */}
           <div className="h-full order-2">
-             <Card className="h-full transform transition-transform duration-300 hover:scale-105 hover:shadow-2xl">
-                <CardHeader>
-                    <Badge className="mb-2">{dict.itinerary_card.badge}</Badge>
-                    <CardTitle className="text-2xl">{dict.itinerary_card.title}</CardTitle>
-                    <CardDescription>{dict.itinerary_card.description}</CardDescription>
-                </CardHeader>
-                <CardContent>
-                    <Image
-                        src="/Images/ny-itinerary.jpg"
-                        alt={dict.itinerary_card.title}
-                        width={1200}
-                        height={800}
-                        className="rounded-lg shadow-md"
-                    />
-                </CardContent>
-                <CardFooter>
-                  <a href="/itinerario-nueva-york.pdf" target="_blank" rel="noopener noreferrer" className="w-full">
-                    <Button variant="outline" className="w-full">
-                      {dict.buttons.view_example_pdf}
-                    </Button>
-                  </a>
-                </CardFooter>
-             </Card>
+            <Card className="h-full transform transition-transform duration-300 hover:scale-105 hover:shadow-2xl">
+              <CardHeader>
+                <Badge className="mb-2">{dict.itinerary_card.badge}</Badge>
+                <CardTitle className="text-2xl">{dict.itinerary_card.title}</CardTitle>
+                <CardDescription>{dict.itinerary_card.description}</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <Image
+                  src="/Images/ny-itinerary.jpg"
+                  alt={dict.itinerary_card.title}
+                  width={1200}
+                  height={800}
+                  className="rounded-lg shadow-md"
+                />
+              </CardContent>
+              <CardFooter>
+                <a href="/itinerario-nueva-york.pdf" target="_blank" rel="noopener noreferrer" className="w-full">
+                  <Button variant="outline" className="w-full">
+                    {dict.buttons.view_example_pdf}
+                  </Button>
+                </a>
+              </CardFooter>
+            </Card>
           </div>
         </section>
 
@@ -196,33 +196,33 @@ export default async function PortfolioPage({ params: { lang } }: { params: { la
         <SectionSeparator />
 
         <Section id="projects">
-           <SectionTitle>{dict.sections.latest_work}</SectionTitle>
-           <div className="w-full max-w-4xl mx-auto">
-              <Carousel opts={{ align: "start", loop: true }}>
-                <CarouselContent className="-ml-2">
-                  {localizedProjects.map((project) => (
-                    <CarouselItem key={project.id} className="pl-2 md:basis-1/2">
-                      <div className="p-1 h-full">
-                        <ProjectCard
-                            imageSrc={project.imageSrc}
-                            title={project.title}
-                            category={project.category}
-                            description={project.description}
-                            techStack={project.techStack}
-                            tools={project.tools}
-                            actionText={project.actionText}
-                            actionLink={project.actionLink}
-                            repoLink={project.repoLink}
-                        />
-                      </div>
-                    </CarouselItem>
-                  ))}
-                </CarouselContent>
-                {/* Flechas del carrusel visibles en móvil */}
-                <CarouselPrevious className="inline-flex" />
-                <CarouselNext className="inline-flex" />
-              </Carousel>
-           </div>
+          <SectionTitle>{dict.sections.latest_work}</SectionTitle>
+          <div className="w-full max-w-4xl mx-auto">
+            <Carousel opts={{ align: "start", loop: true }}>
+              <CarouselContent className="-ml-2">
+                {localizedProjects.map((project) => (
+                  <CarouselItem key={project.id} className="pl-2 md:basis-1/2">
+                    <div className="p-1 h-full">
+                      <ProjectCard
+                        imageSrc={project.imageSrc}
+                        title={project.title}
+                        category={project.category}
+                        description={project.description}
+                        techStack={project.techStack}
+                        tools={project.tools}
+                        actionText={project.actionText}
+                        actionLink={project.actionLink}
+                        repoLink={project.repoLink}
+                      />
+                    </div>
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+              {/* Flechas del carrusel visibles en móvil */}
+              <CarouselPrevious className="inline-flex" />
+              <CarouselNext className="inline-flex" />
+            </Carousel>
+          </div>
         </Section>
 
         <SectionSeparator />
@@ -253,7 +253,7 @@ export default async function PortfolioPage({ params: { lang } }: { params: { la
               </CardHeader>
               <CardContent className="flex-grow">
                 <ul className="list-disc list-inside space-y-2">
-                   {dict.service_cards.itinerary_features.map((feature: string, i: number) => <li key={i}>{feature}</li>)}
+                  {dict.service_cards.itinerary_features.map((feature: string, i: number) => <li key={i}>{feature}</li>)}
                 </ul>
               </CardContent>
               <CardFooter><p className="text-lg font-bold">{dict.service_cards.itinerary_price}</p></CardFooter>
@@ -265,7 +265,7 @@ export default async function PortfolioPage({ params: { lang } }: { params: { la
               </CardHeader>
               <CardContent className="flex-grow">
                 <ul className="list-disc list-inside space-y-2">
-                   {dict.service_cards.landing_features.map((feature: string, i: number) => <li key={i}>{feature}</li>)}
+                  {dict.service_cards.landing_features.map((feature: string, i: number) => <li key={i}>{feature}</li>)}
                 </ul>
               </CardContent>
               <CardFooter><p className="text-lg font-bold">{dict.service_cards.landing_price}</p></CardFooter>
@@ -308,24 +308,24 @@ export default async function PortfolioPage({ params: { lang } }: { params: { la
         <SectionSeparator />
 
         <Section>
-            <SectionTitle>{dict.sections.get_in_touch}</SectionTitle>
+          <SectionTitle>{dict.sections.get_in_touch}</SectionTitle>
           <div className="max-w-xl mx-auto text-center">
-              <p className="text-lg mb-6 text-slate-600 dark:text-slate-400">
-                {/* Asumiendo que 'Contact me' es la frase literal para dividir */}
-                {dict.sections.get_in_touch_description.includes('Contact me')
-                  ? (
-                    <>
-                      {dict.sections.get_in_touch_description.split('Contact me')[0]}
-                      <a
-                        href="mailto:albertobort@gmail.com"
-                        className="font-medium text-blue-600 hover:underline dark:text-blue-500"
-                      >
-                        Contact me {/* Esto podría necesitar traducción si 'Contact me' cambia */}
-                      </a>
-                      {dict.sections.get_in_touch_description.split('Contact me')[1]}
-                    </>
-                  )
-                  : dict.sections.get_in_touch_description.includes('Contáctame') // Para español
+            <p className="text-lg mb-6 text-slate-600 dark:text-slate-400">
+              {/* Asumiendo que 'Contact me' es la frase literal para dividir */}
+              {dict.sections.get_in_touch_description.includes('Contact me')
+                ? (
+                  <>
+                    {dict.sections.get_in_touch_description.split('Contact me')[0]}
+                    <a
+                      href="mailto:albertobort@gmail.com"
+                      className="font-medium text-blue-600 hover:underline dark:text-blue-500"
+                    >
+                      Contact me {/* Esto podría necesitar traducción si 'Contact me' cambia */}
+                    </a>
+                    {dict.sections.get_in_touch_description.split('Contact me')[1]}
+                  </>
+                )
+                : dict.sections.get_in_touch_description.includes('Contáctame') // Para español
                   ? (
                     <>
                       {dict.sections.get_in_touch_description.split('Contáctame')[0]}
@@ -346,9 +346,9 @@ export default async function PortfolioPage({ params: { lang } }: { params: { la
                       {dict.sections.get_in_touch_description}
                     </a>
                   )
-                }
-              </p>
-              <NavBar />
+              }
+            </p>
+            <NavBar />
           </div>
         </Section>
       </main>
