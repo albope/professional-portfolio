@@ -42,7 +42,7 @@
       "Logística de transporte y reservas",
       "Mapa digital y guía PDF offline"
     ],
-    "itinerary_price": "Desde €50 poir guia de viaje",
+    "itinerary_price": "Desde €50 por guía de viaje",
     "itinerary_badge": "Más Popular",
     "landing_title": "Desarrollo de Landing Pages",
     "landing_desc": "Páginas de alto impacto que convierten visitantes en clientes.",
@@ -56,5 +56,59 @@
   },
   "footer": {
     "rights_reserved": "Todos los derechos reservados."
+  },
+  "projects": [
+    {
+      "id": "project1",
+      "title": "Perfil Profesional",
+      "category": "Desarrollo Web",
+      "description": "Un portafolio interactivo que muestra habilidades profesionales y trabajos anteriores. Optimizado para rendimiento y accesibilidad, perfecto para destacar la experiencia digital.",
+      "actionText": "Sitio Web"
+    },
+    {
+      "id": "project2",
+      "title": "Generador de Mapas de Viaje",
+      "category": "Desarrollo Web",
+      "description": "Una herramienta para crear mapas de viaje interactivos, ideal para viajeros o empresas del sector turístico. Construido con React y Mapbox para visualización en tiempo real.",
+      "actionText": "Sitio Web"
+    },
+    {
+      "id": "project3",
+      "title": "App de Pádel",
+      "category": "Desarrollo de Apps",
+      "description": "Una plataforma para organizar y gestionar partidos de pádel, ofreciendo programación de partidos, seguimiento de resultados y gestión de torneos. Construido con React y Firebase.",
+      "actionText": "Sitio Web"
+    },
+    {
+      "id": "project4",
+      "title": "Automatización de Pruebas Web",
+      "category": "Automatización de Pruebas",
+      "description": "Suite de pruebas automatizadas que asegura la funcionalidad y el rendimiento del Generador de Mapas de Viaje. Desarrollado con Jest y React Testing Library.",
+      "actionText": "GitHub"
+    },
+    {
+      "id": "project5",
+      "title": "Generador de Reportes JIRA",
+      "category": "Herramienta Interna de Empresa",
+      "description": "Herramienta web para estandarizar y optimizar la documentación de incidencias en JIRA, mejorando la trazabilidad y facilitando la reproducción de errores para el equipo de desarrollo.",
+      "actionText": "Sitio Web"
+    },
+    {
+      "id": "project6",
+      "title": "Hub Digital de Alberto",
+      "category": "Desarrollo Web",
+      "description": "Un hub digital personal que muestra mi trayectoria profesional, habilidades y proyectos. Construido con Next.js y TypeScript para un diseño moderno y responsivo.",
+      "actionText": "Sitio Web"
+    }
+  ],
+  "skills_section": {
+    "frontend_title": "Frontend",
+    "frontend_skills": ["React", "Next.js", "TypeScript", "HTML5 & CSS3", "Tailwind CSS", "Material UI"],
+    "backend_db_title": "Backend y Base de Datos",
+    "backend_db_skills": ["Node.js", "Firebase", "API REST"],
+    "testing_devops_title": "Pruebas y DevOps",
+    "testing_devops_skills": ["Jest", "React Testing Library", "Cypress", "Docker", "CI/CD", "Vercel"],
+    "tools_planning_title": "Herramientas y Planificación",
+    "tools_planning_skills": ["JIRA", "Creación de Contenido", "Planificación de Viajes", "Desarrollo Web", "Desarrollo de Apps", "Consultoría Tecnológica"]
   }
 }

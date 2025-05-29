@@ -56,5 +56,59 @@
   },
   "footer": {
     "rights_reserved": "All rights reserved."
+  },
+  "projects": [
+    {
+      "id": "project1",
+      "title": "Professional Profile",
+      "category": "Web Development",
+      "description": "An interactive portfolio showcasing professional skills and past work. Optimized for performance and accessibility, perfect for highlighting digital expertise.",
+      "actionText": "Website"
+    },
+    {
+      "id": "project2",
+      "title": "Travel Map Generator",
+      "category": "Web Development",
+      "description": "A tool for creating interactive travel maps, ideal for travelers or businesses in the tourism sector. Built with React and Mapbox for real-time visualization.",
+      "actionText": "Website"
+    },
+    {
+      "id": "project3",
+      "title": "Padel App",
+      "category": "App Development",
+      "description": "A platform for organizing and managing padel games, offering match scheduling, results tracking, and tournament management. Built with React and Firebase.",
+      "actionText": "Website"
+    },
+    {
+      "id": "project4",
+      "title": "Test Web Automation",
+      "category": "Test Automation",
+      "description": "Automated testing suite ensuring functionality and performance for the Travel Map Generator. Developed using Jest and React Testing Library.",
+      "actionText": "GitHub"
+    },
+    {
+      "id": "project5",
+      "title": "JIRA Report Generator",
+      "category": "Internal Company Tool",
+      "description": "Web tool to standardize and optimize JIRA issue documentation, improving traceability and facilitating error reproduction for the development team.",
+      "actionText": "Website"
+    },
+    {
+      "id": "project6",
+      "title": "Alberto's Digital Hub",
+      "category": "Web Development",
+      "description": "A personal digital hub showcasing my professional journey, skills, and projects. Built with Next.js and TypeScript for a modern, responsive design.",
+      "actionText": "Website"
+    }
+  ],
+  "skills_section": {
+    "frontend_title": "Frontend",
+    "frontend_skills": ["React", "Next.js", "TypeScript", "HTML5 & CSS3", "Tailwind CSS", "Material UI"],
+    "backend_db_title": "Backend & Database",
+    "backend_db_skills": ["Node.js", "Firebase", "API REST"],
+    "testing_devops_title": "Testing & DevOps",
+    "testing_devops_skills": ["Jest", "React Testing Library", "Cypress", "Docker", "CI/CD", "Vercel"],
+    "tools_planning_title": "Tools & Planning",
+    "tools_planning_skills": ["JIRA", "Content Creation", "Travel Planning", "Web development", "App Development", "Tech Consultancy"]
   }
 }

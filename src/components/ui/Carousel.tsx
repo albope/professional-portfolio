@@ -163,7 +163,7 @@ const CarouselContent = React.forwardRef<
         ref={ref}
         className={cn(
           "flex",
-          orientation === "horizontal" ? "-ml-4" : "-mt-4 flex-col",
+          orientation === "horizontal" ? "-ml-4" : "-mt-4 flex-col", // Mantenemos -ml-4 para el padding de los items
           className
         )}
         {...props}
@@ -186,7 +186,7 @@ const CarouselItem = React.forwardRef<
       aria-roledescription="slide"
       className={cn(
         "min-w-0 shrink-0 grow-0 basis-full",
-        orientation === "horizontal" ? "pl-4" : "pt-4",
+        orientation === "horizontal" ? "pl-4" : "pt-4", // pl-4 compensa el -ml-4 de CarouselContent
         className
       )}
       {...props}
@@ -198,7 +198,7 @@ CarouselItem.displayName = "CarouselItem"
 const CarouselPrevious = React.forwardRef<
   HTMLButtonElement,
   React.ComponentProps<typeof Button>
->(({ className, variant = "default", size = "icon", ...props }, ref) => { // MEJORA: Variante a "default"
+>(({ className, variant = "default", size = "icon", ...props }, ref) => {
   const { scrollPrev, canScrollPrev } = useCarousel()
 
   return (
@@ -207,16 +207,17 @@ const CarouselPrevious = React.forwardRef<
       variant={variant}
       size={size}
       className={cn(
-        "absolute h-10 w-10 rounded-full shadow-lg", // MEJORA: Botón más grande y con sombra
-        "left-[-1.5rem] sm:left-[-3rem] top-1/2 -translate-y-1/2", // MEJORA: Más separado (ajuste para móvil y escritorio)
-        "transition-transform hover:scale-105", // MEJORA: Efecto hover sutil
+        "absolute h-10 w-10 rounded-full shadow-lg z-10", // Añadido z-10
+        // Ajuste de posición: más cerca en móvil, más lejos en sm+
+        "left-1 sm:left-[-1.5rem] md:left-[-3rem] top-1/2 -translate-y-1/2",
+        "transition-transform hover:scale-105",
         className
       )}
       onClick={scrollPrev}
       disabled={!canScrollPrev}
       {...props}
     >
-      <ArrowLeft className="h-5 w-5" /> {/* MEJORA: Icono un poco más grande */}
+      <ArrowLeft className="h-5 w-5" />
       <span className="sr-only">Previous slide</span>
     </Button>
   )
@@ -226,7 +227,7 @@ CarouselPrevious.displayName = "CarouselPrevious"
 const CarouselNext = React.forwardRef<
   HTMLButtonElement,
   React.ComponentProps<typeof Button>
->(({ className, variant = "default", size = "icon", ...props }, ref) => { // MEJORA: Variante a "default"
+>(({ className, variant = "default", size = "icon", ...props }, ref) => {
   const { scrollNext, canScrollNext } = useCarousel()
 
   return (
@@ -235,16 +236,17 @@ const CarouselNext = React.forwardRef<
       variant={variant}
       size={size}
       className={cn(
-        "absolute h-10 w-10 rounded-full shadow-lg", // MEJORA: Botón más grande y con sombra
-        "right-[-1.5rem] sm:right-[-3rem] top-1/2 -translate-y-1/2", // MEJORA: Más separado (ajuste para móvil y escritorio)
-        "transition-transform hover:scale-105", // MEJORA: Efecto hover sutil
+        "absolute h-10 w-10 rounded-full shadow-lg z-10", // Añadido z-10
+        // Ajuste de posición: más cerca en móvil, más lejos en sm+
+        "right-1 sm:right-[-1.5rem] md:right-[-3rem] top-1/2 -translate-y-1/2",
+        "transition-transform hover:scale-105",
         className
       )}
       onClick={scrollNext}
       disabled={!canScrollNext}
       {...props}
     >
-      <ArrowRight className="h-5 w-5" /> {/* MEJORA: Icono un poco más grande */}
+      <ArrowRight className="h-5 w-5" />
       <span className="sr-only">Next slide</span>
     </Button>
   )
