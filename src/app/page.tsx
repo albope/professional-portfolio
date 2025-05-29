@@ -1,9 +1,9 @@
 // src/app/page.tsx
 
 import Link from 'next/link';
-import { ChevronRight, Monitor } from 'lucide-react'; // Importamos Monitor
+import { ChevronRight, Monitor } from 'lucide-react';
 import { AnimatedTagline } from '@/components/ui/AnimatedTagline';
-import { SpanishFlagIcon, BritishFlagIcon } from '@/components/icons/FlagIcons'; // IMPORTAMOS LOS ICONOS SVG DE BANDERAS
+import { SpanishFlagIcon, BritishFlagIcon } from '@/components/icons/FlagIcons';
 
 export default function SplashPage() {
   const actionLines = {
@@ -61,10 +61,9 @@ export default function SplashPage() {
                    border border-slate-700/30
                    bg-slate-800/75 backdrop-blur-2xl
                    shadow-2xl shadow-black/50
-                   animate-fade-in-up transform transition-all duration-300 hover:shadow-sky-400/15" // Glow color cian
+                   animate-fade-in-up transform transition-all duration-300 hover:shadow-sky-400/15"
       >
         <div className="mb-6 md:mb-8 animate-fade-in-up [animation-delay:0.2s]">
-          {/* ICONO MONITOR CON ANIMACIÓN DE PULSO SUTIL */}
           <Monitor className="w-14 h-14 md:w-16 md:h-16 text-sky-300 mx-auto animate-subtle-pulse" />
         </div>
 
@@ -98,10 +97,11 @@ export default function SplashPage() {
                          transition-all duration-300 ease-out
                          shadow-lg hover:shadow-purple-400/50 focus:shadow-purple-400/50
                          focus:outline-none focus:ring-2 focus:ring-purple-300 focus:ring-offset-2 focus:ring-offset-slate-900
-                         transform hover:-translate-y-0.5 active:translate-y-0"
+                         transform hover:-translate-y-0.5 active:translate-y-0 
+                         animate-button-callout-pulse" // <-- AÑADIDA LA ANIMACIÓN
             >
               <SpanishFlagIcon className="w-6 h-auto mr-2 flex-shrink-0" />
-              Ver Portafolio & Servicios
+              Ver Portafolio y Servicios
               <ChevronRight className="ml-auto h-5 w-5 text-purple-200 opacity-75 group-hover:opacity-100 transition-opacity duration-300 group-hover:translate-x-1 flex-shrink-0" />
             </button>
           </Link>
@@ -113,7 +113,8 @@ export default function SplashPage() {
                          transition-all duration-300 ease-out
                          shadow-lg hover:shadow-slate-500/40 focus:shadow-slate-500/50
                          focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-900
-                         transform hover:-translate-y-0.5 active:translate-y-0"
+                         transform hover:-translate-y-0.5 active:translate-y-0
+                         animate-button-callout-pulse" // <-- AÑADIDA LA ANIMACIÓN
             >
               <BritishFlagIcon className="w-6 h-auto mr-2 flex-shrink-0" />
               View Portfolio & Services
