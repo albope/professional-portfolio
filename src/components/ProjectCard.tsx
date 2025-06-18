@@ -7,7 +7,7 @@ import Image from 'next/image';
 interface ProjectCardProps {
   imageSrc: string;
   title: string;
-  category: string; // ANTES ERA 'dates', AHORA ES 'category'
+  category: string; 
   description: string;
   techStack: string[];
   tools: string[];

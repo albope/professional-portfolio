@@ -99,16 +99,48 @@
       "category": "Desarrollo Web",
       "description": "Un hub digital personal que muestra mi trayectoria profesional, habilidades y proyectos. Construido con Next.js y TypeScript para un diseño moderno y responsivo.",
       "actionText": "Sitio Web"
+    },
+    {
+      "id": "project7",
+      "title": "Validador CSV Profesional",
+      "category": "Aplicación de Escritorio",
+      "description": "Una robusta herramienta de escritorio para validar, limpiar y previsualizar archivos CSV. Construida con Python y una interfaz moderna en CustomTkinter, lista para su distribución.",
+      "actionText": "Descargar"
     }
   ],
   "skills_section": {
     "frontend_title": "Frontend",
-    "frontend_skills": ["React", "Next.js", "TypeScript", "HTML5 & CSS3", "Tailwind CSS", "Material UI"],
+    "frontend_skills": [
+      "React",
+      "Next.js",
+      "TypeScript",
+      "HTML5 & CSS3",
+      "Tailwind CSS",
+      "Material UI"
+    ],
     "backend_db_title": "Backend y Base de Datos",
-    "backend_db_skills": ["Node.js", "Firebase", "API REST"],
+    "backend_db_skills": [
+      "Node.js",
+      "Firebase",
+      "API REST"
+    ],
     "testing_devops_title": "Pruebas y DevOps",
-    "testing_devops_skills": ["Jest", "React Testing Library", "Cypress", "Docker", "CI/CD", "Vercel"],
+    "testing_devops_skills": [
+      "Jest",
+      "React Testing Library",
+      "Cypress",
+      "Docker",
+      "CI/CD",
+      "Vercel"
+    ],
     "tools_planning_title": "Herramientas y Planificación",
-    "tools_planning_skills": ["JIRA", "Creación de Contenido", "Planificación de Viajes", "Desarrollo Web", "Desarrollo de Apps", "Consultoría Tecnológica"]
+    "tools_planning_skills": [
+      "JIRA",
+      "Creación de Contenido",
+      "Planificación de Viajes",
+      "Desarrollo Web",
+      "Desarrollo de Apps",
+      "Consultoría Tecnológica"
+    ]
   }
 }

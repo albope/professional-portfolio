@@ -52,5 +52,13 @@ export const projectsData: ProjectData[] = [
     tools: ['Vercel'],
     actionLink: "https://albertobort-digital-hub.vercel.app/",
     repoLink: "https://github.com/albope/alberto-digital-hub",
+  },
+    {
+    id: "project7",
+    imageSrc: "project7.jpg",
+    techStack: ['Python', 'Tkinter', 'CustomTkinter'],
+    tools: ['PyInstaller', 'Git'],
+    actionLink: "https://github.com/albope/validador-csv-python/releases",
+    repoLink: "https://github.com/albope/validador-csv-python",
   }
 ];
