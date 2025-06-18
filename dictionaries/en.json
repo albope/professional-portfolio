@@ -99,6 +99,13 @@
       "category": "Web Development",
       "description": "A personal digital hub showcasing my professional journey, skills, and projects. Built with Next.js and TypeScript for a modern, responsive design.",
       "actionText": "Website"
+    },
+        {
+      "id": "project7",
+      "title": "Professional CSV Validator",
+      "category": "Desktop Application",
+      "description": "A robust desktop tool to validate, clean, and preview CSV files. Built with Python and a modern CustomTkinter UI, ready for distribution.",
+      "actionText": "Download"
     }
   ],
   "skills_section": {
