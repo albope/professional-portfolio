@@ -1,4 +1,4 @@
-'use client'; // Necesario para animaciones e interactividad
+'use client'; 
 
 import Image from 'next/image';
 import { ArrowUpRight, Code2, Map, Layout, Github, ArrowRight, MousePointer2 } from 'lucide-react';
@@ -55,23 +55,24 @@ const resolveImagePath = (src: string) => {
   return `/Images/${src}`;
 };
 
-// --- COMPONENTES VISUALES ANIMADOS ---
+// --- COMPONENTES VISUALES ---
 const SectionTitle = ({ children, subtitle, number }: { children: React.ReactNode, subtitle?: string, number: string }) => (
   <motion.div 
     initial={{ opacity: 0, y: 20 }}
     whileInView={{ opacity: 1, y: 0 }}
     viewport={{ once: true, margin: "-100px" }}
     transition={{ duration: 0.8 }}
-    className="mb-16 md:mb-24 border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-start gap-6 relative z-10"
+    // Borde adaptable: Gris suave en Light, Blanco sutil en Dark
+    className="mb-16 md:mb-24 border-t border-slate-200 dark:border-white/10 pt-8 flex flex-col md:flex-row justify-between items-start gap-6 relative z-10"
   >
     <div className="flex items-baseline gap-4">
-      <span className="font-mono text-xs text-indigo-500 font-bold tracking-widest">({number})</span>
-      <h2 className="text-4xl md:text-6xl font-serif font-medium tracking-tight text-white leading-[0.9]">
+      <span className="font-mono text-xs text-indigo-600 dark:text-indigo-500 font-bold tracking-widest">({number})</span>
+      <h2 className="text-4xl md:text-6xl font-serif font-medium tracking-tight text-foreground leading-[0.9]">
         {children}
       </h2>
     </div>
     {subtitle && (
-      <p className="text-slate-500 text-sm md:text-base max-w-sm font-mono leading-relaxed text-right md:text-left">
+      <p className="text-muted-foreground text-sm md:text-base max-w-sm font-mono leading-relaxed text-right md:text-left">
         // {subtitle}
       </p>
     )}
@@ -80,9 +81,7 @@ const SectionTitle = ({ children, subtitle, number }: { children: React.ReactNod
 
 export default function PortfolioPage({ params: { lang } }: { params: { lang: string } }) {
   const [dict, setDict] = useState<DictionaryType | null>(null);
-  const { scrollYProgress } = useScroll();
-  const yParallax = useTransform(scrollYProgress, [0, 1], [0, -50]);
-
+  
   useEffect(() => {
     const loadDictionary = async () => {
       try {
@@ -96,7 +95,13 @@ export default function PortfolioPage({ params: { lang } }: { params: { lang: st
     loadDictionary();
   }, [lang]);
 
-  if (!dict) return <div className="min-h-screen bg-[#030303]" />; 
+  if (!dict) return <div className="min-h-screen bg-background" />; 
+
+  // TRADUCCIÓN MANUAL PARA EL SUBTÍTULO DE PROYECTOS
+  // (Esto cubre la frase que no estaba en el JSON)
+  const projectsSubtitle = lang === 'es' 
+    ? "Selección de proyectos que combinan ingeniería y diseño."
+    : "Selected works combining engineering and design aesthetics.";
 
   const localizedProjects = projectsData.map(projectBase => {
     const localizedInfo = dict.projects.find((p: DictionaryProject) => p.id === projectBase.id);
@@ -110,21 +115,20 @@ export default function PortfolioPage({ params: { lang } }: { params: { lang: st
   });
 
   return (
-    <div className="min-h-screen text-slate-200 selection:bg-indigo-500/30 selection:text-indigo-100 font-sans relative">
+    // FIX MODO CLARO: Usamos variables semánticas (bg-background, text-foreground)
+    <div className="min-h-screen bg-background text-foreground font-sans relative transition-colors duration-500">
       
-      {/* 1. SOLUCIÓN FONDO BLANCO:
-          Usamos z-0 en lugar de z-[-1]. 
-          Esto coloca el negro SOBRE el fondo blanco del layout, pero DEBAJO del contenido (z-10). */}
-      <div className="fixed inset-0 w-full h-full bg-[#030303] z-0 pointer-events-none" />
+      {/* Fondo Base Semántico */}
+      <div className="fixed inset-0 w-full h-full bg-background z-0 pointer-events-none transition-colors duration-500" />
       
-      {/* Texture Overlay */}
-      <div className="fixed inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.08] pointer-events-none mix-blend-overlay z-0 animate-pulse" />
+      {/* Texture Overlay (Visible en ambos modos con opacidad ajustada) */}
+      <div className="fixed inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.05] dark:opacity-[0.08] pointer-events-none mix-blend-overlay z-0 animate-pulse" />
 
-      {/* Contenido Principal (z-10 para asegurar que flote sobre el fondo negro) */}
+      {/* Contenido Principal */}
       <div className="relative z-10 flex flex-col gap-32 pb-32 pt-12 md:pt-24 max-w-[1400px] mx-auto px-6 md:px-12">
         
         {/* HERO */}
-        <section className="grid grid-cols-1 lg:grid-cols-12 gap-12 min-h-[50vh] items-end pb-12 border-b border-white/10">
+        <section className="grid grid-cols-1 lg:grid-cols-12 gap-12 min-h-[50vh] items-end pb-12 border-b border-slate-200 dark:border-white/10">
           <motion.div 
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
@@ -136,15 +140,15 @@ export default function PortfolioPage({ params: { lang } }: { params: { lang: st
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
               </span>
-              <span className="font-mono text-xs text-emerald-500 tracking-widest uppercase">Available for new projects</span>
+              <span className="font-mono text-xs text-emerald-600 dark:text-emerald-500 tracking-widest uppercase">Available for new projects</span>
             </div>
             
-            <h1 className="font-serif text-6xl sm:text-7xl lg:text-8xl tracking-tighter leading-[0.9] text-white">
+            <h1 className="font-serif text-6xl sm:text-7xl lg:text-8xl tracking-tighter leading-[0.9] text-foreground">
               {dict.hero.greeting} <br />
-              <span className="text-slate-500 italic font-light block mt-2">Digital Architect.</span>
+              <span className="text-muted-foreground italic font-light block mt-2">Digital Architect.</span>
             </h1>
             
-            <p className="text-lg md:text-xl text-slate-400 font-light max-w-xl leading-relaxed">
+            <p className="text-lg md:text-xl text-muted-foreground font-light max-w-xl leading-relaxed">
               {dict.hero.description}
             </p>
           </motion.div>
@@ -155,26 +159,27 @@ export default function PortfolioPage({ params: { lang } }: { params: { lang: st
              transition={{ delay: 0.5, duration: 1 }}
              className="lg:col-span-4 flex flex-col justify-end items-start lg:items-end gap-6"
           >
-             <a href="#projects" className="group flex items-center gap-4 text-white hover:text-indigo-400 transition-colors cursor-pointer">
+             <a href="#projects" className="group flex items-center gap-4 text-foreground hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors cursor-pointer">
                 <span className="text-sm font-mono uppercase tracking-widest">{dict.buttons.my_work}</span>
-                <div className="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center group-hover:border-indigo-400 group-hover:bg-indigo-400/10 transition-all">
+                <div className="w-8 h-8 rounded-full border border-slate-300 dark:border-white/20 flex items-center justify-center group-hover:border-indigo-500 group-hover:bg-indigo-500/10 transition-all">
                   <ArrowRight className="w-4 h-4 group-hover:-rotate-45 transition-transform duration-300" />
                 </div>
              </a>
-             <a href="#contact" className="group flex items-center gap-4 text-slate-500 hover:text-indigo-400 transition-colors cursor-pointer">
+             <a href="#contact" className="group flex items-center gap-4 text-muted-foreground hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors cursor-pointer">
                 <span className="text-sm font-mono uppercase tracking-widest">
                   {dict.sections.get_in_touch.length < 15 ? dict.sections.get_in_touch : 'Contact'}
                 </span>
-                <div className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center group-hover:border-indigo-400 group-hover:bg-indigo-400/10 transition-all">
+                <div className="w-8 h-8 rounded-full border border-slate-300 dark:border-white/10 flex items-center justify-center group-hover:border-indigo-500 group-hover:bg-indigo-500/10 transition-all">
                   <MousePointer2 className="w-4 h-4 group-hover:translate-y-1 transition-transform duration-300" />
                 </div>
              </a>
           </motion.div>
         </section>
 
-        {/* PROYECTOS - Contrast Fix Applied */}
+        {/* PROYECTOS */}
         <section id="projects">
-          <SectionTitle number="01" subtitle="Selected works combining engineering and design aesthetics.">
+          {/* Subtítulo dinámico usando la variable projectsSubtitle */}
+          <SectionTitle number="01" subtitle={projectsSubtitle}>
             {dict.sections.latest_work}
           </SectionTitle>
           
@@ -186,11 +191,11 @@ export default function PortfolioPage({ params: { lang } }: { params: { lang: st
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1, duration: 0.6 }}
-                // Fondo negro de seguridad para la tarjeta
-                className={`group relative overflow-hidden rounded-sm border border-white/10 bg-[#080808] hover:border-indigo-500/30 transition-all duration-500 flex flex-col ${index === 0 ? 'lg:col-span-2 lg:row-span-2' : ''}`}
+                // Fondo de tarjeta adaptativo: Blanco en Light, Negro en Dark
+                className={`group relative overflow-hidden rounded-sm border border-slate-200 dark:border-white/10 bg-white dark:bg-[#080808] hover:border-indigo-500/30 transition-all duration-500 flex flex-col shadow-sm dark:shadow-none ${index === 0 ? 'lg:col-span-2 lg:row-span-2' : ''}`}
               >
-                {/* Contenedor de Imagen */}
-                <div className={`relative w-full overflow-hidden bg-[#111] ${index === 0 ? 'h-96 lg:h-[36rem]' : 'h-80'}`}>
+                {/* Imagen */}
+                <div className={`relative w-full overflow-hidden bg-slate-100 dark:bg-[#111] ${index === 0 ? 'h-96 lg:h-[36rem]' : 'h-80'}`}>
                    <Image 
                       src={resolveImagePath(project.imageSrc)} 
                       alt={project.title} 
@@ -198,18 +203,17 @@ export default function PortfolioPage({ params: { lang } }: { params: { lang: st
                       className="object-cover transition-transform duration-700 group-hover:scale-105 opacity-90"
                    />
                    
-                   {/* SOLUCIÓN CONTRASTE: Capas de oscurecimiento */}
-                   {/* 1. Tinte base: Oscurece ligeramente toda la imagen (útil para imágenes blancas) */}
-                   <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors duration-500" />
-                   
-                   {/* 2. Gradiente agresivo: Fondo negro sólido abajo que se desvanece hacia arriba */}
-                   <div className="absolute inset-0 bg-gradient-to-t from-black via-black/90 to-transparent opacity-90" />
+                   {/* Capa de contraste CRÍTICA: Mantenemos el gradiente oscuro para que el texto blanco sea legible */}
+                   {/* Capa base suave para unificar tonos */}
+                   <div className="absolute inset-0 bg-black/10 transition-colors duration-500" />
+                   {/* Gradiente inferior fuerte */}
+                   <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent opacity-90" />
                 </div>
 
                 <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8 flex flex-col justify-end h-full z-20 pointer-events-none">
                   <div className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
                     <div className="flex justify-between items-end mb-3">
-                      <Badge className="border border-indigo-500/50 text-indigo-300 bg-indigo-500/10 backdrop-blur-md shadow-sm">
+                      <Badge className="border border-white/20 text-white bg-white/10 backdrop-blur-md shadow-sm">
                         {project.category}
                       </Badge>
                       <div className="flex gap-2 pointer-events-auto opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">
@@ -226,7 +230,7 @@ export default function PortfolioPage({ params: { lang } }: { params: { lang: st
                       </div>
                     </div>
                     
-                    {/* Texto con sombra para máxima legibilidad */}
+                    {/* Texto blanco SIEMPRE porque está sobre la imagen oscurecida */}
                     <h3 className={`font-serif text-white mb-2 leading-tight drop-shadow-md ${index === 0 ? 'text-4xl' : 'text-2xl'}`}>
                       {project.title}
                     </h3>
@@ -254,7 +258,7 @@ export default function PortfolioPage({ params: { lang } }: { params: { lang: st
               {dict.sections.services_pricing_title}
            </SectionTitle>
 
-           <div className="grid grid-cols-1 border-t border-white/10">
+           <div className="grid grid-cols-1 border-t border-slate-200 dark:border-white/10">
               {[
                 { 
                   icon: Code2, 
@@ -262,7 +266,7 @@ export default function PortfolioPage({ params: { lang } }: { params: { lang: st
                   desc: dict.service_cards.dev_desc, 
                   features: dict.service_cards.dev_features, 
                   price: dict.service_cards.dev_price,
-                  color: "text-indigo-400",
+                  color: "text-indigo-600 dark:text-indigo-400",
                   borderColor: "group-hover:border-indigo-500"
                 },
                 { 
@@ -272,7 +276,7 @@ export default function PortfolioPage({ params: { lang } }: { params: { lang: st
                   features: dict.service_cards.itinerary_features, 
                   price: dict.service_cards.itinerary_price,
                   badge: dict.service_cards.itinerary_badge,
-                  color: "text-emerald-400",
+                  color: "text-emerald-600 dark:text-emerald-400",
                   borderColor: "group-hover:border-emerald-500",
                   special: true
                 },
@@ -282,7 +286,7 @@ export default function PortfolioPage({ params: { lang } }: { params: { lang: st
                   desc: dict.service_cards.landing_desc, 
                   features: dict.service_cards.landing_features, 
                   price: dict.service_cards.landing_price,
-                  color: "text-sky-400",
+                  color: "text-sky-600 dark:text-sky-400",
                   borderColor: "group-hover:border-sky-500"
                 }
               ].map((service, idx) => (
@@ -292,27 +296,27 @@ export default function PortfolioPage({ params: { lang } }: { params: { lang: st
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: idx * 0.1 }}
-                  className={`group grid grid-cols-1 lg:grid-cols-12 gap-8 py-16 border-b border-white/10 hover:bg-white/[0.02] transition-all duration-500 px-4 lg:px-6 relative overflow-hidden ${service.special ? 'bg-indigo-900/[0.03]' : ''}`}
+                  className={`group grid grid-cols-1 lg:grid-cols-12 gap-8 py-16 border-b border-slate-200 dark:border-white/10 hover:bg-slate-50 dark:hover:bg-white/[0.02] transition-all duration-500 px-4 lg:px-6 relative overflow-hidden ${service.special ? 'bg-indigo-50/50 dark:bg-indigo-900/[0.03]' : ''}`}
                 >
                    <div className={`absolute left-0 top-0 bottom-0 w-1 bg-transparent ${service.borderColor.replace('border', 'bg')} transition-colors duration-300 opacity-0 group-hover:opacity-100`} />
 
                    <div className="lg:col-span-3 relative z-10">
                       {service.badge && (
-                        <span className="inline-block text-[10px] uppercase tracking-widest font-bold text-emerald-400 mb-3 animate-pulse">
+                        <span className="inline-block text-[10px] uppercase tracking-widest font-bold text-emerald-600 dark:text-emerald-400 mb-3 animate-pulse">
                            {service.badge}
                         </span>
                       )}
-                      <div className={`w-12 h-12 flex items-center justify-center rounded-2xl border border-white/10 bg-white/5 mb-6 ${service.color} group-hover:scale-110 transition-transform duration-500`}>
+                      <div className={`w-12 h-12 flex items-center justify-center rounded-2xl border border-slate-200 dark:border-white/10 bg-white dark:bg-white/5 mb-6 ${service.color} group-hover:scale-110 transition-transform duration-500 shadow-sm`}>
                         <service.icon className="w-6 h-6" />
                       </div>
-                      <h3 className="text-3xl font-serif text-white group-hover:text-indigo-100 transition-colors">{service.title}</h3>
+                      <h3 className="text-3xl font-serif text-foreground group-hover:text-indigo-600 dark:group-hover:text-indigo-100 transition-colors">{service.title}</h3>
                    </div>
                    
                    <div className="lg:col-span-6 relative z-10">
-                      <p className="text-slate-400 mb-8 font-light leading-relaxed text-lg">{service.desc}</p>
+                      <p className="text-muted-foreground mb-8 font-light leading-relaxed text-lg">{service.desc}</p>
                       <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         {service.features.map((f, i) => (
-                           <li key={i} className="flex items-start gap-3 text-sm text-slate-500 group-hover:text-slate-300 transition-colors">
+                           <li key={i} className="flex items-start gap-3 text-sm text-slate-600 dark:text-slate-500 group-hover:text-slate-900 dark:group-hover:text-slate-300 transition-colors">
                               <span className={`mt-1.5 w-1.5 h-1.5 rounded-full ${service.color.replace('text', 'bg')} shrink-0`} />
                               {f}
                            </li>
@@ -321,9 +325,9 @@ export default function PortfolioPage({ params: { lang } }: { params: { lang: st
                    </div>
                    
                    <div className="lg:col-span-3 flex flex-col justify-between items-start lg:items-end relative z-10">
-                      <p className="text-3xl font-serif text-white">{service.price}</p>
+                      <p className="text-3xl font-serif text-foreground">{service.price}</p>
                       {service.special && (
-                        <a href="/itinerario-nueva-york.pdf" target="_blank" className="flex items-center gap-2 text-xs text-indigo-400 hover:text-white transition-colors mt-6 lg:mt-0 uppercase tracking-widest border-b border-indigo-400/30 pb-1 group-hover:border-indigo-400">
+                        <a href="/itinerario-nueva-york.pdf" target="_blank" className="flex items-center gap-2 text-xs text-indigo-600 dark:text-indigo-400 hover:text-black dark:hover:text-white transition-colors mt-6 lg:mt-0 uppercase tracking-widest border-b border-indigo-400/30 pb-1 group-hover:border-indigo-400">
                           {dict.buttons.view_example_pdf} <ArrowUpRight className="w-3 h-3" />
                         </a>
                       )}
@@ -350,13 +354,13 @@ export default function PortfolioPage({ params: { lang } }: { params: { lang: st
                   viewport={{ once: true }}
                   transition={{ delay: idx * 0.1 }}
                 >
-                   <h4 className="text-xs font-mono font-bold uppercase tracking-widest text-indigo-500 mb-6 border-b border-indigo-500/20 pb-3 inline-block">
+                   <h4 className="text-xs font-mono font-bold uppercase tracking-widest text-indigo-600 dark:text-indigo-500 mb-6 border-b border-indigo-500/20 pb-3 inline-block">
                      {group.title}
                    </h4>
                    <ul className="flex flex-col gap-3">
                       {group.skills.map(skill => (
-                         <li key={skill} className="text-lg font-serif text-slate-400 hover:text-white transition-colors cursor-default flex items-center gap-3 group/skill">
-                            <span className="w-1 h-1 bg-slate-700 rounded-full group-hover/skill:bg-indigo-400 group-hover/skill:w-2 transition-all"></span>
+                         <li key={skill} className="text-lg font-serif text-slate-600 dark:text-slate-400 hover:text-black dark:hover:text-white transition-colors cursor-default flex items-center gap-3 group/skill">
+                            <span className="w-1 h-1 bg-slate-300 dark:bg-slate-700 rounded-full group-hover/skill:bg-indigo-500 dark:group-hover/skill:bg-indigo-400 group-hover/skill:w-2 transition-all"></span>
                             {skill}
                          </li>
                       ))}
@@ -367,31 +371,31 @@ export default function PortfolioPage({ params: { lang } }: { params: { lang: st
         </section>
 
         {/* FOOTER */}
-        <section id="contact" className="border-t border-white/10 pt-24 mt-8">
+        <section id="contact" className="border-t border-slate-200 dark:border-white/10 pt-24 mt-8">
            <div className="flex flex-col md:flex-row justify-between items-start gap-12">
               <motion.div 
                 initial={{ opacity: 0 }}
                 whileInView={{ opacity: 1 }}
                 viewport={{ once: true }}
               >
-                 <h2 className="text-5xl font-serif text-white mb-8 leading-tight">{dict.sections.get_in_touch}</h2>
-                 <p className="text-slate-400 max-w-md mb-10 leading-relaxed font-light text-lg">
+                 <h2 className="text-5xl font-serif text-foreground mb-8 leading-tight">{dict.sections.get_in_touch}</h2>
+                 <p className="text-muted-foreground max-w-md mb-10 leading-relaxed font-light text-lg">
                     {dict.sections.get_in_touch_description}
                  </p>
                  <a 
                     href="mailto:albertobort@gmail.com" 
-                    className="text-3xl md:text-5xl font-serif text-white hover:text-indigo-400 transition-colors underline decoration-1 underline-offset-[16px] decoration-white/20 hover:decoration-indigo-400"
+                    className="text-3xl md:text-5xl font-serif text-foreground hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors underline decoration-1 underline-offset-[16px] decoration-slate-300 dark:decoration-white/20 hover:decoration-indigo-500"
                  >
                     albertobort@gmail.com
                  </a>
               </motion.div>
-              <div className="text-right text-xs font-mono text-slate-600 uppercase tracking-widest mt-12 md:mt-0">
+              <div className="text-right text-xs font-mono text-slate-500 dark:text-slate-600 uppercase tracking-widest mt-12 md:mt-0">
                  <p className="mb-2">© {new Date().getFullYear()} Alberto Bort.</p>
                  <p>{dict.footer.rights_reserved}</p>
                  <div className="mt-6 flex justify-end gap-6">
-                    <a href="#" className="hover:text-white transition-colors">LinkedIn</a>
-                    <a href="#" className="hover:text-white transition-colors">GitHub</a>
-                    <a href="#" className="hover:text-white transition-colors">Twitter</a>
+                    <a href="#" className="hover:text-black dark:hover:text-white transition-colors">LinkedIn</a>
+                    <a href="#" className="hover:text-black dark:hover:text-white transition-colors">GitHub</a>
+                    <a href="#" className="hover:text-black dark:hover:text-white transition-colors">Twitter</a>
                  </div>
               </div>
            </div>
