@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { motion, Variants, useMotionTemplate, useMotionValue } from 'framer-motion';
-import { Users, CheckCircle, ChevronRight, MapPin, Globe } from 'lucide-react';
+import { Users, CheckCircle, ChevronRight, MapPin, Globe, type LucideIcon } from 'lucide-react';
 import { MouseEvent } from 'react';
 
 export default function SplashPage() {
@@ -143,7 +143,7 @@ export default function SplashPage() {
           {/* Footer Derecho */}
           <div className="mt-16 sm:mt-20 text-xs text-indigo-400/60 leading-relaxed font-mono max-w-xs">
             <p className="flex flex-col gap-1">
-              <span className="text-slate-500">// Portfolio 2025</span>
+              <span className="text-slate-500">{'//'} Portfolio 2025</span>
               <span>Desarrollo web de alto rendimiento y diseño estratégico.</span>
             </p>
           </div>
@@ -155,7 +155,15 @@ export default function SplashPage() {
 }
 
 // --- COMPONENTE CRYSTAL GLASS (Estilo Apple Vision / Linear) ---
-function ServiceLink({ href, title, subtitle, icon: Icon, index }: { href: string, title: string, subtitle: string, icon: any, index: string }) {
+function ServiceLink(
+  { href, title, subtitle, icon: Icon, index }: {
+    href: string;
+    title: string;
+    subtitle: string;
+    icon: LucideIcon;
+    index: string;
+  }
+) {
   
   // Variables para el efecto Spotlight
   const mouseX = useMotionValue(0);
