@@ -97,8 +97,6 @@ export default function PortfolioPage({ params: { lang } }: { params: { lang: st
 
   if (!dict) return <div className="min-h-screen bg-background" />; 
 
-  // TRADUCCIÓN MANUAL PARA EL SUBTÍTULO DE PROYECTOS
-  // (Esto cubre la frase que no estaba en el JSON)
   const projectsSubtitle = lang === 'es' 
     ? "Selección de proyectos que combinan ingeniería y diseño."
     : "Selected works combining engineering and design aesthetics.";
@@ -121,7 +119,7 @@ export default function PortfolioPage({ params: { lang } }: { params: { lang: st
       {/* Fondo Base Semántico */}
       <div className="fixed inset-0 w-full h-full bg-background z-0 pointer-events-none transition-colors duration-500" />
       
-      {/* Texture Overlay (Visible en ambos modos con opacidad ajustada) */}
+      {/* Texture Overlay */}
       <div className="fixed inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.05] dark:opacity-[0.08] pointer-events-none mix-blend-overlay z-0 animate-pulse" />
 
       {/* Contenido Principal */}
@@ -178,7 +176,7 @@ export default function PortfolioPage({ params: { lang } }: { params: { lang: st
 
         {/* PROYECTOS */}
         <section id="projects">
-          {/* Subtítulo dinámico usando la variable projectsSubtitle */}
+          {/* Subtítulo dinámico */}
           <SectionTitle number="01" subtitle={projectsSubtitle}>
             {dict.sections.latest_work}
           </SectionTitle>
@@ -191,11 +189,13 @@ export default function PortfolioPage({ params: { lang } }: { params: { lang: st
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1, duration: 0.6 }}
-                // Fondo de tarjeta adaptativo: Blanco en Light, Negro en Dark
-                className={`group relative overflow-hidden rounded-sm border border-slate-200 dark:border-white/10 bg-white dark:bg-[#080808] hover:border-indigo-500/30 transition-all duration-500 flex flex-col shadow-sm dark:shadow-none ${index === 0 ? 'lg:col-span-2 lg:row-span-2' : ''}`}
+                // CORRECCIÓN 1: Fondo SIEMPRE negro (#080808) para las tarjetas de proyecto.
+                // Esto evita que si la imagen no cubre todo, se vea un fondo blanco (la "caja blanca").
+                className={`group relative overflow-hidden rounded-sm border border-white/10 bg-[#080808] hover:border-indigo-500/30 transition-all duration-500 flex flex-col shadow-sm ${index === 0 ? 'lg:col-span-2 lg:row-span-2' : ''}`}
               >
                 {/* Imagen */}
-                <div className={`relative w-full overflow-hidden bg-slate-100 dark:bg-[#111] ${index === 0 ? 'h-96 lg:h-[36rem]' : 'h-80'}`}>
+                {/* CORRECCIÓN 2: 'h-full' para la imagen grande en desktop. Esto asegura que cubra todo el span de filas. */}
+                <div className={`relative w-full overflow-hidden bg-[#111] ${index === 0 ? 'h-96 lg:h-full' : 'h-80'}`}>
                    <Image 
                       src={resolveImagePath(project.imageSrc)} 
                       alt={project.title} 
@@ -203,10 +203,8 @@ export default function PortfolioPage({ params: { lang } }: { params: { lang: st
                       className="object-cover transition-transform duration-700 group-hover:scale-105 opacity-90"
                    />
                    
-                   {/* Capa de contraste CRÍTICA: Mantenemos el gradiente oscuro para que el texto blanco sea legible */}
-                   {/* Capa base suave para unificar tonos */}
+                   {/* Capas de contraste */}
                    <div className="absolute inset-0 bg-black/10 transition-colors duration-500" />
-                   {/* Gradiente inferior fuerte */}
                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent opacity-90" />
                 </div>
 
@@ -230,7 +228,6 @@ export default function PortfolioPage({ params: { lang } }: { params: { lang: st
                       </div>
                     </div>
                     
-                    {/* Texto blanco SIEMPRE porque está sobre la imagen oscurecida */}
                     <h3 className={`font-serif text-white mb-2 leading-tight drop-shadow-md ${index === 0 ? 'text-4xl' : 'text-2xl'}`}>
                       {project.title}
                     </h3>
