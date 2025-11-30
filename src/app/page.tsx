@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { motion, Variants } from 'framer-motion';
-import { ArrowUpRight, Users, CheckCircle } from 'lucide-react';
+import { ArrowUpRight, Users, CheckCircle, Github } from 'lucide-react';
 
 export default function SplashPage() {
   
@@ -35,13 +35,14 @@ export default function SplashPage() {
         
         {/* --- COLUMNA IZQUIERDA: IDENTIDAD --- */}
         <motion.div 
-          className="flex flex-col justify-center border-b border-white/[0.08] lg:col-span-7 lg:border-b-0 lg:border-r p-8 sm:p-12 lg:p-24 relative"
+          // AJUSTE MOBILE: p-6 en lugar de p-8 para más espacio lateral. py-24 para evitar solapamiento vertical.
+          className="flex flex-col justify-center border-b border-white/[0.08] lg:col-span-7 lg:border-b-0 lg:border-r p-6 py-24 sm:p-12 lg:p-24 relative min-h-[60vh] lg:min-h-auto"
           variants={containerVariants}
           initial="hidden"
           animate="visible"
         >
           {/* Top Line */}
-          <motion.div variants={textVariants} className="absolute top-12 left-8 lg:left-24 flex flex-wrap items-center justify-start w-[calc(100%-4rem)] lg:w-auto gap-6">
+          <motion.div variants={textVariants} className="absolute top-8 sm:top-12 left-6 sm:left-8 lg:left-24 flex flex-wrap items-center justify-start w-[calc(100%-3rem)] lg:w-auto gap-6">
              <div className="flex items-center gap-4">
                 <div className="h-px w-12 bg-indigo-500/50"></div>
                 <span className="text-[10px] uppercase tracking-[0.25em] text-slate-400 font-mono font-medium">Est. 2025</span>
@@ -49,23 +50,24 @@ export default function SplashPage() {
           </motion.div>
 
           {/* Main Title Block */}
-          <div className="relative z-10 mt-16 lg:mt-0">
-            <motion.h1 variants={textVariants} className="font-serif text-8xl sm:text-9xl lg:text-[10rem] xl:text-[11rem] tracking-tighter text-white leading-[0.85]">
+          <div className="relative z-10 mt-4 lg:mt-0">
+            {/* AJUSTE MOBILE: text-6xl base para evitar cortes en pantallas pequeñas */}
+            <motion.h1 variants={textVariants} className="font-serif text-6xl sm:text-9xl lg:text-[10rem] xl:text-[11rem] tracking-tighter text-white leading-[0.85]">
               Alberto <br />
               <span className="italic text-slate-300 font-light">Bort</span>
             </motion.h1>
             
-            <motion.div variants={textVariants} className="mt-12 flex flex-col gap-10 max-w-xl">
+            <motion.div variants={textVariants} className="mt-8 sm:mt-12 flex flex-col gap-8 sm:gap-10 max-w-xl">
               {/* Descripción */}
-              <p className="text-xl sm:text-2xl lg:text-3xl text-slate-400 font-light leading-snug">
+              <p className="text-lg sm:text-2xl lg:text-3xl text-slate-400 font-light leading-snug">
                 Arquitectura de Soluciones Digitales & <br className="hidden sm:block"/>
                 Diseño de Experiencias <span className="text-white font-normal">Premium</span>.
               </p>
 
               {/* Social Proof (+50 Clientes) */}
-              <div className="flex items-center gap-6 border-t border-white/10 pt-6">
+              <div className="flex flex-wrap items-center gap-6 border-t border-white/10 pt-6">
                  <div className="flex -space-x-4">
-                    {/* Avatares abstractos para representar clientes */}
+                    {/* Avatares abstractos */}
                     {[1, 2, 3].map((i) => (
                       <div key={i} className="w-10 h-10 rounded-full border-2 border-[#030303] bg-gradient-to-br from-slate-700 to-slate-800 flex items-center justify-center">
                         <Users className="w-4 h-4 text-slate-400" />
@@ -86,8 +88,8 @@ export default function SplashPage() {
             </motion.div>
           </div>
 
-          {/* Bottom Info - COLOR ACTUALIZADO */}
-          <motion.div variants={textVariants} className="absolute bottom-8 lg:bottom-12 left-8 lg:left-24 text-[10px] text-indigo-400 font-mono tracking-widest uppercase flex flex-col sm:flex-row gap-2 sm:gap-4">
+          {/* Bottom Info */}
+          <motion.div variants={textVariants} className="absolute bottom-8 lg:bottom-12 left-6 sm:left-8 lg:left-24 text-[10px] text-indigo-400 font-mono tracking-widest uppercase flex flex-col sm:flex-row gap-2 sm:gap-4">
             <span>Based in Valencia, Spain</span>
             <span className="hidden sm:inline text-indigo-400/50">|</span>
             <span>Available for Select Commissions</span>
@@ -97,13 +99,13 @@ export default function SplashPage() {
 
         {/* --- COLUMNA DERECHA: NAVEGACIÓN --- */}
         <motion.div 
-          className="flex flex-col justify-center bg-white/[0.01] lg:col-span-5 p-8 sm:p-12 lg:p-24"
+          className="flex flex-col justify-center bg-white/[0.01] lg:col-span-5 p-6 sm:p-12 lg:p-24 min-h-[40vh] lg:min-h-auto"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.6, duration: 1.5 }}
         >
           <div className="w-full max-w-lg mx-auto lg:mx-0">
-            <h2 className="text-[10px] font-bold text-indigo-400 uppercase tracking-[0.25em] mb-10 flex items-center gap-3">
+            <h2 className="text-[10px] font-bold text-indigo-400 uppercase tracking-[0.25em] mb-8 sm:mb-10 flex items-center gap-3">
               <span className="w-1.5 h-1.5 rounded-full bg-indigo-500 animate-pulse"></span>
               Select Scope
             </h2>
@@ -130,8 +132,8 @@ export default function SplashPage() {
             <div className="w-full h-px bg-white/[0.1]"></div>
           </div>
 
-          {/* Footer Derecho - COLOR ACTUALIZADO */}
-          <div className="mt-16 text-xs text-indigo-400 leading-relaxed font-mono max-w-xs">
+          {/* Footer Derecho */}
+          <div className="mt-12 sm:mt-16 text-xs text-indigo-400 leading-relaxed font-mono max-w-xs">
             <p>
               // SPECIALIZED IN HIGH-PERFORMANCE WEB APPLICATIONS. DELIVERING THE HIGHEST STANDARD IN DIGITAL ENGINEERING.
             </p>
@@ -143,20 +145,21 @@ export default function SplashPage() {
   );
 }
 
-// --- COMPONENTE DE ENLACE MEJORADO (Con indicación clara de clic y Borde Latente) ---
+// --- COMPONENTE DE ENLACE ---
 function ServiceLink({ href, title, subtitle, index }: { href: string, title: string, subtitle: string, index: string }) {
   return (
     <Link href={href} className="group relative block w-full outline-none">
-      <div className="relative flex items-baseline justify-between py-10 sm:py-12 px-4 transition-all duration-500 hover:bg-white/[0.04] cursor-pointer overflow-hidden">
+      <div className="relative flex items-baseline justify-between py-8 sm:py-12 px-2 sm:px-4 transition-all duration-500 hover:bg-white/[0.04] cursor-pointer overflow-hidden">
         
-        {/* Opción 1: Highlight lateral que "respira" (Pulse) antes del hover */}
+        {/* Opción 1: Highlight lateral que "respira" */}
         <div className="absolute left-0 top-0 bottom-0 w-1 bg-indigo-500/40 animate-pulse group-hover:opacity-100 group-hover:animate-none group-hover:bg-indigo-500 transition-all duration-300"></div>
 
-        <div className="flex flex-col gap-2 z-10">
+        <div className="flex flex-col gap-2 z-10 w-full">
           <div className="flex items-center gap-4 sm:gap-6">
-             <span className="text-xs font-mono text-slate-600 group-hover:text-indigo-400 transition-colors font-bold">
+             <span className="text-xs font-mono text-slate-600 group-hover:text-indigo-400 transition-colors font-bold flex-shrink-0">
               {index}
             </span>
+            {/* AJUSTE MOBILE: Tamaño de texto reactivo */}
             <h3 className="text-3xl sm:text-5xl font-serif text-slate-200 group-hover:text-white transition-colors duration-300">
               {title}
             </h3>
@@ -166,9 +169,9 @@ function ServiceLink({ href, title, subtitle, index }: { href: string, title: st
           </p>
         </div>
         
-        {/* Flecha Animada (Indicador claro de clic) */}
-        <div className="relative flex items-center justify-center w-10 h-10 rounded-full border border-white/10 bg-white/[0.05] group-hover:bg-indigo-500 group-hover:border-indigo-500 transition-all duration-300">
-            <ArrowUpRight className="w-5 h-5 text-slate-400 group-hover:text-white transition-colors duration-300" />
+        {/* Flecha Animada */}
+        <div className="relative flex-shrink-0 flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 rounded-full border border-white/10 bg-white/[0.05] group-hover:bg-indigo-500 group-hover:border-indigo-500 transition-all duration-300 ml-2">
+            <ArrowUpRight className="w-4 h-4 sm:w-5 sm:h-5 text-slate-400 group-hover:text-white transition-colors duration-300" />
         </div>
 
       </div>
