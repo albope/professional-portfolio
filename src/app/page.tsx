@@ -1,132 +1,179 @@
-// src/app/page.tsx
+'use client';
 
 import Link from 'next/link';
-import { ChevronRight, Monitor } from 'lucide-react';
-import { AnimatedTagline } from '@/components/ui/AnimatedTagline';
-import { SpanishFlagIcon, BritishFlagIcon } from '@/components/icons/FlagIcons';
+import { motion, Variants } from 'framer-motion';
+import { ArrowUpRight, Users, CheckCircle } from 'lucide-react';
 
 export default function SplashPage() {
-  const actionLines = {
-    es: "Descubre mis proyectos y cómo puedo ayudarte.",
-    en: "Discover my projects and how I can help you."
+  
+  // Variantes de animación más lentas y fluidas (Cinemáticas)
+  const containerVariants: Variants = {
+    hidden: { opacity: 0 },
+    visible: { 
+      opacity: 1,
+      transition: { staggerChildren: 0.1, delayChildren: 0.3 }
+    }
+  };
+
+  const textVariants: Variants = {
+    hidden: { y: 20, opacity: 0 },
+    visible: { 
+      y: 0, 
+      opacity: 1,
+      transition: { duration: 1.2, ease: [0.22, 1, 0.36, 1] }
+    }
   };
 
   return (
-    <div
-      className="flex flex-col items-center justify-center min-h-screen flex-grow
-                 overflow-hidden px-4
-                 bg-slate-950 text-slate-100 relative isolate"
-    >
-      {/* FONDO DE AURORA MAXIMIZADO */}
-      <div className="absolute inset-0 -z-10 overflow-hidden" aria-hidden="true">
-        <div className="absolute left-1/2 top-1/2 h-[150rem] w-[150rem] -translate-x-1/2 -translate-y-1/2">
-          <div
-            className="absolute -top-1/3 left-[5%] h-[100rem] w-[100rem]
-                       bg-gradient-radial from-purple-500/60 via-purple-600/10 to-transparent
-                       animate-aurora-spin"
-            style={{ animationDuration: '26s', animationDelay: '-4s' }}
-          />
-          <div
-            className="absolute -bottom-1/3 right-[5%] h-[100rem] w-[100rem]
-                       bg-gradient-radial from-sky-400/60 via-sky-500/10 to-transparent
-                       animate-aurora-spin"
-            style={{ animationDuration: '22s', animationDelay: '-2s' }}
-          />
-          <div
-            className="absolute bottom-[15%] left-[15%] h-[80rem] w-[80rem]
-                       bg-gradient-radial from-emerald-400/50 via-emerald-500/5 to-transparent
-                       animate-aurora-spin"
-            style={{ animationDuration: '30s', animationDelay: '-3s' }}
-          />
-        </div>
-      </div>
+    <div className="relative min-h-screen w-full bg-[#030303] text-slate-200 overflow-hidden selection:bg-indigo-500/30 selection:text-indigo-100">
+      
+      {/* Texture */}
+      <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.15] pointer-events-none mix-blend-overlay"></div>
+      
+      {/* Grid Layout */}
+      <main className="relative z-10 grid min-h-screen grid-cols-1 lg:grid-cols-12">
+        
+        {/* --- COLUMNA IZQUIERDA: IDENTIDAD --- */}
+        <motion.div 
+          className="flex flex-col justify-center border-b border-white/[0.08] lg:col-span-7 lg:border-b-0 lg:border-r p-8 sm:p-12 lg:p-24 relative"
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+        >
+          {/* Top Line */}
+          <motion.div variants={textVariants} className="absolute top-12 left-8 lg:left-24 flex flex-wrap items-center justify-start w-[calc(100%-4rem)] lg:w-auto gap-6">
+             <div className="flex items-center gap-4">
+                <div className="h-px w-12 bg-indigo-500/50"></div>
+                <span className="text-[10px] uppercase tracking-[0.25em] text-slate-400 font-mono font-medium">Est. 2025</span>
+             </div>
+          </motion.div>
 
-      {/* Efecto de grid sutil */}
-      <div className="absolute inset-0 -z-5 opacity-[0.02]" aria-hidden="true">
-        <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <pattern id="subtleGridPattern" width="40" height="40" patternUnits="userSpaceOnUse">
-              <path d="M 40 0 L 0 0 0 40" fill="none" className="stroke-slate-700" strokeWidth="0.2"/>
-            </pattern>
-          </defs>
-          <rect width="100%" height="100%" fill="url(#subtleGridPattern)" />
-        </svg>
-      </div>
+          {/* Main Title Block */}
+          <div className="relative z-10 mt-16 lg:mt-0">
+            <motion.h1 variants={textVariants} className="font-serif text-8xl sm:text-9xl lg:text-[10rem] xl:text-[11rem] tracking-tighter text-white leading-[0.85]">
+              Alberto <br />
+              <span className="italic text-slate-300 font-light">Bort</span>
+            </motion.h1>
+            
+            <motion.div variants={textVariants} className="mt-12 flex flex-col gap-10 max-w-xl">
+              {/* Descripción */}
+              <p className="text-xl sm:text-2xl lg:text-3xl text-slate-400 font-light leading-snug">
+                Arquitectura de Soluciones Digitales & <br className="hidden sm:block"/>
+                Diseño de Experiencias <span className="text-white font-normal">Premium</span>.
+              </p>
 
-      <main
-        className="relative z-10 flex flex-col items-center justify-center text-center
-                   p-8 py-10 sm:p-12 md:p-16
-                   w-full max-w-md md:max-w-lg
-                   rounded-2xl md:rounded-3xl
-                   border border-slate-700/30
-                   bg-slate-800/75 backdrop-blur-2xl
-                   shadow-2xl shadow-black/50
-                   animate-fade-in-up transform transition-all duration-300 hover:shadow-sky-400/15"
-      >
-        <div className="mb-6 md:mb-8 animate-fade-in-up [animation-delay:0.2s]">
-          <Monitor className="w-14 h-14 md:w-16 md:h-16 text-sky-300 mx-auto animate-subtle-pulse" />
-        </div>
+              {/* Social Proof (+50 Clientes) */}
+              <div className="flex items-center gap-6 border-t border-white/10 pt-6">
+                 <div className="flex -space-x-4">
+                    {/* Avatares abstractos para representar clientes */}
+                    {[1, 2, 3].map((i) => (
+                      <div key={i} className="w-10 h-10 rounded-full border-2 border-[#030303] bg-gradient-to-br from-slate-700 to-slate-800 flex items-center justify-center">
+                        <Users className="w-4 h-4 text-slate-400" />
+                      </div>
+                    ))}
+                    <div className="w-10 h-10 rounded-full border-2 border-[#030303] bg-indigo-500 flex items-center justify-center text-white font-bold text-[10px]">
+                       +50
+                    </div>
+                 </div>
+                 <div className="flex flex-col">
+                    <span className="text-sm text-white font-medium tracking-wide flex items-center gap-2">
+                      Satisfied Clients
+                      <CheckCircle className="w-3 h-3 text-emerald-500" />
+                    </span>
+                    <span className="text-xs text-slate-500 font-mono">Across Europe & Latam</span>
+                 </div>
+              </div>
+            </motion.div>
+          </div>
 
-        <div className="animate-fade-in-up [animation-delay:0.4s]">
-          <h1 className="text-4xl sm:text-5xl font-bold text-slate-50 mb-3 tracking-tight">
-            Alberto Bort
-          </h1>
-        </div>
+          {/* Bottom Info - COLOR ACTUALIZADO */}
+          <motion.div variants={textVariants} className="absolute bottom-8 lg:bottom-12 left-8 lg:left-24 text-[10px] text-indigo-400 font-mono tracking-widest uppercase flex flex-col sm:flex-row gap-2 sm:gap-4">
+            <span>Based in Valencia, Spain</span>
+            <span className="hidden sm:inline text-indigo-400/50">|</span>
+            <span>Available for Select Commissions</span>
+          </motion.div>
+        </motion.div>
 
-        <div className="animate-fade-in-up [animation-delay:0.6s]">
-          <p className="text-lg sm:text-xl text-slate-300 mb-8 tracking-normal">
-            Digital Solutions Architect & Itinerary Designer
+
+        {/* --- COLUMNA DERECHA: NAVEGACIÓN --- */}
+        <motion.div 
+          className="flex flex-col justify-center bg-white/[0.01] lg:col-span-5 p-8 sm:p-12 lg:p-24"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.6, duration: 1.5 }}
+        >
+          <div className="w-full max-w-lg mx-auto lg:mx-0">
+            <h2 className="text-[10px] font-bold text-indigo-400 uppercase tracking-[0.25em] mb-10 flex items-center gap-3">
+              <span className="w-1.5 h-1.5 rounded-full bg-indigo-500 animate-pulse"></span>
+              Select Scope
+            </h2>
+            
+            <div className="flex flex-col border-t border-white/[0.1]">
+              
+              {/* Opción ES */}
+              <ServiceLink 
+                href="/es" 
+                index="01"
+                title="Spain & Latam" 
+                subtitle="Consultoría Estratégica & Desarrollo"
+              />
+
+              {/* Opción EN */}
+              <ServiceLink 
+                href="/en" 
+                index="02"
+                title="International" 
+                subtitle="Global Architecture & Engineering"
+              />
+              
+            </div>
+            <div className="w-full h-px bg-white/[0.1]"></div>
+          </div>
+
+          {/* Footer Derecho - COLOR ACTUALIZADO */}
+          <div className="mt-16 text-xs text-indigo-400 leading-relaxed font-mono max-w-xs">
+            <p>
+              // SPECIALIZED IN HIGH-PERFORMANCE WEB APPLICATIONS. DELIVERING THE HIGHEST STANDARD IN DIGITAL ENGINEERING.
+            </p>
+          </div>
+        </motion.div>
+
+      </main>
+    </div>
+  );
+}
+
+// --- COMPONENTE DE ENLACE MEJORADO (Con indicación clara de clic y Borde Latente) ---
+function ServiceLink({ href, title, subtitle, index }: { href: string, title: string, subtitle: string, index: string }) {
+  return (
+    <Link href={href} className="group relative block w-full outline-none">
+      <div className="relative flex items-baseline justify-between py-10 sm:py-12 px-4 transition-all duration-500 hover:bg-white/[0.04] cursor-pointer overflow-hidden">
+        
+        {/* Opción 1: Highlight lateral que "respira" (Pulse) antes del hover */}
+        <div className="absolute left-0 top-0 bottom-0 w-1 bg-indigo-500/40 animate-pulse group-hover:opacity-100 group-hover:animate-none group-hover:bg-indigo-500 transition-all duration-300"></div>
+
+        <div className="flex flex-col gap-2 z-10">
+          <div className="flex items-center gap-4 sm:gap-6">
+             <span className="text-xs font-mono text-slate-600 group-hover:text-indigo-400 transition-colors font-bold">
+              {index}
+            </span>
+            <h3 className="text-3xl sm:text-5xl font-serif text-slate-200 group-hover:text-white transition-colors duration-300">
+              {title}
+            </h3>
+          </div>
+          <p className="text-sm sm:text-base text-slate-500 pl-8 sm:pl-10 group-hover:text-slate-300 transition-colors duration-300 font-light tracking-wide">
+            {subtitle}
           </p>
         </div>
-
-        <div className="animate-fade-in-up [animation-delay:0.8s] min-h-[2.5em] md:min-h-[3em] flex items-center justify-center">
-            <AnimatedTagline
-              lines={actionLines}
-              duration={4000}
-              className="text-md text-slate-400 mb-10"
-            />
+        
+        {/* Flecha Animada (Indicador claro de clic) */}
+        <div className="relative flex items-center justify-center w-10 h-10 rounded-full border border-white/10 bg-white/[0.05] group-hover:bg-indigo-500 group-hover:border-indigo-500 transition-all duration-300">
+            <ArrowUpRight className="w-5 h-5 text-slate-400 group-hover:text-white transition-colors duration-300" />
         </div>
 
-        <div className="w-full space-y-4 max-w-xs sm:max-w-sm mx-auto animate-fade-in-up [animation-delay:1s]">
-          <Link href="/es" passHref className="block w-full">
-            <button
-              className="w-full group relative flex items-center justify-center h-12 sm:h-14 px-4 sm:px-6
-                         bg-gradient-to-r from-sky-500 via-purple-500 to-pink-500
-                         hover:from-sky-400 hover:via-purple-400 hover:to-pink-400
-                         rounded-lg text-sm sm:text-base font-semibold text-white
-                         transition-all duration-300 ease-out
-                         shadow-lg hover:shadow-purple-400/50 focus:shadow-purple-400/50
-                         focus:outline-none focus:ring-2 focus:ring-purple-300 focus:ring-offset-2 focus:ring-offset-slate-900
-                         transform hover:-translate-y-0.5 active:translate-y-0 
-                         animate-button-callout-pulse" // <-- AÑADIDA LA ANIMACIÓN
-            >
-              <SpanishFlagIcon className="w-6 h-auto mr-2 flex-shrink-0" />
-              Ver Portafolio y Servicios
-              <ChevronRight className="ml-auto h-5 w-5 text-purple-200 opacity-75 group-hover:opacity-100 transition-opacity duration-300 group-hover:translate-x-1 flex-shrink-0" />
-            </button>
-          </Link>
-          <Link href="/en" passHref className="block w-full">
-            <button
-              className="w-full group relative flex items-center justify-center h-12 sm:h-14 px-4 sm:px-6
-                         bg-slate-700 hover:bg-slate-600
-                         rounded-lg text-sm sm:text-base font-semibold text-white
-                         transition-all duration-300 ease-out
-                         shadow-lg hover:shadow-slate-500/40 focus:shadow-slate-500/50
-                         focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-900
-                         transform hover:-translate-y-0.5 active:translate-y-0
-                         animate-button-callout-pulse" // <-- AÑADIDA LA ANIMACIÓN
-            >
-              <BritishFlagIcon className="w-6 h-auto mr-2 flex-shrink-0" />
-              View Portfolio & Services
-              <ChevronRight className="ml-auto h-5 w-5 text-slate-300 opacity-75 group-hover:opacity-100 transition-opacity duration-300 group-hover:translate-x-1 flex-shrink-0" />
-            </button>
-          </Link>
-        </div>
-      </main>
-
-      <footer className="relative z-10 text-center w-full text-slate-500 text-xs sm:text-sm py-10 animate-fade-in-up [animation-delay:1.2s]">
-        © {new Date().getFullYear()} Alberto Bort
-      </footer>
-    </div>
+      </div>
+      {/* Línea divisoria */}
+      <div className="absolute bottom-0 left-0 w-full h-px bg-white/[0.08] group-hover:bg-indigo-500/30 transition-colors duration-500"></div>
+    </Link>
   );
 }

@@ -1,11 +1,11 @@
-// src/app/layout.tsx (Layout Raíz ÚNICO - Con Configuración de Tema Dinámica Restaurada)
 import type { Metadata } from 'next';
-import './globals.css'; 
-import { geistSans, geistMono } from '@/lib/fonts';
+import './globals.css';
+// 1. AQUI IMPORTAMOS LA NUEVA FUENTE
+import { geistSans, geistMono, playfair } from '@/lib/fonts'; 
 import { ThemeProvider } from "@/components/theme-provider";
 
 export const metadata: Metadata = {
-  title: 'Alberto Bort | Web Developer & Travel Planner',
+  title: 'Alberto Bort | Digital Services',
   description: 'Portfolio of Alberto Bort. Explore digital solutions and custom travel itineraries.',
   icons: {
     icon: "/Images/favicon.ico", 
@@ -18,21 +18,26 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`h-full ${geistSans.variable} ${geistMono.variable} font-sans scroll-smooth`} suppressHydrationWarning> 
+    <html 
+      lang="en" 
+      // 2. AQUI AÑADIMOS LA VARIABLE playfair.variable
+      className={`h-full ${geistSans.variable} ${geistMono.variable} ${playfair.variable} font-sans scroll-smooth`} 
+      suppressHydrationWarning
+    > 
       <body 
-        className="min-h-screen sm:min-h-[100dvh] 
-                   bg-slate-50 text-slate-900  // ESTILOS BASE CLAROS POR DEFECTO
-                   dark:bg-slate-950 dark:text-slate-50 // Estilos oscuros
-                   transition-colors duration-300 antialiased" 
+        className="min-h-screen sm:min-h-[100dvh] bg-background text-foreground antialiased relative selection:bg-primary selection:text-primary-foreground" 
       >
         <ThemeProvider
           attribute="class"
-          defaultTheme="system" // Volvemos a "system"
-          enableSystem         // Habilitamos que detecte el sistema
+          defaultTheme="system"
+          enableSystem
           disableTransitionOnChange
-          storageKey="portfolio-theme" // <-- ¡NUEVO Y RECOMENDADO!
+          storageKey="portfolio-theme"
         >
           {children}
+          
+          {/* Capa de Ruido Global */}
+          <div className="bg-noise mix-blend-overlay opacity-40 dark:opacity-20 pointer-events-none fixed inset-0 z-[9999]" />
         </ThemeProvider>
       </body>
     </html>
