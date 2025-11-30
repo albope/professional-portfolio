@@ -1,19 +1,14 @@
-// src/app/[lang]/page.tsx
+'use client'; // Necesario para animaciones e interactividad
 
 import Image from 'next/image';
-import { ArrowDown, DollarSign } from 'lucide-react';
+import { ArrowUpRight, Code2, Map, Layout, Github, ArrowRight, MousePointer2 } from 'lucide-react';
 import { Button } from "@/components/ui/Button";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
-import { ProjectCard } from "@/components/ProjectCard";
-import { NavBar } from "@/components/ui/NavBar";
-import { projectsData } from '@/data/projects'; // Interfaz actualizada
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/Carousel";
-import PortfolioHeader from '@/components/portfolio/PortfolioHeader';
-import { promises as fs } from 'fs';
-import path from 'path';
-import { i18n } from '../../../i18n-config';
+import { projectsData } from '@/data/projects';
+import { useEffect, useState } from 'react';
+import { motion, useScroll, useTransform } from 'framer-motion';
 
+// --- INTERFACES ---
 interface DictionaryProject {
   id: string;
   title: string;
@@ -52,52 +47,62 @@ interface DictionaryType {
   skills_section: DictionarySkillsSection;
 }
 
+// --- UTILS IMÁGENES ---
+const resolveImagePath = (src: string) => {
+  if (src.startsWith('http')) return src;
+  if (src.startsWith('/Images')) return src;
+  if (src.startsWith('/')) return src;
+  return `/Images/${src}`;
+};
 
-const getDictionary = async (lang: string): Promise<DictionaryType> => {
-  const currentLocale = i18n.locales.includes(lang as 'es' | 'en') ? lang : i18n.defaultLocale;
-  try {
-    const filePath = path.join(process.cwd(), 'dictionaries', `${currentLocale}.json`);
-    const file = await fs.readFile(filePath, 'utf8');
-    return JSON.parse(file) as DictionaryType;
-  } catch (error) {
-    console.error(`Error reading dictionary for ${currentLocale}:`, error);
-    // Fallback al diccionario por defecto (inglés en este caso, o el que definas)
-    const fallbackLocale = i18n.defaultLocale;
-    console.warn(`Falling back to ${fallbackLocale} dictionary.`);
-    const filePathFallback = path.join(process.cwd(), 'dictionaries', `${fallbackLocale}.json`);
-    const fileFallback = await fs.readFile(filePathFallback, 'utf8');
-    return JSON.parse(fileFallback) as DictionaryType;
-  }
-}
-
-// Componente reutilizable para las secciones
-const Section = ({ children, className, id }: { children: React.ReactNode, className?: string, id?: string }) => (
-  <section id={id} className={`max-w-6xl mx-auto px-4 py-16 sm:py-24 ${className}`}>
-    {children}
-  </section>
+// --- COMPONENTES VISUALES ANIMADOS ---
+const SectionTitle = ({ children, subtitle, number }: { children: React.ReactNode, subtitle?: string, number: string }) => (
+  <motion.div 
+    initial={{ opacity: 0, y: 20 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true, margin: "-100px" }}
+    transition={{ duration: 0.8 }}
+    className="mb-16 md:mb-24 border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-start gap-6 relative z-10"
+  >
+    <div className="flex items-baseline gap-4">
+      <span className="font-mono text-xs text-indigo-500 font-bold tracking-widest">({number})</span>
+      <h2 className="text-4xl md:text-6xl font-serif font-medium tracking-tight text-white leading-[0.9]">
+        {children}
+      </h2>
+    </div>
+    {subtitle && (
+      <p className="text-slate-500 text-sm md:text-base max-w-sm font-mono leading-relaxed text-right md:text-left">
+        // {subtitle}
+      </p>
+    )}
+  </motion.div>
 );
 
-// Componente reutilizable para los títulos de sección
-const SectionTitle = ({ children }: { children: React.ReactNode }) => (
-  <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-center mb-12">
-    {children}
-  </h2>
-);
+export default function PortfolioPage({ params: { lang } }: { params: { lang: string } }) {
+  const [dict, setDict] = useState<DictionaryType | null>(null);
+  const { scrollYProgress } = useScroll();
+  const yParallax = useTransform(scrollYProgress, [0, 1], [0, -50]);
 
-const SectionSeparator = () => (
-  <div className="max-w-3xl mx-auto">
-    <hr className="border-slate-200 dark:border-slate-800" />
-  </div>
-);
+  useEffect(() => {
+    const loadDictionary = async () => {
+      try {
+        const dictionary = await import(`../../../dictionaries/${lang}.json`);
+        setDict(dictionary);
+      } catch (e) {
+        const fallback = await import(`../../../dictionaries/en.json`);
+        setDict(fallback);
+      }
+    };
+    loadDictionary();
+  }, [lang]);
 
-export default async function PortfolioPage({ params: { lang } }: { params: { lang: string } }) {
-  const dict = await getDictionary(lang);
+  if (!dict) return <div className="min-h-screen bg-[#030303]" />; 
 
   const localizedProjects = projectsData.map(projectBase => {
     const localizedInfo = dict.projects.find((p: DictionaryProject) => p.id === projectBase.id);
     return {
       ...projectBase,
-      title: localizedInfo?.title || projectBase.id, // Fallback al ID si no hay título
+      title: localizedInfo?.title || projectBase.id,
       category: localizedInfo?.category || 'N/A',
       description: localizedInfo?.description || 'No description available.',
       actionText: localizedInfo?.actionText || 'View',
@@ -105,257 +110,294 @@ export default async function PortfolioPage({ params: { lang } }: { params: { la
   });
 
   return (
-    <div className="min-h-screen">
-      <PortfolioHeader />
+    <div className="min-h-screen text-slate-200 selection:bg-indigo-500/30 selection:text-indigo-100 font-sans relative">
+      
+      {/* 1. SOLUCIÓN FONDO BLANCO:
+          Usamos z-0 en lugar de z-[-1]. 
+          Esto coloca el negro SOBRE el fondo blanco del layout, pero DEBAJO del contenido (z-10). */}
+      <div className="fixed inset-0 w-full h-full bg-[#030303] z-0 pointer-events-none" />
+      
+      {/* Texture Overlay */}
+      <div className="fixed inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.08] pointer-events-none mix-blend-overlay z-0 animate-pulse" />
 
-      <main>
-        {/* SECCIÓN DE INTRODUCCIÓN (HERO) - ORDEN CAMBIADO */}
-        <section className="container mx-auto px-4 pt-8 pb-16 sm:pt-16 sm:pb-24 grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8 items-center">
-          {/* COLUMNA IZQUIERDA: INFO ALBERTO */}
-          <div className="flex flex-col gap-6 text-center md:text-left order-1">
-            <div className="flex flex-col md:flex-row items-center gap-6 text-center md:text-left mb-2">
-              <div className="relative w-32 h-32 md:w-36 md:h-36 shrink-0">
-                <Image
-                  src="/Images/alberto-bort-profile.jpg" // <-- NUEVO NOMBRE/FORMATO
-                  alt={dict.hero.greeting}
-                  fill
-                  className="rounded-full object-cover shadow-md"
-                  priority
-                />
-              </div>
-              <div className="flex flex-col">
-                <h1 className="text-4xl sm:text-5xl font-bold tracking-tighter">
-                  {dict.hero.greeting}
-                </h1>
-                <p className="text-xl sm:text-2xl font-medium text-blue-600 dark:text-blue-500 mt-1">
-                  {dict.hero.title}
-                </p>
-              </div>
+      {/* Contenido Principal (z-10 para asegurar que flote sobre el fondo negro) */}
+      <div className="relative z-10 flex flex-col gap-32 pb-32 pt-12 md:pt-24 max-w-[1400px] mx-auto px-6 md:px-12">
+        
+        {/* HERO */}
+        <section className="grid grid-cols-1 lg:grid-cols-12 gap-12 min-h-[50vh] items-end pb-12 border-b border-white/10">
+          <motion.div 
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+            className="lg:col-span-8 flex flex-col gap-8"
+          >
+            <div className="flex items-center gap-3 mb-2">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+              </span>
+              <span className="font-mono text-xs text-emerald-500 tracking-widest uppercase">Available for new projects</span>
             </div>
-            <p className="text-lg md:text-xl text-slate-600 dark:text-slate-400">
+            
+            <h1 className="font-serif text-6xl sm:text-7xl lg:text-8xl tracking-tighter leading-[0.9] text-white">
+              {dict.hero.greeting} <br />
+              <span className="text-slate-500 italic font-light block mt-2">Digital Architect.</span>
+            </h1>
+            
+            <p className="text-lg md:text-xl text-slate-400 font-light max-w-xl leading-relaxed">
               {dict.hero.description}
             </p>
-            <div className="mt-2 flex justify-center md:justify-start">
-              <NavBar />
-            </div>
-            <div className="flex flex-wrap gap-4 mt-2 justify-center md:justify-start">
-              <a href="#projects">
-                <Button size="lg">
-                  <ArrowDown className="mr-2 h-5 w-5" />
-                  {dict.buttons.my_work}
-                </Button>
-              </a>
-              <a href="#pricing">
-                <Button size="lg" variant="outline">
-                  <DollarSign className="mr-2 h-5 w-5" />
-                  {dict.buttons.services_pricing}
-                </Button>
-              </a>
-            </div>
-          </div>
+          </motion.div>
 
-          {/* COLUMNA DERECHA: TARJETA ITINERARIO */}
-          <div className="h-full order-2">
-            <Card className="h-full transform transition-transform duration-300 hover:scale-105 hover:shadow-2xl">
-              <CardHeader>
-                <Badge className="mb-2">{dict.itinerary_card.badge}</Badge>
-                <CardTitle className="text-2xl">{dict.itinerary_card.title}</CardTitle>
-                <CardDescription>{dict.itinerary_card.description}</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <Image
-                  src="/Images/ny-itinerary.jpg"
-                  alt={dict.itinerary_card.title}
-                  width={1200}
-                  height={800}
-                  className="rounded-lg shadow-md"
-                />
-              </CardContent>
-              <CardFooter>
-                <a href="/itinerario-nueva-york.pdf" target="_blank" rel="noopener noreferrer" className="w-full">
-                  <Button variant="outline" className="w-full">
-                    {dict.buttons.view_example_pdf}
-                  </Button>
-                </a>
-              </CardFooter>
-            </Card>
+          <motion.div 
+             initial={{ opacity: 0 }}
+             animate={{ opacity: 1 }}
+             transition={{ delay: 0.5, duration: 1 }}
+             className="lg:col-span-4 flex flex-col justify-end items-start lg:items-end gap-6"
+          >
+             <a href="#projects" className="group flex items-center gap-4 text-white hover:text-indigo-400 transition-colors cursor-pointer">
+                <span className="text-sm font-mono uppercase tracking-widest">{dict.buttons.my_work}</span>
+                <div className="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center group-hover:border-indigo-400 group-hover:bg-indigo-400/10 transition-all">
+                  <ArrowRight className="w-4 h-4 group-hover:-rotate-45 transition-transform duration-300" />
+                </div>
+             </a>
+             <a href="#contact" className="group flex items-center gap-4 text-slate-500 hover:text-indigo-400 transition-colors cursor-pointer">
+                <span className="text-sm font-mono uppercase tracking-widest">
+                  {dict.sections.get_in_touch.length < 15 ? dict.sections.get_in_touch : 'Contact'}
+                </span>
+                <div className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center group-hover:border-indigo-400 group-hover:bg-indigo-400/10 transition-all">
+                  <MousePointer2 className="w-4 h-4 group-hover:translate-y-1 transition-transform duration-300" />
+                </div>
+             </a>
+          </motion.div>
+        </section>
+
+        {/* PROYECTOS - Contrast Fix Applied */}
+        <section id="projects">
+          <SectionTitle number="01" subtitle="Selected works combining engineering and design aesthetics.">
+            {dict.sections.latest_work}
+          </SectionTitle>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {localizedProjects.map((project, index) => (
+              <motion.div 
+                key={project.id}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1, duration: 0.6 }}
+                // Fondo negro de seguridad para la tarjeta
+                className={`group relative overflow-hidden rounded-sm border border-white/10 bg-[#080808] hover:border-indigo-500/30 transition-all duration-500 flex flex-col ${index === 0 ? 'lg:col-span-2 lg:row-span-2' : ''}`}
+              >
+                {/* Contenedor de Imagen */}
+                <div className={`relative w-full overflow-hidden bg-[#111] ${index === 0 ? 'h-96 lg:h-[36rem]' : 'h-80'}`}>
+                   <Image 
+                      src={resolveImagePath(project.imageSrc)} 
+                      alt={project.title} 
+                      fill 
+                      className="object-cover transition-transform duration-700 group-hover:scale-105 opacity-90"
+                   />
+                   
+                   {/* SOLUCIÓN CONTRASTE: Capas de oscurecimiento */}
+                   {/* 1. Tinte base: Oscurece ligeramente toda la imagen (útil para imágenes blancas) */}
+                   <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors duration-500" />
+                   
+                   {/* 2. Gradiente agresivo: Fondo negro sólido abajo que se desvanece hacia arriba */}
+                   <div className="absolute inset-0 bg-gradient-to-t from-black via-black/90 to-transparent opacity-90" />
+                </div>
+
+                <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8 flex flex-col justify-end h-full z-20 pointer-events-none">
+                  <div className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                    <div className="flex justify-between items-end mb-3">
+                      <Badge className="border border-indigo-500/50 text-indigo-300 bg-indigo-500/10 backdrop-blur-md shadow-sm">
+                        {project.category}
+                      </Badge>
+                      <div className="flex gap-2 pointer-events-auto opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">
+                        {project.repoLink && (
+                           <a href={project.repoLink} target="_blank" rel="noopener noreferrer" className="p-2 rounded-full bg-white text-black hover:scale-110 transition-transform">
+                              <Github className="w-4 h-4" />
+                           </a>
+                        )}
+                        {project.actionLink && (
+                           <a href={project.actionLink} target="_blank" rel="noopener noreferrer" className="p-2 rounded-full bg-white text-black hover:scale-110 transition-transform">
+                              <ArrowUpRight className="w-4 h-4" />
+                           </a>
+                        )}
+                      </div>
+                    </div>
+                    
+                    {/* Texto con sombra para máxima legibilidad */}
+                    <h3 className={`font-serif text-white mb-2 leading-tight drop-shadow-md ${index === 0 ? 'text-4xl' : 'text-2xl'}`}>
+                      {project.title}
+                    </h3>
+                    <p className="text-slate-200 text-sm leading-relaxed mb-4 line-clamp-2 drop-shadow-sm opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-75">
+                      {project.description}
+                    </p>
+
+                    <div className="flex flex-wrap gap-2 pt-4 border-t border-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">
+                      {project.techStack.slice(0, 4).map(tech => (
+                        <span key={tech} className="text-[10px] font-mono uppercase tracking-wider text-slate-300 drop-shadow-sm">
+                          {tech}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
           </div>
         </section>
 
-        <SectionSeparator />
+        {/* SERVICIOS */}
+        <section id="services">
+           <SectionTitle number="02" subtitle={dict.sections.services_pricing_description}>
+              {dict.sections.services_pricing_title}
+           </SectionTitle>
 
-        <Section id="about">
-          <div className="max-w-3xl mx-auto text-center">
-            <h2 className="text-3xl font-bold mb-4">{dict.sections.about_me}</h2>
-            <p className="text-slate-800 dark:text-slate-300 text-lg">
-              {dict.sections.about_me_text}
-            </p>
+           <div className="grid grid-cols-1 border-t border-white/10">
+              {[
+                { 
+                  icon: Code2, 
+                  title: dict.service_cards.dev_title, 
+                  desc: dict.service_cards.dev_desc, 
+                  features: dict.service_cards.dev_features, 
+                  price: dict.service_cards.dev_price,
+                  color: "text-indigo-400",
+                  borderColor: "group-hover:border-indigo-500"
+                },
+                { 
+                  icon: Map, 
+                  title: dict.service_cards.itinerary_title, 
+                  desc: dict.service_cards.itinerary_desc, 
+                  features: dict.service_cards.itinerary_features, 
+                  price: dict.service_cards.itinerary_price,
+                  badge: dict.service_cards.itinerary_badge,
+                  color: "text-emerald-400",
+                  borderColor: "group-hover:border-emerald-500",
+                  special: true
+                },
+                { 
+                  icon: Layout, 
+                  title: dict.service_cards.landing_title, 
+                  desc: dict.service_cards.landing_desc, 
+                  features: dict.service_cards.landing_features, 
+                  price: dict.service_cards.landing_price,
+                  color: "text-sky-400",
+                  borderColor: "group-hover:border-sky-500"
+                }
+              ].map((service, idx) => (
+                <motion.div 
+                  key={idx}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: idx * 0.1 }}
+                  className={`group grid grid-cols-1 lg:grid-cols-12 gap-8 py-16 border-b border-white/10 hover:bg-white/[0.02] transition-all duration-500 px-4 lg:px-6 relative overflow-hidden ${service.special ? 'bg-indigo-900/[0.03]' : ''}`}
+                >
+                   <div className={`absolute left-0 top-0 bottom-0 w-1 bg-transparent ${service.borderColor.replace('border', 'bg')} transition-colors duration-300 opacity-0 group-hover:opacity-100`} />
+
+                   <div className="lg:col-span-3 relative z-10">
+                      {service.badge && (
+                        <span className="inline-block text-[10px] uppercase tracking-widest font-bold text-emerald-400 mb-3 animate-pulse">
+                           {service.badge}
+                        </span>
+                      )}
+                      <div className={`w-12 h-12 flex items-center justify-center rounded-2xl border border-white/10 bg-white/5 mb-6 ${service.color} group-hover:scale-110 transition-transform duration-500`}>
+                        <service.icon className="w-6 h-6" />
+                      </div>
+                      <h3 className="text-3xl font-serif text-white group-hover:text-indigo-100 transition-colors">{service.title}</h3>
+                   </div>
+                   
+                   <div className="lg:col-span-6 relative z-10">
+                      <p className="text-slate-400 mb-8 font-light leading-relaxed text-lg">{service.desc}</p>
+                      <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        {service.features.map((f, i) => (
+                           <li key={i} className="flex items-start gap-3 text-sm text-slate-500 group-hover:text-slate-300 transition-colors">
+                              <span className={`mt-1.5 w-1.5 h-1.5 rounded-full ${service.color.replace('text', 'bg')} shrink-0`} />
+                              {f}
+                           </li>
+                        ))}
+                     </ul>
+                   </div>
+                   
+                   <div className="lg:col-span-3 flex flex-col justify-between items-start lg:items-end relative z-10">
+                      <p className="text-3xl font-serif text-white">{service.price}</p>
+                      {service.special && (
+                        <a href="/itinerario-nueva-york.pdf" target="_blank" className="flex items-center gap-2 text-xs text-indigo-400 hover:text-white transition-colors mt-6 lg:mt-0 uppercase tracking-widest border-b border-indigo-400/30 pb-1 group-hover:border-indigo-400">
+                          {dict.buttons.view_example_pdf} <ArrowUpRight className="w-3 h-3" />
+                        </a>
+                      )}
+                   </div>
+                </motion.div>
+              ))}
+           </div>
+        </section>
+
+        {/* SKILLS */}
+        <section>
+          <SectionTitle number="03">{dict.sections.core_skills}</SectionTitle>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-12 gap-y-16">
+             {[
+                { title: dict.skills_section.frontend_title, skills: dict.skills_section.frontend_skills },
+                { title: dict.skills_section.backend_db_title, skills: dict.skills_section.backend_db_skills },
+                { title: dict.skills_section.testing_devops_title, skills: dict.skills_section.testing_devops_skills },
+                { title: dict.skills_section.tools_planning_title, skills: dict.skills_section.tools_planning_skills },
+             ].map((group, idx) => (
+                <motion.div 
+                  key={idx}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: idx * 0.1 }}
+                >
+                   <h4 className="text-xs font-mono font-bold uppercase tracking-widest text-indigo-500 mb-6 border-b border-indigo-500/20 pb-3 inline-block">
+                     {group.title}
+                   </h4>
+                   <ul className="flex flex-col gap-3">
+                      {group.skills.map(skill => (
+                         <li key={skill} className="text-lg font-serif text-slate-400 hover:text-white transition-colors cursor-default flex items-center gap-3 group/skill">
+                            <span className="w-1 h-1 bg-slate-700 rounded-full group-hover/skill:bg-indigo-400 group-hover/skill:w-2 transition-all"></span>
+                            {skill}
+                         </li>
+                      ))}
+                   </ul>
+                </motion.div>
+             ))}
           </div>
-        </Section>
+        </section>
 
-        <SectionSeparator />
-
-        <Section id="projects">
-          <SectionTitle>{dict.sections.latest_work}</SectionTitle>
-          <div className="w-full max-w-4xl mx-auto">
-            <Carousel opts={{ align: "start", loop: true }}>
-              <CarouselContent className="-ml-2">
-                {localizedProjects.map((project) => (
-                  <CarouselItem key={project.id} className="pl-2 md:basis-1/2">
-                    <div className="p-1 h-full">
-                      <ProjectCard
-                        imageSrc={project.imageSrc}
-                        title={project.title}
-                        category={project.category}
-                        description={project.description}
-                        techStack={project.techStack}
-                        tools={project.tools}
-                        actionText={project.actionText}
-                        actionLink={project.actionLink}
-                        repoLink={project.repoLink}
-                      />
-                    </div>
-                  </CarouselItem>
-                ))}
-              </CarouselContent>
-              {/* Flechas del carrusel visibles en móvil */}
-              <CarouselPrevious className="inline-flex" />
-              <CarouselNext className="inline-flex" />
-            </Carousel>
-          </div>
-        </Section>
-
-        <SectionSeparator />
-
-        <Section id="pricing">
-          <SectionTitle>{dict.sections.services_pricing_title}</SectionTitle>
-          <p className="text-center text-slate-600 dark:text-slate-400 max-w-2xl mx-auto mb-12">
-            {dict.sections.services_pricing_description}
-          </p>
-          <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <Card className="flex flex-col">
-              <CardHeader>
-                <CardTitle>{dict.service_cards.dev_title}</CardTitle>
-                <CardDescription>{dict.service_cards.dev_desc}</CardDescription>
-              </CardHeader>
-              <CardContent className="flex-grow">
-                <ul className="list-disc list-inside space-y-2">
-                  {dict.service_cards.dev_features.map((feature: string, i: number) => <li key={i}>{feature}</li>)}
-                </ul>
-              </CardContent>
-              <CardFooter><p className="text-lg font-bold">{dict.service_cards.dev_price}</p></CardFooter>
-            </Card>
-            <Card className="flex flex-col border-2 border-blue-500 shadow-xl">
-              <CardHeader>
-                <Badge className="mb-2">{dict.service_cards.itinerary_badge}</Badge>
-                <CardTitle>{dict.service_cards.itinerary_title}</CardTitle>
-                <CardDescription>{dict.service_cards.itinerary_desc}</CardDescription>
-              </CardHeader>
-              <CardContent className="flex-grow">
-                <ul className="list-disc list-inside space-y-2">
-                  {dict.service_cards.itinerary_features.map((feature: string, i: number) => <li key={i}>{feature}</li>)}
-                </ul>
-              </CardContent>
-              <CardFooter><p className="text-lg font-bold">{dict.service_cards.itinerary_price}</p></CardFooter>
-            </Card>
-            <Card className="flex flex-col">
-              <CardHeader>
-                <CardTitle>{dict.service_cards.landing_title}</CardTitle>
-                <CardDescription>{dict.service_cards.landing_desc}</CardDescription>
-              </CardHeader>
-              <CardContent className="flex-grow">
-                <ul className="list-disc list-inside space-y-2">
-                  {dict.service_cards.landing_features.map((feature: string, i: number) => <li key={i}>{feature}</li>)}
-                </ul>
-              </CardContent>
-              <CardFooter><p className="text-lg font-bold">{dict.service_cards.landing_price}</p></CardFooter>
-            </Card>
-          </div>
-        </Section>
-
-        <SectionSeparator />
-
-        <Section>
-          <SectionTitle>{dict.sections.core_skills}</SectionTitle>
-          <div className="max-w-4xl mx-auto space-y-8">
-            <div className="text-center">
-              <h4 className="text-xl font-semibold mb-4">{dict.skills_section.frontend_title}</h4>
-              <div className="flex flex-wrap gap-3 justify-center">
-                {dict.skills_section.frontend_skills.map((skill: string, i: number) => <Badge key={i}>{skill}</Badge>)}
+        {/* FOOTER */}
+        <section id="contact" className="border-t border-white/10 pt-24 mt-8">
+           <div className="flex flex-col md:flex-row justify-between items-start gap-12">
+              <motion.div 
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                viewport={{ once: true }}
+              >
+                 <h2 className="text-5xl font-serif text-white mb-8 leading-tight">{dict.sections.get_in_touch}</h2>
+                 <p className="text-slate-400 max-w-md mb-10 leading-relaxed font-light text-lg">
+                    {dict.sections.get_in_touch_description}
+                 </p>
+                 <a 
+                    href="mailto:albertobort@gmail.com" 
+                    className="text-3xl md:text-5xl font-serif text-white hover:text-indigo-400 transition-colors underline decoration-1 underline-offset-[16px] decoration-white/20 hover:decoration-indigo-400"
+                 >
+                    albertobort@gmail.com
+                 </a>
+              </motion.div>
+              <div className="text-right text-xs font-mono text-slate-600 uppercase tracking-widest mt-12 md:mt-0">
+                 <p className="mb-2">© {new Date().getFullYear()} Alberto Bort.</p>
+                 <p>{dict.footer.rights_reserved}</p>
+                 <div className="mt-6 flex justify-end gap-6">
+                    <a href="#" className="hover:text-white transition-colors">LinkedIn</a>
+                    <a href="#" className="hover:text-white transition-colors">GitHub</a>
+                    <a href="#" className="hover:text-white transition-colors">Twitter</a>
+                 </div>
               </div>
-            </div>
-            <div className="text-center">
-              <h4 className="text-xl font-semibold mb-4">{dict.skills_section.backend_db_title}</h4>
-              <div className="flex flex-wrap gap-3 justify-center">
-                {dict.skills_section.backend_db_skills.map((skill: string, i: number) => <Badge key={i}>{skill}</Badge>)}
-              </div>
-            </div>
-            <div className="text-center">
-              <h4 className="text-xl font-semibold mb-4">{dict.skills_section.testing_devops_title}</h4>
-              <div className="flex flex-wrap gap-3 justify-center">
-                {dict.skills_section.testing_devops_skills.map((skill: string, i: number) => <Badge key={i}>{skill}</Badge>)}
-              </div>
-            </div>
-            <div className="text-center">
-              <h4 className="text-xl font-semibold mb-4">{dict.skills_section.tools_planning_title}</h4>
-              <div className="flex flex-wrap gap-3 justify-center">
-                {dict.skills_section.tools_planning_skills.map((skill: string, i: number) => <Badge key={i}>{skill}</Badge>)}
-              </div>
-            </div>
-          </div>
-        </Section>
-
-        <SectionSeparator />
-
-        <Section>
-          <SectionTitle>{dict.sections.get_in_touch}</SectionTitle>
-          <div className="max-w-xl mx-auto text-center">
-            <p className="text-lg mb-6 text-slate-600 dark:text-slate-400">
-              {/* Asumiendo que 'Contact me' es la frase literal para dividir */}
-              {dict.sections.get_in_touch_description.includes('Contact me')
-                ? (
-                  <>
-                    {dict.sections.get_in_touch_description.split('Contact me')[0]}
-                    <a
-                      href="mailto:albertobort@gmail.com"
-                      className="font-medium text-blue-600 hover:underline dark:text-blue-500"
-                    >
-                      Contact me {/* Esto podría necesitar traducción si 'Contact me' cambia */}
-                    </a>
-                    {dict.sections.get_in_touch_description.split('Contact me')[1]}
-                  </>
-                )
-                : dict.sections.get_in_touch_description.includes('Contáctame') // Para español
-                  ? (
-                    <>
-                      {dict.sections.get_in_touch_description.split('Contáctame')[0]}
-                      <a
-                        href="mailto:albertobort@gmail.com"
-                        className="font-medium text-blue-600 hover:underline dark:text-blue-500"
-                      >
-                        Contáctame
-                      </a>
-                      {dict.sections.get_in_touch_description.split('Contáctame')[1]}
-                    </>
-                  )
-                  : ( // Fallback si ninguna de las frases clave está presente
-                    <a
-                      href="mailto:albertobort@gmail.com"
-                      className="font-medium text-blue-600 hover:underline dark:text-blue-500"
-                    >
-                      {dict.sections.get_in_touch_description}
-                    </a>
-                  )
-              }
-            </p>
-            <NavBar />
-          </div>
-        </Section>
-      </main>
-
-      <footer className="text-center p-8 text-sm text-slate-500 border-t border-slate-200 dark:border-slate-800 mt-16 sm:mt-24">
-        © {new Date().getFullYear()} Alberto Bort. {dict.footer.rights_reserved}
-      </footer>
+           </div>
+        </section>
+        
+      </div>
     </div>
   );
 }
