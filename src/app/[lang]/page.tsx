@@ -63,16 +63,16 @@ const SectionTitle = ({ children, subtitle, number }: { children: React.ReactNod
     viewport={{ once: true, margin: "-100px" }}
     transition={{ duration: 0.8 }}
     // Borde adaptable: Gris suave en Light, Blanco sutil en Dark
-    className="mb-16 md:mb-24 border-t border-slate-200 dark:border-white/10 pt-8 flex flex-col md:flex-row justify-between items-start gap-6 relative z-10"
+    className="mb-12 md:mb-24 border-t border-slate-200 dark:border-white/10 pt-8 flex flex-col md:flex-row justify-between items-start gap-4 md:gap-6 relative z-10"
   >
     <div className="flex items-baseline gap-4">
       <span className="font-mono text-xs text-indigo-600 dark:text-indigo-500 font-bold tracking-widest">({number})</span>
-      <h2 className="text-4xl md:text-6xl font-serif font-medium tracking-tight text-foreground leading-[0.9]">
+      <h2 className="text-3xl sm:text-4xl md:text-6xl font-serif font-medium tracking-tight text-foreground leading-[0.9]">
         {children}
       </h2>
     </div>
     {subtitle && (
-      <p className="text-muted-foreground text-sm md:text-base max-w-sm font-mono leading-relaxed text-right md:text-left">
+      <p className="text-muted-foreground text-sm md:text-base max-w-sm font-mono leading-relaxed text-left md:text-left mt-2 md:mt-0">
         // {subtitle}
       </p>
     )}
@@ -113,7 +113,7 @@ export default function PortfolioPage({ params: { lang } }: { params: { lang: st
   });
 
   return (
-    // FIX MODO CLARO: Usamos variables semánticas (bg-background, text-foreground)
+    // MODO CLARO/OSCURO: Variables semánticas
     <div className="min-h-screen bg-background text-foreground font-sans relative transition-colors duration-500">
       
       {/* Fondo Base Semántico */}
@@ -123,30 +123,33 @@ export default function PortfolioPage({ params: { lang } }: { params: { lang: st
       <div className="fixed inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.05] dark:opacity-[0.08] pointer-events-none mix-blend-overlay z-0 animate-pulse" />
 
       {/* Contenido Principal */}
-      <div className="relative z-10 flex flex-col gap-32 pb-32 pt-12 md:pt-24 max-w-[1400px] mx-auto px-6 md:px-12">
+      {/* CONFIRMADO: pb-40 para asegurar espacio extra en móvil para la barra inferior */}
+      <div className="relative z-10 flex flex-col gap-20 md:gap-32 pb-40 md:pb-32 pt-24 md:pt-24 max-w-[1400px] mx-auto px-6 md:px-12">
         
         {/* HERO */}
-        <section className="grid grid-cols-1 lg:grid-cols-12 gap-12 min-h-[50vh] items-end pb-12 border-b border-slate-200 dark:border-white/10">
+        {/* Grid responsive: 1 col en móvil, 12 cols en desktop */}
+        <section className="grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-12 min-h-[60vh] md:min-h-[50vh] items-end pb-12 border-b border-slate-200 dark:border-white/10">
           <motion.div 
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-            className="lg:col-span-8 flex flex-col gap-8"
+            className="lg:col-span-8 flex flex-col gap-6 md:gap-8"
           >
             <div className="flex items-center gap-3 mb-2">
               <span className="relative flex h-2 w-2">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
               </span>
-              <span className="font-mono text-xs text-emerald-600 dark:text-emerald-500 tracking-widest uppercase">Available for new projects</span>
+              <span className="font-mono text-[10px] md:text-xs text-emerald-600 dark:text-emerald-500 tracking-widest uppercase">Available for new projects</span>
             </div>
             
-            <h1 className="font-serif text-6xl sm:text-7xl lg:text-8xl tracking-tighter leading-[0.9] text-foreground">
+            {/* Tipografía adaptativa: text-5xl en móvil, text-8xl en desktop */}
+            <h1 className="font-serif text-5xl sm:text-7xl lg:text-8xl tracking-tighter leading-[0.95] text-foreground">
               {dict.hero.greeting} <br />
-              <span className="text-muted-foreground italic font-light block mt-2">Digital Architect.</span>
+              <span className="text-slate-500 italic font-light block mt-2">Digital Architect.</span>
             </h1>
             
-            <p className="text-lg md:text-xl text-muted-foreground font-light max-w-xl leading-relaxed">
+            <p className="text-base md:text-xl text-muted-foreground font-light max-w-xl leading-relaxed">
               {dict.hero.description}
             </p>
           </motion.div>
@@ -155,7 +158,7 @@ export default function PortfolioPage({ params: { lang } }: { params: { lang: st
              initial={{ opacity: 0 }}
              animate={{ opacity: 1 }}
              transition={{ delay: 0.5, duration: 1 }}
-             className="lg:col-span-4 flex flex-col justify-end items-start lg:items-end gap-6"
+             className="lg:col-span-4 flex flex-col justify-end items-start lg:items-end gap-6 pt-8 lg:pt-0"
           >
              <a href="#projects" className="group flex items-center gap-4 text-foreground hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors cursor-pointer">
                 <span className="text-sm font-mono uppercase tracking-widest">{dict.buttons.my_work}</span>
@@ -176,7 +179,6 @@ export default function PortfolioPage({ params: { lang } }: { params: { lang: st
 
         {/* PROYECTOS */}
         <section id="projects">
-          {/* Subtítulo dinámico */}
           <SectionTitle number="01" subtitle={projectsSubtitle}>
             {dict.sections.latest_work}
           </SectionTitle>
@@ -189,21 +191,17 @@ export default function PortfolioPage({ params: { lang } }: { params: { lang: st
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1, duration: 0.6 }}
-                // CORRECCIÓN 1: Fondo SIEMPRE negro (#080808) para las tarjetas de proyecto.
-                // Esto evita que si la imagen no cubre todo, se vea un fondo blanco (la "caja blanca").
-                className={`group relative overflow-hidden rounded-sm border border-white/10 bg-[#080808] hover:border-indigo-500/30 transition-all duration-500 flex flex-col shadow-sm ${index === 0 ? 'lg:col-span-2 lg:row-span-2' : ''}`}
+                // Fondo NEGRO fijo para evitar el flash blanco si la imagen falla
+                className={`group relative overflow-hidden rounded-sm border border-slate-200 dark:border-white/10 bg-[#080808] hover:border-indigo-500/30 transition-all duration-500 flex flex-col shadow-sm dark:shadow-none ${index === 0 ? 'lg:col-span-2 lg:row-span-2' : ''}`}
               >
-                {/* Imagen */}
-                {/* CORRECCIÓN 2: 'h-full' para la imagen grande en desktop. Esto asegura que cubra todo el span de filas. */}
-                <div className={`relative w-full overflow-hidden bg-[#111] ${index === 0 ? 'h-96 lg:h-full' : 'h-80'}`}>
+                {/* Imagen: h-full en desktop para llenar la tarjeta grande */}
+                <div className={`relative w-full overflow-hidden bg-[#111] ${index === 0 ? 'h-64 sm:h-96 lg:h-full' : 'h-64 sm:h-80'}`}>
                    <Image 
                       src={resolveImagePath(project.imageSrc)} 
                       alt={project.title} 
                       fill 
                       className="object-cover transition-transform duration-700 group-hover:scale-105 opacity-90"
                    />
-                   
-                   {/* Capas de contraste */}
                    <div className="absolute inset-0 bg-black/10 transition-colors duration-500" />
                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent opacity-90" />
                 </div>
@@ -228,7 +226,7 @@ export default function PortfolioPage({ params: { lang } }: { params: { lang: st
                       </div>
                     </div>
                     
-                    <h3 className={`font-serif text-white mb-2 leading-tight drop-shadow-md ${index === 0 ? 'text-4xl' : 'text-2xl'}`}>
+                    <h3 className={`font-serif text-white mb-2 leading-tight drop-shadow-md ${index === 0 ? 'text-3xl md:text-4xl' : 'text-2xl'}`}>
                       {project.title}
                     </h3>
                     <p className="text-slate-200 text-sm leading-relaxed mb-4 line-clamp-2 drop-shadow-sm opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-75">
@@ -293,7 +291,7 @@ export default function PortfolioPage({ params: { lang } }: { params: { lang: st
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: idx * 0.1 }}
-                  className={`group grid grid-cols-1 lg:grid-cols-12 gap-8 py-16 border-b border-slate-200 dark:border-white/10 hover:bg-slate-50 dark:hover:bg-white/[0.02] transition-all duration-500 px-4 lg:px-6 relative overflow-hidden ${service.special ? 'bg-indigo-50/50 dark:bg-indigo-900/[0.03]' : ''}`}
+                  className={`group grid grid-cols-1 lg:grid-cols-12 gap-6 md:gap-8 py-12 md:py-16 border-b border-slate-200 dark:border-white/10 hover:bg-slate-50 dark:hover:bg-white/[0.02] transition-all duration-500 px-4 lg:px-6 relative overflow-hidden ${service.special ? 'bg-indigo-50/50 dark:bg-indigo-900/[0.03]' : ''}`}
                 >
                    <div className={`absolute left-0 top-0 bottom-0 w-1 bg-transparent ${service.borderColor.replace('border', 'bg')} transition-colors duration-300 opacity-0 group-hover:opacity-100`} />
 
@@ -306,14 +304,14 @@ export default function PortfolioPage({ params: { lang } }: { params: { lang: st
                       <div className={`w-12 h-12 flex items-center justify-center rounded-2xl border border-slate-200 dark:border-white/10 bg-white dark:bg-white/5 mb-6 ${service.color} group-hover:scale-110 transition-transform duration-500 shadow-sm`}>
                         <service.icon className="w-6 h-6" />
                       </div>
-                      <h3 className="text-3xl font-serif text-foreground group-hover:text-indigo-600 dark:group-hover:text-indigo-100 transition-colors">{service.title}</h3>
+                      <h3 className="text-2xl md:text-3xl font-serif text-foreground group-hover:text-indigo-600 dark:group-hover:text-indigo-100 transition-colors">{service.title}</h3>
                    </div>
                    
                    <div className="lg:col-span-6 relative z-10">
-                      <p className="text-muted-foreground mb-8 font-light leading-relaxed text-lg">{service.desc}</p>
+                      <p className="text-muted-foreground mb-8 font-light leading-relaxed text-base md:text-lg">{service.desc}</p>
                       <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         {service.features.map((f, i) => (
-                           <li key={i} className="flex items-start gap-3 text-sm text-slate-600 dark:text-slate-500 group-hover:text-slate-900 dark:group-hover:text-slate-300 transition-colors">
+                           <li key={i} className="flex items-start gap-3 text-sm text-slate-500 dark:text-slate-500 group-hover:text-slate-800 dark:group-hover:text-slate-300 transition-colors">
                               <span className={`mt-1.5 w-1.5 h-1.5 rounded-full ${service.color.replace('text', 'bg')} shrink-0`} />
                               {f}
                            </li>
@@ -321,8 +319,8 @@ export default function PortfolioPage({ params: { lang } }: { params: { lang: st
                      </ul>
                    </div>
                    
-                   <div className="lg:col-span-3 flex flex-col justify-between items-start lg:items-end relative z-10">
-                      <p className="text-3xl font-serif text-foreground">{service.price}</p>
+                   <div className="lg:col-span-3 flex flex-col justify-between items-start lg:items-end relative z-10 mt-6 lg:mt-0">
+                      <p className="text-2xl md:text-3xl font-serif text-foreground">{service.price}</p>
                       {service.special && (
                         <a href="/itinerario-nueva-york.pdf" target="_blank" className="flex items-center gap-2 text-xs text-indigo-600 dark:text-indigo-400 hover:text-black dark:hover:text-white transition-colors mt-6 lg:mt-0 uppercase tracking-widest border-b border-indigo-400/30 pb-1 group-hover:border-indigo-400">
                           {dict.buttons.view_example_pdf} <ArrowUpRight className="w-3 h-3" />
@@ -337,7 +335,7 @@ export default function PortfolioPage({ params: { lang } }: { params: { lang: st
         {/* SKILLS */}
         <section>
           <SectionTitle number="03">{dict.sections.core_skills}</SectionTitle>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-12 gap-y-16">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-12 gap-y-12 md:gap-y-16">
              {[
                 { title: dict.skills_section.frontend_title, skills: dict.skills_section.frontend_skills },
                 { title: dict.skills_section.backend_db_title, skills: dict.skills_section.backend_db_skills },
@@ -356,7 +354,7 @@ export default function PortfolioPage({ params: { lang } }: { params: { lang: st
                    </h4>
                    <ul className="flex flex-col gap-3">
                       {group.skills.map(skill => (
-                         <li key={skill} className="text-lg font-serif text-slate-600 dark:text-slate-400 hover:text-black dark:hover:text-white transition-colors cursor-default flex items-center gap-3 group/skill">
+                         <li key={skill} className="text-base md:text-lg font-serif text-slate-600 dark:text-slate-400 hover:text-black dark:hover:text-white transition-colors cursor-default flex items-center gap-3 group/skill">
                             <span className="w-1 h-1 bg-slate-300 dark:bg-slate-700 rounded-full group-hover/skill:bg-indigo-500 dark:group-hover/skill:bg-indigo-400 group-hover/skill:w-2 transition-all"></span>
                             {skill}
                          </li>
@@ -368,28 +366,28 @@ export default function PortfolioPage({ params: { lang } }: { params: { lang: st
         </section>
 
         {/* FOOTER */}
-        <section id="contact" className="border-t border-slate-200 dark:border-white/10 pt-24 mt-8">
+        <section id="contact" className="border-t border-slate-200 dark:border-white/10 pt-16 md:pt-24 mt-8 pb-8 md:pb-0">
            <div className="flex flex-col md:flex-row justify-between items-start gap-12">
               <motion.div 
                 initial={{ opacity: 0 }}
                 whileInView={{ opacity: 1 }}
                 viewport={{ once: true }}
               >
-                 <h2 className="text-5xl font-serif text-foreground mb-8 leading-tight">{dict.sections.get_in_touch}</h2>
-                 <p className="text-muted-foreground max-w-md mb-10 leading-relaxed font-light text-lg">
+                 <h2 className="text-4xl md:text-5xl font-serif text-foreground mb-6 md:mb-8 leading-tight">{dict.sections.get_in_touch}</h2>
+                 <p className="text-muted-foreground max-w-md mb-8 md:mb-10 leading-relaxed font-light text-lg">
                     {dict.sections.get_in_touch_description}
                  </p>
                  <a 
                     href="mailto:albertobort@gmail.com" 
-                    className="text-3xl md:text-5xl font-serif text-foreground hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors underline decoration-1 underline-offset-[16px] decoration-slate-300 dark:decoration-white/20 hover:decoration-indigo-500"
+                    className="text-2xl md:text-5xl font-serif text-foreground hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors underline decoration-1 underline-offset-[16px] decoration-slate-300 dark:decoration-white/20 hover:decoration-indigo-500 break-all md:break-normal"
                  >
                     albertobort@gmail.com
                  </a>
               </motion.div>
-              <div className="text-right text-xs font-mono text-slate-500 dark:text-slate-600 uppercase tracking-widest mt-12 md:mt-0">
+              <div className="text-left md:text-right text-xs font-mono text-slate-500 dark:text-slate-600 uppercase tracking-widest mt-12 md:mt-0 w-full md:w-auto">
                  <p className="mb-2">© {new Date().getFullYear()} Alberto Bort.</p>
                  <p>{dict.footer.rights_reserved}</p>
-                 <div className="mt-6 flex justify-end gap-6">
+                 <div className="mt-6 flex justify-start md:justify-end gap-6">
                     <a href="#" className="hover:text-black dark:hover:text-white transition-colors">LinkedIn</a>
                     <a href="#" className="hover:text-black dark:hover:text-white transition-colors">GitHub</a>
                     <a href="#" className="hover:text-black dark:hover:text-white transition-colors">Twitter</a>

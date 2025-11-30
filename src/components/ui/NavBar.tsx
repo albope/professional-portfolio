@@ -26,10 +26,8 @@ export const NavBar: React.FC = () => {
   const pathname = usePathname();
   const router = useRouter();
 
-  // Evitar hidratación incorrecta
   useEffect(() => setMounted(true), []);
 
-  // Lógica de cambio de idioma
   const toggleLanguage = () => {
     if (!pathname) return;
     const currentLang = pathname.split('/')[1];
@@ -42,7 +40,7 @@ export const NavBar: React.FC = () => {
 
   // Variantes de animación
   const islandVariants: Variants = {
-    hidden: { y: -100, opacity: 0 },
+    hidden: { y: -20, opacity: 0 },
     visible: { 
       y: 0, 
       opacity: 1, 
@@ -50,17 +48,29 @@ export const NavBar: React.FC = () => {
     }
   };
 
-  // Obtenemos el idioma actual para mostrarlo
+  const bottomBarVariants: Variants = {
+    hidden: { y: 100, opacity: 0 },
+    visible: { 
+      y: 0, 
+      opacity: 1, 
+      transition: { type: "spring", stiffness: 100, damping: 20, delay: 0.2 } 
+    }
+  };
+
+  // Obtenemos el idioma actual
   const currentLangCode = pathname?.split('/')[1] === 'es' ? 'ES' : 'EN';
 
   return (
     <>
-      {/* --- ISLA 1: NAVEGACIÓN PRINCIPAL (CENTRADA) --- */}
+      {/* --- ISLA 1: NAVEGACIÓN PRINCIPAL --- 
+        Mobile: Hidden (se usa la Bottom Bar)
+        Desktop (md+): Visible Centrada
+      */}
       <motion.nav 
         variants={islandVariants}
         initial="hidden"
         animate="visible"
-        className="fixed top-6 left-1/2 -translate-x-1/2 z-[100] flex items-center gap-1 px-2 py-2 rounded-full border border-black/5 dark:border-white/10 bg-white/80 dark:bg-[#0a0a0a]/80 backdrop-blur-xl shadow-lg dark:shadow-2xl ring-1 ring-black/5 dark:ring-white/5"
+        className="hidden md:flex fixed top-6 left-1/2 -translate-x-1/2 z-[100] items-center gap-1 px-2 py-2 rounded-full border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-[#0a0a0a]/80 backdrop-blur-xl shadow-lg dark:shadow-2xl ring-1 ring-black/5 dark:ring-white/5"
       >
         {navItems.map((item, index) => {
           const Icon = item.icon;
@@ -79,10 +89,9 @@ export const NavBar: React.FC = () => {
                 "text-slate-500 dark:text-slate-400 hover:text-black dark:hover:text-white"
               )}
             >
-              {/* Fondo Hover Magnético */}
               {isHovered && (
                 <motion.div
-                  layoutId="navbar-hover"
+                  layoutId="navbar-hover-desktop"
                   className="absolute inset-0 bg-black/5 dark:bg-white/10 rounded-full"
                   initial={{ opacity: 0, scale: 0.8 }}
                   animate={{ opacity: 1, scale: 1 }}
@@ -90,12 +99,9 @@ export const NavBar: React.FC = () => {
                   transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
                 />
               )}
-
-              <span className="relative z-10">
-                <Icon className="w-5 h-5" />
-              </span>
-
-              {/* Tooltip */}
+              <span className="relative z-10"><Icon className="w-5 h-5" /></span>
+              
+              {/* Desktop Tooltip */}
               <AnimatePresence>
                 {isHovered && (
                   <motion.div
@@ -113,38 +119,65 @@ export const NavBar: React.FC = () => {
         })}
       </motion.nav>
 
-      {/* --- ISLA 2: UTILIDADES (EXTREMO DERECHO) --- */}
+      {/* --- MOBILE: BOTTOM BAR (Barra Inferior) --- 
+        Mobile: Visible
+        Desktop (md+): Hidden
+      */}
+      <motion.nav 
+        variants={bottomBarVariants}
+        initial="hidden"
+        animate="visible"
+        className="md:hidden fixed bottom-6 left-6 right-6 z-[100] flex justify-between items-center px-4 py-3 rounded-2xl border border-slate-200 dark:border-white/10 bg-white/90 dark:bg-[#0a0a0a]/90 backdrop-blur-xl shadow-2xl ring-1 ring-black/5 dark:ring-white/5"
+      >
+         {navItems.map((item, index) => {
+          const Icon = item.icon;
+          return (
+            <a
+              key={item.name}
+              href={item.href}
+              target={item.external ? "_blank" : undefined}
+              rel={item.external ? "noopener noreferrer" : undefined}
+              className="relative flex flex-col items-center justify-center p-2 text-slate-500 dark:text-slate-400 active:scale-90 transition-transform"
+            >
+              <Icon className="w-6 h-6 mb-0.5" />
+              {/* Optional: Tiny label for mobile if needed, but clean icons are better */}
+            </a>
+          );
+        })}
+      </motion.nav>
+
+      {/* --- ISLA 2: UTILIDADES (EXTREMO DERECHO) --- 
+        Visible en ambos, pero ajustamos posición en móvil
+      */}
       <motion.div 
         variants={islandVariants}
         initial="hidden"
         animate="visible"
         transition={{ delay: 0.1 }}
-        className="fixed top-6 right-6 z-[100] flex items-center gap-1 px-2 py-2 rounded-full border border-black/5 dark:border-white/10 bg-white/80 dark:bg-[#0a0a0a]/80 backdrop-blur-xl shadow-lg dark:shadow-2xl ring-1 ring-black/5 dark:ring-white/5"
+        // En móvil un poco más pequeña y pegada al borde, en desktop normal
+        className="fixed top-4 right-4 md:top-6 md:right-6 z-[100] flex items-center gap-1 px-1.5 py-1.5 md:px-2 md:py-2 rounded-full border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-[#0a0a0a]/80 backdrop-blur-xl shadow-lg dark:shadow-2xl ring-1 ring-black/5 dark:ring-white/5"
       >
-        {/* Toggle Tema */}
         <button
           onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-          className="relative group p-3 rounded-full text-slate-500 dark:text-slate-400 hover:text-amber-500 dark:hover:text-amber-300 hover:bg-black/5 dark:hover:bg-white/10 transition-all"
+          className="relative group p-2 md:p-3 rounded-full text-slate-500 dark:text-slate-400 hover:text-amber-500 dark:hover:text-amber-300 hover:bg-black/5 dark:hover:bg-white/10 transition-all"
           aria-label="Toggle Theme"
         >
-          <Sun className="w-5 h-5 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0 absolute" />
-          <Moon className="w-5 h-5 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-          <span className="w-5 h-5 block opacity-0">.</span> 
+          <Sun className="w-4 h-4 md:w-5 md:h-5 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0 absolute" />
+          <Moon className="w-4 h-4 md:w-5 md:h-5 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+          <span className="w-4 h-4 md:w-5 md:h-5 block opacity-0">.</span> 
         </button>
 
-        <div className="w-px h-4 bg-black/10 dark:bg-white/10 mx-1" />
+        <div className="w-px h-3 md:h-4 bg-slate-300 dark:bg-white/10 mx-0.5" />
 
-        {/* Toggle Idioma - Diseño Tipográfico Limpio */}
         <button
           onClick={toggleLanguage}
-          className="group p-3 rounded-full text-slate-500 dark:text-slate-400 hover:text-black dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/10 transition-all"
+          className="group p-2 md:p-3 rounded-full text-slate-500 dark:text-slate-400 hover:text-black dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/10 transition-all"
           aria-label="Switch Language"
         >
-          <span className="font-mono text-xs font-bold tracking-wider">
+          <span className="font-mono text-[10px] md:text-xs font-bold tracking-wider">
             {currentLangCode}
           </span>
         </button>
-
       </motion.div>
     </>
   );
