@@ -38,7 +38,6 @@ export const NavBar: React.FC = () => {
 
   if (!mounted) return null;
 
-  // Variantes de animación
   const islandVariants: Variants = {
     hidden: { y: -20, opacity: 0 },
     visible: { 
@@ -57,15 +56,11 @@ export const NavBar: React.FC = () => {
     }
   };
 
-  // Obtenemos el idioma actual
   const currentLangCode = pathname?.split('/')[1] === 'es' ? 'ES' : 'EN';
 
   return (
     <>
-      {/* --- ISLA 1: NAVEGACIÓN PRINCIPAL --- 
-        Mobile: Hidden (se usa la Bottom Bar)
-        Desktop (md+): Visible Centrada
-      */}
+      {/* DESKTOP NAV (Centrada) */}
       <motion.nav 
         variants={islandVariants}
         initial="hidden"
@@ -101,7 +96,6 @@ export const NavBar: React.FC = () => {
               )}
               <span className="relative z-10"><Icon className="w-5 h-5" /></span>
               
-              {/* Desktop Tooltip */}
               <AnimatePresence>
                 {isHovered && (
                   <motion.div
@@ -119,17 +113,14 @@ export const NavBar: React.FC = () => {
         })}
       </motion.nav>
 
-      {/* --- MOBILE: BOTTOM BAR (Barra Inferior) --- 
-        Mobile: Visible
-        Desktop (md+): Hidden
-      */}
+      {/* MOBILE NAV (Barra Inferior) */}
       <motion.nav 
         variants={bottomBarVariants}
         initial="hidden"
         animate="visible"
         className="md:hidden fixed bottom-6 left-6 right-6 z-[100] flex justify-between items-center px-4 py-3 rounded-2xl border border-slate-200 dark:border-white/10 bg-white/90 dark:bg-[#0a0a0a]/90 backdrop-blur-xl shadow-2xl ring-1 ring-black/5 dark:ring-white/5"
       >
-         {navItems.map((item, index) => {
+         {navItems.map((item) => {
           const Icon = item.icon;
           return (
             <a
@@ -140,21 +131,17 @@ export const NavBar: React.FC = () => {
               className="relative flex flex-col items-center justify-center p-2 text-slate-500 dark:text-slate-400 active:scale-90 transition-transform"
             >
               <Icon className="w-6 h-6 mb-0.5" />
-              {/* Optional: Tiny label for mobile if needed, but clean icons are better */}
             </a>
           );
         })}
       </motion.nav>
 
-      {/* --- ISLA 2: UTILIDADES (EXTREMO DERECHO) --- 
-        Visible en ambos, pero ajustamos posición en móvil
-      */}
+      {/* UTILS ISLAND (Extremo Derecho) */}
       <motion.div 
         variants={islandVariants}
         initial="hidden"
         animate="visible"
         transition={{ delay: 0.1 }}
-        // En móvil un poco más pequeña y pegada al borde, en desktop normal
         className="fixed top-4 right-4 md:top-6 md:right-6 z-[100] flex items-center gap-1 px-1.5 py-1.5 md:px-2 md:py-2 rounded-full border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-[#0a0a0a]/80 backdrop-blur-xl shadow-lg dark:shadow-2xl ring-1 ring-black/5 dark:ring-white/5"
       >
         <button

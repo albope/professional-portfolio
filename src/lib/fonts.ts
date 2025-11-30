@@ -1,17 +1,16 @@
-// src/lib/fonts.ts
 import localFont from "next/font/local";
-import { Inter, JetBrains_Mono, Playfair_Display } from "next/font/google";
+import { Playfair_Display } from "next/font/google";
 
 export const geistSans = localFont({
-  src: "../app/fonts/GeistVF.woff", // Ajusta la ruta si es necesario desde /lib
+  src: "../app/fonts/GeistVF.woff",
   variable: "--font-geist-sans",
-  weight: "100 900" // Opcional, para fuentes variables
+  weight: "100 900",
 });
 
 export const geistMono = localFont({
-  src: "../app/fonts/GeistMonoVF.woff", // Ajusta la ruta si es necesario desde /lib
+  src: "../app/fonts/GeistMonoVF.woff",
   variable: "--font-geist-mono",
-  weight: "100 900" // Opcional
+  weight: "100 900",
 });
 
 export const playfair = Playfair_Display({

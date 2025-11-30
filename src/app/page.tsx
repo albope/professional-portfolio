@@ -2,11 +2,10 @@
 
 import Link from 'next/link';
 import { motion, Variants } from 'framer-motion';
-import { ArrowUpRight, Users, CheckCircle, Github } from 'lucide-react';
+import { ArrowUpRight, Users, CheckCircle } from 'lucide-react';
 
 export default function SplashPage() {
   
-  // Variantes de animación más lentas y fluidas (Cinemáticas)
   const containerVariants: Variants = {
     hidden: { opacity: 0 },
     visible: { 
@@ -35,7 +34,6 @@ export default function SplashPage() {
         
         {/* --- COLUMNA IZQUIERDA: IDENTIDAD --- */}
         <motion.div 
-          // AJUSTE MOBILE: p-6 en lugar de p-8 para más espacio lateral. py-24 para evitar solapamiento vertical.
           className="flex flex-col justify-center border-b border-white/[0.08] lg:col-span-7 lg:border-b-0 lg:border-r p-6 py-24 sm:p-12 lg:p-24 relative min-h-[60vh] lg:min-h-auto"
           variants={containerVariants}
           initial="hidden"
@@ -51,23 +49,20 @@ export default function SplashPage() {
 
           {/* Main Title Block */}
           <div className="relative z-10 mt-4 lg:mt-0">
-            {/* AJUSTE MOBILE: text-6xl base para evitar cortes en pantallas pequeñas */}
             <motion.h1 variants={textVariants} className="font-serif text-6xl sm:text-9xl lg:text-[10rem] xl:text-[11rem] tracking-tighter text-white leading-[0.85]">
               Alberto <br />
               <span className="italic text-slate-300 font-light">Bort</span>
             </motion.h1>
             
             <motion.div variants={textVariants} className="mt-8 sm:mt-12 flex flex-col gap-8 sm:gap-10 max-w-xl">
-              {/* Descripción */}
               <p className="text-lg sm:text-2xl lg:text-3xl text-slate-400 font-light leading-snug">
                 Arquitectura de Soluciones Digitales & <br className="hidden sm:block"/>
                 Diseño de Experiencias <span className="text-white font-normal">Premium</span>.
               </p>
 
-              {/* Social Proof (+50 Clientes) */}
+              {/* Social Proof */}
               <div className="flex flex-wrap items-center gap-6 border-t border-white/10 pt-6">
                  <div className="flex -space-x-4">
-                    {/* Avatares abstractos */}
                     {[1, 2, 3].map((i) => (
                       <div key={i} className="w-10 h-10 rounded-full border-2 border-[#030303] bg-gradient-to-br from-slate-700 to-slate-800 flex items-center justify-center">
                         <Users className="w-4 h-4 text-slate-400" />
@@ -112,7 +107,6 @@ export default function SplashPage() {
             
             <div className="flex flex-col border-t border-white/[0.1]">
               
-              {/* Opción ES */}
               <ServiceLink 
                 href="/es" 
                 index="01"
@@ -120,7 +114,6 @@ export default function SplashPage() {
                 subtitle="Consultoría Estratégica & Desarrollo"
               />
 
-              {/* Opción EN */}
               <ServiceLink 
                 href="/en" 
                 index="02"
@@ -135,7 +128,7 @@ export default function SplashPage() {
           {/* Footer Derecho */}
           <div className="mt-12 sm:mt-16 text-xs text-indigo-400 leading-relaxed font-mono max-w-xs">
             <p>
-              // SPECIALIZED IN HIGH-PERFORMANCE WEB APPLICATIONS. DELIVERING THE HIGHEST STANDARD IN DIGITAL ENGINEERING.
+              {'//'} SPECIALIZED IN HIGH-PERFORMANCE WEB APPLICATIONS. DELIVERING THE HIGHEST STANDARD IN DIGITAL ENGINEERING.
             </p>
           </div>
         </motion.div>
@@ -145,13 +138,11 @@ export default function SplashPage() {
   );
 }
 
-// --- COMPONENTE DE ENLACE ---
 function ServiceLink({ href, title, subtitle, index }: { href: string, title: string, subtitle: string, index: string }) {
   return (
     <Link href={href} className="group relative block w-full outline-none">
       <div className="relative flex items-baseline justify-between py-8 sm:py-12 px-2 sm:px-4 transition-all duration-500 hover:bg-white/[0.04] cursor-pointer overflow-hidden">
         
-        {/* Opción 1: Highlight lateral que "respira" */}
         <div className="absolute left-0 top-0 bottom-0 w-1 bg-indigo-500/40 animate-pulse group-hover:opacity-100 group-hover:animate-none group-hover:bg-indigo-500 transition-all duration-300"></div>
 
         <div className="flex flex-col gap-2 z-10 w-full">
@@ -159,7 +150,6 @@ function ServiceLink({ href, title, subtitle, index }: { href: string, title: st
              <span className="text-xs font-mono text-slate-600 group-hover:text-indigo-400 transition-colors font-bold flex-shrink-0">
               {index}
             </span>
-            {/* AJUSTE MOBILE: Tamaño de texto reactivo */}
             <h3 className="text-3xl sm:text-5xl font-serif text-slate-200 group-hover:text-white transition-colors duration-300">
               {title}
             </h3>
@@ -169,13 +159,11 @@ function ServiceLink({ href, title, subtitle, index }: { href: string, title: st
           </p>
         </div>
         
-        {/* Flecha Animada */}
         <div className="relative flex-shrink-0 flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 rounded-full border border-white/10 bg-white/[0.05] group-hover:bg-indigo-500 group-hover:border-indigo-500 transition-all duration-300 ml-2">
             <ArrowUpRight className="w-4 h-4 sm:w-5 sm:h-5 text-slate-400 group-hover:text-white transition-colors duration-300" />
         </div>
 
       </div>
-      {/* Línea divisoria */}
       <div className="absolute bottom-0 left-0 w-full h-px bg-white/[0.08] group-hover:bg-indigo-500/30 transition-colors duration-500"></div>
     </Link>
   );
