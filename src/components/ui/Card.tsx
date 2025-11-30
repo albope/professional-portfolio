@@ -1,36 +1,78 @@
-// src/components/ui/Card.tsx
+import * as React from "react"
+import { cn } from "@/lib/utils"
 
-interface CardProps {
-  children: React.ReactNode;
-  className?: string;
-}
+const Card = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => (
+  <div
+    ref={ref}
+    className={cn(
+      "rounded-xl border border-slate-200 bg-white text-slate-950 shadow-sm dark:border-white/10 dark:bg-[#080808] dark:text-slate-50 transition-all duration-300",
+      className
+    )}
+    {...props}
+  />
+))
+Card.displayName = "Card"
 
-// MEJORA: Añadidas clases para modo oscuro y una transición suave
-export const Card = ({ children, className }: CardProps) => (
-  <div className={`bg-white text-slate-900 shadow-md rounded-lg overflow-hidden transition-colors duration-300 dark:bg-slate-800/50 dark:text-slate-200 ${className}`}>
-    {children}
-  </div>
-);
+const CardHeader = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => (
+  <div
+    ref={ref}
+    className={cn("flex flex-col space-y-1.5 p-6", className)}
+    {...props}
+  />
+))
+CardHeader.displayName = "CardHeader"
 
-// MEJORA: Borde adaptado para modo oscuro
-export const CardHeader = ({ children }: CardProps) => (
-  <div className="p-4 sm:p-6 border-b border-slate-200 dark:border-slate-700">{children}</div>
-);
+const CardTitle = React.forwardRef<
+  HTMLParagraphElement,
+  React.HTMLAttributes<HTMLHeadingElement>
+>(({ className, ...props }, ref) => (
+  <h3
+    ref={ref}
+    className={cn(
+      "text-2xl font-serif font-semibold leading-none tracking-tight",
+      className
+    )}
+    {...props}
+  />
+))
+CardTitle.displayName = "CardTitle"
 
-export const CardContent = ({ children }: CardProps) => (
-  <div className="p-4 sm:p-6">{children}</div>
-);
+const CardDescription = React.forwardRef<
+  HTMLParagraphElement,
+  React.HTMLAttributes<HTMLParagraphElement>
+>(({ className, ...props }, ref) => (
+  <p
+    ref={ref}
+    className={cn("text-sm text-slate-500 dark:text-slate-400", className)}
+    {...props}
+  />
+))
+CardDescription.displayName = "CardDescription"
 
-// MEJORA: Borde adaptado para modo oscuro
-export const CardFooter = ({ children }: CardProps) => (
-  <div className="p-4 sm:p-6 border-t border-slate-200 dark:border-slate-700">{children}</div>
-);
+const CardContent = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => (
+  <div ref={ref} className={cn("p-6 pt-0", className)} {...props} />
+))
+CardContent.displayName = "CardContent"
 
-export const CardTitle = ({ children }: CardProps) => (
-  <h3 className="text-xl font-bold">{children}</h3>
-);
+const CardFooter = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => (
+  <div
+    ref={ref}
+    className={cn("flex items-center p-6 pt-0", className)}
+    {...props}
+  />
+))
+CardFooter.displayName = "CardFooter"
 
-// MEJORA: Colores de texto con mejor contraste
-export const CardDescription = ({ children }: CardProps) => (
-  <p className="text-slate-500 dark:text-slate-400">{children}</p>
-);
+export { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent }
