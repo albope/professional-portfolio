@@ -95,7 +95,7 @@
     },
     {
       "id": "project6",
-      "title": "Alberto's Digital Hub",
+      "title": "Digital Hub",
       "category": "Web Development",
       "description": "A personal digital hub showcasing my professional journey, skills, and projects. Built with Next.js and TypeScript for a modern, responsive design.",
       "actionText": "Website"

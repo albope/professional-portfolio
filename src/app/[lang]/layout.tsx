@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { i18n } from "../../../i18n-config";
 import { NavBar } from "@/components/ui/NavBar";
+import SmoothScroll from "@/components/SmoothScroll"; // Importación del nuevo componente
 
 // Metadatos dinámicos (Mantengo tu lógica original intacta)
 export async function generateMetadata({ params }: { params: { lang: string } }): Promise<Metadata> {
@@ -61,15 +62,18 @@ export default function LangLayout({
 }) {
   return (
     <div className="relative min-h-screen bg-background text-foreground selection:bg-indigo-500/30">
-      {/* NAVBAR PERSISTENTE 
-        Se mantiene fija mientras navegas entre secciones.
-      */}
-      <NavBar />
-      
-      {/* Contenido de la página */}
-      <div className="pt-24 sm:pt-32 px-4 md:px-8 max-w-[1600px] mx-auto">
-        {children}
-      </div>
+      {/* Scroll Suave envolviendo el contenido principal */}
+      <SmoothScroll>
+        {/* NAVBAR PERSISTENTE 
+          Se mantiene fija mientras navegas entre secciones.
+        */}
+        <NavBar />
+        
+        {/* Contenido de la página */}
+        <div className="pt-24 sm:pt-32 px-4 md:px-8 max-w-[1600px] mx-auto">
+          {children}
+        </div>
+      </SmoothScroll>
     </div>
   );
 }

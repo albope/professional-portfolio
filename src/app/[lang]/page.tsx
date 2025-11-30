@@ -97,9 +97,14 @@ export default function PortfolioPage({ params: { lang } }: { params: { lang: st
 
   if (!dict) return <div className="min-h-screen bg-background" />; 
 
+  // --- TRADUCCIONES MANUALES (Para textos no incluidos en el diccionario) ---
   const projectsSubtitle = lang === 'es' 
     ? "Selección de proyectos que combinan ingeniería y diseño."
     : "Selected works combining engineering and design aesthetics.";
+
+  const availableBadgeText = lang === 'es'
+    ? "Disponible para nuevos proyectos"
+    : "Available for new projects";
 
   const localizedProjects = projectsData.map(projectBase => {
     const localizedInfo = dict.projects.find((p: DictionaryProject) => p.id === projectBase.id);
@@ -113,7 +118,7 @@ export default function PortfolioPage({ params: { lang } }: { params: { lang: st
   });
 
   return (
-    // MODO CLARO/OSCURO: Variables semánticas
+    // FIX MODO CLARO: Usamos variables semánticas (bg-background, text-foreground)
     <div className="min-h-screen bg-background text-foreground font-sans relative transition-colors duration-500">
       
       {/* Fondo Base Semántico */}
@@ -127,7 +132,7 @@ export default function PortfolioPage({ params: { lang } }: { params: { lang: st
       <div className="relative z-10 flex flex-col gap-20 md:gap-32 pb-40 md:pb-32 pt-24 md:pt-24 max-w-[1400px] mx-auto px-6 md:px-12">
         
         {/* HERO */}
-        {/* Grid responsive: 1 col en móvil, 12 cols en desktop */}
+        {/* Grid responsive: 1 col en móvil (flex-col implícito en grid-cols-1), 12 cols en desktop */}
         <section className="grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-12 min-h-[60vh] md:min-h-[50vh] items-end pb-12 border-b border-slate-200 dark:border-white/10">
           <motion.div 
             initial={{ opacity: 0, y: 40 }}
@@ -140,7 +145,10 @@ export default function PortfolioPage({ params: { lang } }: { params: { lang: st
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
               </span>
-              <span className="font-mono text-[10px] md:text-xs text-emerald-600 dark:text-emerald-500 tracking-widest uppercase">Available for new projects</span>
+              {/* TRADUCCIÓN APLICADA: availableBadgeText */}
+              <span className="font-mono text-[10px] md:text-xs text-emerald-600 dark:text-emerald-500 tracking-widest uppercase">
+                {availableBadgeText}
+              </span>
             </div>
             
             {/* Tipografía adaptativa: text-5xl en móvil, text-8xl en desktop */}

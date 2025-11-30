@@ -21,7 +21,8 @@ export default function RootLayout({
     <html 
       lang="en" 
       // 2. AQUI AÑADIMOS LA VARIABLE playfair.variable
-      className={`h-full ${geistSans.variable} ${geistMono.variable} ${playfair.variable} font-sans scroll-smooth`} 
+      // IMPORTANTE: He eliminado 'scroll-smooth' aquí para que Lenis controle la física sin conflictos
+      className={`h-full ${geistSans.variable} ${geistMono.variable} ${playfair.variable} font-sans`} 
       suppressHydrationWarning
     > 
       <body 

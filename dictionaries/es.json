@@ -95,7 +95,7 @@
     },
     {
       "id": "project6",
-      "title": "Hub Digital de Alberto",
+      "title": "Hub Digital",
       "category": "Desarrollo Web",
       "description": "Un hub digital personal que muestra mi trayectoria profesional, habilidades y proyectos. Construido con Next.js y TypeScript para un diseño moderno y responsivo.",
       "actionText": "Sitio Web"
