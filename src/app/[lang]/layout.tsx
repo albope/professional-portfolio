@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { i18n } from "../../../i18n-config";
 import { NavBar } from "@/components/ui/NavBar";
-import SmoothScroll from "@/components/SmoothScroll"; // Importación del nuevo componente
+import SmoothScroll from "@/components/SmoothScroll";
+import { playfair } from '@/lib/fonts'; 
 
-// Metadatos dinámicos (Mantengo tu lógica original intacta)
 export async function generateMetadata({ params }: { params: { lang: string } }): Promise<Metadata> {
   const isSpanish = params.lang === 'es';
   const title = isSpanish ? "Alberto Bort | Portafolio Profesional" : "Alberto Bort | Professional Portfolio";
@@ -55,18 +55,15 @@ export async function generateStaticParams() {
 
 export default function LangLayout({
   children,
-  params,
+  // FIX: Eliminamos 'params' de aquí porque no se usaba y causaba error de linting
 }: {
   children: React.ReactNode;
   params: { lang: string };
 }) {
   return (
-    <div className="relative min-h-screen bg-background text-foreground selection:bg-indigo-500/30">
-      {/* Scroll Suave envolviendo el contenido principal */}
+    <div className={`relative min-h-screen bg-background text-foreground selection:bg-indigo-500/30 ${playfair.variable}`}>
       <SmoothScroll>
-        {/* NAVBAR PERSISTENTE 
-          Se mantiene fija mientras navegas entre secciones.
-        */}
+        {/* NAVBAR PERSISTENTE */}
         <NavBar />
         
         {/* Contenido de la página */}

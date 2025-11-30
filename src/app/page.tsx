@@ -1,8 +1,9 @@
 'use client';
 
 import Link from 'next/link';
-import { motion, Variants } from 'framer-motion';
-import { ArrowUpRight, Users, CheckCircle } from 'lucide-react';
+import { motion, Variants, useMotionTemplate, useMotionValue } from 'framer-motion';
+import { Users, CheckCircle, ChevronRight, MapPin, Globe } from 'lucide-react';
+import { MouseEvent } from 'react';
 
 export default function SplashPage() {
   
@@ -41,9 +42,11 @@ export default function SplashPage() {
         >
           {/* Top Line */}
           <motion.div variants={textVariants} className="absolute top-8 sm:top-12 left-6 sm:left-8 lg:left-24 flex flex-wrap items-center justify-start w-[calc(100%-3rem)] lg:w-auto gap-6">
-             <div className="flex items-center gap-4">
-                <div className="h-px w-12 bg-indigo-500/50"></div>
-                <span className="text-[10px] uppercase tracking-[0.25em] text-slate-400 font-mono font-medium">Est. 2025</span>
+             <div className="flex items-center gap-3 font-mono text-[10px] sm:text-xs text-indigo-400/80 tracking-widest">
+                <span className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></span>
+                <span>SYSTEM ONLINE</span>
+                <span className="text-slate-600">|</span>
+                <span>EST. 2025</span>
              </div>
           </motion.div>
 
@@ -51,7 +54,7 @@ export default function SplashPage() {
           <div className="relative z-10 mt-4 lg:mt-0">
             <motion.h1 variants={textVariants} className="font-serif text-6xl sm:text-9xl lg:text-[10rem] xl:text-[11rem] tracking-tighter text-white leading-[0.85]">
               Alberto <br />
-              <span className="italic text-slate-300 font-light">Bort</span>
+              <span className="italic text-slate-400 font-light">Bort</span>
             </motion.h1>
             
             <motion.div variants={textVariants} className="mt-8 sm:mt-12 flex flex-col gap-8 sm:gap-10 max-w-xl">
@@ -64,30 +67,32 @@ export default function SplashPage() {
               <div className="flex flex-wrap items-center gap-6 border-t border-white/10 pt-6">
                  <div className="flex -space-x-4">
                     {[1, 2, 3].map((i) => (
-                      <div key={i} className="w-10 h-10 rounded-full border-2 border-[#030303] bg-gradient-to-br from-slate-700 to-slate-800 flex items-center justify-center">
+                      <div key={i} className="w-10 h-10 rounded-full border-2 border-[#030303] bg-gradient-to-br from-slate-800 to-slate-900 flex items-center justify-center">
                         <Users className="w-4 h-4 text-slate-400" />
                       </div>
                     ))}
-                    <div className="w-10 h-10 rounded-full border-2 border-[#030303] bg-indigo-500 flex items-center justify-center text-white font-bold text-[10px]">
-                       +50
+                    <div className="w-10 h-10 rounded-full border-2 border-[#030303] bg-indigo-500 text-white flex items-center justify-center font-bold text-[10px] font-mono">
+                       50+
                     </div>
                  </div>
-                 <div className="flex flex-col">
-                    <span className="text-sm text-white font-medium tracking-wide flex items-center gap-2">
-                      Satisfied Clients
+                 <div className="flex flex-col font-mono">
+                    <span className="text-xs text-indigo-300 uppercase tracking-widest flex items-center gap-2 mb-1">
+                      CLIENTS SATISFIED
                       <CheckCircle className="w-3 h-3 text-emerald-500" />
                     </span>
-                    <span className="text-xs text-slate-500 font-mono">Across Europe & Latam</span>
+                    <span className="text-[10px] text-slate-500 uppercase tracking-wide">GLOBAL OPERATIONS</span>
                  </div>
               </div>
             </motion.div>
           </div>
 
           {/* Bottom Info */}
-          <motion.div variants={textVariants} className="absolute bottom-8 lg:bottom-12 left-6 sm:left-8 lg:left-24 text-[10px] text-indigo-400 font-mono tracking-widest uppercase flex flex-col sm:flex-row gap-2 sm:gap-4">
-            <span>Based in Valencia, Spain</span>
-            <span className="hidden sm:inline text-indigo-400/50">|</span>
-            <span>Available for Select Commissions</span>
+          <motion.div variants={textVariants} className="absolute bottom-8 lg:bottom-12 left-6 sm:left-8 lg:left-24 text-[10px] text-indigo-400/60 font-mono tracking-widest uppercase flex flex-col sm:flex-row gap-2 sm:gap-6">
+            <span className="flex items-center gap-2">
+              [ LOCATION: VALENCIA ]
+            </span>
+            <span className="hidden sm:inline text-slate-700">|</span>
+            <span>STATUS: OPEN FOR COMMISSIONS</span>
           </motion.div>
         </motion.div>
 
@@ -100,35 +105,46 @@ export default function SplashPage() {
           transition={{ delay: 0.6, duration: 1.5 }}
         >
           <div className="w-full max-w-lg mx-auto lg:mx-0">
-            <h2 className="text-[10px] font-bold text-indigo-400 uppercase tracking-[0.25em] mb-8 sm:mb-10 flex items-center gap-3">
-              <span className="w-1.5 h-1.5 rounded-full bg-indigo-500 animate-pulse"></span>
-              Select Scope
-            </h2>
             
-            <div className="flex flex-col border-t border-white/[0.1]">
+            {/* Header de Selección */}
+            <div className="mb-10 sm:mb-12">
+                <h2 className="text-xs font-bold text-indigo-400 font-mono uppercase tracking-[0.15em] mb-4 flex items-center gap-2">
+                  <span className="text-emerald-500">✦</span>
+                  <span>COMENZAR / START</span>
+                  <span className="w-2 h-4 bg-indigo-500 animate-pulse ml-1"></span>
+                </h2>
+                
+                <p className="text-sm text-slate-400 font-light leading-relaxed max-w-sm border-l border-white/10 pl-4 py-1">
+                  Por favor, selecciona tu ubicación para personalizar el contenido y ver los servicios disponibles en tu región.
+                </p>
+            </div>
+            
+            <div className="flex flex-col gap-6"> 
               
               <ServiceLink 
                 href="/es" 
                 index="01"
                 title="Spain & Latam" 
-                subtitle="Consultoría Estratégica & Desarrollo"
+                subtitle="Versión en Español · Consultoría & Desarrollo"
+                icon={MapPin}
               />
 
               <ServiceLink 
                 href="/en" 
                 index="02"
                 title="International" 
-                subtitle="Global Architecture & Engineering"
+                subtitle="English Version · Digital Services"
+                icon={Globe}
               />
               
             </div>
-            <div className="w-full h-px bg-white/[0.1]"></div>
           </div>
 
           {/* Footer Derecho */}
-          <div className="mt-12 sm:mt-16 text-xs text-indigo-400 leading-relaxed font-mono max-w-xs">
-            <p>
-              {'//'} SPECIALIZED IN HIGH-PERFORMANCE WEB APPLICATIONS. DELIVERING THE HIGHEST STANDARD IN DIGITAL ENGINEERING.
+          <div className="mt-16 sm:mt-20 text-xs text-indigo-400/60 leading-relaxed font-mono max-w-xs">
+            <p className="flex flex-col gap-1">
+              <span className="text-slate-500">// Portfolio 2025</span>
+              <span>Desarrollo web de alto rendimiento y diseño estratégico.</span>
             </p>
           </div>
         </motion.div>
@@ -138,33 +154,70 @@ export default function SplashPage() {
   );
 }
 
-function ServiceLink({ href, title, subtitle, index }: { href: string, title: string, subtitle: string, index: string }) {
+// --- COMPONENTE CRYSTAL GLASS (Estilo Apple Vision / Linear) ---
+function ServiceLink({ href, title, subtitle, icon: Icon, index }: { href: string, title: string, subtitle: string, icon: any, index: string }) {
+  
+  // Variables para el efecto Spotlight
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+
+  function handleMouseMove({ currentTarget, clientX, clientY }: MouseEvent) {
+    const { left, top } = currentTarget.getBoundingClientRect();
+    mouseX.set(clientX - left);
+    mouseY.set(clientY - top);
+  }
+
   return (
     <Link href={href} className="group relative block w-full outline-none">
-      <div className="relative flex items-baseline justify-between py-8 sm:py-12 px-2 sm:px-4 transition-all duration-500 hover:bg-white/[0.04] cursor-pointer overflow-hidden">
-        
-        <div className="absolute left-0 top-0 bottom-0 w-1 bg-indigo-500/40 animate-pulse group-hover:opacity-100 group-hover:animate-none group-hover:bg-indigo-500 transition-all duration-300"></div>
+      
+      <div 
+        className="relative overflow-hidden rounded-2xl border border-white/10 bg-white/[0.02] backdrop-blur-sm transition-colors duration-500 hover:bg-white/[0.04]"
+        onMouseMove={handleMouseMove}
+      >
+        {/* Spotlight Effect: Luz que sigue al ratón */}
+        <motion.div
+          className="pointer-events-none absolute -inset-px rounded-2xl opacity-0 transition duration-300 group-hover:opacity-100"
+          style={{
+            background: useMotionTemplate`
+              radial-gradient(
+                650px circle at ${mouseX}px ${mouseY}px,
+                rgba(255,255,255,0.1),
+                transparent 80%
+              )
+            `,
+          }}
+        />
 
-        <div className="flex flex-col gap-2 z-10 w-full">
-          <div className="flex items-center gap-4 sm:gap-6">
-             <span className="text-xs font-mono text-slate-600 group-hover:text-indigo-400 transition-colors font-bold flex-shrink-0">
-              {index}
-            </span>
-            <h3 className="text-3xl sm:text-5xl font-serif text-slate-200 group-hover:text-white transition-colors duration-300">
-              {title}
-            </h3>
+        <div className="relative flex items-center justify-between py-6 px-6 sm:py-8 sm:px-8">
+          
+          <div className="flex items-center gap-6">
+             {/* Icono Flotante: Sin caja, solo cristal puro */}
+             <div className="relative flex h-12 w-12 items-center justify-center rounded-xl bg-white/5 shadow-inner ring-1 ring-white/10 group-hover:bg-white/10 group-hover:scale-110 transition-all duration-500">
+                <Icon className="h-5 w-5 text-slate-400 group-hover:text-white transition-colors duration-300" />
+             </div>
+
+             <div className="flex flex-col gap-1.5">
+                <h3 className="text-2xl sm:text-3xl font-serif text-slate-200 group-hover:text-white transition-colors duration-300 tracking-tight">
+                  {title}
+                </h3>
+                <p className="text-sm text-slate-500 group-hover:text-indigo-200 transition-colors duration-300 font-light">
+                  {subtitle}
+                </p>
+             </div>
           </div>
-          <p className="text-sm sm:text-base text-slate-500 pl-8 sm:pl-10 group-hover:text-slate-300 transition-colors duration-300 font-light tracking-wide">
-            {subtitle}
-          </p>
-        </div>
-        
-        <div className="relative flex-shrink-0 flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 rounded-full border border-white/10 bg-white/[0.05] group-hover:bg-indigo-500 group-hover:border-indigo-500 transition-all duration-300 ml-2">
-            <ArrowUpRight className="w-4 h-4 sm:w-5 sm:h-5 text-slate-400 group-hover:text-white transition-colors duration-300" />
-        </div>
 
+          {/* Indicador sutil a la derecha */}
+          <div className="flex items-center gap-4">
+             <span className="text-[10px] font-mono text-white/20 group-hover:text-white/40 transition-colors">
+               0{index}
+             </span>
+             <div className="flex h-8 w-8 items-center justify-center rounded-full border border-white/5 bg-white/[0.02] group-hover:border-white/20 group-hover:bg-white/10 transition-all duration-300">
+                <ChevronRight className="h-4 w-4 text-slate-600 group-hover:text-white transition-colors" />
+             </div>
+          </div>
+
+        </div>
       </div>
-      <div className="absolute bottom-0 left-0 w-full h-px bg-white/[0.08] group-hover:bg-indigo-500/30 transition-colors duration-500"></div>
     </Link>
   );
 }

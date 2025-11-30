@@ -2,11 +2,12 @@
 
 import Image from 'next/image';
 import { ArrowUpRight, Code2, Map, Layout, Github, ArrowRight, MousePointer2 } from 'lucide-react';
-import { Button } from "@/components/ui/Button";
+// FIX: Eliminado 'Button' que no se usaba en este diseño editorial
 import { Badge } from "@/components/ui/Badge";
 import { projectsData } from '@/data/projects';
 import { useEffect, useState } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+// FIX: Eliminados hooks de scroll no usados para limpiar ESLint
+import { motion } from 'framer-motion';
 
 // --- INTERFACES ---
 interface DictionaryProject {
@@ -62,7 +63,6 @@ const SectionTitle = ({ children, subtitle, number }: { children: React.ReactNod
     whileInView={{ opacity: 1, y: 0 }}
     viewport={{ once: true, margin: "-100px" }}
     transition={{ duration: 0.8 }}
-    // Borde adaptable: Gris suave en Light, Blanco sutil en Dark
     className="mb-12 md:mb-24 border-t border-slate-200 dark:border-white/10 pt-8 flex flex-col md:flex-row justify-between items-start gap-4 md:gap-6 relative z-10"
   >
     <div className="flex items-baseline gap-4">
@@ -73,7 +73,8 @@ const SectionTitle = ({ children, subtitle, number }: { children: React.ReactNod
     </div>
     {subtitle && (
       <p className="text-muted-foreground text-sm md:text-base max-w-sm font-mono leading-relaxed text-left md:text-left mt-2 md:mt-0">
-        // {subtitle}
+        {/* FIX: Escapamos las barras para evitar error de parser */}
+        {'//'} {subtitle}
       </p>
     )}
   </motion.div>
@@ -87,7 +88,8 @@ export default function PortfolioPage({ params: { lang } }: { params: { lang: st
       try {
         const dictionary = await import(`../../../dictionaries/${lang}.json`);
         setDict(dictionary);
-      } catch (e) {
+      } catch { 
+        // FIX: Eliminada la variable 'e' del catch para evitar error de 'unused var'
         const fallback = await import(`../../../dictionaries/en.json`);
         setDict(fallback);
       }
@@ -97,7 +99,6 @@ export default function PortfolioPage({ params: { lang } }: { params: { lang: st
 
   if (!dict) return <div className="min-h-screen bg-background" />; 
 
-  // --- TRADUCCIONES MANUALES (Para textos no incluidos en el diccionario) ---
   const projectsSubtitle = lang === 'es' 
     ? "Selección de proyectos que combinan ingeniería y diseño."
     : "Selected works combining engineering and design aesthetics.";
@@ -118,7 +119,6 @@ export default function PortfolioPage({ params: { lang } }: { params: { lang: st
   });
 
   return (
-    // FIX MODO CLARO: Usamos variables semánticas (bg-background, text-foreground)
     <div className="min-h-screen bg-background text-foreground font-sans relative transition-colors duration-500">
       
       {/* Fondo Base Semántico */}
@@ -128,11 +128,9 @@ export default function PortfolioPage({ params: { lang } }: { params: { lang: st
       <div className="fixed inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.05] dark:opacity-[0.08] pointer-events-none mix-blend-overlay z-0 animate-pulse" />
 
       {/* Contenido Principal */}
-      {/* CONFIRMADO: pb-40 para asegurar espacio extra en móvil para la barra inferior */}
       <div className="relative z-10 flex flex-col gap-20 md:gap-32 pb-40 md:pb-32 pt-24 md:pt-24 max-w-[1400px] mx-auto px-6 md:px-12">
         
         {/* HERO */}
-        {/* Grid responsive: 1 col en móvil (flex-col implícito en grid-cols-1), 12 cols en desktop */}
         <section className="grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-12 min-h-[60vh] md:min-h-[50vh] items-end pb-12 border-b border-slate-200 dark:border-white/10">
           <motion.div 
             initial={{ opacity: 0, y: 40 }}
@@ -150,7 +148,6 @@ export default function PortfolioPage({ params: { lang } }: { params: { lang: st
               </span>
             </div>
             
-            {/* Tipografía adaptativa: text-5xl en móvil, text-8xl en desktop */}
             <h1 className="font-serif text-5xl sm:text-7xl lg:text-8xl tracking-tighter leading-[0.95] text-foreground">
               {dict.hero.greeting} <br />
               <span className="text-slate-500 italic font-light block mt-2">Digital Architect.</span>
@@ -198,10 +195,8 @@ export default function PortfolioPage({ params: { lang } }: { params: { lang: st
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1, duration: 0.6 }}
-                // Fondo NEGRO fijo para evitar el flash blanco si la imagen falla
                 className={`group relative overflow-hidden rounded-sm border border-slate-200 dark:border-white/10 bg-[#080808] hover:border-indigo-500/30 transition-all duration-500 flex flex-col shadow-sm dark:shadow-none ${index === 0 ? 'lg:col-span-2 lg:row-span-2' : ''}`}
               >
-                {/* Imagen: h-full en desktop para llenar la tarjeta grande */}
                 <div className={`relative w-full overflow-hidden bg-[#111] ${index === 0 ? 'h-64 sm:h-96 lg:h-full' : 'h-64 sm:h-80'}`}>
                    <Image 
                       src={resolveImagePath(project.imageSrc)} 
