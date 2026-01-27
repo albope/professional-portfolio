@@ -380,50 +380,59 @@ export default function PortfolioPage({ params: { lang } }: { params: { lang: st
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {localizedProjects.slice(0, 6).map((project, index) => (
-              <motion.div
+              <motion.a
                 key={project.id}
+                href={project.actionLink || project.repoLink || '#'}
+                target="_blank"
+                rel="noopener noreferrer"
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: index * 0.1, duration: 0.6 }}
-                className={`group relative overflow-hidden rounded-2xl border border-slate-200 dark:border-white/10 bg-white dark:bg-slate-900/50 hover:border-indigo-500/50 transition-all duration-500 ${index === 0 ? 'md:col-span-2 md:row-span-2' : ''}`}
+                transition={{ delay: index * 0.08, duration: 0.5 }}
+                className="group relative bg-slate-50 dark:bg-slate-900/50 rounded-2xl overflow-hidden border border-slate-200 dark:border-white/5 hover:border-slate-300 dark:hover:border-white/10 transition-all duration-300 hover:shadow-xl hover:shadow-slate-200/50 dark:hover:shadow-black/20"
               >
-                <div className={`relative w-full overflow-hidden ${index === 0 ? 'h-80 md:h-full' : 'h-64'}`}>
-                  <ParallaxImage
+                {/* Image Container */}
+                <div className="relative aspect-[16/10] overflow-hidden bg-slate-100 dark:bg-slate-800">
+                  <Image
                     src={resolveImagePath(project.imageSrc)}
                     alt={project.title}
-                    className="absolute inset-0"
+                    fill
+                    className="object-cover object-top transition-transform duration-500 group-hover:scale-105"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                  {/* Subtle overlay on hover */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 </div>
 
-                <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
-                  <div className="flex justify-between items-end mb-4">
-                    <Badge className="bg-white/10 backdrop-blur-md border-white/20 text-white">
+                {/* Content */}
+                <div className="p-5">
+                  {/* Category & Links Row */}
+                  <div className="flex items-center justify-between mb-3">
+                    <span className="text-xs font-mono text-indigo-600 dark:text-indigo-400 uppercase tracking-wider">
                       {project.category}
-                    </Badge>
-                    <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    </span>
+                    <div className="flex gap-1.5">
                       {project.repoLink && (
-                        <a href={project.repoLink} target="_blank" rel="noopener noreferrer" className="p-2.5 rounded-full bg-white text-black hover:scale-110 transition-transform">
-                          <Github className="w-4 h-4" />
-                        </a>
+                        <span className="p-1.5 rounded-lg bg-slate-100 dark:bg-white/5 text-muted-foreground hover:text-foreground transition-colors">
+                          <Github className="w-3.5 h-3.5" />
+                        </span>
                       )}
-                      {project.actionLink && (
-                        <a href={project.actionLink} target="_blank" rel="noopener noreferrer" className="p-2.5 rounded-full bg-white text-black hover:scale-110 transition-transform">
-                          <ArrowUpRight className="w-4 h-4" />
-                        </a>
-                      )}
+                      <span className="p-1.5 rounded-lg bg-slate-100 dark:bg-white/5 text-muted-foreground group-hover:text-indigo-500 transition-colors">
+                        <ArrowUpRight className="w-3.5 h-3.5" />
+                      </span>
                     </div>
                   </div>
 
-                  <h3 className={`font-serif text-white mb-2 ${index === 0 ? 'text-3xl md:text-4xl' : 'text-2xl'}`}>
+                  {/* Title */}
+                  <h3 className="text-lg font-semibold text-foreground mb-2 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
                     {project.title}
                   </h3>
-                  <p className="text-slate-300 text-sm line-clamp-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+
+                  {/* Description */}
+                  <p className="text-sm text-muted-foreground line-clamp-2 leading-relaxed">
                     {project.description}
                   </p>
                 </div>
-              </motion.div>
+              </motion.a>
             ))}
           </div>
         </section>
