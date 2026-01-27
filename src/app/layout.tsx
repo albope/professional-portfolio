@@ -1,14 +1,14 @@
 import type { Metadata } from 'next';
 import './globals.css';
-// 1. AQUI IMPORTAMOS LA NUEVA FUENTE
-import { geistSans, geistMono, playfair } from '@/lib/fonts'; 
+import { geistSans, geistMono, playfair } from '@/lib/fonts';
 import { ThemeProvider } from "@/components/theme-provider";
 
 export const metadata: Metadata = {
-  title: 'Alberto Bort | Digital Services',
-  description: 'Portfolio of Alberto Bort. Explore digital solutions and custom travel itineraries.',
+  title: 'Alberto Bort | Web Developer & PWA Architect',
+  description: 'Desarrollo aplicaciones web modernas y Progressive Web Apps que cargan rapido, funcionan offline y convierten visitantes en clientes.',
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://albertobort.com'),
   icons: {
-    icon: "/Images/favicon.ico", 
+    icon: "/Images/favicon.ico",
   },
 };
 
@@ -18,27 +18,25 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html 
-      lang="en" 
-      // 2. AQUI AÑADIMOS LA VARIABLE playfair.variable
-      // IMPORTANTE: He eliminado 'scroll-smooth' aquí para que Lenis controle la física sin conflictos
-      className={`h-full ${geistSans.variable} ${geistMono.variable} ${playfair.variable} font-sans`} 
+    <html
+      lang="es"
+      className={`h-full ${geistSans.variable} ${geistMono.variable} ${playfair.variable} font-sans`}
       suppressHydrationWarning
-    > 
-      <body 
-        className="min-h-screen sm:min-h-[100dvh] bg-background text-foreground antialiased relative selection:bg-primary selection:text-primary-foreground" 
+    >
+      <body
+        className="min-h-screen sm:min-h-[100dvh] bg-background text-foreground antialiased relative selection:bg-primary selection:text-primary-foreground"
       >
         <ThemeProvider
           attribute="class"
-          defaultTheme="system"
+          defaultTheme="dark"
           enableSystem
           disableTransitionOnChange
           storageKey="portfolio-theme"
         >
           {children}
-          
+
           {/* Capa de Ruido Global */}
-          <div className="bg-noise mix-blend-overlay opacity-40 dark:opacity-20 pointer-events-none fixed inset-0 z-[9999]" />
+          <div className="bg-noise mix-blend-overlay opacity-30 dark:opacity-15 pointer-events-none fixed inset-0 z-[9999]" />
         </ThemeProvider>
       </body>
     </html>

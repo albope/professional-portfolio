@@ -1,121 +1,186 @@
 {
   "hero": {
-    "greeting": "Hi, I'm Alberto Bort 👋",
-    "title": "Web Developer & Travel Planner",
-    "description": "I build intuitive digital solutions and craft unique travel itineraries. From complex web applications to perfectly planned trips, I turn ideas into reality."
+    "greeting": "Hi, I'm Alberto",
+    "title": "Web Developer & PWA Architect",
+    "description": "I build modern web applications that load fast, work offline, and convert visitors into customers. Specialized in Progressive Web Apps and high-performance digital experiences."
   },
   "buttons": {
-    "my_work": "My Work",
-    "services_pricing": "Services & Pricing",
-    "view_example_pdf": "See Example (New York, PDF)"
+    "my_work": "View Projects",
+    "services_pricing": "Services",
+    "contact_cta": "Let's talk about your project"
   },
-  "itinerary_card": {
-    "badge": "New Service",
-    "title": "Personalized Travel Itineraries",
-    "description": "Custom travel itineraries designed for you to discover cities like a local. Organized, detailed, and ready to enjoy."
+  "stats": {
+    "years": "+5 years",
+    "years_label": "of experience",
+    "projects": "+20",
+    "projects_label": "projects delivered",
+    "clients": "100%",
+    "clients_label": "satisfied clients"
   },
   "sections": {
     "about_me": "About Me",
-    "about_me_text": "Passionate developer with extensive experience, I deliver comprehensive end-to-end solutions tailored to businesses, ensuring that each project is not only functional but also optimized for user experience and performance. My expertise lies in leveraging the latest web technologies to help clients transform their digital ideas into reality.",
-    "latest_work": "My Latest Work",
-    "services_pricing_title": "Services & Pricing",
-    "services_pricing_description": "I offer flexible solutions for both your digital and travel needs. Find the perfect plan for your next project.",
-    "core_skills": "Core Skills & Technologies",
-    "get_in_touch": "Get in Touch",
-    "get_in_touch_description": "Ready to start a project? Contact me for a free consultation or a custom travel itinerary."
+    "about_me_text": "Full-stack developer with over 5 years of experience creating digital solutions that matter. I specialize in Progressive Web Apps (PWAs) that combine the best of web and native applications.",
+    "latest_work": "Featured Projects",
+    "latest_work_subtitle": "Every project is an opportunity to create something exceptional.",
+    "services_pricing_title": "What can I do for you?",
+    "services_pricing_description": "Digital solutions tailored to your needs. From complete applications to landing pages that convert.",
+    "why_pwa_title": "Why choose a PWA?",
+    "why_pwa_subtitle": "Progressive Web Apps are the future of mobile development",
+    "core_skills": "Tech Stack",
+    "get_in_touch": "Have a project in mind?",
+    "get_in_touch_description": "Tell me your idea and I'll respond within 24 hours. No commitment, just conversation.",
+    "availability": "Limited availability",
+    "availability_desc": "Currently accepting 2 new projects per month to ensure maximum dedication."
   },
+  "pwa_benefits": [
+    {
+      "stat": "68%",
+      "title": "More engagement",
+      "description": "than traditional websites"
+    },
+    {
+      "stat": "3x",
+      "title": "More conversions",
+      "description": "than native apps"
+    },
+    {
+      "stat": "0%",
+      "title": "Commissions",
+      "description": "No App Store or Play Store"
+    },
+    {
+      "stat": "1",
+      "title": "Single codebase",
+      "description": "All platforms"
+    }
+  ],
   "service_cards": {
-    "dev_title": "Web & App Development",
-    "dev_desc": "Custom digital solutions, from concept to deployment.",
+    "dev_title": "Professional Web Development",
+    "dev_desc": "Complete web applications, dashboards, e-commerce, and custom systems. Clean, scalable, and optimized code.",
     "dev_features": [
-      "Frontend & Backend Development",
-      "Mobile-First & Responsive Design",
-      "API Integration & Automation",
-      "Performance Optimization & Testing"
+      "Full-Stack Apps with React/Next.js",
+      "Scalable and maintainable architecture",
+      "RESTful APIs and databases",
+      "Automated testing and CI/CD"
     ],
-    "dev_price": "Starting at $45/hour",
-    "itinerary_title": "Personalized Itineraries",
-    "itinerary_desc": "Your perfect trip, planned to the last detail.",
-    "itinerary_features": [
-      "Custom day-by-day routes",
-      "Restaurant & activity recommendations",
-      "Transportation & booking logistics",
-      "Digital map & offline PDF guide"
+    "dev_price": "From €2,500",
+    "dev_time": "4-8 weeks",
+    "pwa_title": "Progressive Web Apps",
+    "pwa_desc": "Apps that install like native but are web. Work offline, send notifications, and don't need app stores.",
+    "pwa_features": [
+      "Installable on any device",
+      "Works without internet connection",
+      "Native push notifications",
+      "Instant updates without stores"
     ],
-    "itinerary_price": "From $50 per Travel Guide",
-    "itinerary_badge": "Most Popular",
-    "landing_title": "Landing Page Development",
-    "landing_desc": "High-impact pages that convert visitors into customers.",
+    "pwa_price": "From €1,800",
+    "pwa_time": "3-6 weeks",
+    "pwa_badge": "High demand",
+    "landing_title": "Conversion Landing Pages",
+    "landing_desc": "Single pages designed to capture leads and sales. Fast, attractive, and SEO optimized.",
     "landing_features": [
-      "Custom design based on your brand",
-      "Fast, responsive, and mobile-first",
-      "Integration with marketing tools",
-      "Optimized for quick loading"
+      "Custom design matching your brand",
+      "Conversion-oriented copywriting",
+      "Animations and microinteractions",
+      "Integrated analytics and tracking"
     ],
-    "landing_price": "From $150 (one-time)"
+    "landing_price": "From €800",
+    "landing_time": "1-2 weeks"
   },
   "footer": {
-    "rights_reserved": "All rights reserved."
+    "rights_reserved": "All rights reserved.",
+    "made_with": "Made with Next.js"
+  },
+  "contact_form": {
+    "name": "Your name",
+    "email": "Your email",
+    "message": "Tell me about your project...",
+    "send": "Send message",
+    "sending": "Sending...",
+    "success": "Message sent! I'll reply soon.",
+    "error": "There was an error. Please try again."
   },
   "projects": [
     {
       "id": "project1",
-      "title": "Professional Profile",
+      "title": "Professional Portfolio",
       "category": "Web Development",
-      "description": "An interactive portfolio showcasing professional skills and past work. Optimized for performance and accessibility, perfect for highlighting digital expertise.",
-      "actionText": "Website"
+      "description": "Interactive portfolio with fluid animations, dark/light mode, and responsive design. Optimized for performance and accessibility.",
+      "actionText": "View site"
     },
     {
       "id": "project2",
-      "title": "Travel Map Generator",
-      "category": "Web Development",
-      "description": "A tool for creating interactive travel maps, ideal for travelers or businesses in the tourism sector. Built with React and Mapbox for real-time visualization.",
-      "actionText": "Website"
+      "title": "Interactive Map Generator",
+      "category": "Web Application",
+      "description": "Tool for creating interactive maps with React and Mapbox. Real-time visualization and data export.",
+      "actionText": "View site"
     },
     {
       "id": "project3",
-      "title": "Padel App",
-      "category": "App Development",
-      "description": "A platform for organizing and managing padel games, offering match scheduling, results tracking, and tournament management. Built with React and Firebase.",
-      "actionText": "Website"
+      "title": "Sports Management App",
+      "category": "PWA",
+      "description": "PWA platform for organizing matches, managing tournaments, and tracking results. Works offline.",
+      "actionText": "View site"
     },
     {
       "id": "project4",
-      "title": "Test Web Automation",
-      "category": "Test Automation",
-      "description": "Automated testing suite ensuring functionality and performance for the Travel Map Generator. Developed using Jest and React Testing Library.",
+      "title": "Automated Testing Suite",
+      "category": "DevOps",
+      "description": "Automated testing framework with Jest and Cypress. Continuous integration and detailed reports.",
       "actionText": "GitHub"
     },
     {
       "id": "project5",
       "title": "JIRA Report Generator",
-      "category": "Internal Company Tool",
-      "description": "Web tool to standardize and optimize JIRA issue documentation, improving traceability and facilitating error reproduction for the development team.",
-      "actionText": "Website"
+      "category": "Internal Tool",
+      "description": "Web application to standardize issue documentation. Improves traceability and team productivity.",
+      "actionText": "View site"
     },
     {
       "id": "project6",
-      "title": "Digital Hub",
+      "title": "Personal Digital Hub",
       "category": "Web Development",
-      "description": "A personal digital hub showcasing my professional journey, skills, and projects. Built with Next.js and TypeScript for a modern, responsive design.",
-      "actionText": "Website"
+      "description": "Digital center integrating projects, skills, and professional journey. Next.js + TypeScript.",
+      "actionText": "View site"
     },
-        {
+    {
       "id": "project7",
       "title": "Professional CSV Validator",
       "category": "Desktop Application",
-      "description": "A robust desktop tool to validate, clean, and preview CSV files. Built with Python and a modern CustomTkinter UI, ready for distribution.",
+      "description": "Desktop tool to validate, clean, and preview CSV files. Python + CustomTkinter.",
       "actionText": "Download"
     }
   ],
   "skills_section": {
     "frontend_title": "Frontend",
-    "frontend_skills": ["React", "Next.js", "TypeScript", "HTML5 & CSS3", "Tailwind CSS", "Material UI"],
+    "frontend_skills": [
+      "React",
+      "Next.js",
+      "TypeScript",
+      "Tailwind CSS",
+      "Framer Motion"
+    ],
     "backend_db_title": "Backend & Database",
-    "backend_db_skills": ["Node.js", "Firebase", "API REST"],
+    "backend_db_skills": [
+      "Node.js",
+      "Firebase",
+      "PostgreSQL",
+      "API REST"
+    ],
     "testing_devops_title": "Testing & DevOps",
-    "testing_devops_skills": ["Jest", "React Testing Library", "Cypress", "Docker", "CI/CD", "Vercel"],
-    "tools_planning_title": "Tools & Planning",
-    "tools_planning_skills": ["JIRA", "Content Creation", "Travel Planning", "Web development", "App Development", "Tech Consultancy"]
+    "testing_devops_skills": [
+      "Jest",
+      "Cypress",
+      "Docker",
+      "CI/CD",
+      "Vercel"
+    ],
+    "tools_planning_title": "Specialties",
+    "tools_planning_skills": [
+      "Progressive Web Apps",
+      "UI/UX Design",
+      "Web Optimization",
+      "Tech Consultancy"
+    ]
   }
 }

@@ -1,110 +1,153 @@
 {
   "hero": {
-    "greeting": "Hola, soy Alberto Bort 👋",
-    "title": "Desarrollador Web y Planificador de Viajes",
-    "description": "Construyo soluciones digitales intuitivas y diseño itinerarios de viaje únicos. Desde aplicaciones web complejas hasta viajes perfectamente planificados, convierto ideas en realidad."
+    "greeting": "Hola, soy Alberto",
+    "title": "Desarrollador Web & Arquitecto de PWAs",
+    "description": "Creo aplicaciones web modernas que cargan rápido, funcionan offline y convierten visitantes en clientes. Especializado en Progressive Web Apps y experiencias digitales de alto rendimiento."
   },
   "buttons": {
-    "my_work": "Mis Proyectos",
-    "services_pricing": "Servicios y Precios",
-    "view_example_pdf": "Ver Ejemplo (Nueva York, PDF)"
+    "my_work": "Ver Proyectos",
+    "services_pricing": "Servicios",
+    "contact_cta": "Hablemos de tu proyecto"
   },
-  "itinerary_card": {
-    "badge": "Nuevo Servicio",
-    "title": "Itinerarios de Viaje Personalizados",
-    "description": "Planes de viaje a medida para descubrir ciudades como un local. Organizado, detallado y listo para disfrutar."
+  "stats": {
+    "years": "+5 años",
+    "years_label": "de experiencia",
+    "projects": "+20",
+    "projects_label": "proyectos entregados",
+    "clients": "100%",
+    "clients_label": "clientes satisfechos"
   },
   "sections": {
     "about_me": "Sobre Mí",
-    "about_me_text": "Desarrollador apasionado con amplia experiencia, entrego soluciones integrales de extremo a extremo adaptadas a las empresas, asegurando que cada proyecto no solo sea funcional sino también optimizado para la experiencia del usuario y el rendimiento. Mi especialización radica en aprovechar las últimas tecnologías web para ayudar a los clientes a transformar sus ideas digitales en realidad.",
-    "latest_work": "Mis Últimos Trabajos",
-    "services_pricing_title": "Servicios y Precios",
-    "services_pricing_description": "Ofrezco soluciones flexibles tanto para tus necesidades digitales como de viaje. Encuentra el plan perfecto para tu próximo proyecto.",
-    "core_skills": "Habilidades y Tecnologías Principales",
-    "get_in_touch": "Ponte en Contacto",
-    "get_in_touch_description": "¿Listo para empezar un proyecto? Contáctame para una consulta gratuita o un itinerario de viaje personalizado."
+    "about_me_text": "Desarrollador full-stack con más de 5 años de experiencia creando soluciones digitales que importan. Me especializo en Progressive Web Apps (PWAs) que combinan lo mejor de las aplicaciones web y nativas.",
+    "latest_work": "Proyectos Destacados",
+    "latest_work_subtitle": "Cada proyecto es una oportunidad de crear algo excepcional.",
+    "services_pricing_title": "¿Qué puedo hacer por ti?",
+    "services_pricing_description": "Soluciones digitales adaptadas a tus necesidades. Desde aplicaciones completas hasta landing pages que convierten.",
+    "why_pwa_title": "¿Por qué elegir una PWA?",
+    "why_pwa_subtitle": "Las Progressive Web Apps son el futuro del desarrollo móvil",
+    "core_skills": "Stack Tecnológico",
+    "get_in_touch": "¿Tienes un proyecto en mente?",
+    "get_in_touch_description": "Cuéntame tu idea y te respondo en menos de 24 horas. Sin compromiso, solo conversación.",
+    "availability": "Disponibilidad limitada",
+    "availability_desc": "Actualmente acepto 2 proyectos nuevos al mes para garantizar máxima dedicación."
   },
+  "pwa_benefits": [
+    {
+      "stat": "68%",
+      "title": "Más engagement",
+      "description": "que webs tradicionales"
+    },
+    {
+      "stat": "3x",
+      "title": "Más conversiones",
+      "description": "que apps nativas"
+    },
+    {
+      "stat": "0%",
+      "title": "Comisiones",
+      "description": "Sin App Store ni Play Store"
+    },
+    {
+      "stat": "1",
+      "title": "Código único",
+      "description": "Todas las plataformas"
+    }
+  ],
   "service_cards": {
-    "dev_title": "Desarrollo Web y Apps",
-    "dev_desc": "Soluciones digitales a medida, desde el concepto hasta el despliegue.",
+    "dev_title": "Desarrollo Web Profesional",
+    "dev_desc": "Aplicaciones web completas, dashboards, e-commerce y sistemas a medida. Código limpio, escalable y optimizado.",
     "dev_features": [
-      "Desarrollo Frontend y Backend",
-      "Diseño Mobile-First y Responsivo",
-      "Integración de API y Automatización",
-      "Optimización de Rendimiento y Pruebas"
+      "Aplicaciones Full-Stack con React/Next.js",
+      "Arquitectura escalable y mantenible",
+      "APIs RESTful y bases de datos",
+      "Testing automatizado y CI/CD"
     ],
-    "dev_price": "Desde €45/hora",
-    "itinerary_title": "Itinerarios Personalizados",
-    "itinerary_desc": "Tu viaje perfecto, planificado hasta el último detalle.",
-    "itinerary_features": [
-      "Rutas diarias personalizadas",
-      "Recomendaciones de restaurantes y actividades",
-      "Logística de transporte y reservas",
-      "Mapa digital y guía PDF offline"
+    "dev_price": "Desde €2.500",
+    "dev_time": "4-8 semanas",
+    "pwa_title": "Progressive Web Apps",
+    "pwa_desc": "Apps que se instalan como nativas pero son web. Funcionan offline, envían notificaciones y no necesitan tiendas de apps.",
+    "pwa_features": [
+      "Instalable en cualquier dispositivo",
+      "Funciona sin conexión a internet",
+      "Notificaciones push nativas",
+      "Actualizaciones instantáneas sin stores"
     ],
-    "itinerary_price": "Desde €50 por guía de viaje",
-    "itinerary_badge": "Más Popular",
-    "landing_title": "Desarrollo de Landing Pages",
-    "landing_desc": "Páginas de alto impacto que convierten visitantes en clientes.",
+    "pwa_price": "Desde €1.800",
+    "pwa_time": "3-6 semanas",
+    "pwa_badge": "Alta demanda",
+    "landing_title": "Landing Pages de Conversión",
+    "landing_desc": "Páginas únicas diseñadas para captar leads y ventas. Rápidas, atractivas y optimizadas para SEO.",
     "landing_features": [
-      "Diseño personalizado basado en tu marca",
-      "Rápida, responsiva y mobile-first",
-      "Integración con herramientas de marketing",
-      "Optimizada para carga rápida"
+      "Diseño a medida de tu marca",
+      "Copywriting orientado a conversión",
+      "Animaciones y microinteracciones",
+      "Analytics y tracking integrado"
     ],
-    "landing_price": "Desde €150 (pago único)"
+    "landing_price": "Desde €800",
+    "landing_time": "1-2 semanas"
   },
   "footer": {
-    "rights_reserved": "Todos los derechos reservados."
+    "rights_reserved": "Todos los derechos reservados.",
+    "made_with": "Hecho con Next.js"
+  },
+  "contact_form": {
+    "name": "Tu nombre",
+    "email": "Tu email",
+    "message": "Cuéntame tu proyecto...",
+    "send": "Enviar mensaje",
+    "sending": "Enviando...",
+    "success": "¡Mensaje enviado! Te respondo pronto.",
+    "error": "Hubo un error. Intenta de nuevo."
   },
   "projects": [
     {
       "id": "project1",
-      "title": "Perfil Profesional",
+      "title": "Portfolio Profesional",
       "category": "Desarrollo Web",
-      "description": "Un portafolio interactivo que muestra habilidades profesionales y trabajos anteriores. Optimizado para rendimiento y accesibilidad, perfecto para destacar la experiencia digital.",
-      "actionText": "Sitio Web"
+      "description": "Portfolio interactivo con animaciones fluidas, modo oscuro/claro y diseño responsive. Optimizado para rendimiento y accesibilidad.",
+      "actionText": "Ver sitio"
     },
     {
       "id": "project2",
-      "title": "Generador de Mapas de Viaje",
-      "category": "Desarrollo Web",
-      "description": "Una herramienta para crear mapas de viaje interactivos, ideal para viajeros o empresas del sector turístico. Construido con React y Mapbox para visualización en tiempo real.",
-      "actionText": "Sitio Web"
+      "title": "Generador de Mapas Interactivos",
+      "category": "Aplicación Web",
+      "description": "Herramienta para crear mapas interactivos con React y Mapbox. Visualización en tiempo real y exportación de datos.",
+      "actionText": "Ver sitio"
     },
     {
       "id": "project3",
-      "title": "App de Pádel",
-      "category": "Desarrollo de Apps",
-      "description": "Una plataforma para organizar y gestionar partidos de pádel, ofreciendo programación de partidos, seguimiento de resultados y gestión de torneos. Construido con React y Firebase.",
-      "actionText": "Sitio Web"
+      "title": "App de Gestión Deportiva",
+      "category": "PWA",
+      "description": "Plataforma PWA para organizar partidos, gestionar torneos y hacer seguimiento de resultados. Funciona offline.",
+      "actionText": "Ver sitio"
     },
     {
       "id": "project4",
-      "title": "Automatización de Pruebas Web",
-      "category": "Automatización de Pruebas",
-      "description": "Suite de pruebas automatizadas que asegura la funcionalidad y el rendimiento del Generador de Mapas de Viaje. Desarrollado con Jest y React Testing Library.",
+      "title": "Suite de Testing Automatizado",
+      "category": "DevOps",
+      "description": "Framework de pruebas automatizadas con Jest y Cypress. Integración continua y reportes detallados.",
       "actionText": "GitHub"
     },
     {
       "id": "project5",
       "title": "Generador de Reportes JIRA",
-      "category": "Herramienta Interna de Empresa",
-      "description": "Herramienta web para estandarizar y optimizar la documentación de incidencias en JIRA, mejorando la trazabilidad y facilitando la reproducción de errores para el equipo de desarrollo.",
-      "actionText": "Sitio Web"
+      "category": "Herramienta Interna",
+      "description": "Aplicación web para estandarizar documentación de incidencias. Mejora la trazabilidad y productividad del equipo.",
+      "actionText": "Ver sitio"
     },
     {
       "id": "project6",
-      "title": "Hub Digital",
+      "title": "Hub Digital Personal",
       "category": "Desarrollo Web",
-      "description": "Un hub digital personal que muestra mi trayectoria profesional, habilidades y proyectos. Construido con Next.js y TypeScript para un diseño moderno y responsivo.",
-      "actionText": "Sitio Web"
+      "description": "Centro digital que integra proyectos, habilidades y trayectoria profesional. Next.js + TypeScript.",
+      "actionText": "Ver sitio"
     },
     {
       "id": "project7",
       "title": "Validador CSV Profesional",
-      "category": "Aplicación de Escritorio",
-      "description": "Una robusta herramienta de escritorio para validar, limpiar y previsualizar archivos CSV. Construida con Python y una interfaz moderna en CustomTkinter, lista para su distribución.",
+      "category": "Aplicación Desktop",
+      "description": "Herramienta de escritorio para validar, limpiar y previsualizar archivos CSV. Python + CustomTkinter.",
       "actionText": "Descargar"
     }
   ],
@@ -114,33 +157,30 @@
       "React",
       "Next.js",
       "TypeScript",
-      "HTML5 & CSS3",
       "Tailwind CSS",
-      "Material UI"
+      "Framer Motion"
     ],
-    "backend_db_title": "Backend y Base de Datos",
+    "backend_db_title": "Backend & Database",
     "backend_db_skills": [
       "Node.js",
       "Firebase",
+      "PostgreSQL",
       "API REST"
     ],
-    "testing_devops_title": "Pruebas y DevOps",
+    "testing_devops_title": "Testing & DevOps",
     "testing_devops_skills": [
       "Jest",
-      "React Testing Library",
       "Cypress",
       "Docker",
       "CI/CD",
       "Vercel"
     ],
-    "tools_planning_title": "Herramientas y Planificación",
+    "tools_planning_title": "Especialidades",
     "tools_planning_skills": [
-      "JIRA",
-      "Creación de Contenido",
-      "Planificación de Viajes",
-      "Desarrollo Web",
-      "Desarrollo de Apps",
-      "Consultoría Tecnológica"
+      "Progressive Web Apps",
+      "Diseño UI/UX",
+      "Optimización Web",
+      "Consultoría Tech"
     ]
   }
 }
