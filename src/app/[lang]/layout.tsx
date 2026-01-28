@@ -14,7 +14,6 @@ export async function generateMetadata({ params }: { params: { lang: string } })
     : "I build modern web applications and Progressive Web Apps (PWAs) that load fast, work offline, and convert visitors into customers. Specialist in React, Next.js and TypeScript.";
 
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://albertobort.com';
-  const imageUrl = `${siteUrl}/Images/og-image.jpg`;
 
   return {
     title: title,
@@ -24,26 +23,19 @@ export async function generateMetadata({ params }: { params: { lang: string } })
       : ['web developer', 'PWA', 'Progressive Web App', 'React', 'Next.js', 'TypeScript', 'freelance', 'Spain'],
     authors: [{ name: 'Alberto Bort', url: siteUrl }],
     creator: 'Alberto Bort',
+    metadataBase: new URL(siteUrl),
     alternates: {
-      canonical: `${siteUrl}/${params.lang}`,
+      canonical: `/${params.lang}`,
       languages: {
-        'es-ES': `${siteUrl}/es`,
-        'en-US': `${siteUrl}/en`,
+        'es-ES': '/es',
+        'en-US': '/en',
       },
     },
     openGraph: {
       title: title,
       description: description,
-      url: `${siteUrl}/${params.lang}`,
+      url: `/${params.lang}`,
       siteName: 'Alberto Bort - Web Developer',
-      images: [
-        {
-          url: imageUrl,
-          width: 1200,
-          height: 630,
-          alt: isSpanish ? 'Alberto Bort - Desarrollador Web y Arquitecto PWA' : 'Alberto Bort - Web Developer & PWA Architect',
-        },
-      ],
       locale: params.lang === 'es' ? 'es_ES' : 'en_US',
       type: 'website',
     },
@@ -51,7 +43,6 @@ export async function generateMetadata({ params }: { params: { lang: string } })
       card: 'summary_large_image',
       title: title,
       description: description,
-      images: [imageUrl],
       creator: '@albertobort23',
     },
     robots: {

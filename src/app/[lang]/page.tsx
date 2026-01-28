@@ -1,12 +1,11 @@
 'use client';
 
 import Image from 'next/image';
-import { ArrowUpRight, Code2, Smartphone, Layout, Github, ArrowRight, Sparkles, Zap, Globe, Shield, Clock, CheckCircle2, Linkedin, Mail } from 'lucide-react';
-import { Badge } from "@/components/ui/Badge";
+import { ArrowUpRight, Code2, Smartphone, Layout, Github, ArrowRight, Sparkles, Zap, Globe, Shield, Clock, CheckCircle2, Linkedin, Mail, ChevronUp } from 'lucide-react';
 import { ContactForm } from '@/components/ContactForm';
 import { projectsData } from '@/data/projects';
 import { useEffect, useState, useRef } from 'react';
-import { motion, useScroll, useTransform, useMotionValue, useSpring } from 'framer-motion';
+import { motion, useMotionValue, useSpring } from 'framer-motion';
 
 // --- INTERFACES ---
 interface DictionaryProject {
@@ -47,11 +46,11 @@ interface DictionaryType {
   };
   pwa_benefits: PWABenefit[];
   service_cards: {
-    dev_title: string; dev_desc: string; dev_features: string[]; dev_price: string; dev_time: string;
-    pwa_title: string; pwa_desc: string; pwa_features: string[]; pwa_price: string; pwa_time: string; pwa_badge: string;
-    landing_title: string; landing_desc: string; landing_features: string[]; landing_price: string; landing_time: string;
+    dev_title: string; dev_desc: string; dev_features: string[]; dev_price: string; dev_original_price: string; dev_savings: string; dev_time: string;
+    pwa_title: string; pwa_desc: string; pwa_features: string[]; pwa_price: string; pwa_original_price: string; pwa_savings: string; pwa_time: string; pwa_badge: string;
+    landing_title: string; landing_desc: string; landing_features: string[]; landing_price: string; landing_original_price: string; landing_savings: string; landing_time: string; landing_badge: string;
   };
-  footer: { rights_reserved: string; made_with: string; };
+  footer: { rights_reserved: string; made_with: string; back_to_top: string; };
   contact_form: { name: string; email: string; message: string; send: string; sending: string; success: string; error: string; };
   projects: DictionaryProject[];
   skills_section: DictionarySkillsSection;
@@ -129,21 +128,111 @@ function MagneticButton({ children, className, href, onClick }: { children: Reac
   );
 }
 
-// --- PARALLAX IMAGE ---
-function ParallaxImage({ src, alt, className }: { src: string; alt: string; className?: string }) {
-  const ref = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start end", "end start"]
-  });
-  const y = useTransform(scrollYProgress, [0, 1], ["-10%", "10%"]);
+// --- PROJECTS SECTION WITH "VIEW MORE" ---
+interface ProjectsSectionProps {
+  localizedProjects: Array<{
+    id: string;
+    imageSrc: string;
+    actionLink: string;
+    repoLink?: string;
+    title: string;
+    category: string;
+    description: string;
+  }>;
+  dict: DictionaryType;
+  resolveImagePath: (src: string) => string;
+}
+
+function ProjectsSection({ localizedProjects, dict, resolveImagePath }: ProjectsSectionProps) {
+  const [showAll, setShowAll] = useState(false);
+  const INITIAL_COUNT = 6;
+  const hasMore = localizedProjects.length > INITIAL_COUNT;
+  const visibleProjects = showAll ? localizedProjects : localizedProjects.slice(0, INITIAL_COUNT);
 
   return (
-    <div ref={ref} className={`overflow-hidden ${className}`}>
-      <motion.div style={{ y }} className="relative w-full h-[120%] -top-[10%]">
-        <Image src={src} alt={alt} fill className="object-cover" />
-      </motion.div>
-    </div>
+    <section id="projects" className="py-24 md:py-32 px-6 md:px-12 lg:px-24 max-w-[1600px] mx-auto">
+      <SectionTitle number="01" subtitle={dict.sections.latest_work_subtitle}>
+        {dict.sections.latest_work}
+      </SectionTitle>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {visibleProjects.map((project, index) => (
+          <motion.a
+            key={project.id}
+            href={project.actionLink || project.repoLink || '#'}
+            target="_blank"
+            rel="noopener noreferrer"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: index * 0.08, duration: 0.5 }}
+            layout
+            className="group relative bg-slate-50 dark:bg-slate-900/50 rounded-2xl overflow-hidden border border-slate-200 dark:border-white/5 hover:border-slate-300 dark:hover:border-white/10 transition-all duration-300 hover:shadow-xl hover:shadow-slate-200/50 dark:hover:shadow-black/20"
+          >
+            <div className="relative aspect-[16/10] overflow-hidden bg-slate-100 dark:bg-slate-800">
+              <Image
+                src={resolveImagePath(project.imageSrc)}
+                alt={project.title}
+                fill
+                className="object-cover object-top transition-transform duration-500 group-hover:scale-105"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            </div>
+
+            <div className="p-5">
+              <div className="flex items-center justify-between mb-3">
+                <span className="text-xs font-mono text-indigo-600 dark:text-indigo-400 uppercase tracking-wider">
+                  {project.category}
+                </span>
+                <div className="flex gap-1.5">
+                  {project.repoLink && (
+                    <span className="p-1.5 rounded-lg bg-slate-100 dark:bg-white/5 text-muted-foreground hover:text-foreground transition-colors">
+                      <Github className="w-3.5 h-3.5" />
+                    </span>
+                  )}
+                  <span className="p-1.5 rounded-lg bg-slate-100 dark:bg-white/5 text-muted-foreground group-hover:text-indigo-500 transition-colors">
+                    <ArrowUpRight className="w-3.5 h-3.5" />
+                  </span>
+                </div>
+              </div>
+
+              <h3 className="text-lg font-semibold text-foreground mb-2 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+                {project.title}
+              </h3>
+
+              <p className="text-sm text-muted-foreground line-clamp-2 leading-relaxed">
+                {project.description}
+              </p>
+            </div>
+          </motion.a>
+        ))}
+      </div>
+
+      {hasMore && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          className="flex justify-center mt-12"
+        >
+          <button
+            onClick={() => setShowAll(!showAll)}
+            className="group inline-flex items-center gap-2 px-6 py-3 rounded-full border border-slate-200 dark:border-white/10 bg-white dark:bg-slate-900/50 hover:border-indigo-500/50 hover:bg-indigo-50 dark:hover:bg-indigo-500/10 transition-all duration-300"
+          >
+            <span className="text-sm font-medium text-foreground group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+              {showAll ? 'Ver menos' : `Ver más proyectos (${localizedProjects.length - INITIAL_COUNT})`}
+            </span>
+            <motion.span
+              animate={{ rotate: showAll ? 180 : 0 }}
+              transition={{ duration: 0.3 }}
+              className="flex items-center justify-center"
+            >
+              <ArrowRight className={`w-4 h-4 text-muted-foreground group-hover:text-indigo-500 transition-all ${showAll ? 'rotate-90' : '-rotate-90'}`} />
+            </motion.span>
+          </button>
+        </motion.div>
+      )}
+    </section>
   );
 }
 
@@ -184,6 +273,8 @@ export default function PortfolioPage({ params: { lang } }: { params: { lang: st
       desc: dict.service_cards.dev_desc,
       features: dict.service_cards.dev_features,
       price: dict.service_cards.dev_price,
+      originalPrice: dict.service_cards.dev_original_price,
+      savings: dict.service_cards.dev_savings,
       time: dict.service_cards.dev_time,
       gradient: "from-blue-500 to-indigo-600",
       iconBg: "bg-blue-500/10 text-blue-500 dark:text-blue-400",
@@ -194,6 +285,8 @@ export default function PortfolioPage({ params: { lang } }: { params: { lang: st
       desc: dict.service_cards.pwa_desc,
       features: dict.service_cards.pwa_features,
       price: dict.service_cards.pwa_price,
+      originalPrice: dict.service_cards.pwa_original_price,
+      savings: dict.service_cards.pwa_savings,
       time: dict.service_cards.pwa_time,
       badge: dict.service_cards.pwa_badge,
       gradient: "from-emerald-500 to-teal-600",
@@ -206,7 +299,10 @@ export default function PortfolioPage({ params: { lang } }: { params: { lang: st
       desc: dict.service_cards.landing_desc,
       features: dict.service_cards.landing_features,
       price: dict.service_cards.landing_price,
+      originalPrice: dict.service_cards.landing_original_price,
+      savings: dict.service_cards.landing_savings,
       time: dict.service_cards.landing_time,
+      badge: dict.service_cards.landing_badge,
       gradient: "from-purple-500 to-pink-600",
       iconBg: "bg-purple-500/10 text-purple-500 dark:text-purple-400",
     },
@@ -373,69 +469,11 @@ export default function PortfolioPage({ params: { lang } }: { params: { lang: st
         {/* ═══════════════════════════════════════════════════════════════════
             PROJECTS SECTION
         ═══════════════════════════════════════════════════════════════════ */}
-        <section id="projects" className="py-24 md:py-32 px-6 md:px-12 lg:px-24 max-w-[1600px] mx-auto">
-          <SectionTitle number="01" subtitle={dict.sections.latest_work_subtitle}>
-            {dict.sections.latest_work}
-          </SectionTitle>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {localizedProjects.slice(0, 6).map((project, index) => (
-              <motion.a
-                key={project.id}
-                href={project.actionLink || project.repoLink || '#'}
-                target="_blank"
-                rel="noopener noreferrer"
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.08, duration: 0.5 }}
-                className="group relative bg-slate-50 dark:bg-slate-900/50 rounded-2xl overflow-hidden border border-slate-200 dark:border-white/5 hover:border-slate-300 dark:hover:border-white/10 transition-all duration-300 hover:shadow-xl hover:shadow-slate-200/50 dark:hover:shadow-black/20"
-              >
-                {/* Image Container */}
-                <div className="relative aspect-[16/10] overflow-hidden bg-slate-100 dark:bg-slate-800">
-                  <Image
-                    src={resolveImagePath(project.imageSrc)}
-                    alt={project.title}
-                    fill
-                    className="object-cover object-top transition-transform duration-500 group-hover:scale-105"
-                  />
-                  {/* Subtle overlay on hover */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                </div>
-
-                {/* Content */}
-                <div className="p-5">
-                  {/* Category & Links Row */}
-                  <div className="flex items-center justify-between mb-3">
-                    <span className="text-xs font-mono text-indigo-600 dark:text-indigo-400 uppercase tracking-wider">
-                      {project.category}
-                    </span>
-                    <div className="flex gap-1.5">
-                      {project.repoLink && (
-                        <span className="p-1.5 rounded-lg bg-slate-100 dark:bg-white/5 text-muted-foreground hover:text-foreground transition-colors">
-                          <Github className="w-3.5 h-3.5" />
-                        </span>
-                      )}
-                      <span className="p-1.5 rounded-lg bg-slate-100 dark:bg-white/5 text-muted-foreground group-hover:text-indigo-500 transition-colors">
-                        <ArrowUpRight className="w-3.5 h-3.5" />
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Title */}
-                  <h3 className="text-lg font-semibold text-foreground mb-2 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
-                    {project.title}
-                  </h3>
-
-                  {/* Description */}
-                  <p className="text-sm text-muted-foreground line-clamp-2 leading-relaxed">
-                    {project.description}
-                  </p>
-                </div>
-              </motion.a>
-            ))}
-          </div>
-        </section>
+        <ProjectsSection
+          localizedProjects={localizedProjects}
+          dict={dict}
+          resolveImagePath={resolveImagePath}
+        />
 
         {/* ═══════════════════════════════════════════════════════════════════
             SERVICES SECTION
@@ -484,14 +522,18 @@ export default function PortfolioPage({ params: { lang } }: { params: { lang: st
                 </ul>
 
                 <div className="pt-6 border-t border-slate-200 dark:border-white/10">
-                  <div className="flex items-end justify-between mb-4">
-                    <div>
-                      <p className="text-3xl font-serif text-foreground">{service.price}</p>
-                      <p className="text-sm text-muted-foreground flex items-center gap-1">
-                        <Clock className="w-4 h-4" />
-                        {service.time}
-                      </p>
+                  <div className="mb-4">
+                    <div className="flex items-center gap-3 mb-1">
+                      <span className="text-lg text-muted-foreground line-through">{service.originalPrice}</span>
+                      <span className="px-2 py-0.5 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-xs font-bold rounded-full">
+                        {service.savings}
+                      </span>
                     </div>
+                    <p className="text-4xl font-serif font-bold text-foreground">{service.price}</p>
+                    <p className="text-sm text-muted-foreground flex items-center gap-1 mt-1">
+                      <Clock className="w-4 h-4" />
+                      {service.time}
+                    </p>
                   </div>
                   <a
                     href="#contact"
@@ -666,6 +708,25 @@ export default function PortfolioPage({ params: { lang } }: { params: { lang: st
                 <p className="text-xs">{dict.footer.made_with}</p>
               </div>
             </div>
+
+            {/* Scroll to Top Button */}
+            <motion.button
+              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+              whileHover={{ scale: 1.05, y: -2 }}
+              whileTap={{ scale: 0.95 }}
+              className="group relative flex items-center gap-3 px-5 py-3 rounded-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white font-medium shadow-lg shadow-indigo-500/25 hover:shadow-xl hover:shadow-purple-500/30 transition-shadow duration-300 overflow-hidden"
+            >
+              <span className="absolute inset-0 bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              <span className="relative flex items-center gap-2 text-sm">
+                <motion.span
+                  animate={{ y: [0, -3, 0] }}
+                  transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
+                >
+                  <ChevronUp className="w-4 h-4" />
+                </motion.span>
+                <span className="hidden sm:inline">{dict.footer.back_to_top}</span>
+              </span>
+            </motion.button>
 
             <div className="flex items-center gap-6">
               <a href="https://github.com/albope" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-foreground transition-colors">

@@ -24,23 +24,24 @@ export function ContactForm({ dict }: ContactFormProps) {
     e.preventDefault();
     setStatus('loading');
 
-    // Simular envío (aquí podrías integrar con un servicio real como Formspree, EmailJS, etc.)
     try {
-      // Crear mailto link como fallback
-      const subject = encodeURIComponent(`Nuevo proyecto de ${formData.name}`);
-      const body = encodeURIComponent(`Nombre: ${formData.name}\nEmail: ${formData.email}\n\nMensaje:\n${formData.message}`);
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
 
-      // Abrir cliente de correo
-      window.location.href = `mailto:albertobort@gmail.com?subject=${subject}&body=${body}`;
+      if (!response.ok) {
+        throw new Error('Error al enviar');
+      }
 
       setStatus('success');
       setFormData({ name: '', email: '', message: '' });
-
-      setTimeout(() => setStatus('idle'), 5000);
     } catch {
       setStatus('error');
-      setTimeout(() => setStatus('idle'), 5000);
     }
+
+    setTimeout(() => setStatus('idle'), 5000);
   };
 
   return (

@@ -2,7 +2,7 @@
   "hero": {
     "greeting": "Hola, soy Alberto",
     "title": "Desarrollador Web & Arquitecto de PWAs",
-    "description": "Creo aplicaciones web modernas que cargan rápido, funcionan offline y convierten visitantes en clientes. Especializado en Progressive Web Apps y experiencias digitales de alto rendimiento."
+    "description": "Diseño páginas web y aplicaciones que convierten visitantes en clientes. Tu negocio visible 24/7, rápido en cualquier dispositivo y listo para crecer."
   },
   "buttons": {
     "my_work": "Ver Proyectos",
@@ -63,7 +63,9 @@
       "APIs RESTful y bases de datos",
       "Testing automatizado y CI/CD"
     ],
-    "dev_price": "Desde €2.500",
+    "dev_price": "1.997€",
+    "dev_original_price": "3.500€",
+    "dev_savings": "Ahorras 1.503€",
     "dev_time": "4-8 semanas",
     "pwa_title": "Progressive Web Apps",
     "pwa_desc": "Apps que se instalan como nativas pero son web. Funcionan offline, envían notificaciones y no necesitan tiendas de apps.",
@@ -73,9 +75,11 @@
       "Notificaciones push nativas",
       "Actualizaciones instantáneas sin stores"
     ],
-    "pwa_price": "Desde €1.800",
+    "pwa_price": "997€",
+    "pwa_original_price": "1.800€",
+    "pwa_savings": "Ahorras 803€",
     "pwa_time": "3-6 semanas",
-    "pwa_badge": "Alta demanda",
+    "pwa_badge": "Más popular",
     "landing_title": "Landing Pages de Conversión",
     "landing_desc": "Páginas únicas diseñadas para captar leads y ventas. Rápidas, atractivas y optimizadas para SEO.",
     "landing_features": [
@@ -84,12 +88,16 @@
       "Animaciones y microinteracciones",
       "Analytics y tracking integrado"
     ],
-    "landing_price": "Desde €800",
-    "landing_time": "1-2 semanas"
+    "landing_price": "497€",
+    "landing_original_price": "800€",
+    "landing_savings": "Ahorras 303€",
+    "landing_time": "1-2 semanas",
+    "landing_badge": "Ideal para empezar"
   },
   "footer": {
     "rights_reserved": "Todos los derechos reservados.",
-    "made_with": "Hecho con Next.js"
+    "made_with": "Hecho con Next.js",
+    "back_to_top": "Volver arriba"
   },
   "contact_form": {
     "name": "Tu nombre",
@@ -149,6 +157,20 @@
       "category": "Aplicación Desktop",
       "description": "Herramienta de escritorio para validar, limpiar y previsualizar archivos CSV. Python + CustomTkinter.",
       "actionText": "Descargar"
+    },
+    {
+      "id": "project8",
+      "title": "Sin Tregua Radio",
+      "category": "PWA",
+      "description": "Web oficial del programa de radio dedicado al Levante UD. Reproductor en vivo, galería histórica y soporte PWA.",
+      "actionText": "Ver sitio"
+    },
+    {
+      "id": "project9",
+      "title": "Web de Boda",
+      "category": "Desarrollo Web",
+      "description": "Invitación digital interactiva con confirmación de asistencia, información del evento y diseño elegante.",
+      "actionText": "Ver sitio"
     }
   ],
   "skills_section": {

@@ -2,7 +2,7 @@
   "hero": {
     "greeting": "Hi, I'm Alberto",
     "title": "Web Developer & PWA Architect",
-    "description": "I build modern web applications that load fast, work offline, and convert visitors into customers. Specialized in Progressive Web Apps and high-performance digital experiences."
+    "description": "I design websites and apps that turn visitors into customers. Your business online 24/7, fast on any device, and ready to grow."
   },
   "buttons": {
     "my_work": "View Projects",
@@ -63,7 +63,9 @@
       "RESTful APIs and databases",
       "Automated testing and CI/CD"
     ],
-    "dev_price": "From €2,500",
+    "dev_price": "€1,997",
+    "dev_original_price": "€3,500",
+    "dev_savings": "Save €1,503",
     "dev_time": "4-8 weeks",
     "pwa_title": "Progressive Web Apps",
     "pwa_desc": "Apps that install like native but are web. Work offline, send notifications, and don't need app stores.",
@@ -73,9 +75,11 @@
       "Native push notifications",
       "Instant updates without stores"
     ],
-    "pwa_price": "From €1,800",
+    "pwa_price": "€997",
+    "pwa_original_price": "€1,800",
+    "pwa_savings": "Save €803",
     "pwa_time": "3-6 weeks",
-    "pwa_badge": "High demand",
+    "pwa_badge": "Most popular",
     "landing_title": "Conversion Landing Pages",
     "landing_desc": "Single pages designed to capture leads and sales. Fast, attractive, and SEO optimized.",
     "landing_features": [
@@ -84,12 +88,16 @@
       "Animations and microinteractions",
       "Integrated analytics and tracking"
     ],
-    "landing_price": "From €800",
-    "landing_time": "1-2 weeks"
+    "landing_price": "€497",
+    "landing_original_price": "€800",
+    "landing_savings": "Save €303",
+    "landing_time": "1-2 weeks",
+    "landing_badge": "Great to start"
   },
   "footer": {
     "rights_reserved": "All rights reserved.",
-    "made_with": "Made with Next.js"
+    "made_with": "Made with Next.js",
+    "back_to_top": "Back to top"
   },
   "contact_form": {
     "name": "Your name",
@@ -149,6 +157,20 @@
       "category": "Desktop Application",
       "description": "Desktop tool to validate, clean, and preview CSV files. Python + CustomTkinter.",
       "actionText": "Download"
+    },
+    {
+      "id": "project8",
+      "title": "Sin Tregua Radio",
+      "category": "PWA",
+      "description": "Official website for a radio show dedicated to Levante UD. Live player, historic gallery, and PWA support.",
+      "actionText": "View site"
+    },
+    {
+      "id": "project9",
+      "title": "Wedding Website",
+      "category": "Web Development",
+      "description": "Interactive digital invitation with RSVP, event information, and elegant design.",
+      "actionText": "View site"
     }
   ],
   "skills_section": {
