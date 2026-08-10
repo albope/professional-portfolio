@@ -255,16 +255,18 @@ export default function PortfolioPage({ params: { lang } }: { params: { lang: st
 
   if (!dict) return <div className="min-h-screen bg-background" />;
 
-  const localizedProjects = projectsData.map(projectBase => {
-    const localizedInfo = dict.projects.find((p: DictionaryProject) => p.id === projectBase.id);
-    return {
-      ...projectBase,
-      title: localizedInfo?.title || projectBase.id,
-      category: localizedInfo?.category || 'N/A',
-      description: localizedInfo?.description || 'No description available.',
-      actionText: localizedInfo?.actionText || 'View',
-    };
-  });
+  const localizedProjects = projectsData
+    .filter(p => p.visible !== false)
+    .map(projectBase => {
+      const localizedInfo = dict.projects.find((p: DictionaryProject) => p.id === projectBase.id);
+      return {
+        ...projectBase,
+        title: localizedInfo?.title || projectBase.id,
+        category: localizedInfo?.category || 'N/A',
+        description: localizedInfo?.description || 'No description available.',
+        actionText: localizedInfo?.actionText || 'View',
+      };
+    });
 
   const services = [
     {

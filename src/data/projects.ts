@@ -7,6 +7,7 @@ export interface ProjectData {
   tools: string[];
   actionLink: string;
   repoLink?: string; // Opcional: enlace al repositorio
+  visible?: boolean; // Opcional: controlar visibilidad en el portafolio
 }
 
 export const projectsData: ProjectData[] = [
@@ -41,14 +42,6 @@ export const projectsData: ProjectData[] = [
     repoLink: "https://github.com/albope/sin-tregua-radio",
   },
   {
-    id: "project9",
-    imageSrc: "project9.jpg",
-    techStack: ['Next.js', 'TypeScript', 'Tailwind CSS'],
-    tools: ['Vercel'],
-    actionLink: "https://web-boda-seven.vercel.app",
-    repoLink: "https://github.com/albope/web-boda",
-  },
-  {
     id: "project6",
     imageSrc: "project6.jpg",
     techStack: ['Next.js', 'React', 'TypeScript', 'Tailwind CSS'],
@@ -63,6 +56,16 @@ export const projectsData: ProjectData[] = [
     techStack: ['Next.js', 'React', 'TypeScript', 'TailwindCSS'],
     tools: ['JIRA', 'Markdown'],
     actionLink: "https://reportes-jira-eid.vercel.app/",
+  },
+  // === PROYECTOS OCULTADOS (sin borrar) ===
+  {
+    id: "project9",
+    imageSrc: "project9.jpg",
+    techStack: ['Next.js', 'TypeScript', 'Tailwind CSS'],
+    tools: ['Vercel'],
+    actionLink: "https://web-boda-seven.vercel.app",
+    repoLink: "https://github.com/albope/web-boda",
+    visible: false,
   },
   {
     id: "project7",
