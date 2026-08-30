@@ -1,24 +1,22 @@
-import localFont from "next/font/local";
-import { Instrument_Serif } from "next/font/google";
+import { Archivo, Archivo_Black, Fragment_Mono } from "next/font/google";
 
-export const geistSans = localFont({
-  src: "../app/fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
+export const archivo = Archivo({
+  subsets: ["latin"],
+  weight: ["400", "500", "600"],
+  variable: "--font-archivo",
   display: "swap",
 });
 
-export const geistMono = localFont({
-  src: "../app/fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
-  display: "swap",
-});
-
-export const instrumentSerif = Instrument_Serif({
+export const archivoBlack = Archivo_Black({
   subsets: ["latin"],
   weight: "400",
-  style: ["normal", "italic"],
-  variable: "--font-instrument-serif",
+  variable: "--font-archivo-black",
+  display: "swap",
+});
+
+export const fragmentMono = Fragment_Mono({
+  subsets: ["latin"],
+  weight: "400",
+  variable: "--font-fragment-mono",
   display: "swap",
 });

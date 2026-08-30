@@ -3,54 +3,48 @@ import { Reveal } from "@/components/ui/Reveal";
 
 interface SectionHeadingProps {
   index: string;
-  eyebrow: string;
+  label: string;
   title: React.ReactNode;
-  intro?: string;
+  /** Nota corta alineada a la derecha (solo desktop del diseño) */
+  note?: string;
   tone?: "ink" | "paper";
   className?: string;
 }
 
-/** Cabecera de sección: coordenada mono + titular display + intro opcional. */
+/** Cabecera de sección: etiqueta "01 — Nombre" + titular Archivo Black. */
 export function SectionHeading({
   index,
-  eyebrow,
+  label,
   title,
-  intro,
+  note,
   tone = "ink",
   className,
 }: SectionHeadingProps) {
   const onPaper = tone === "ink";
 
   return (
-    <Reveal className={cn("max-w-3xl", className)}>
-      <p
-        className={cn(
-          "label-mono mb-6 flex items-center gap-3",
-          onPaper ? "text-ink/50" : "text-paper/50"
-        )}
-      >
-        <span className={onPaper ? "text-cobalt" : "text-cobalt-bright"} aria-hidden>
-          §{index}
-        </span>
-        <span className={cn("h-px w-8", onPaper ? "bg-ink/20" : "bg-paper/20")} aria-hidden />
-        {eyebrow}
-      </p>
-      <h2
-        className={cn(
-          "text-display-lg font-medium",
-          onPaper ? "text-ink" : "text-paper"
-        )}
-      >
-        {title}
-      </h2>
-      {intro && (
+    <Reveal className={cn("flex flex-wrap items-end justify-between gap-x-12 gap-y-6", className)}>
+      <div className="max-w-4xl">
         <p
           className={cn(
-            "mt-6 text-lead",
-            onPaper ? "text-ink/60" : "text-paper/60"
+            "label-mono mb-6",
+            onPaper ? "text-ink-mute" : "text-paper/45"
           )}
         >
-          {intro}
+          {index} — {label}
+        </p>
+        <h2
+          className={cn(
+            "display text-display-sec",
+            onPaper ? "text-ink" : "text-paper"
+          )}
+        >
+          {title}
+        </h2>
+      </div>
+      {note && (
+        <p className="max-w-[340px] text-[15px] leading-relaxed text-ink-faint">
+          {note}
         </p>
       )}
     </Reveal>

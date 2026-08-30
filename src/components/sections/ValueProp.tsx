@@ -1,54 +1,52 @@
-import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Reveal } from "@/components/ui/Reveal";
+import { SquareWord } from "@/components/ui/SquareWord";
 
 const pillars = [
   {
-    index: "A",
+    index: "1.0",
     title: "Entendemos el negocio",
     description:
-      "Antes de hablar de tecnología, entendemos cómo funciona tu empresa: qué procesos duelen, dónde se pierde tiempo y qué merece la pena resolver primero.",
+      "Hablamos con las personas que viven el proceso cada día. Ahí está el problema real, no en el pliego.",
   },
   {
-    index: "B",
+    index: "2.0",
     title: "Diseñamos la solución",
     description:
-      "Definimos qué construir, qué no, y en qué orden. Un alcance bien elegido vale más que cien funcionalidades: el software correcto suele ser más pequeño de lo que parece.",
+      "Definimos qué hace el software, qué no hace y en qué orden se construye. Por escrito y acordado contigo.",
   },
   {
-    index: "C",
-    title: "Lo llevamos a producción",
+    index: "3.0",
+    title: "La llevamos a producción",
     description:
-      "Un producto no está terminado hasta que tu equipo lo usa cada día. Desarrollamos, desplegamos, medimos y seguimos evolucionando la herramienta con tu negocio.",
+      "No entregamos maquetas. Entregamos software desplegado, con formación y soporte durante el arranque.",
   },
 ];
 
 export function ValueProp() {
   return (
-    <section className="bg-ink text-paper">
-      <div className="container-editorial py-24 md:py-32">
-        <SectionHeading
-          tone="paper"
-          index="01"
-          eyebrow="Propuesta"
-          title={
-            <>
-              Software construido{" "}
-              <em className="font-display text-[1.06em] font-normal italic">
-                alrededor
-              </em>{" "}
-              de tu negocio. No al revés.
-            </>
-          }
-          intro="No vendemos horas de programación. Entendemos el problema, diseñamos la solución, la construimos y la ponemos a funcionar — diseño, ingeniería y negocio trabajando juntos."
-        />
+    <section className="bg-ink">
+      <div className="container-editorial py-16 lg:py-[120px]">
+        <Reveal>
+          <p className="label-mono text-paper/45">01 — Propuesta</p>
+          <h2 className="display mt-6 max-w-[900px] text-[clamp(1.875rem,4.2vw,3.75rem)] leading-[1] text-paper lg:mt-9">
+            Primero tu negocio. Después el <SquareWord word="código" tone="dark" />
+          </h2>
+          <p className="mt-6 max-w-[560px] text-base leading-relaxed text-paper/60 lg:mt-7 lg:text-lg">
+            Una herramienta solo funciona si encaja en cómo trabajas. Por eso
+            empezamos por entender tu operativa y terminamos con software en
+            producción.
+          </p>
+        </Reveal>
 
-        <div className="mt-16 grid gap-10 md:mt-20 md:grid-cols-3 md:gap-8">
+        <div className="mt-12 grid gap-px border border-line-dark bg-line-dark md:grid-cols-3 lg:mt-[70px]">
           {pillars.map((pillar, i) => (
-            <Reveal key={pillar.index} delay={i * 0.08}>
-              <div className="border-t border-line-dark pt-6">
-                <p className="label-mono mb-5 text-cobalt-bright">/{pillar.index}</p>
-                <h3 className="text-display-sm font-medium">{pillar.title}</h3>
-                <p className="mt-4 text-sm leading-relaxed text-paper/55">
+            <Reveal key={pillar.index} delay={Math.min(i * 0.08, 0.24)} className="bg-ink">
+              <div className="p-6 lg:px-8 lg:py-9">
+                <p className="mb-3.5 font-mono text-xs text-cobalt-bright">
+                  {pillar.index}
+                </p>
+                <p className="text-[19px] font-semibold text-paper">{pillar.title}</p>
+                <p className="mt-3 text-sm leading-relaxed text-paper/55">
                   {pillar.description}
                 </p>
               </div>

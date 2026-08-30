@@ -1,7 +1,8 @@
 export const site = {
   name: "BPM Tech",
+  descriptor: "Tecnología a medida para empresas",
   description:
-    "BPM Tech es un estudio de software: desarrollamos aplicaciones a medida, automatización de procesos, integraciones e inteligencia artificial aplicada a negocio.",
+    "Aplicaciones a medida, webs con identidad propia, automatización e inteligencia artificial aplicada a tu operativa. Te acompañamos desde la idea hasta el producto funcionando.",
   // TODO: sustituir por el dominio definitivo de BPM Tech cuando exista.
   url: process.env.NEXT_PUBLIC_SITE_URL || "https://bpmtech.example",
   // El email de contacto NO se publica en la web: vive en el servidor

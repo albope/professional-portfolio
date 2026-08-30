@@ -5,10 +5,11 @@ Web corporativa de **BPM Tech**, estudio de software especializado en desarrollo
 ## Stack
 
 - **Next.js 14** (App Router) + **TypeScript** estricto
-- **Tailwind CSS 3** con tokens de marca propios (`src/app/globals.css` + `tailwind.config.ts`)
+- **Tailwind CSS 3** con tokens de la identidad BPM Tech (`src/app/globals.css` + `tailwind.config.ts`)
 - **framer-motion** para motion (respeta `prefers-reduced-motion`)
 - **Lenis** para smooth scroll (desactivado con `prefers-reduced-motion`)
-- Tipografía: **Geist Sans** y **Geist Mono** (locales) + **Instrument Serif** (Google Fonts, acento editorial)
+- Tipografía (next/font/google): **Archivo Black** (display, caja alta), **Archivo** 400/500/600 (texto/UI) y **Fragment Mono** (etiquetas y datos)
+- Marca: sin border-radius, sin sombras ni gradientes. Favicons y OG en `public/` (favicon-16/32/180.png, og-1200x630.png, avatar-512.png)
 
 ## Desarrollo
 

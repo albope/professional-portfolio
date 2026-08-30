@@ -1,26 +1,43 @@
 "use client";
 
 import { useState } from "react";
-import { ArrowRight, Check } from "lucide-react";
-import { Button } from "@/components/ui/Button";
+import Link from "next/link";
+import { Check } from "lucide-react";
+import { SquareWord } from "@/components/ui/SquareWord";
 
 type Status = "idle" | "sending" | "success" | "error";
 
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+const fieldBase =
+  "w-full bg-transparent px-4 py-3.5 text-[15px] text-paper transition-colors duration-300 focus:outline-none";
+const fieldOk = "border border-paper/25 focus:border-cobalt-bright";
+const fieldBad = "border border-error focus:border-error";
+const labelClasses =
+  "font-mono text-[11px] uppercase tracking-[0.14em] text-paper/50";
+
 /**
  * Formulario de contacto: envía por POST a /api/contact (Resend en servidor).
- * El email de destino nunca se expone en el cliente.
+ * El email de destino nunca se expone en el cliente. Los errores se anuncian
+ * junto al campo, sin vaciar el formulario.
  */
 export function ContactForm() {
   const [status, setStatus] = useState<Status>("idle");
-  const [errorMessage, setErrorMessage] = useState("");
+  const [emailError, setEmailError] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const form = e.currentTarget;
     const data = new FormData(form);
+    const email = String(data.get("email") || "").trim();
 
+    if (!EMAIL_RE.test(email)) {
+      setEmailError(true);
+      setStatus("idle");
+      return;
+    }
+    setEmailError(false);
     setStatus("sending");
-    setErrorMessage("");
 
     try {
       const res = await fetch("/api/contact", {
@@ -29,7 +46,7 @@ export function ContactForm() {
         body: JSON.stringify({
           nombre: data.get("nombre"),
           empresa: data.get("empresa"),
-          email: data.get("email"),
+          email,
           mensaje: data.get("mensaje"),
           web: data.get("web"),
         }),
@@ -37,106 +54,94 @@ export function ContactForm() {
 
       if (res.ok) {
         setStatus("success");
-        form.reset();
       } else {
-        const payload = await res.json().catch(() => null);
-        setErrorMessage(
-          payload?.error || "No se ha podido enviar el mensaje. Inténtalo de nuevo."
-        );
         setStatus("error");
       }
     } catch {
-      setErrorMessage("No se ha podido enviar el mensaje. Revisa tu conexión e inténtalo de nuevo.");
       setStatus("error");
     }
   };
 
-  const fieldClasses =
-    "w-full border-b border-paper/25 bg-transparent py-3 text-paper placeholder:text-paper/30 transition-colors duration-300 focus:border-cobalt focus:outline-none";
-  const labelClasses = "label-mono text-paper/50";
-
   if (status === "success") {
     return (
-      <div className="flex flex-col items-start gap-5 border-t border-line-dark pt-8" role="status">
-        <span className="flex h-11 w-11 items-center justify-center bg-cobalt">
-          <Check className="h-5 w-5 text-paper" aria-hidden />
+      <div role="status" className="lg:pt-2">
+        <span className="mb-7 flex h-11 w-11 items-center justify-center border border-cobalt-bright">
+          <Check
+            className="h-5 w-5 text-cobalt-bright"
+            strokeWidth={1.5}
+            strokeLinecap="square"
+            aria-hidden
+          />
         </span>
-        <p className="text-display-sm font-medium text-paper">Mensaje enviado.</p>
-        <p className="max-w-md text-sm leading-relaxed text-paper/60">
-          Gracias por contarnos tu proyecto. Lo leeremos con calma y te
-          responderemos lo antes posible al email que nos has dejado.
+        <h3 className="display text-[28px] text-paper lg:text-[34px]">
+          Mensaje <SquareWord word="recibido" tone="dark" />
+        </h3>
+        <p className="mt-5 max-w-md text-[15px] leading-[1.65] text-paper/60">
+          Gracias por escribirnos. Leemos todos los mensajes y te respondemos en
+          uno o dos días laborables.
         </p>
-        <button
-          type="button"
-          onClick={() => setStatus("idle")}
-          className="link-underline text-sm text-paper/70 transition-colors hover:text-paper"
+        <Link
+          href="/"
+          className="mt-8 inline-block border border-paper/35 px-6 py-[13px] text-sm font-semibold text-paper transition-colors duration-300 hover:border-cobalt-bright"
         >
-          Enviar otro mensaje
-        </button>
+          Volver a la portada
+        </Link>
       </div>
     );
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-8">
-      <div className="grid gap-8 sm:grid-cols-2">
-        <div className="flex flex-col gap-2">
-          <label htmlFor="nombre" className={labelClasses}>
-            Nombre *
-          </label>
+    <form onSubmit={handleSubmit} className="flex flex-col gap-[22px]" noValidate>
+      <div className="grid gap-[22px] sm:grid-cols-2">
+        <label className="flex flex-col gap-2">
+          <span className={labelClasses}>Nombre</span>
           <input
-            id="nombre"
             name="nombre"
             type="text"
             required
             autoComplete="name"
-            placeholder="Tu nombre"
-            className={fieldClasses}
+            className={`${fieldBase} ${fieldOk}`}
           />
-        </div>
-        <div className="flex flex-col gap-2">
-          <label htmlFor="empresa" className={labelClasses}>
-            Empresa
-          </label>
+        </label>
+        <label className="flex flex-col gap-2">
+          <span className={labelClasses}>Empresa</span>
           <input
-            id="empresa"
             name="empresa"
             type="text"
             autoComplete="organization"
-            placeholder="Tu empresa (si aplica)"
-            className={fieldClasses}
+            className={`${fieldBase} ${fieldOk}`}
           />
-        </div>
+        </label>
       </div>
 
-      <div className="flex flex-col gap-2">
-        <label htmlFor="email" className={labelClasses}>
-          Email *
-        </label>
+      <label className="flex flex-col gap-2">
+        <span className={labelClasses}>Email</span>
         <input
-          id="email"
           name="email"
           type="email"
           required
           autoComplete="email"
-          placeholder="nombre@empresa.com"
-          className={fieldClasses}
+          aria-invalid={emailError}
+          aria-describedby={emailError ? "email-error" : undefined}
+          onChange={() => setEmailError(false)}
+          className={`${fieldBase} ${emailError ? fieldBad : fieldOk}`}
         />
-      </div>
+        {emailError && (
+          <span id="email-error" className="font-mono text-[11px] text-error">
+            Revisa el email, parece incompleto.
+          </span>
+        )}
+      </label>
 
-      <div className="flex flex-col gap-2">
-        <label htmlFor="mensaje" className={labelClasses}>
-          ¿Qué problema quieres resolver? *
-        </label>
+      <label className="flex flex-col gap-2">
+        <span className={labelClasses}>¿Qué necesitas resolver?</span>
         <textarea
-          id="mensaje"
           name="mensaje"
           required
-          rows={4}
-          placeholder="Cuéntanoslo con tus palabras: qué pasa hoy y qué te gustaría que pasara."
-          className={`${fieldClasses} resize-none`}
+          rows={5}
+          className={`${fieldBase} ${fieldOk} resize-y`}
         />
-      </div>
+      </label>
 
       {/* Honeypot anti-spam: oculto para personas, tentador para bots */}
       <div className="hidden" aria-hidden="true">
@@ -144,26 +149,25 @@ export function ContactForm() {
         <input id="web" name="web" type="text" tabIndex={-1} autoComplete="off" />
       </div>
 
-      <div className="flex flex-col gap-4">
-        <Button
-          type="submit"
-          tone="paper"
-          disabled={status === "sending"}
-          className="w-full sm:w-auto"
-        >
-          {status === "sending" ? "Enviando…" : "Enviar mensaje"}
-          <ArrowRight className="h-4 w-4" />
-        </Button>
-        <p
-          className={status === "error" ? "text-xs text-red-300" : "text-xs text-paper/40"}
-          role="status"
-          aria-live="polite"
-        >
-          {status === "error"
-            ? errorMessage
-            : "Tu mensaje nos llega directamente. Sin listas de correo ni spam."}
-        </p>
-      </div>
+      {status === "error" && (
+        <div className="border border-error px-5 py-4" role="alert">
+          <p className="text-sm leading-relaxed text-paper">
+            No hemos podido enviar el mensaje. Vuelve a intentarlo en un momento.
+          </p>
+        </div>
+      )}
+
+      <button
+        type="submit"
+        disabled={status === "sending"}
+        className="self-start bg-paper px-[30px] py-4 text-[15px] font-semibold text-ink transition-colors duration-300 ease-editorial hover:bg-cobalt-bright disabled:pointer-events-none disabled:opacity-60"
+      >
+        {status === "sending" ? "Enviando…" : "Enviar mensaje"}
+      </button>
+      <p className="font-mono text-[11px] text-paper/40">
+        Solo usamos estos datos para responderte. Contacto únicamente por este
+        formulario.
+      </p>
     </form>
   );
 }

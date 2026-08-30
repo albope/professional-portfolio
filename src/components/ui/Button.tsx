@@ -5,16 +5,16 @@ type Variant = "solid" | "outline";
 type Tone = "ink" | "paper";
 
 const base =
-  "inline-flex h-12 items-center justify-center gap-2 rounded-[2px] px-6 text-sm font-medium tracking-tight transition-colors duration-300 ease-editorial disabled:pointer-events-none disabled:opacity-60";
+  "inline-flex items-center justify-center gap-2 px-[30px] py-4 text-[15px] font-semibold tracking-tight transition-colors duration-300 ease-editorial disabled:pointer-events-none disabled:opacity-60";
 
 const styles: Record<Tone, Record<Variant, string>> = {
   ink: {
     solid: "bg-ink text-paper hover:bg-cobalt",
-    outline: "border border-ink/25 text-ink hover:border-ink hover:bg-ink/[0.04]",
+    outline: "border border-ink text-ink hover:bg-paper-2",
   },
   paper: {
-    solid: "bg-paper text-ink hover:bg-cobalt hover:text-paper",
-    outline: "border border-paper/30 text-paper hover:border-paper hover:bg-paper/10",
+    solid: "bg-paper text-ink hover:bg-cobalt-bright",
+    outline: "border border-paper/35 text-paper hover:border-cobalt-bright",
   },
 };
 

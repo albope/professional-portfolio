@@ -10,8 +10,8 @@ export const metadata: Metadata = {
 export default function PrivacidadPage() {
   return (
     <div className="container-editorial pb-24 pt-32 md:pt-40">
-      <p className="label-mono mb-6 text-ink/45">Legal</p>
-      <h1 className="text-display-lg font-medium text-ink">
+      <p className="label-mono mb-6 text-ink-mute">Legal</p>
+      <h1 className="display text-display-sec text-ink">
         Política de privacidad
       </h1>
 
@@ -21,7 +21,7 @@ export default function PrivacidadPage() {
           tratamiento y revisar conforme al RGPD antes de la puesta en
           producción del sitio.
         </p>
-        <h2 className="pt-4 text-display-sm font-medium text-ink">
+        <h2 className="pt-4 text-xl font-semibold text-ink">
           Qué datos tratamos
         </h2>
         <p>
@@ -31,7 +31,7 @@ export default function PrivacidadPage() {
           de contacto (nombre, empresa, dirección de correo y el contenido de tu
           mensaje).
         </p>
-        <h2 className="pt-4 text-display-sm font-medium text-ink">
+        <h2 className="pt-4 text-xl font-semibold text-ink">
           Para qué los usamos
         </h2>
         <p>
@@ -39,7 +39,7 @@ export default function PrivacidadPage() {
           preparar una propuesta. No cedemos tus datos a terceros ni los usamos
           para enviarte comunicaciones comerciales no solicitadas.
         </p>
-        <h2 className="pt-4 text-display-sm font-medium text-ink">
+        <h2 className="pt-4 text-xl font-semibold text-ink">
           Tus derechos
         </h2>
         <p>

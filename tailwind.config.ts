@@ -7,48 +7,52 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      /* Colores en formato rgb(... / <alpha-value>) para que funcionen los
+         modificadores de opacidad (text-paper/60, bg-cobalt-bright/35...).
+         Valores canónicos documentados en globals.css. */
       colors: {
         paper: {
-          DEFAULT: "var(--paper)",
-          2: "var(--paper-2)",
+          DEFAULT: "rgb(247 246 242 / <alpha-value>)",
+          2: "rgb(239 237 230 / <alpha-value>)",
         },
         ink: {
-          DEFAULT: "var(--ink)",
-          2: "var(--ink-2)",
+          DEFAULT: "rgb(16 16 19 / <alpha-value>)",
+          2: "rgb(24 24 28 / <alpha-value>)",
+          soft: "rgb(61 60 53 / <alpha-value>)",
+          mute: "rgb(90 89 79 / <alpha-value>)",
+          faint: "rgb(138 136 125 / <alpha-value>)",
         },
         cobalt: {
-          DEFAULT: "var(--cobalt)",
-          deep: "var(--cobalt-deep)",
-          bright: "var(--cobalt-bright)",
+          DEFAULT: "rgb(39 67 224 / <alpha-value>)",
+          deep: "rgb(30 53 184 / <alpha-value>)",
+          bright: "rgb(107 131 255 / <alpha-value>)",
         },
         line: {
-          DEFAULT: "var(--line)",
-          dark: "var(--line-dark)",
+          DEFAULT: "rgb(226 224 216 / <alpha-value>)",
+          dark: "rgba(247, 246, 242, 0.12)",
         },
+        error: "rgb(212 103 74 / <alpha-value>)",
       },
       fontFamily: {
-        sans: ["var(--font-geist-sans)", "system-ui", "sans-serif"],
-        mono: ["var(--font-geist-mono)", "ui-monospace", "monospace"],
-        display: ["var(--font-instrument-serif)", "Georgia", "serif"],
+        sans: ["var(--font-archivo)", "system-ui", "sans-serif"],
+        display: ["var(--font-archivo-black)", "system-ui", "sans-serif"],
+        mono: ["var(--font-fragment-mono)", "ui-monospace", "monospace"],
       },
       fontSize: {
-        "display-xl": [
-          "clamp(2.65rem, 6.5vw, 5.5rem)",
-          { lineHeight: "1.03", letterSpacing: "-0.035em" },
+        /* Escala display (Archivo Black, caja alta) */
+        "display-hero": [
+          "clamp(2.5rem, 6.2vw, 5.5rem)",
+          { lineHeight: "0.96", letterSpacing: "-0.01em" },
         ],
-        "display-lg": [
-          "clamp(2.15rem, 5vw, 4rem)",
-          { lineHeight: "1.06", letterSpacing: "-0.03em" },
+        "display-case": [
+          "clamp(2.125rem, 5vw, 4.5rem)",
+          { lineHeight: "0.98", letterSpacing: "-0.01em" },
         ],
-        "display-md": [
-          "clamp(1.7rem, 3.5vw, 2.65rem)",
-          { lineHeight: "1.12", letterSpacing: "-0.022em" },
+        "display-sec": [
+          "clamp(1.875rem, 3.9vw, 3.375rem)",
+          { lineHeight: "1.02", letterSpacing: "-0.01em" },
         ],
-        "display-sm": [
-          "clamp(1.3rem, 2.4vw, 1.7rem)",
-          { lineHeight: "1.22", letterSpacing: "-0.015em" },
-        ],
-        lead: ["clamp(1.0625rem, 1.4vw, 1.1875rem)", { lineHeight: "1.65" }],
+        lead: ["clamp(1rem, 1.35vw, 1.1875rem)", { lineHeight: "1.6" }],
       },
       transitionTimingFunction: {
         editorial: "cubic-bezier(0.16, 1, 0.3, 1)",

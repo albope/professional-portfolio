@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { geistSans, geistMono, instrumentSerif } from "@/lib/fonts";
+import { archivo, archivoBlack, fragmentMono } from "@/lib/fonts";
 import SmoothScroll from "@/components/layout/SmoothScroll";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
@@ -9,31 +9,48 @@ import { site } from "@/data/site";
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: {
-    default: "BPM Tech — Software a medida, automatización e IA",
-    template: "%s — BPM Tech",
+    default: "BPM Tech · Tecnología a medida para empresas",
+    template: "%s · BPM Tech",
   },
   description: site.description,
   keywords: [
     "software a medida",
     "desarrollo de software",
+    "webs a medida",
     "automatización de procesos",
     "inteligencia artificial",
     "integraciones",
     "consultoría tecnológica",
     "Valencia",
   ],
+  icons: {
+    icon: [
+      { url: "/favicon-32.png", sizes: "32x32", type: "image/png" },
+      { url: "/favicon-16.png", sizes: "16x16", type: "image/png" },
+    ],
+    apple: "/favicon-180.png",
+  },
   openGraph: {
     type: "website",
     locale: "es_ES",
     siteName: site.name,
-    title: "BPM Tech — Software a medida, automatización e IA",
+    title: "BPM Tech · Tecnología a medida para empresas",
     description: site.description,
     url: site.url,
+    images: [
+      {
+        url: "/og-1200x630.png",
+        width: 1200,
+        height: 630,
+        alt: "BPM Tech, tecnología a medida para empresas",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "BPM Tech — Software a medida, automatización e IA",
+    title: "BPM Tech · Tecnología a medida para empresas",
     description: site.description,
+    images: ["/og-1200x630.png"],
   },
   alternates: {
     canonical: "/",
@@ -61,7 +78,7 @@ export default function RootLayout({
   return (
     <html
       lang="es"
-      className={`${geistSans.variable} ${geistMono.variable} ${instrumentSerif.variable} font-sans`}
+      className={`${archivo.variable} ${archivoBlack.variable} ${fragmentMono.variable} font-sans`}
     >
       <body className="min-h-screen bg-paper text-ink">
         {/* Sin JS, los wrappers de animación quedan en opacity 0: forzamos visibilidad */}

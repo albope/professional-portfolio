@@ -1,261 +1,251 @@
 import type { ProjectVisualVariant } from "@/data/projects";
 
-const LINE = "rgba(247,246,242,0.22)";
-const LINE_SOFT = "rgba(247,246,242,0.10)";
-const FILL_SOFT = "rgba(247,246,242,0.14)";
-const COBALT = "#3D5BFF";
-
 /**
- * Ilustraciones abstractas de línea fina para los proyectos.
- * Composiciones propias (sin capturas falsas) sobre fondo tinta.
+ * Visuales abstractos de proyecto: wireframes de rectángulos de 1px sobre
+ * tinta, con un solo elemento en cobalto claro por visual. Recreados del
+ * handoff de diseño como composiciones div, sin imágenes.
+ *
+ * context "card" = tarjeta de la home · "case" = banda del case study.
  */
-export function ProjectVisual({ variant }: { variant: ProjectVisualVariant }) {
+export function ProjectVisual({
+  variant,
+  context = "card",
+}: {
+  variant: ProjectVisualVariant;
+  context?: "card" | "case";
+}) {
+  if (context === "case") {
+    switch (variant) {
+      case "padel":
+        return <PadelCase />;
+      case "wms":
+        return <WmsCase />;
+      case "docs":
+        return <DocsCase />;
+      case "assistant":
+        return <AssistantCase />;
+      default:
+        return null;
+    }
+  }
+
+  switch (variant) {
+    case "padel":
+      return <PadelCard />;
+    case "wms":
+      return <WmsCard />;
+    case "docs":
+      return <DocsCard />;
+    case "assistant":
+      return <AssistantCard />;
+    case "boda":
+      return <BodaMini />;
+    case "radio":
+      return <RadioMini />;
+  }
+}
+
+const L22 = "border border-[#F7F6F2]/[0.22]";
+const L12 = "border border-[#F7F6F2]/[0.12]";
+const L25 = "border border-[#F7F6F2]/[0.25]";
+const BRIGHT = "border border-cobalt-bright";
+
+/* ————— Tarjetas de la home ————— */
+
+function PadelCard() {
   return (
-    <svg
-      viewBox="0 0 640 480"
-      className="h-full w-full"
-      aria-hidden="true"
-      fill="none"
-      preserveAspectRatio="xMidYMid meet"
-    >
-      {variant === "grid" && <GridVisual />}
-      {variant === "documents" && <DocumentsVisual />}
-      {variant === "assistant" && <AssistantVisual />}
-      {variant === "booking" && <BookingVisual />}
-      {variant === "editorial" && <EditorialVisual />}
-      {variant === "radio" && <RadioVisual />}
-    </svg>
+    <div className="grid h-full grid-cols-[1.4fr_1fr] gap-2.5" aria-hidden>
+      <div className={`${L22} grid grid-rows-[24px_1fr]`}>
+        <div className="border-b border-[#F7F6F2]/[0.22]" />
+        <div className="grid grid-cols-7 grid-rows-4">
+          <div className={`${L12} col-start-2 row-start-2 bg-cobalt-bright/35`} />
+          <div className={`${L12} col-start-5 row-start-3 bg-cobalt-bright/[0.18]`} />
+        </div>
+      </div>
+      <div className="flex flex-col gap-2.5">
+        <div className={`${L22} flex-1`} />
+        <div className={`${BRIGHT} flex h-[34%] items-center justify-center`}>
+          <span className="font-mono text-[10px] text-cobalt-bright">
+            RESERVA CONFIRMADA
+          </span>
+        </div>
+      </div>
+    </div>
   );
 }
 
-/* Web a medida (evento personal): wireframe editorial con RSVP y galería */
-function EditorialVisual() {
+function WmsCard() {
   return (
-    <g>
-      {/* marco de navegador */}
-      <rect x="96" y="76" width="448" height="330" stroke={LINE} />
-      <line x1="96" y1="108" x2="544" y2="108" stroke={LINE} />
-      <circle cx="114" cy="92" r="3" stroke={LINE} />
-      <circle cx="128" cy="92" r="3" stroke={LINE} />
-      <circle cx="142" cy="92" r="3" stroke={LINE} />
-      <rect x="240" y="86" width="160" height="12" stroke={LINE_SOFT} />
-      {/* hero centrado: anillos + titular */}
-      <circle cx="310" cy="150" r="12" stroke={COBALT} strokeWidth="1.5" />
-      <circle cx="330" cy="150" r="12" stroke={LINE} />
-      <line x1="250" y1="186" x2="390" y2="186" stroke={LINE} />
-      <line x1="274" y1="202" x2="366" y2="202" stroke={LINE_SOFT} />
-      {/* separador */}
-      <line x1="96" y1="228" x2="544" y2="228" stroke={LINE_SOFT} />
-      {/* columna izquierda: formulario RSVP */}
-      <line x1="128" y1="262" x2="288" y2="262" stroke={LINE_SOFT} />
-      <line x1="128" y1="292" x2="288" y2="292" stroke={LINE_SOFT} />
-      <line x1="128" y1="322" x2="288" y2="322" stroke={LINE_SOFT} />
-      <rect x="128" y="346" width="88" height="26" fill={COBALT} opacity="0.85" />
-      {/* columna derecha: galería colaborativa */}
-      {[0, 1, 2].map((col) => (
-        <g key={col}>
-          <rect x={336 + col * 62} y="252" width="50" height="50" stroke={LINE} />
-          <rect x={336 + col * 62} y="316" width="50" height="50" stroke={LINE} />
-        </g>
-      ))}
-      <rect x="398" y="252" width="50" height="50" fill={FILL_SOFT} />
-      <rect x="336" y="316" width="50" height="50" fill={FILL_SOFT} />
-      {/* marca de subida */}
-      <path d="M478 336 v-14 m-6 6 l6 -6 l6 6" stroke={COBALT} strokeWidth="1.5" />
-    </g>
+    <div className="grid h-full grid-cols-5 grid-rows-3 gap-2.5" aria-hidden>
+      <div className={`${L22} row-span-3`} />
+      <div className={`${L22} col-span-3`} />
+      <div className={L22} />
+      <div className={`${L12} col-span-2 col-start-2 row-span-2 row-start-2 grid grid-cols-4 grid-rows-3`}>
+        <div className="col-start-2 row-start-2 bg-cobalt-bright/30" />
+      </div>
+      <div className={`${BRIGHT} col-span-2 col-start-4 row-start-2 flex items-center justify-center`}>
+        <span className="font-mono text-[10px] text-cobalt-bright">
+          UBICACIÓN A-03-2
+        </span>
+      </div>
+      <div className={`${L22} col-span-2 col-start-4 row-start-3`} />
+    </div>
   );
 }
 
-/* Web de programa de radio: directo, onda y archivo */
-function RadioVisual() {
-  const bars = [14, 30, 22, 44, 60, 36, 52, 74, 40, 58, 30, 46, 66, 34, 24, 40, 18, 28];
+function DocsCard() {
   return (
-    <g>
-      {/* indicador de directo */}
-      <circle cx="110" cy="106" r="5" fill={COBALT} />
-      <line x1="128" y1="106" x2="176" y2="106" stroke={LINE} />
-      {/* reproductor: play */}
-      <circle cx="150" cy="228" r="42" stroke={LINE} />
-      <circle cx="150" cy="228" r="41" stroke={LINE_SOFT} />
-      <path d="M138 206 L174 228 L138 250 Z" stroke={COBALT} strokeWidth="1.5" fill="none" />
-      {/* forma de onda */}
-      {bars.map((h, i) => (
-        <line
-          key={i}
-          x1={228 + i * 18}
-          y1={228 - h / 2}
-          x2={228 + i * 18}
-          y2={228 + h / 2}
-          stroke={i === 7 ? COBALT : LINE}
-          strokeWidth={i === 7 ? 2 : 1}
-        />
-      ))}
-      {/* línea de progreso */}
-      <line x1="228" y1="292" x2="534" y2="292" stroke={LINE_SOFT} />
-      <line x1="228" y1="292" x2="360" y2="292" stroke={LINE} />
-      <circle cx="360" cy="292" r="4" fill={COBALT} />
-      {/* archivo histórico */}
-      {[0, 1, 2, 3, 4].map((i) => (
-        <rect key={i} x={110 + i * 70} y="344" width="56" height="42" stroke={LINE} />
-      ))}
-      <rect x={250} y="344" width="56" height="42" fill={FILL_SOFT} />
-    </g>
+    <div className="flex h-full items-center gap-3.5" aria-hidden>
+      <div className={`${L22} flex h-[78%] w-[26%] flex-col gap-1.5 p-2.5`}>
+        <div className="h-px w-[80%] bg-[#F7F6F2]/30" />
+        <div className="h-px w-[60%] bg-[#F7F6F2]/30" />
+        <div className="h-px w-[70%] bg-[#F7F6F2]/30" />
+      </div>
+      <span className="font-mono text-[13px] text-cobalt-bright">→</span>
+      <div className={`${BRIGHT} flex h-[46%] w-[20%] items-center justify-center`}>
+        <span className="font-mono text-[10px] text-cobalt-bright">IA</span>
+      </div>
+      <span className="font-mono text-[13px] text-cobalt-bright">→</span>
+      <div className={`${L22} flex h-[78%] w-[26%] flex-col justify-end gap-1.5 p-2.5`}>
+        <div className="h-2 border border-[#F7F6F2]/30" />
+        <div className="h-2 border border-[#F7F6F2]/30" />
+        <div className="h-2 border border-cobalt-bright/70" />
+      </div>
+    </div>
   );
 }
 
-/* Plataforma de operaciones: tablero semanal de planificación */
-function GridVisual() {
-  const cols = [120, 200, 280, 360, 440, 520];
-  const rows = [140, 200, 260, 320, 380];
+function AssistantCard() {
   return (
-    <g>
-      {/* marco */}
-      <rect x="80" y="90" width="480" height="330" stroke={LINE} />
-      {/* cabecera */}
-      <line x1="80" y1="140" x2="560" y2="140" stroke={LINE} />
-      {cols.map((x) => (
-        <line key={x} x1={x} y1="90" x2={x} y2="420" stroke={LINE_SOFT} />
-      ))}
-      {rows.slice(1).map((y) => (
-        <line key={y} x1="80" y1={y} x2="560" y2={y} stroke={LINE_SOFT} />
-      ))}
-      {/* ticks de cabecera */}
-      {cols.map((x) => (
-        <line key={`t${x}`} x1={x + 24} y1="112" x2={x + 56} y2="112" stroke={LINE} />
-      ))}
-      {/* bloques planificados */}
-      <rect x="128" y="152" width="104" height="36" fill={FILL_SOFT} />
-      <rect x="288" y="152" width="64" height="36" fill={FILL_SOFT} />
-      <rect x="208" y="212" width="144" height="36" fill={COBALT} opacity="0.9" />
-      <rect x="448" y="212" width="88" height="36" fill={FILL_SOFT} />
-      <rect x="128" y="272" width="64" height="36" fill={FILL_SOFT} />
-      <rect x="368" y="272" width="120" height="36" fill={FILL_SOFT} />
-      <rect x="288" y="332" width="88" height="36" fill={FILL_SOFT} />
-      <rect x="448" y="332" width="64" height="36" fill={COBALT} opacity="0.55" />
-      {/* eje izquierdo */}
-      {rows.map((y) => (
-        <line key={`l${y}`} x1="64" y1={y + 30} x2="72" y2={y + 30} stroke={LINE} />
-      ))}
-      {/* marca de estado */}
-      <circle cx="536" cy="115" r="4" fill={COBALT} />
-    </g>
+    <div className="mx-auto flex h-full max-w-[82%] flex-col justify-center gap-3" aria-hidden>
+      <div className={`${L22} max-w-[70%] self-end px-3.5 py-2.5`}>
+        <span className="font-mono text-[10px] text-[#F7F6F2]/60">
+          ¿Cuál es el plazo de garantía?
+        </span>
+      </div>
+      <div className={`${BRIGHT} max-w-[78%] px-3.5 py-2.5`}>
+        <span className="font-mono text-[10px] text-cobalt-bright">
+          Dos años desde la entrega. Fuente: manual de posventa, pág. 12
+        </span>
+      </div>
+      <div className="mt-1.5 h-px bg-[#F7F6F2]/[0.15]" />
+    </div>
   );
 }
 
-/* Automatización documental: documentos → extracción → datos estructurados */
-function DocumentsVisual() {
+function BodaMini() {
   return (
-    <g>
-      {/* pila de documentos */}
-      <rect x="96" y="132" width="150" height="200" stroke={LINE_SOFT} />
-      <rect x="110" y="118" width="150" height="200" stroke={LINE} />
-      <path d="M110 118 h110 l40 40 v160 h-150 z" stroke={LINE} />
-      <path d="M220 118 v40 h40" stroke={LINE} />
-      {[176, 200, 224, 248, 272].map((y) => (
-        <line key={y} x1="132" y1={y} x2={y % 48 === 0 ? 216 : 238} y2={y} stroke={LINE_SOFT} />
-      ))}
-      <rect x="132" y="290" width="52" height="10" fill={COBALT} opacity="0.85" />
-      {/* flujo */}
-      <path d="M260 218 H 348" stroke={LINE} strokeDasharray="3 6" />
-      <circle cx="304" cy="218" r="12" stroke={LINE} />
-      <circle cx="304" cy="218" r="3" fill={COBALT} />
-      <path d="M340 212 l10 6 l-10 6" stroke={LINE} />
-      {/* tabla estructurada */}
-      <rect x="356" y="128" width="196" height="196" stroke={LINE} />
-      <line x1="356" y1="160" x2="552" y2="160" stroke={LINE} />
-      {[192, 224, 256, 288].map((y) => (
-        <line key={y} x1="356" y1={y} x2="552" y2={y} stroke={LINE_SOFT} />
-      ))}
-      <line x1="430" y1="128" x2="430" y2="324" stroke={LINE_SOFT} />
-      <rect x="366" y="170" width="44" height="10" fill={FILL_SOFT} />
-      <rect x="440" y="170" width="80" height="10" fill={FILL_SOFT} />
-      <rect x="366" y="202" width="44" height="10" fill={FILL_SOFT} />
-      <rect x="440" y="202" width="60" height="10" fill={COBALT} opacity="0.85" />
-      <rect x="366" y="234" width="44" height="10" fill={FILL_SOFT} />
-      <rect x="440" y="234" width="72" height="10" fill={FILL_SOFT} />
-      <rect x="366" y="266" width="44" height="10" fill={FILL_SOFT} />
-      <rect x="440" y="266" width="48" height="10" fill={FILL_SOFT} />
-      {/* validación */}
-      <path d="M506 344 l8 8 l14 -16" stroke={COBALT} strokeWidth="1.5" />
-      <circle cx="514" cy="342" r="18" stroke={LINE} />
-    </g>
+    <div className="flex h-full w-full items-center justify-center" aria-hidden>
+      <div className="flex h-[70px] w-[54px] items-center justify-center border border-[#F7F6F2]/40">
+        <span className="font-mono text-[9px] text-cobalt-bright">RSVP</span>
+      </div>
+    </div>
   );
 }
 
-/* Asistente interno: fuentes → núcleo → respuesta citada */
-function AssistantVisual() {
-  const sources: Array<[number, number]> = [
-    [140, 120],
-    [110, 240],
-    [160, 350],
-    [500, 120],
-    [530, 240],
-    [480, 350],
+function RadioMini() {
+  const bars: Array<[string, boolean]> = [
+    ["40%", true],
+    ["75%", true],
+    ["55%", false],
+    ["90%", true],
+    ["35%", false],
   ];
   return (
-    <g>
-      {/* halos */}
-      <circle cx="320" cy="230" r="120" stroke={LINE_SOFT} />
-      <circle cx="320" cy="230" r="72" stroke={LINE_SOFT} />
-      {/* fuentes conectadas */}
-      {sources.map(([x, y]) => (
-        <g key={`${x}-${y}`}>
-          <line x1={x} y1={y} x2="320" y2="230" stroke={LINE_SOFT} />
-          <rect x={x - 14} y={y - 18} width="28" height="36" stroke={LINE} fill="#101013" />
-          <line x1={x - 6} y1={y - 8} x2={x + 6} y2={y - 8} stroke={LINE_SOFT} />
-          <line x1={x - 6} y1={y} x2={x + 6} y2={y} stroke={LINE_SOFT} />
-        </g>
-      ))}
-      {/* núcleo */}
-      <rect x="296" y="206" width="48" height="48" stroke={COBALT} strokeWidth="1.5" fill="#101013" />
-      <circle cx="320" cy="230" r="5" fill={COBALT} />
-      {/* respuesta con cita */}
-      <rect x="228" y="380" width="184" height="52" stroke={LINE} />
-      <line x1="320" y1="278" x2="320" y2="380" stroke={LINE} strokeDasharray="3 6" />
-      <line x1="244" y1="398" x2="352" y2="398" stroke={LINE_SOFT} />
-      <line x1="244" y1="414" x2="326" y2="414" stroke={LINE_SOFT} />
-      <rect x="370" y="408" width="28" height="10" fill={COBALT} opacity="0.85" />
-    </g>
+    <div className="flex h-full w-full items-center justify-center" aria-hidden>
+      <div className="flex h-10 items-end gap-[3px]">
+        {bars.map(([h, bright], i) => (
+          <div
+            key={i}
+            style={{ height: h }}
+            className={bright ? "w-[3px] bg-cobalt-bright" : "w-[3px] bg-[#F7F6F2]/50"}
+          />
+        ))}
+      </div>
+    </div>
   );
 }
 
-/* Sistema de reservas: parrilla horaria con ocupación */
-function BookingVisual() {
-  const rows = [170, 230, 290, 350];
+/* ————— Bandas de case study ————— */
+
+function PadelCase() {
   return (
-    <g>
-      {/* regla horaria */}
-      <line x1="90" y1="120" x2="560" y2="120" stroke={LINE} />
-      {Array.from({ length: 13 }).map((_, i) => (
-        <line
-          key={i}
-          x1={110 + i * 36}
-          y1="120"
-          x2={110 + i * 36}
-          y2={i % 3 === 0 ? 106 : 112}
-          stroke={LINE}
-        />
-      ))}
-      {/* pistas */}
-      {rows.map((y) => (
-        <g key={y}>
-          <line x1="90" y1={y + 44} x2="560" y2={y + 44} stroke={LINE_SOFT} />
-          <line x1="64" y1={y + 22} x2="78" y2={y + 22} stroke={LINE} />
-        </g>
-      ))}
-      {/* reservas */}
-      <rect x="110" y="152" width="108" height="36" fill={FILL_SOFT} />
-      <rect x="254" y="152" width="72" height="36" fill={FILL_SOFT} />
-      <rect x="398" y="152" width="108" height="36" fill={COBALT} opacity="0.85" />
-      <rect x="146" y="212" width="72" height="36" fill={FILL_SOFT} />
-      <rect x="290" y="212" width="108" height="36" fill={FILL_SOFT} />
-      <rect x="110" y="272" width="72" height="36" fill={COBALT} opacity="0.55" />
-      <rect x="326" y="272" width="72" height="36" fill={FILL_SOFT} />
-      <rect x="470" y="272" width="72" height="36" fill={FILL_SOFT} />
-      <rect x="218" y="332" width="108" height="36" fill={FILL_SOFT} />
-      <rect x="434" y="332" width="72" height="36" fill={FILL_SOFT} />
-      {/* indicador de disponibilidad */}
-      <rect x="470" y="212" width="72" height="36" stroke={COBALT} strokeDasharray="4 4" />
-    </g>
+    <div className="grid grid-cols-1 gap-4 sm:grid-cols-[200px_1fr]" aria-hidden>
+      <div className={`${L25} flex h-[220px] flex-col gap-2.5 p-4`}>
+        <span className="h-1.5 w-[60%] bg-[#F7F6F2]/25" />
+        <span className="h-1.5 w-[80%] bg-[#F7F6F2]/[0.15]" />
+        <span className="h-1.5 w-[70%] bg-[#F7F6F2]/[0.15]" />
+        <span className="h-1.5 w-[75%] bg-cobalt-bright/60" />
+      </div>
+      <div className="flex flex-col gap-4">
+        <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+          <div className={`${L25} h-14`} />
+          <div className={`${L25} h-14`} />
+          <div className={`${BRIGHT} h-14 bg-cobalt-bright/[0.12]`} />
+          <div className={`${L25} h-14`} />
+        </div>
+        <div className={`${L25} flex h-[148px] items-end gap-2.5 p-4`}>
+          <span className="h-[40%] w-[22px] bg-[#F7F6F2]/20" />
+          <span className="h-[65%] w-[22px] bg-[#F7F6F2]/20" />
+          <span className="h-[50%] w-[22px] bg-[#F7F6F2]/20" />
+          <span className="h-[85%] w-[22px] bg-cobalt-bright" />
+          <span className="h-[70%] w-[22px] bg-[#F7F6F2]/20" />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function WmsCase() {
+  return (
+    <div className="grid grid-cols-3 gap-2.5 sm:grid-cols-6" aria-hidden>
+      <div className={`${L25} h-11`} />
+      <div className={`${L25} h-11`} />
+      <div className={`${BRIGHT} h-11 bg-cobalt-bright/[0.12]`} />
+      <div className={`${L25} h-11`} />
+      <div className={`${L25} h-11`} />
+      <div className={`${L25} h-11`} />
+      <div className={`${L25} h-11`} />
+      <div className={`${L25} h-11`} />
+      <div className={`${L25} h-11`} />
+      <div className={`${L25} h-11`} />
+      <div className={`${BRIGHT} h-11`} />
+      <div className={`${L25} h-11`} />
+    </div>
+  );
+}
+
+function DocsCase() {
+  return (
+    <div className="flex items-center gap-3.5" aria-hidden>
+      <div className={`${L25} flex h-16 w-[52px] shrink-0 flex-col gap-[5px] p-2`}>
+        <span className="h-[3px] w-[70%] bg-[#F7F6F2]/30" />
+        <span className="h-[3px] w-[90%] bg-[#F7F6F2]/20" />
+        <span className="h-[3px] w-[80%] bg-[#F7F6F2]/20" />
+      </div>
+      <span className="font-mono text-[13px] text-cobalt-bright">→</span>
+      <div className={`${BRIGHT} flex h-16 flex-1 items-center bg-cobalt-bright/10 px-3.5`}>
+        <span className="font-mono text-[10px] text-[#F7F6F2]/60">
+          campos extraídos y validados
+        </span>
+      </div>
+    </div>
+  );
+}
+
+function AssistantCase() {
+  return (
+    <div className="flex flex-col gap-2.5" aria-hidden>
+      <div className={`${L25} max-w-[75%] self-end px-3.5 py-2.5`}>
+        <span className="font-mono text-[10px] text-[#F7F6F2]/60">
+          ¿cómo tramito una devolución?
+        </span>
+      </div>
+      <div className={`${BRIGHT} max-w-[75%] self-start bg-cobalt-bright/10 px-3.5 py-2.5`}>
+        <span className="font-mono text-[10px] text-[#F7F6F2]/70">
+          respuesta con cita → manual, pág. 12
+        </span>
+      </div>
+    </div>
   );
 }

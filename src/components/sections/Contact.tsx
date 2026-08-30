@@ -1,57 +1,52 @@
-import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Reveal } from "@/components/ui/Reveal";
+import { SquareWord } from "@/components/ui/SquareWord";
 import { ContactForm } from "@/components/sections/ContactForm";
-import { site } from "@/data/site";
 
 const clientProfiles = [
-  "Pymes que quieren digitalizar su operativa",
-  "Personas con un proyecto propio entre manos",
-  "Startups construyendo su producto",
+  "Pymes que necesitan una herramienta a su medida",
+  "Particulares con un proyecto propio",
+  "Startups que quieren construir su producto",
 ];
 
 export function Contact() {
   return (
-    <section id="contacto" className="scroll-mt-24 bg-ink text-paper">
-      <div className="container-editorial grid gap-16 py-24 md:py-32 lg:grid-cols-12 lg:gap-12">
-        <div className="lg:col-span-6">
-          <SectionHeading
-            tone="paper"
-            index="07"
-            eyebrow="Contacto"
-            title={
-              <>
-                ¿Tienes un problema que el software{" "}
-                <em className="font-display text-[1.06em] font-normal italic">
-                  podría resolver?
-                </em>
-              </>
-            }
-            intro="Cuéntanoslo sin compromiso y sin jerga: explícanos qué pasa en tu negocio y te diremos, con honestidad, cómo lo abordaríamos — o si no hace falta software para resolverlo."
-          />
+    <section id="contacto" className="scroll-mt-20 bg-ink">
+      <div className="container-editorial grid gap-x-20 gap-y-14 py-16 lg:grid-cols-2 lg:py-[110px]">
+        <div>
+          <Reveal>
+            <p className="label-mono mb-6 text-paper/45">07 — Contacto</p>
+            <h2 className="display text-display-sec text-paper">
+              ¿Qué parte de tu negocio sigue funcionando a{" "}
+              <SquareWord word="mano" tone="dark" />
+            </h2>
+            <p className="mt-7 max-w-[440px] text-base leading-[1.65] text-paper/60">
+              Cuéntanoslo en cuatro líneas. Te respondemos con una lectura
+              honesta de si el proyecto tiene sentido y cómo lo abordaríamos.
+            </p>
+          </Reveal>
 
-          <Reveal delay={0.15} className="mt-12">
-            <p className="label-mono mb-5 text-paper/40">Trabajamos con</p>
-            <ul className="flex flex-col gap-3">
+          <Reveal delay={0.12} className="mt-11 border-t border-line-dark pt-6">
+            <p className="label-mono mb-4 text-paper/45">Trabajamos con</p>
+            <ul className="flex flex-col gap-2.5">
               {clientProfiles.map((profile) => (
-                <li key={profile} className="flex items-start gap-3 text-sm text-paper/70">
-                  <span className="mt-[7px] inline-block h-[5px] w-[5px] shrink-0 bg-cobalt-bright" aria-hidden />
+                <li
+                  key={profile}
+                  className="flex items-center gap-3 text-[15px] text-paper"
+                >
+                  <span
+                    className="inline-block h-1.5 w-1.5 shrink-0 bg-cobalt-bright"
+                    aria-hidden
+                  />
                   {profile}
                 </li>
               ))}
             </ul>
-            <p className="mt-6 max-w-sm text-sm leading-relaxed text-paper/45">
-              Tu mensaje llega directamente a quien va a estudiar tu proyecto,
-              no a un buzón comercial.
-            </p>
-            <p className="label-mono mt-8 text-paper/35">{site.location}</p>
           </Reveal>
         </div>
 
-        <div className="lg:col-span-6">
-          <Reveal delay={0.1}>
-            <ContactForm />
-          </Reveal>
-        </div>
+        <Reveal delay={0.1}>
+          <ContactForm />
+        </Reveal>
       </div>
     </section>
   );

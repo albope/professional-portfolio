@@ -1,32 +1,25 @@
-import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
+import { Button } from "@/components/ui/Button";
+import { SquareWord } from "@/components/ui/SquareWord";
 
 export default function NotFound() {
   return (
-    <div className="container-editorial flex min-h-[70vh] flex-col items-start justify-center pt-24">
-      <p className="label-mono mb-6 flex items-center gap-3 text-ink/45">
-        <span className="text-cobalt" aria-hidden>
-          §404
-        </span>
-        <span className="h-px w-8 bg-ink/20" aria-hidden />
-        Página no encontrada
-      </p>
-      <h1 className="max-w-2xl text-display-lg font-medium text-ink">
-        Esta página{" "}
-        <em className="font-display text-[1.06em] font-normal italic">
-          no existe todavía.
-        </em>
+    <div className="container-editorial flex min-h-[75vh] flex-col items-start justify-center pt-24">
+      <p className="label-mono text-ink-mute">Error 404</p>
+      <h1 className="display mt-7 max-w-3xl text-display-case text-ink">
+        Esta página no está en <SquareWord word="producción" />
       </h1>
-      <p className="mt-6 max-w-md text-lead text-ink/60">
-        Y esta, a diferencia del software, no vamos a construirla.
+      <p className="mt-6 max-w-md text-base leading-relaxed text-ink-mute">
+        La dirección no existe o ha cambiado. Lo que sí existe está en la
+        portada.
       </p>
-      <Link
-        href="/"
-        className="group mt-10 inline-flex items-center gap-2 text-sm font-medium text-ink transition-colors hover:text-cobalt"
-      >
-        <ArrowLeft className="h-4 w-4 transition-transform duration-300 ease-editorial group-hover:-translate-x-1" />
-        Volver al inicio
-      </Link>
+      <div className="mt-9 flex flex-wrap gap-3.5">
+        <Button href="/" className="px-6 py-3.5 text-sm">
+          Ir a la portada
+        </Button>
+        <Button href="/#proyectos" variant="outline" className="px-6 py-3.5 text-sm">
+          Ver proyectos
+        </Button>
+      </div>
     </div>
   );
 }

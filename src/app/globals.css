@@ -4,16 +4,20 @@
 
 @layer base {
   :root {
-    /* Sistema de color BPM Tech — tema único de marca */
+    /* Sistema de color BPM Tech (identidad definitiva) */
     --paper: #f7f6f2;
     --paper-2: #efede6;
     --ink: #101013;
     --ink-2: #18181c;
+    --ink-soft: #3d3c35;
+    --ink-mute: #5a594f;
+    --ink-faint: #8a887d;
     --cobalt: #2743e0;
     --cobalt-deep: #1e35b8;
-    --cobalt-bright: #6b83ff; /* acento sobre fondos tinta (contraste AA) */
+    --cobalt-bright: #6b83ff; /* acento SOLO sobre tinta */
     --line: #e2e0d8;
     --line-dark: rgba(247, 246, 242, 0.12);
+    --error: #d4674a;
   }
 
   html {
@@ -43,17 +47,20 @@
 }
 
 @layer components {
-  /* Microetiqueta monoespaciada — patrón recurrente del sistema */
+  /* Microetiqueta técnica: Fragment Mono, mayúsculas, tracking amplio */
   .label-mono {
     @apply font-mono text-[11px] uppercase tracking-[0.18em];
   }
 
-  /* Contenedor editorial global */
-  .container-editorial {
-    @apply mx-auto w-full max-w-[1320px] px-5 sm:px-8 lg:px-12;
+  /* Titular display: Archivo Black, caja alta */
+  .display {
+    @apply font-display uppercase tracking-[-0.01em];
   }
 
-  /* Enlace con subrayado animado */
+  .container-editorial {
+    @apply mx-auto w-full max-w-[1320px] px-5 sm:px-8 lg:px-[60px];
+  }
+
   .link-underline {
     background-image: linear-gradient(currentColor, currentColor);
     background-size: 0% 1px;
@@ -69,7 +76,8 @@
 }
 
 @layer utilities {
-  /* Pulso que recorre la línea del diagrama del hero */
+  /* Pulso cobalto que recorre la línea del diagrama del hero (única
+     animación en bucle de la web, y única forma redonda de la marca) */
   @keyframes travel-x {
     0% {
       left: 0;

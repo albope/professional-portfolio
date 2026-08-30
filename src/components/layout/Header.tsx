@@ -3,10 +3,8 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { Menu, X } from "lucide-react";
-import { nav, ctaHref, ctaLabel, site } from "@/data/site";
+import { nav, ctaHref, ctaLabel } from "@/data/site";
 import { Wordmark } from "@/components/ui/Wordmark";
-import { Button } from "@/components/ui/Button";
 import { cn } from "@/lib/utils";
 
 export function Header() {
@@ -37,15 +35,18 @@ export function Header() {
     <>
     <header
       className={cn(
-        "fixed inset-x-0 top-0 z-50 border-b transition-all duration-300 ease-editorial",
-        scrolled || open
-          ? "border-line bg-paper/85 backdrop-blur-md"
-          : "border-transparent bg-transparent"
+        "fixed inset-x-0 top-0 z-50 border-b transition-colors duration-300 ease-editorial",
+        open
+          ? "border-line-dark bg-ink"
+          : scrolled
+            ? "border-line bg-paper/95 backdrop-blur-sm"
+            : "border-transparent bg-transparent"
       )}
     >
-      <div className="container-editorial flex h-16 items-center justify-between md:h-20">
-        <Link href="/" aria-label="BPM Tech — Inicio" onClick={() => setOpen(false)}>
-          <Wordmark />
+      <div className="container-editorial flex h-16 items-center justify-between lg:h-20">
+        <Link href="/" aria-label="BPM Tech, inicio" onClick={() => setOpen(false)}>
+          <Wordmark tone={open ? "paper" : "ink"} size={19} className="lg:hidden" />
+          <Wordmark tone="ink" size={21} className="hidden lg:inline-flex" />
         </Link>
 
         {/* Navegación desktop */}
@@ -54,76 +55,94 @@ export function Header() {
             <Link
               key={item.href}
               href={item.href}
-              className="link-underline text-sm tracking-tight text-ink/70 transition-colors hover:text-ink"
+              className="link-underline text-sm text-ink-soft transition-colors hover:text-ink"
             >
               {item.label}
             </Link>
           ))}
-          <Button href={ctaHref} className="h-10 px-5">
+          <Link
+            href={ctaHref}
+            className="bg-ink px-[22px] py-3 text-sm font-semibold text-paper transition-colors duration-300 ease-editorial hover:bg-cobalt"
+          >
             {ctaLabel}
-          </Button>
+          </Link>
         </nav>
 
         {/* Botón menú móvil */}
         <button
           type="button"
-          className="-mr-2 flex h-11 w-11 items-center justify-center text-ink lg:hidden"
+          className="relative -mr-2 flex h-11 w-11 items-center justify-center lg:hidden"
           aria-expanded={open}
           aria-controls="menu-movil"
           aria-label={open ? "Cerrar menú" : "Abrir menú"}
           onClick={() => setOpen((v) => !v)}
         >
-          {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          <span
+            className={cn(
+              "absolute h-[1.5px] w-5 transition-transform duration-300 ease-editorial",
+              open ? "rotate-45 bg-paper" : "-translate-y-[3.5px] bg-ink"
+            )}
+          />
+          <span
+            className={cn(
+              "absolute h-[1.5px] w-5 transition-transform duration-300 ease-editorial",
+              open ? "-rotate-45 bg-paper" : "translate-y-[3.5px] bg-ink"
+            )}
+          />
         </button>
       </div>
     </header>
 
-    {/* Menú móvil fuera del <header>: su backdrop-filter lo convertiría en
-        containing block y el overlay fixed quedaría cortado al hacer scroll */}
+    {/* Menú móvil: overlay tinta a pantalla completa, fuera del <header> */}
     <AnimatePresence>
-        {open && (
-          <motion.div
-            id="menu-movil"
-            initial={reduceMotion ? { opacity: 1 } : { opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={reduceMotion ? { opacity: 1 } : { opacity: 0 }}
-            transition={{ duration: 0.25, ease: "easeOut" }}
-            className="fixed inset-x-0 bottom-0 top-16 z-40 flex flex-col justify-between overflow-y-auto bg-paper px-5 pb-10 pt-10 sm:px-8 md:top-20 lg:hidden"
-          >
-            <nav aria-label="Principal móvil" className="flex flex-col">
-              {nav.map((item, i) => (
-                <motion.div
-                  key={item.href}
-                  initial={reduceMotion ? undefined : { opacity: 0, y: 16 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.05 + i * 0.05, duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+      {open && (
+        <motion.div
+          id="menu-movil"
+          initial={reduceMotion ? { opacity: 1 } : { opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={reduceMotion ? { opacity: 1 } : { opacity: 0 }}
+          transition={{ duration: 0.25, ease: "easeOut" }}
+          className="fixed inset-x-0 bottom-0 top-16 z-40 flex flex-col overflow-y-auto bg-ink px-5 pb-8 pt-10 lg:hidden"
+        >
+          <nav aria-label="Principal móvil" className="flex flex-1 flex-col">
+            {nav.map((item, i) => (
+              <motion.div
+                key={item.href}
+                initial={reduceMotion ? undefined : { opacity: 0, y: 18 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.05 + i * 0.06, duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+              >
+                <Link
+                  href={item.href}
+                  onClick={() => setOpen(false)}
+                  className="display flex items-baseline justify-between border-b border-line-dark py-3.5 text-[34px] text-paper"
                 >
-                  <Link
-                    href={item.href}
-                    onClick={() => setOpen(false)}
-                    className="flex items-baseline gap-4 border-b border-line py-5 text-display-sm font-medium text-ink"
-                  >
-                    <span className="label-mono text-cobalt">0{i + 1}</span>
-                    {item.label}
-                  </Link>
-                </motion.div>
-              ))}
-            </nav>
+                  {item.label}
+                  <span className="font-mono text-[11px] normal-case tracking-normal text-paper/40">
+                    0{i + 1}
+                  </span>
+                </Link>
+              </motion.div>
+            ))}
 
             <motion.div
               initial={reduceMotion ? undefined : { opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ delay: 0.3, duration: 0.4 }}
-              className="mt-10 flex flex-col gap-6"
+              transition={{ delay: 0.35, duration: 0.4 }}
+              className="mt-auto pt-10"
             >
-              <Button href={ctaHref} onClick={() => setOpen(false)} className="w-full">
+              <Link
+                href={ctaHref}
+                onClick={() => setOpen(false)}
+                className="block bg-paper px-6 py-[17px] text-center text-[15px] font-semibold text-ink transition-colors duration-300 hover:bg-cobalt-bright"
+              >
                 {ctaLabel}
-              </Button>
-              <p className="label-mono text-ink/40">{site.location}</p>
+              </Link>
             </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+          </nav>
+        </motion.div>
+      )}
+    </AnimatePresence>
     </>
   );
 }

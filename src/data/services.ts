@@ -3,99 +3,56 @@ export interface Service {
   index: string;
   title: string;
   description: string;
-  bullets: string[];
 }
 
 export const services: Service[] = [
   {
     id: "software-a-medida",
-    index: "01",
+    index: "S.01",
     title: "Software a medida",
     description:
-      "Aplicaciones y plataformas construidas alrededor de los procesos de tu empresa, no de las limitaciones de una herramienta estándar. Cuando el Excel se queda corto y el ERP no llega, construimos la pieza que falta.",
-    bullets: [
-      "Análisis de procesos y definición funcional",
-      "Plataformas de gestión y back-office",
-      "Herramientas internas para equipos",
-      "Evolución y mantenimiento continuo",
-    ],
+      "Cuando el Excel se queda corto y el ERP no llega, construimos la pieza que falta. Plataformas de gestión y herramientas internas alrededor de tus procesos.",
   },
   {
     id: "aplicaciones-web",
-    index: "02",
+    index: "S.02",
     title: "Aplicaciones web",
     description:
-      "Productos digitales rápidos, escalables y preparados para crecer. Del primer prototipo navegable a la plataforma en producción, con la misma base de código.",
-    bullets: [
-      "Productos digitales y MVPs",
-      "Portales de cliente y áreas privadas",
-      "Dashboards y paneles operacionales",
-      "Rendimiento y experiencia cuidados",
-    ],
+      "Del primer prototipo navegable a la plataforma en producción con la misma base de código. Portales de cliente, áreas privadas y paneles de operación.",
   },
   {
     id: "webs-a-medida",
-    index: "03",
+    index: "S.03",
     title: "Webs a medida",
     description:
-      "No solo software: también diseñamos y construimos webs con identidad propia. Corporativas, personales, de evento o de producto — pensadas desde cero para cada proyecto, sin plantillas.",
-    bullets: [
-      "Webs corporativas para pymes",
-      "Webs personales, de evento y de marca",
-      "Diseño propio + desarrollo, sin plantillas",
-      "SEO, rendimiento y analítica",
-    ],
+      "Webs corporativas, personales o de evento con diseño propio y sin plantillas. Rápidas, cuidadas y pensadas desde cero para cada proyecto.",
   },
   {
     id: "automatizacion",
-    index: "04",
+    index: "S.04",
     title: "Automatización de procesos",
     description:
-      "Menos trabajo manual y menos errores: software e integraciones que eliminan tareas repetitivas. Si tu equipo copia datos de un sitio a otro, ahí hay un proceso que automatizar.",
-    bullets: [
-      "Mapeo y digitalización de procesos",
-      "Flujos automáticos entre sistemas",
-      "Procesamiento de documentos y datos",
-      "Alertas, informes y trazabilidad",
-    ],
+      "Si tu equipo copia datos de un sitio a otro, ahí hay un proceso que automatizar. Menos trabajo manual, menos errores y trazabilidad completa.",
   },
   {
     id: "inteligencia-artificial",
-    index: "05",
-    title: "Inteligencia Artificial",
+    index: "S.05",
+    title: "Inteligencia artificial",
     description:
-      "IA aplicada a casos de negocio concretos, no experimentos. Agentes, asistentes y procesamiento documental que se integran en tu operativa y devuelven tiempo a tu equipo.",
-    bullets: [
-      "Agentes y asistentes sobre tu conocimiento",
-      "Procesamiento documental inteligente",
-      "Automatizaciones con LLMs y RAG",
-      "Evaluación honesta de dónde aporta (y dónde no)",
-    ],
+      "IA aplicada a casos concretos, como leer documentos o responder sobre tu conocimiento interno. Te decimos dónde aporta y también dónde no.",
   },
   {
     id: "integraciones",
-    index: "06",
+    index: "S.06",
     title: "Integraciones y APIs",
     description:
-      "Tus sistemas hablando entre sí: ERPs, CRMs, APIs de terceros y plataformas externas conectadas de forma fiable, con errores controlados y datos consistentes.",
-    bullets: [
-      "Conexión de ERPs, CRMs y sistemas corporativos",
-      "APIs propias y consumo de APIs de terceros",
-      "Webhooks y sincronización de datos",
-      "Microsoft Graph y plataformas cloud",
-    ],
+      "Tus sistemas hablando entre sí. Conectamos ERPs, CRMs y plataformas externas con errores controlados y datos consistentes.",
   },
   {
     id: "consultoria",
-    index: "07",
+    index: "S.07",
     title: "Consultoría tecnológica",
     description:
-      "Decidir qué construir antes de escribir una línea de código. Analizamos el problema, definimos el producto y trazamos una hoja de ruta tecnológica realista.",
-    bullets: [
-      "Análisis del problema y del proceso",
-      "Definición de producto y alcance",
-      "Arquitectura y elección de tecnología",
-      "Hoja de ruta por fases",
-    ],
+      "Decidir qué construir antes de escribir código. Analizamos el problema y trazamos una hoja de ruta realista por fases.",
   },
 ];

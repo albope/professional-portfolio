@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { nav, site } from "@/data/site";
+import { nav, ctaHref, ctaLabel, site } from "@/data/site";
 import { Wordmark } from "@/components/ui/Wordmark";
 
 const legalLinks = [
@@ -9,79 +9,62 @@ const legalLinks = [
 
 export function Footer() {
   return (
-    <footer className="border-t border-line-dark bg-ink text-paper">
-      <div className="container-editorial grid gap-12 py-16 md:grid-cols-12 md:py-20">
-        <div className="md:col-span-5">
-          <Link href="/" aria-label="BPM Tech — Inicio">
-            <Wordmark tone="paper" className="text-2xl" />
-          </Link>
-          <p className="mt-5 max-w-sm text-sm leading-relaxed text-paper/55">
-            Estudio de software: aplicaciones a medida, automatización,
-            integraciones e inteligencia artificial aplicada a negocio.
-          </p>
-          <p className="label-mono mt-6 text-paper/35">{site.location}</p>
-        </div>
+    <footer className="border-t border-line bg-paper">
+      <div className="container-editorial flex flex-col gap-10 py-12 lg:flex-row lg:items-start lg:justify-between lg:py-[60px]">
+        <Link href="/" aria-label="BPM Tech, inicio">
+          <Wordmark size={18} />
+        </Link>
 
-        <nav aria-label="Índice" className="md:col-span-3">
-          <p className="label-mono mb-5 text-paper/40">Índice</p>
-          <ul className="flex flex-col gap-3">
+        <div className="flex flex-wrap gap-x-[60px] gap-y-8">
+          <nav aria-label="Índice" className="flex flex-col gap-2.5">
+            <span className="label-mono text-[10px] tracking-[0.14em] text-ink-faint">
+              Índice
+            </span>
             {nav.map((item) => (
-              <li key={item.href}>
-                <Link
-                  href={item.href}
-                  className="link-underline text-sm text-paper/75 transition-colors hover:text-paper"
-                >
-                  {item.label}
-                </Link>
-              </li>
-            ))}
-            <li>
               <Link
-                href="/#contacto"
-                className="link-underline text-sm text-paper/75 transition-colors hover:text-paper"
+                key={item.href}
+                href={item.href}
+                className="text-[13px] text-ink-soft transition-colors hover:text-ink"
               >
-                Contacto
+                {item.label}
               </Link>
-            </li>
-          </ul>
-        </nav>
-
-        <nav aria-label="Legal" className="md:col-span-2">
-          <p className="label-mono mb-5 text-paper/40">Legal</p>
-          <ul className="flex flex-col gap-3">
-            {legalLinks.map((item) => (
-              <li key={item.href}>
-                <Link
-                  href={item.href}
-                  className="link-underline text-sm text-paper/75 transition-colors hover:text-paper"
-                >
-                  {item.label}
-                </Link>
-              </li>
             ))}
-          </ul>
-        </nav>
+          </nav>
 
-        <div className="md:col-span-2">
-          <p className="label-mono mb-5 text-paper/40">Contacto</p>
-          <Link
-            href="/#contacto"
-            className="link-underline text-sm text-paper/75 transition-colors hover:text-paper"
-          >
-            Cuéntanos tu proyecto
-          </Link>
-        </div>
-      </div>
+          <nav aria-label="Legal" className="flex flex-col gap-2.5">
+            <span className="label-mono text-[10px] tracking-[0.14em] text-ink-faint">
+              Legal
+            </span>
+            {legalLinks.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className="text-[13px] text-ink-soft transition-colors hover:text-ink"
+              >
+                {item.label}
+              </Link>
+            ))}
+          </nav>
 
-      <div className="border-t border-line-dark">
-        <div className="container-editorial flex flex-col gap-2 py-6 text-xs text-paper/45 sm:flex-row sm:items-center sm:justify-between">
-          <p>
-            © {new Date().getFullYear()} {site.name}. Todos los derechos reservados.
-          </p>
-          <p className="font-mono uppercase tracking-[0.18em] text-[10px]">
-            Software · Automatización · IA
-          </p>
+          <div className="flex flex-col gap-2.5">
+            <span className="label-mono text-[10px] tracking-[0.14em] text-ink-faint">
+              Contacto
+            </span>
+            <Link
+              href={ctaHref}
+              className="text-[13px] text-ink-soft transition-colors hover:text-ink"
+            >
+              {ctaLabel}
+            </Link>
+            <span className="font-mono text-[11px] text-ink-faint">
+              {site.location}
+            </span>
+          </div>
         </div>
+
+        <span className="font-mono text-[11px] text-ink-faint">
+          © {new Date().getFullYear()} BPM Tech · Valencia
+        </span>
       </div>
     </footer>
   );
