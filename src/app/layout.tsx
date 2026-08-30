@@ -80,7 +80,7 @@ export default function RootLayout({
       lang="es"
       className={`${archivo.variable} ${archivoBlack.variable} ${fragmentMono.variable} font-sans`}
     >
-      <body className="min-h-screen bg-paper text-ink">
+      <body id="top" className="min-h-screen bg-paper text-ink">
         {/* Sin JS, los wrappers de animación quedan en opacity 0: forzamos visibilidad */}
         <noscript>
           <style>{`[style*="opacity"] { opacity: 1 !important; transform: none !important; }`}</style>

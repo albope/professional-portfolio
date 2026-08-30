@@ -62,9 +62,23 @@ export function Footer() {
           </div>
         </div>
 
-        <span className="font-mono text-[11px] text-ink-faint">
-          © {new Date().getFullYear()} BPM Tech · Valencia
-        </span>
+        <div className="flex flex-row items-center gap-6 lg:flex-col lg:items-end lg:gap-8">
+          <a
+            href="#top"
+            aria-label="Volver arriba"
+            className="group flex h-11 w-11 items-center justify-center border border-line text-ink transition-colors duration-300 ease-editorial hover:border-ink"
+          >
+            <span
+              aria-hidden
+              className="font-mono text-[15px] transition-transform duration-300 ease-editorial group-hover:-translate-y-1"
+            >
+              ↑
+            </span>
+          </a>
+          <span className="font-mono text-[11px] text-ink-faint">
+            © {new Date().getFullYear()} BPM Tech · Valencia
+          </span>
+        </div>
       </div>
     </footer>
   );

@@ -6,6 +6,8 @@
 ---
 
 ## AHORA MISMO (<10 lineas)
+- 20260831-004000 : Identidad definitiva del handoff implementada y pusheada (c551065). Vercel desplegando. Artifact v3 actualizado. Handoff borrado del repo y en .gitignore (copia original en Downloads/Identidad visual pending respuestas/).
+- 20260831-004000 : templates/presentation/ (python, trabajo paralelo del usuario) dejado SIN commitear a propósito.
 - 20260830-203500 : Confirmado autodeploy: la web vive en albertobort.vercel.app. Fixes pusheados (fc2e160): menú móvil (backdrop-filter/containing block, overlay fuera del header) y bullets de Nosotros eliminados.
 - 20260830-202000 : TODO pusheado a GitHub main (250bf71). Árbol = web BPM Tech. Prompt Claude Design reescrito NO autocontenido (referencia repo) en docs/prompt-claude-design.md.
 - 20260830-202000 : origin/main tenía rediseño previo del portfolio (ene-ago 2026, Telegram, PWAs) → integrado con merge -s ours, historia preservada en b3f0313 y anteriores.
