@@ -34,10 +34,11 @@ export function Header() {
   }, [open]);
 
   return (
+    <>
     <header
       className={cn(
         "fixed inset-x-0 top-0 z-50 border-b transition-all duration-300 ease-editorial",
-        scrolled
+        scrolled || open
           ? "border-line bg-paper/85 backdrop-blur-md"
           : "border-transparent bg-transparent"
       )}
@@ -75,9 +76,11 @@ export function Header() {
           {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
         </button>
       </div>
+    </header>
 
-      {/* Menú móvil a pantalla completa */}
-      <AnimatePresence>
+    {/* Menú móvil fuera del <header>: su backdrop-filter lo convertiría en
+        containing block y el overlay fixed quedaría cortado al hacer scroll */}
+    <AnimatePresence>
         {open && (
           <motion.div
             id="menu-movil"
@@ -85,7 +88,7 @@ export function Header() {
             animate={{ opacity: 1 }}
             exit={reduceMotion ? { opacity: 1 } : { opacity: 0 }}
             transition={{ duration: 0.25, ease: "easeOut" }}
-            className="fixed inset-x-0 bottom-0 top-16 z-40 flex flex-col justify-between overflow-y-auto bg-paper px-5 pb-10 pt-10 sm:px-8 lg:hidden"
+            className="fixed inset-x-0 bottom-0 top-16 z-40 flex flex-col justify-between overflow-y-auto bg-paper px-5 pb-10 pt-10 sm:px-8 md:top-20 lg:hidden"
           >
             <nav aria-label="Principal móvil" className="flex flex-col">
               {nav.map((item, i) => (
@@ -121,6 +124,6 @@ export function Header() {
           </motion.div>
         )}
       </AnimatePresence>
-    </header>
+    </>
   );
 }

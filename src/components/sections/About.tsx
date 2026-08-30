@@ -48,8 +48,7 @@ export function About() {
             </p>
             <ul className="mt-12 flex flex-col gap-3 border-t border-line pt-8 sm:flex-row sm:flex-wrap sm:gap-x-10">
               {facts.map((fact) => (
-                <li key={fact} className="label-mono flex items-center gap-3 text-ink/45">
-                  <span className="inline-block h-[5px] w-[5px] bg-cobalt" aria-hidden />
+                <li key={fact} className="label-mono text-ink/45">
                   {fact}
                 </li>
               ))}

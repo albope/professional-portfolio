@@ -6,7 +6,9 @@
 ---
 
 ## AHORA MISMO (<10 lineas)
-- 20260830-200500 : Escrito docs/prompt-claude-design.md (identidad completa + rediseño web + reescritura copy sin ';' ni rayas). Pendiente: usuario lo ejecuta en Claude Design (o me pide invocar /design). Cuando exista la identidad nueva, implementarla en la web.
+- 20260830-202000 : TODO pusheado a GitHub main (250bf71). Árbol = web BPM Tech. Prompt Claude Design reescrito NO autocontenido (referencia repo) en docs/prompt-claude-design.md.
+- 20260830-202000 : origin/main tenía rediseño previo del portfolio (ene-ago 2026, Telegram, PWAs) → integrado con merge -s ours, historia preservada en b3f0313 y anteriores.
+- 20260830-202000 : Pendiente: usuario ejecuta el prompt en Claude Design con el repo enlazado → implementar identidad resultante. OJO: posible autodeploy Vercel del repo (avisar hecho).
 - 20260830-195000 : v2 completa tras feedback. Build ✓, lint ✓, API contacto probada ✓, capturas ✓. Servidor en :3017.
 - 20260830-195000 : Artifact de revisión actualizado (v2): https://claude.ai/code/artifact/df329107-dd5e-4459-85b1-4ab484524d0d
 - 20260830-195000 : Pendiente: usuario revisa → commit cuando lo pida. Resend API key para que el form envíe.
