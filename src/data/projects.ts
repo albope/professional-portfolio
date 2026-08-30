@@ -188,7 +188,9 @@ export const projects: Project[] = [
       },
     ],
     visual: "docs",
-    visualCaption: "fig. 01 · del papel al dato",
+    visualCaption: "fig. 01 · captura del panel de validación",
+    screenshot: "/screenshots/docs.png",
+    screenshotAlt: "Captura del panel de validación documental",
   },
   {
     slug: "asistente-interno",
@@ -219,7 +221,9 @@ export const projects: Project[] = [
       },
     ],
     visual: "assistant",
-    visualCaption: "fig. 01 · pregunta y respuesta con fuente",
+    visualCaption: "fig. 01 · captura del asistente, respuesta con fuentes",
+    screenshot: "/screenshots/asistente.png",
+    screenshotAlt: "Captura del asistente interno respondiendo con fuentes",
   },
   {
     slug: "web-boda",

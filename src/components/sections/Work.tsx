@@ -110,14 +110,14 @@ export function Work() {
                 href={`/proyectos/${project.slug}`}
                 className="flex flex-col gap-6 border border-line p-6 text-ink transition-colors duration-300 ease-editorial hover:border-ink sm:flex-row lg:p-7"
               >
-                <div className="relative h-[110px] w-[110px] shrink-0 overflow-hidden bg-ink">
+                <div className="relative aspect-video w-full shrink-0 overflow-hidden bg-ink sm:aspect-auto sm:h-[110px] sm:w-[110px]">
                   {project.screenshot ? (
                     <Image
                       src={project.screenshot}
                       alt=""
                       fill
-                      sizes="110px"
-                      className="object-cover"
+                      sizes="(min-width: 640px) 110px, 100vw"
+                      className="object-cover object-top sm:object-center"
                     />
                   ) : (
                     <ProjectVisual variant={project.visual} />
