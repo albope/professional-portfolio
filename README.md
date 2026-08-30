@@ -51,5 +51,4 @@ servidor. Configuración (variables de entorno):
 
 1. **Dominio**: definir el dominio real y configurar `NEXT_PUBLIC_SITE_URL` (usado en metadata, sitemap y robots). Fallback actual: `https://bpmtech.example`.
 2. **Resend**: crear cuenta, configurar `RESEND_API_KEY` (y `CONTACT_EMAIL`/`CONTACT_FROM` si aplica) para que el formulario envíe de verdad.
-3. **Páginas legales**: completar `/aviso-legal` y `/privacidad` con los datos registrales reales (están marcadas `noindex` hasta entonces).
-4. **Proyectos**: en `src/data/projects.ts` conviven proyectos **reales** (`concept: false`, mostrados sin datos de cliente) y **conceptuales** (`concept: true`). Revisar los textos de los reales y añadir nuevos casos cuando existan.
+3. **Proyectos**: revisar los textos de `src/data/projects.ts` y añadir nuevos casos cuando existan.

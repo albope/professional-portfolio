@@ -61,6 +61,7 @@ const organizationJsonLd = {
   "@context": "https://schema.org",
   "@type": "Organization",
   name: site.name,
+  legalName: "Bort Perez Multi Gestion Sociedad Limitada",
   description: site.description,
   url: site.url,
   address: {
