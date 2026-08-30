@@ -1,36 +1,54 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# BPM Tech — Web corporativa
 
-## Getting Started
+Web corporativa de **BPM Tech**, estudio de software especializado en desarrollo a medida, automatización de procesos, integraciones e inteligencia artificial aplicada a negocio.
 
-First, run the development server:
+## Stack
+
+- **Next.js 14** (App Router) + **TypeScript** estricto
+- **Tailwind CSS 3** con tokens de marca propios (`src/app/globals.css` + `tailwind.config.ts`)
+- **framer-motion** para motion (respeta `prefers-reduced-motion`)
+- **Lenis** para smooth scroll (desactivado con `prefers-reduced-motion`)
+- Tipografía: **Geist Sans** y **Geist Mono** (locales) + **Instrument Serif** (Google Fonts, acento editorial)
+
+## Desarrollo
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev     # http://localhost:3000
+npm run build   # build de producción
+npm run lint
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Estructura
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```
+src/
+  app/                  # rutas: home, /proyectos/[slug], legales, SEO (sitemap, robots, OG)
+  components/
+    layout/             # Header, Footer, SmoothScroll
+    sections/           # secciones de la home
+    ui/                 # primitivos: Button, Reveal, SectionHeading, Wordmark, ProjectVisual
+  data/                 # todo el contenido editable: site, services, projects, process, principles
+  lib/                  # fonts, utils
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Todo el copy y el contenido viven en `src/data/` — para cambiar textos no hace falta tocar componentes.
 
-## Learn More
+## Formulario de contacto
 
-To learn more about Next.js, take a look at the following resources:
+El email de contacto **no se publica en la web**: el formulario hace POST a
+`/api/contact`, que envía el mensaje por [Resend](https://resend.com) desde el
+servidor. Configuración (variables de entorno):
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+| Variable | Obligatoria | Descripción |
+|---|---|---|
+| `RESEND_API_KEY` | Sí | API key de Resend. Sin ella el formulario devuelve error 503. |
+| `CONTACT_EMAIL` | No | Buzón de destino. Por defecto, el provisional del equipo. |
+| `CONTACT_FROM` | No | Remitente. Por defecto `onboarding@resend.dev` (solo permite enviar al email de la propia cuenta de Resend; con dominio verificado, usar `hola@dominio.com`). |
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Pendiente antes de publicar (TODOs)
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. **Dominio**: definir el dominio real y configurar `NEXT_PUBLIC_SITE_URL` (usado en metadata, sitemap y robots). Fallback actual: `https://bpmtech.example`.
+2. **Resend**: crear cuenta, configurar `RESEND_API_KEY` (y `CONTACT_EMAIL`/`CONTACT_FROM` si aplica) para que el formulario envíe de verdad.
+3. **Páginas legales**: completar `/aviso-legal` y `/privacidad` con los datos registrales reales (están marcadas `noindex` hasta entonces).
+4. **Proyectos**: en `src/data/projects.ts` conviven proyectos **reales** (`concept: false`, mostrados sin datos de cliente) y **conceptuales** (`concept: true`). Revisar los textos de los reales y añadir nuevos casos cuando existan.

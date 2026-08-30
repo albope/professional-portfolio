@@ -1,20 +1,24 @@
 import localFont from "next/font/local";
-import { Playfair_Display } from "next/font/google";
+import { Instrument_Serif } from "next/font/google";
 
 export const geistSans = localFont({
   src: "../app/fonts/GeistVF.woff",
   variable: "--font-geist-sans",
   weight: "100 900",
+  display: "swap",
 });
 
 export const geistMono = localFont({
   src: "../app/fonts/GeistMonoVF.woff",
   variable: "--font-geist-mono",
   weight: "100 900",
+  display: "swap",
 });
 
-export const playfair = Playfair_Display({
+export const instrumentSerif = Instrument_Serif({
   subsets: ["latin"],
-  variable: "--font-playfair",
+  weight: "400",
+  style: ["normal", "italic"],
+  variable: "--font-instrument-serif",
   display: "swap",
 });
