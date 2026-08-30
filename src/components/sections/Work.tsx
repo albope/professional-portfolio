@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Reveal } from "@/components/ui/Reveal";
 import { ProjectVisual } from "@/components/ui/ProjectVisual";
@@ -48,7 +49,7 @@ export function Work() {
           index="03"
           label="Proyectos"
           title="Trabajo hecho"
-          note="Los proyectos reales se muestran sin nombres de cliente. Todos sirven como ejemplo adaptable a otros negocios."
+          note="Trabajo real del estudio, con capturas de producto. Cada proyecto sirve como ejemplo adaptable a otros negocios."
           className="mb-10 lg:mb-[60px]"
         />
 
@@ -60,9 +61,25 @@ export function Work() {
                 href={`/proyectos/${project.slug}`}
                 className="group block text-ink transition-opacity duration-300 hover:opacity-[0.92]"
               >
-                <div className="relative aspect-[16/10] bg-ink p-6 lg:p-8">
+                <div
+                  className={
+                    project.screenshot
+                      ? "relative aspect-video overflow-hidden bg-ink"
+                      : "relative aspect-[16/10] bg-ink p-6 lg:p-8"
+                  }
+                >
                   <CropMarks />
-                  <ProjectVisual variant={project.visual} />
+                  {project.screenshot ? (
+                    <Image
+                      src={project.screenshot}
+                      alt=""
+                      fill
+                      sizes="(min-width: 768px) 50vw, 100vw"
+                      className="object-cover object-top"
+                    />
+                  ) : (
+                    <ProjectVisual variant={project.visual} />
+                  )}
                 </div>
                 <div className="mt-[22px] flex flex-wrap items-baseline gap-3.5">
                   <ProjectBadge project={project} />
@@ -93,8 +110,18 @@ export function Work() {
                 href={`/proyectos/${project.slug}`}
                 className="flex flex-col gap-6 border border-line p-6 text-ink transition-colors duration-300 ease-editorial hover:border-ink sm:flex-row lg:p-7"
               >
-                <div className="h-[110px] w-[110px] shrink-0 bg-ink">
-                  <ProjectVisual variant={project.visual} />
+                <div className="relative h-[110px] w-[110px] shrink-0 overflow-hidden bg-ink">
+                  {project.screenshot ? (
+                    <Image
+                      src={project.screenshot}
+                      alt=""
+                      fill
+                      sizes="110px"
+                      className="object-cover"
+                    />
+                  ) : (
+                    <ProjectVisual variant={project.visual} />
+                  )}
                 </div>
                 <div>
                   <ProjectBadge project={project} small />

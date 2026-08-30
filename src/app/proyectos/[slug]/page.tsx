@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import { notFound } from "next/navigation";
 import { projects, getProject } from "@/data/projects";
 import { ProjectVisual } from "@/components/ui/ProjectVisual";
@@ -35,7 +36,7 @@ export default function ProjectPage({ params }: PageProps) {
   const project = getProject(params.slug);
   if (!project) notFound();
 
-  const hasVisualBand = project.kind === "software";
+  const hasVisualBand = Boolean(project.screenshot) || project.kind === "software";
 
   return (
     <article className="pt-28 lg:pt-[190px]">
@@ -111,7 +112,19 @@ export default function ProjectPage({ params }: PageProps) {
                 aria-hidden
                 className="absolute -bottom-1 -right-1 h-2 w-2 border-l border-t border-[#F7F6F2]/40"
               />
-              <ProjectVisual variant={project.visual} context="case" />
+              {project.screenshot ? (
+                <div className="relative aspect-video overflow-hidden">
+                  <Image
+                    src={project.screenshot}
+                    alt={project.screenshotAlt ?? ""}
+                    fill
+                    sizes="(min-width: 1024px) 900px, 100vw"
+                    className="object-cover object-top"
+                  />
+                </div>
+              ) : (
+                <ProjectVisual variant={project.visual} context="case" />
+              )}
               {project.visualCaption && (
                 <p className="mt-6 font-mono text-[11px] text-[#F7F6F2]/50">
                   {project.visualCaption}

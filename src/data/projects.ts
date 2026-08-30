@@ -44,6 +44,9 @@ export interface Project {
   ficha: FichaEntry[];
   visual: ProjectVisualVariant;
   visualCaption?: string;
+  /** Captura real del producto (ruta en public/) */
+  screenshot?: string;
+  screenshotAlt?: string;
   caseSections?: CaseSection[];
 }
 
@@ -81,7 +84,9 @@ export const projects: Project[] = [
       },
     ],
     visual: "padel",
-    visualCaption: "fig. 01 · panel de gestión, representación abstracta",
+    visualCaption: "fig. 01 · captura real del producto",
+    screenshot: "/screenshots/padel.png",
+    screenshotAlt: "Captura de la plataforma de gestión para clubes de pádel",
     caseSections: [
       {
         index: "B.01",
@@ -133,7 +138,9 @@ export const projects: Project[] = [
       },
     ],
     visual: "wms",
-    visualCaption: "fig. 01 · mapa de ubicaciones, representación abstracta",
+    visualCaption: "fig. 01 · captura real del acceso al sistema",
+    screenshot: "/screenshots/wms.png",
+    screenshotAlt: "Captura del acceso al sistema de gestión de almacén",
     caseSections: [
       {
         index: "B.01",
@@ -154,7 +161,7 @@ export const projects: Project[] = [
   },
   {
     slug: "automatizacion-documental",
-    concept: true,
+    concept: false,
     kind: "software",
     meta: "Automatización con IA · Administración",
     metaCase: "IA · Documentos",
@@ -185,7 +192,7 @@ export const projects: Project[] = [
   },
   {
     slug: "asistente-interno",
-    concept: true,
+    concept: false,
     kind: "software",
     meta: "Agente de IA · Conocimiento interno",
     metaCase: "IA · Conocimiento",
@@ -247,6 +254,9 @@ export const projects: Project[] = [
       },
     ],
     visual: "boda",
+    visualCaption: "fig. 01 · captura real de la web",
+    screenshot: "/screenshots/boda.jpg",
+    screenshotAlt: "Captura de la web de boda",
   },
   {
     slug: "web-radio",
@@ -281,6 +291,9 @@ export const projects: Project[] = [
       },
     ],
     visual: "radio",
+    visualCaption: "fig. 01 · captura real de la web",
+    screenshot: "/screenshots/radio.jpg",
+    screenshotAlt: "Captura de la web del programa de radio",
   },
 ];
 
