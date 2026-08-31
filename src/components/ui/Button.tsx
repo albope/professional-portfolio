@@ -5,7 +5,7 @@ type Variant = "solid" | "outline";
 type Tone = "ink" | "paper";
 
 const base =
-  "inline-flex items-center justify-center gap-2 px-[30px] py-4 text-[15px] font-semibold tracking-tight transition-colors duration-300 ease-editorial disabled:pointer-events-none disabled:opacity-60";
+  "inline-flex items-center justify-center gap-2 px-[30px] py-4 text-[15px] font-semibold tracking-tight transition-colors duration-300 ease-editorial active:translate-y-[1px] disabled:pointer-events-none disabled:opacity-60";
 
 const styles: Record<Tone, Record<Variant, string>> = {
   ink: {

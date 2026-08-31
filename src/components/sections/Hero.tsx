@@ -6,7 +6,7 @@ import { ctaHref, ctaLabel } from "@/data/site";
 
 export function Hero() {
   return (
-    <section className="border-b border-line pt-32 lg:pt-[230px]">
+    <section className="border-b border-line pt-32 lg:pt-[184px]">
       <div className="container-editorial pb-14 lg:pb-[90px]">
         <Reveal>
           <p className="label-mono flex items-center gap-3 text-ink-mute">

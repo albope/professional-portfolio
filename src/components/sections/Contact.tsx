@@ -17,7 +17,7 @@ export function Contact() {
             <p className="label-mono mb-6 text-paper/45">07 — Contacto</p>
             <h2 className="display text-display-sec text-paper">
               ¿Qué parte de tu negocio sigue funcionando a{" "}
-              <SquareWord word="mano" tone="dark" />
+              <SquareWord word="mano?" tone="dark" />
             </h2>
             <p className="mt-7 max-w-[440px] text-base leading-[1.65] text-paper/60">
               Cuéntanoslo en cuatro líneas. Te respondemos con una lectura

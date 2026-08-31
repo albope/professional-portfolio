@@ -10,15 +10,16 @@ import { ctaHref, ctaLabel } from "@/data/site";
 import { cn } from "@/lib/utils";
 
 interface PageProps {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }
 
 export function generateStaticParams() {
   return projects.map((project) => ({ slug: project.slug }));
 }
 
-export function generateMetadata({ params }: PageProps): Metadata {
-  const project = getProject(params.slug);
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const project = getProject(slug);
   if (!project) return {};
   return {
     title: project.title,
@@ -32,8 +33,9 @@ const fichaCols: Record<number, string> = {
   4: "lg:grid-cols-4",
 };
 
-export default function ProjectPage({ params }: PageProps) {
-  const project = getProject(params.slug);
+export default async function ProjectPage({ params }: PageProps) {
+  const { slug } = await params;
+  const project = getProject(slug);
   if (!project) notFound();
 
   const hasVisualBand = Boolean(project.screenshot) || project.kind === "software";
@@ -170,7 +172,7 @@ export default function ProjectPage({ params }: PageProps) {
           </p>
           <Link
             href={ctaHref}
-            className="mt-8 inline-block bg-paper px-8 py-4 text-[15px] font-semibold text-ink transition-colors duration-300 ease-editorial hover:bg-cobalt-bright lg:mt-10"
+            className="mt-8 inline-block bg-paper px-8 py-4 text-[15px] font-semibold text-ink transition-colors duration-300 ease-editorial hover:bg-cobalt-bright active:translate-y-[1px] lg:mt-10"
           >
             {ctaLabel}
           </Link>

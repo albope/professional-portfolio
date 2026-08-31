@@ -59,20 +59,20 @@ export function Work() {
             <Reveal key={project.slug} delay={Math.min((i % 2) * 0.08, 0.16)}>
               <Link
                 href={`/proyectos/${project.slug}`}
-                className="group block text-ink transition-opacity duration-300 hover:opacity-[0.92]"
+                className="group block text-ink"
               >
                 <div
                   className={
                     project.screenshot
-                      ? "relative aspect-video overflow-hidden bg-ink"
-                      : "relative aspect-[16/10] bg-ink p-6 lg:p-8"
+                      ? "relative aspect-video overflow-hidden bg-ink transition-opacity duration-500 ease-editorial group-hover:opacity-[0.92]"
+                      : "relative aspect-[16/10] bg-ink p-6 transition-opacity duration-500 ease-editorial group-hover:opacity-[0.92] lg:p-8"
                   }
                 >
                   <CropMarks />
                   {project.screenshot ? (
                     <Image
                       src={project.screenshot}
-                      alt=""
+                      alt={project.screenshotAlt ?? ""}
                       fill
                       sizes="(min-width: 768px) 50vw, 100vw"
                       className="object-cover object-top"
@@ -114,7 +114,7 @@ export function Work() {
                   {project.screenshot ? (
                     <Image
                       src={project.screenshot}
-                      alt=""
+                      alt={project.screenshotAlt ?? ""}
                       fill
                       sizes="(min-width: 640px) 110px, 100vw"
                       className="object-cover object-top sm:object-center"

@@ -1,67 +1,97 @@
 import { NextResponse } from "next/server";
+import {
+  CONTACT_LIMITS,
+  safeSubjectFragment,
+  validateContactPayload,
+} from "@/lib/contact";
 
 // Envío del formulario de contacto vía Resend (REST, sin SDK).
 // Configuración por variables de entorno:
 // - RESEND_API_KEY  (obligatoria para que el envío funcione)
-// - CONTACT_EMAIL   (destino; por defecto el buzón provisional del equipo)
+// - CONTACT_EMAIL   (destino; obligatorio)
 // - CONTACT_FROM    (remitente verificado en Resend; por defecto onboarding@resend.dev,
 //                    válido solo para enviar al propio email de la cuenta de Resend)
-const CONTACT_EMAIL = process.env.CONTACT_EMAIL || "albertobort@gmail.com";
 const CONTACT_FROM = process.env.CONTACT_FROM || "BPM Tech <onboarding@resend.dev>";
 
-interface ContactPayload {
-  nombre?: string;
-  empresa?: string;
-  email?: string;
-  telefono?: string;
-  mensaje?: string;
-  web?: string; // honeypot
+const RATE_WINDOW_MS = 15 * 60 * 1_000;
+const RATE_LIMIT = 5;
+const requestsByIp = new Map<string, number[]>();
+
+function isRateLimited(ip: string) {
+  const now = Date.now();
+  const recent = (requestsByIp.get(ip) || []).filter(
+    (timestamp) => timestamp > now - RATE_WINDOW_MS
+  );
+  recent.push(now);
+  requestsByIp.set(ip, recent);
+  return recent.length > RATE_LIMIT;
 }
 
+const noStoreHeaders = { "Cache-Control": "no-store" };
+
 export async function POST(request: Request) {
-  let data: ContactPayload;
+  if (!request.headers.get("content-type")?.includes("application/json")) {
+    return NextResponse.json(
+      { error: "El formato de la solicitud no es válido." },
+      { status: 415, headers: noStoreHeaders }
+    );
+  }
+
+  const declaredLength = Number(request.headers.get("content-length") || "0");
+  if (declaredLength > CONTACT_LIMITS.requestBytes) {
+    return NextResponse.json(
+      { error: "La solicitud es demasiado grande." },
+      { status: 413, headers: noStoreHeaders }
+    );
+  }
+
+  let data: unknown;
   try {
     data = await request.json();
   } catch {
-    return NextResponse.json({ error: "Solicitud no válida." }, { status: 400 });
+    return NextResponse.json(
+      { error: "Solicitud no válida." },
+      { status: 400, headers: noStoreHeaders }
+    );
   }
 
   // Honeypot: los bots rellenan el campo oculto; respondemos OK sin enviar nada.
-  if (data.web) {
-    return NextResponse.json({ ok: true });
+  if (
+    typeof data === "object" &&
+    data !== null &&
+    "web" in data &&
+    Boolean(data.web)
+  ) {
+    return NextResponse.json({ ok: true }, { headers: noStoreHeaders });
   }
 
-  const nombre = data.nombre?.trim();
-  const empresa = data.empresa?.trim();
-  const email = data.email?.trim();
-  const telefono = data.telefono?.trim();
-  const mensaje = data.mensaje?.trim();
-
-  if (!nombre || !email || !mensaje) {
+  const validation = validateContactPayload(data);
+  if (!validation.ok) {
     return NextResponse.json(
-      { error: "Faltan campos obligatorios (nombre, email y mensaje)." },
-      { status: 400 }
+      { error: validation.error },
+      { status: 400, headers: noStoreHeaders }
     );
   }
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || email.length > 254) {
-    return NextResponse.json({ error: "El email no parece válido." }, { status: 400 });
-  }
-  if (
-    nombre.length > 200 ||
-    (empresa?.length ?? 0) > 200 ||
-    (telefono?.length ?? 0) > 40 ||
-    mensaje.length > 5000
-  ) {
-    return NextResponse.json({ error: "El mensaje es demasiado largo." }, { status: 400 });
+
+  const forwardedFor = request.headers.get("x-forwarded-for");
+  const ip = forwardedFor?.split(",")[0]?.trim() || "unknown";
+  if (isRateLimited(ip)) {
+    return NextResponse.json(
+      { error: "Has enviado demasiadas solicitudes. Inténtalo más tarde." },
+      { status: 429, headers: noStoreHeaders }
+    );
   }
 
   const apiKey = process.env.RESEND_API_KEY;
-  if (!apiKey) {
+  const contactEmail = process.env.CONTACT_EMAIL;
+  if (!apiKey || !contactEmail) {
     return NextResponse.json(
       { error: "El envío no está disponible en este momento. Inténtalo más tarde." },
-      { status: 503 }
+      { status: 503, headers: noStoreHeaders }
     );
   }
+
+  const { nombre, empresa, email, telefono, mensaje } = validation.value;
 
   const body = [
     `Nombre: ${nombre}`,
@@ -80,9 +110,9 @@ export async function POST(request: Request) {
     },
     body: JSON.stringify({
       from: CONTACT_FROM,
-      to: [CONTACT_EMAIL],
+      to: [contactEmail],
       reply_to: email,
-      subject: `Nuevo proyecto — ${empresa || nombre}`,
+      subject: `Nuevo proyecto — ${safeSubjectFragment(empresa || nombre)}`,
       text: body,
     }),
   });
@@ -90,9 +120,9 @@ export async function POST(request: Request) {
   if (!res.ok) {
     return NextResponse.json(
       { error: "No se ha podido enviar el mensaje. Inténtalo de nuevo en unos minutos." },
-      { status: 502 }
+      { status: 502, headers: noStoreHeaders }
     );
   }
 
-  return NextResponse.json({ ok: true });
+  return NextResponse.json({ ok: true }, { headers: noStoreHeaders });
 }

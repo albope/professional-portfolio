@@ -62,7 +62,7 @@ export function Header() {
           ))}
           <Link
             href={ctaHref}
-            className="bg-ink px-[22px] py-3 text-sm font-semibold text-paper transition-colors duration-300 ease-editorial hover:bg-cobalt"
+            className="bg-ink px-[22px] py-3 text-sm font-semibold text-paper transition-colors duration-300 ease-editorial hover:bg-cobalt active:translate-y-[1px]"
           >
             {ctaLabel}
           </Link>
@@ -101,7 +101,7 @@ export function Header() {
           initial={reduceMotion ? { opacity: 1 } : { opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={reduceMotion ? { opacity: 1 } : { opacity: 0 }}
-          transition={{ duration: 0.25, ease: "easeOut" }}
+          transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
           className="fixed inset-x-0 bottom-0 top-16 z-40 flex flex-col overflow-y-auto bg-ink px-5 pb-8 pt-10 lg:hidden"
         >
           <nav aria-label="Principal móvil" className="flex flex-1 flex-col">
@@ -134,7 +134,7 @@ export function Header() {
               <Link
                 href={ctaHref}
                 onClick={() => setOpen(false)}
-                className="block bg-paper px-6 py-[17px] text-center text-[15px] font-semibold text-ink transition-colors duration-300 hover:bg-cobalt-bright"
+                className="block bg-paper px-6 py-[17px] text-center text-[15px] font-semibold text-ink transition-colors duration-300 hover:bg-cobalt-bright active:translate-y-[1px]"
               >
                 {ctaLabel}
               </Link>

@@ -38,13 +38,13 @@ export const principles: Principle[] = [
 
 export interface CapabilityGroup {
   label: string;
-  items: string;
+  items: string[];
 }
 
 export const capabilities: CapabilityGroup[] = [
-  { label: "Frontend", items: "React · Next.js · TypeScript" },
-  { label: "Backend", items: "Node.js · APIs REST · PostgreSQL" },
-  { label: "Cloud y datos", items: "Supabase · Firebase · Vercel" },
-  { label: "IA", items: "Anthropic · OpenAI · RAG · Agentes" },
-  { label: "Integraciones", items: "Webhooks · Microsoft Graph · ERPs y CRMs" },
+  { label: "Frontend", items: ["React", "Next.js", "TypeScript"] },
+  { label: "Backend", items: ["Node.js", "APIs REST", "PostgreSQL"] },
+  { label: "Cloud y datos", items: ["Supabase", "Firebase", "Vercel"] },
+  { label: "IA", items: ["Anthropic", "OpenAI", "RAG", "Agentes"] },
+  { label: "Integraciones", items: ["Webhooks", "Microsoft Graph", "ERPs y CRMs"] },
 ];

@@ -1,19 +1,25 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { ReactLenis } from "@studio-freight/react-lenis";
+import { useSyncExternalStore } from "react";
+import { ReactLenis } from "lenis/react";
+
+function subscribeToReducedMotion(onChange: () => void) {
+  const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+  mediaQuery.addEventListener("change", onChange);
+  return () => mediaQuery.removeEventListener("change", onChange);
+}
+
+function getReducedMotionSnapshot() {
+  return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+}
 
 /** Scroll suavizado con Lenis. Se desactiva con prefers-reduced-motion. */
 export default function SmoothScroll({ children }: { children: React.ReactNode }) {
-  const [reduceMotion, setReduceMotion] = useState(false);
-
-  useEffect(() => {
-    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
-    setReduceMotion(mq.matches);
-    const onChange = (e: MediaQueryListEvent) => setReduceMotion(e.matches);
-    mq.addEventListener("change", onChange);
-    return () => mq.removeEventListener("change", onChange);
-  }, []);
+  const reduceMotion = useSyncExternalStore(
+    subscribeToReducedMotion,
+    getReducedMotionSnapshot,
+    () => false
+  );
 
   if (reduceMotion) {
     return <>{children}</>;

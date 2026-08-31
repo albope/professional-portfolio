@@ -44,6 +44,16 @@
     outline: 2px solid var(--cobalt);
     outline-offset: 3px;
   }
+
+  /* Sobre secciones tinta, el foco usa el cobalto claro (contraste AA) */
+  .bg-ink :focus-visible {
+    outline-color: var(--cobalt-bright);
+  }
+
+  /* Evita palabras viudas en párrafos (mejora progresiva) */
+  p {
+    text-wrap: pretty;
+  }
 }
 
 @layer components {
@@ -55,6 +65,7 @@
   /* Titular display: Archivo Black, caja alta */
   .display {
     @apply font-display uppercase tracking-[-0.01em];
+    text-wrap: balance;
   }
 
   .container-editorial {

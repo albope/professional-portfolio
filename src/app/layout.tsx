@@ -21,6 +21,8 @@ export const metadata: Metadata = {
     "inteligencia artificial",
     "integraciones",
     "consultoría tecnológica",
+    "digitalización de pymes",
+    "desarrollo web Valencia",
     "Valencia",
   ],
   icons: {
@@ -57,18 +59,27 @@ export const metadata: Metadata = {
   },
 };
 
-const organizationJsonLd = {
+const structuredData = {
   "@context": "https://schema.org",
-  "@type": "Organization",
-  name: site.name,
-  legalName: "Bort Perez Multi Gestion Sociedad Limitada",
-  description: site.description,
-  url: site.url,
-  address: {
-    "@type": "PostalAddress",
-    addressLocality: "Valencia",
-    addressCountry: "ES",
-  },
+  "@graph": [
+    {
+      "@type": ["Organization", "ProfessionalService"],
+      "@id": `${site.url}/#organization`,
+      name: site.name,
+      description: site.description,
+      url: site.url,
+      areaServed: { "@type": "Country", name: "España" },
+    },
+    {
+      "@type": "WebSite",
+      "@id": `${site.url}/#website`,
+      name: site.name,
+      description: site.description,
+      url: site.url,
+      inLanguage: "es-ES",
+      publisher: { "@id": `${site.url}/#organization` },
+    },
+  ],
 };
 
 export default function RootLayout({
@@ -88,7 +99,7 @@ export default function RootLayout({
         </noscript>
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
         />
         <SmoothScroll>
           <a

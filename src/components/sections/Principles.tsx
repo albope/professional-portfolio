@@ -38,8 +38,10 @@ export function Principles() {
                 className="grid grid-cols-[110px_1fr] gap-4 border-b border-line-dark py-4 sm:grid-cols-[220px_1fr] sm:gap-6"
               >
                 <dt className="font-mono text-xs text-cobalt-bright">{group.label}</dt>
-                <dd className="font-mono text-xs leading-relaxed text-paper/65">
-                  {group.items}
+                <dd className="flex flex-wrap gap-x-7 gap-y-1.5 font-mono text-xs leading-relaxed text-paper/65">
+                  {group.items.map((item) => (
+                    <span key={item}>{item}</span>
+                  ))}
                 </dd>
               </div>
             ))}

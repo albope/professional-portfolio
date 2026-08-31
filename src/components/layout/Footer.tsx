@@ -66,7 +66,7 @@ export function Footer() {
           <a
             href="#top"
             aria-label="Volver arriba"
-            className="group flex h-11 w-11 items-center justify-center border border-line text-ink transition-colors duration-300 ease-editorial hover:border-ink"
+            className="group flex h-11 w-11 items-center justify-center border border-line text-ink transition-colors duration-300 ease-editorial hover:border-ink active:translate-y-[1px]"
           >
             <span
               aria-hidden

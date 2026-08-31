@@ -4,6 +4,7 @@ export const metadata: Metadata = {
   title: "Aviso legal",
   description: "Aviso legal de BPM Tech.",
   alternates: { canonical: "/aviso-legal" },
+  robots: { index: false, follow: true },
 };
 
 const h2 = "pt-4 text-xl font-semibold text-ink";

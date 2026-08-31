@@ -4,6 +4,7 @@ export const metadata: Metadata = {
   title: "Política de privacidad",
   description: "Política de privacidad de BPM Tech.",
   alternates: { canonical: "/privacidad" },
+  robots: { index: false, follow: true },
 };
 
 const h2 = "pt-4 text-xl font-semibold text-ink";

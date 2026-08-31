@@ -16,17 +16,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly" as const,
       priority: 0.7,
     })),
-    {
-      url: `${site.url}/aviso-legal`,
-      lastModified: new Date(),
-      changeFrequency: "yearly" as const,
-      priority: 0.2,
-    },
-    {
-      url: `${site.url}/privacidad`,
-      lastModified: new Date(),
-      changeFrequency: "yearly" as const,
-      priority: 0.2,
-    },
   ];
 }

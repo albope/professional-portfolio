@@ -24,6 +24,7 @@ const labelClasses =
 export function ContactForm() {
   const [status, setStatus] = useState<Status>("idle");
   const [emailError, setEmailError] = useState(false);
+  const [serverError, setServerError] = useState("");
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -37,6 +38,7 @@ export function ContactForm() {
       return;
     }
     setEmailError(false);
+    setServerError("");
     setStatus("sending");
 
     try {
@@ -56,9 +58,16 @@ export function ContactForm() {
       if (res.ok) {
         setStatus("success");
       } else {
+        const payload = (await res.json().catch(() => null)) as
+          | { error?: string }
+          | null;
+        setServerError(
+          payload?.error || "No hemos podido enviar el mensaje. Inténtalo de nuevo."
+        );
         setStatus("error");
       }
     } catch {
+      setServerError("No hemos podido conectar. Revisa tu conexión e inténtalo de nuevo.");
       setStatus("error");
     }
   };
@@ -78,8 +87,8 @@ export function ContactForm() {
           Mensaje <SquareWord word="recibido" tone="dark" />
         </h3>
         <p className="mt-5 max-w-md text-[15px] leading-[1.65] text-paper/60">
-          Gracias por escribirnos. Leemos todos los mensajes y te respondemos en
-          uno o dos días laborables.
+          Gracias por escribirnos. Leemos todos los mensajes y te responderemos
+          personalmente lo antes posible.
         </p>
         <Link
           href="/"
@@ -100,6 +109,8 @@ export function ContactForm() {
             name="nombre"
             type="text"
             required
+            minLength={2}
+            maxLength={200}
             autoComplete="name"
             className={`${fieldBase} ${fieldOk}`}
           />
@@ -110,6 +121,7 @@ export function ContactForm() {
             name="empresa"
             type="text"
             autoComplete="organization"
+            maxLength={200}
             className={`${fieldBase} ${fieldOk}`}
           />
         </label>
@@ -122,6 +134,7 @@ export function ContactForm() {
             name="email"
             type="email"
             required
+            maxLength={254}
             autoComplete="email"
             aria-invalid={emailError}
             aria-describedby={emailError ? "email-error" : undefined}
@@ -141,6 +154,7 @@ export function ContactForm() {
             type="tel"
             inputMode="tel"
             autoComplete="tel"
+            maxLength={40}
             className={`${fieldBase} ${fieldOk}`}
           />
         </label>
@@ -151,6 +165,8 @@ export function ContactForm() {
         <textarea
           name="mensaje"
           required
+          minLength={10}
+          maxLength={5000}
           rows={5}
           className={`${fieldBase} ${fieldOk} resize-y`}
         />
@@ -165,7 +181,7 @@ export function ContactForm() {
       {status === "error" && (
         <div className="border border-error px-5 py-4" role="alert">
           <p className="text-sm leading-relaxed text-paper">
-            No hemos podido enviar el mensaje. Vuelve a intentarlo en un momento.
+            {serverError}
           </p>
         </div>
       )}
@@ -173,7 +189,7 @@ export function ContactForm() {
       <button
         type="submit"
         disabled={status === "sending"}
-        className="self-start bg-paper px-[30px] py-4 text-[15px] font-semibold text-ink transition-colors duration-300 ease-editorial hover:bg-cobalt-bright disabled:pointer-events-none disabled:opacity-60"
+        className="self-start bg-paper px-[30px] py-4 text-[15px] font-semibold text-ink transition-colors duration-300 ease-editorial hover:bg-cobalt-bright active:translate-y-[1px] disabled:pointer-events-none disabled:opacity-60"
       >
         {status === "sending" ? "Enviando…" : "Enviar mensaje"}
       </button>
