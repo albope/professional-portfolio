@@ -9,12 +9,19 @@
 # testing
 /coverage
 
+# python build cache
+__pycache__/
+*.py[cod]
+
 # next.js
 /.next/
 /out/
 
 # production
 /build
+
+# generated presentation previews and exports
+/templates/presentation/output/
 
 # misc
 .DS_Store
