@@ -17,5 +17,12 @@ export default defineConfig([
       ],
     },
   },
-  globalIgnores([".next/**", "out/**", "build/**", "next-env.d.ts"]),
+  globalIgnores([
+    ".next/**",
+    "out/**",
+    "build/**",
+    "next-env.d.ts",
+    "design_handoff_bpm_tech/**",
+    "templates/**",
+  ]),
 ]);

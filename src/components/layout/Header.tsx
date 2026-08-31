@@ -7,17 +7,10 @@ import { nav, ctaHref, ctaLabel } from "@/data/site";
 import { Wordmark } from "@/components/ui/Wordmark";
 import { cn } from "@/lib/utils";
 
+/** Cabecera web (opción 1b del handoff): 78px sobre tinta sólida, sin hairline. */
 export function Header() {
-  const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const reduceMotion = useReducedMotion();
-
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 8);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
 
   useEffect(() => {
     document.documentElement.style.overflow = open ? "hidden" : "";
@@ -33,36 +26,27 @@ export function Header() {
 
   return (
     <>
-    <header
-      className={cn(
-        "fixed inset-x-0 top-0 z-50 border-b transition-colors duration-300 ease-editorial",
-        open
-          ? "border-line-dark bg-ink"
-          : scrolled
-            ? "border-line bg-paper/95 backdrop-blur-sm"
-            : "border-transparent bg-transparent"
-      )}
-    >
-      <div className="container-editorial flex h-16 items-center justify-between lg:h-20">
+    <header className="fixed inset-x-0 top-0 z-50 bg-ink">
+      <div className="container-editorial flex h-16 items-center justify-between lg:h-[78px]">
         <Link href="/" aria-label="BPM Tech, inicio" onClick={() => setOpen(false)}>
-          <Wordmark tone={open ? "paper" : "ink"} size={19} className="lg:hidden" />
-          <Wordmark tone="ink" size={21} className="hidden lg:inline-flex" />
+          <Wordmark tone="paper" size={16} overlay={open} className="lg:hidden" />
+          <Wordmark tone="paper" size={19} className="hidden lg:inline-flex" />
         </Link>
 
         {/* Navegación desktop */}
-        <nav aria-label="Principal" className="hidden items-center gap-9 lg:flex">
+        <nav aria-label="Principal" className="hidden items-center gap-8 lg:flex">
           {nav.map((item) => (
             <Link
               key={item.href}
               href={item.href}
-              className="link-underline text-sm text-ink-soft transition-colors hover:text-ink"
+              className="text-sm text-[#D8D6CC] transition-colors duration-300 hover:text-paper"
             >
               {item.label}
             </Link>
           ))}
           <Link
             href={ctaHref}
-            className="bg-ink px-[22px] py-3 text-sm font-semibold text-paper transition-colors duration-300 ease-editorial hover:bg-cobalt active:translate-y-[1px]"
+            className="bg-paper px-5 py-[11px] text-[13px] font-semibold text-ink transition-colors duration-300 ease-editorial hover:bg-cobalt hover:text-paper active:translate-y-[1px]"
           >
             {ctaLabel}
           </Link>
@@ -79,14 +63,14 @@ export function Header() {
         >
           <span
             className={cn(
-              "absolute h-[1.5px] w-5 transition-transform duration-300 ease-editorial",
-              open ? "rotate-45 bg-paper" : "-translate-y-[3.5px] bg-ink"
+              "absolute h-[1.5px] w-5 bg-paper transition-transform duration-300 ease-editorial",
+              open ? "rotate-45" : "-translate-y-[3.5px]"
             )}
           />
           <span
             className={cn(
-              "absolute h-[1.5px] w-5 transition-transform duration-300 ease-editorial",
-              open ? "-rotate-45 bg-paper" : "translate-y-[3.5px] bg-ink"
+              "absolute h-[1.5px] w-5 bg-paper transition-transform duration-300 ease-editorial",
+              open ? "-rotate-45" : "translate-y-[3.5px]"
             )}
           />
         </button>
