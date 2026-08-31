@@ -1,12 +1,9 @@
 // next.config.mjs
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'standalone',
+  // Sin output: 'standalone': en Vercel rompe el build con Next 16/Turbopack
+  // (busca .next/next-server.js.nft.json). Reañadir solo para self-hosting.
   allowedDevOrigins: ['127.0.0.1'],
-  // Quita o comenta la sección de images para usar los valores por defecto optimizados
-  // images: {
-  //   unoptimized: true,
-  // },
 };
 
 export default nextConfig;

@@ -6,6 +6,7 @@
 ---
 
 ## AHORA MISMO (<10 lineas)
+- 20260831-024000 : taste-skill analizado (subagente) y aplicado + upgrade paralelo Next16 integrado en un commit (1fcf27f). Web al dia en Vercel. Pendiente restante: RESEND_API_KEY y dominio.
 - 20260831-004000 : Identidad definitiva del handoff implementada y pusheada (c551065). Vercel desplegando. Artifact v3 actualizado. Handoff borrado del repo y en .gitignore (copia original en Downloads/Identidad visual pending respuestas/).
 - 20260831-004000 : templates/presentation/ (python, trabajo paralelo del usuario) dejado SIN commitear a propósito.
 - 20260830-203500 : Confirmado autodeploy: la web vive en albertobort.vercel.app. Fixes pusheados (fc2e160): menú móvil (backdrop-filter/containing block, overlay fuera del header) y bullets de Nosotros eliminados.
