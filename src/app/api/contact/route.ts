@@ -13,6 +13,7 @@ interface ContactPayload {
   nombre?: string;
   empresa?: string;
   email?: string;
+  telefono?: string;
   mensaje?: string;
   web?: string; // honeypot
 }
@@ -33,6 +34,7 @@ export async function POST(request: Request) {
   const nombre = data.nombre?.trim();
   const empresa = data.empresa?.trim();
   const email = data.email?.trim();
+  const telefono = data.telefono?.trim();
   const mensaje = data.mensaje?.trim();
 
   if (!nombre || !email || !mensaje) {
@@ -44,7 +46,12 @@ export async function POST(request: Request) {
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || email.length > 254) {
     return NextResponse.json({ error: "El email no parece válido." }, { status: 400 });
   }
-  if (nombre.length > 200 || (empresa?.length ?? 0) > 200 || mensaje.length > 5000) {
+  if (
+    nombre.length > 200 ||
+    (empresa?.length ?? 0) > 200 ||
+    (telefono?.length ?? 0) > 40 ||
+    mensaje.length > 5000
+  ) {
     return NextResponse.json({ error: "El mensaje es demasiado largo." }, { status: 400 });
   }
 
@@ -60,6 +67,7 @@ export async function POST(request: Request) {
     `Nombre: ${nombre}`,
     `Empresa: ${empresa || "—"}`,
     `Email: ${email}`,
+    `Teléfono: ${telefono || "—"}`,
     "",
     mensaje,
   ].join("\n");

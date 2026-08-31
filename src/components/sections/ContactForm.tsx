@@ -47,6 +47,7 @@ export function ContactForm() {
           nombre: data.get("nombre"),
           empresa: data.get("empresa"),
           email,
+          telefono: data.get("telefono"),
           mensaje: data.get("mensaje"),
           web: data.get("web"),
         }),
@@ -114,24 +115,36 @@ export function ContactForm() {
         </label>
       </div>
 
-      <label className="flex flex-col gap-2">
-        <span className={labelClasses}>Email</span>
-        <input
-          name="email"
-          type="email"
-          required
-          autoComplete="email"
-          aria-invalid={emailError}
-          aria-describedby={emailError ? "email-error" : undefined}
-          onChange={() => setEmailError(false)}
-          className={`${fieldBase} ${emailError ? fieldBad : fieldOk}`}
-        />
-        {emailError && (
-          <span id="email-error" className="font-mono text-[11px] text-error">
-            Revisa el email, parece incompleto.
-          </span>
-        )}
-      </label>
+      <div className="grid gap-[22px] sm:grid-cols-2">
+        <label className="flex flex-col gap-2">
+          <span className={labelClasses}>Email</span>
+          <input
+            name="email"
+            type="email"
+            required
+            autoComplete="email"
+            aria-invalid={emailError}
+            aria-describedby={emailError ? "email-error" : undefined}
+            onChange={() => setEmailError(false)}
+            className={`${fieldBase} ${emailError ? fieldBad : fieldOk}`}
+          />
+          {emailError && (
+            <span id="email-error" className="font-mono text-[11px] text-error">
+              Revisa el email, parece incompleto.
+            </span>
+          )}
+        </label>
+        <label className="flex flex-col gap-2">
+          <span className={labelClasses}>Teléfono (opcional)</span>
+          <input
+            name="telefono"
+            type="tel"
+            inputMode="tel"
+            autoComplete="tel"
+            className={`${fieldBase} ${fieldOk}`}
+          />
+        </label>
+      </div>
 
       <label className="flex flex-col gap-2">
         <span className={labelClasses}>¿Qué necesitas resolver?</span>

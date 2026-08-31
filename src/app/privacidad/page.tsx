@@ -30,8 +30,8 @@ export default function PrivacidadPage() {
           Este sitio web no utiliza cookies de seguimiento ni herramientas de
           analítica que identifiquen al visitante. Los únicos datos personales
           que recibimos son los que tú decides enviarnos a través del formulario
-          de contacto: nombre, empresa, dirección de correo y el contenido de tu
-          mensaje.
+          de contacto: nombre, empresa, dirección de correo, teléfono si decides
+          indicarlo y el contenido de tu mensaje.
         </p>
 
         <h2 className={h2}>Finalidad y base legal</h2>
