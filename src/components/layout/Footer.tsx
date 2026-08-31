@@ -9,11 +9,7 @@ const columns = [
   },
   {
     label: "Contacto",
-    links: [
-      { label: "Formulario", href: ctaHref, external: false },
-      { label: "LinkedIn", href: "https://www.linkedin.com/in/albertobort/", external: true },
-      { label: "GitHub", href: "https://github.com/albope", external: true },
-    ],
+    links: [{ label: "Formulario", href: ctaHref, external: false }],
   },
   {
     label: "Legal",
