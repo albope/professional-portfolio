@@ -1,6 +1,6 @@
 # Piezas de marca
 
-Материal gráfico que no forma parte de la web pero usa su misma identidad.
+Material gráfico que no forma parte de la web pero usa su misma identidad.
 Cada pieza se escribe en HTML y se exporta a PNG, así que se puede reeditar
 y regenerar sin herramientas de diseño.
 
