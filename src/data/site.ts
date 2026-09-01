@@ -3,6 +3,9 @@ export const site = {
   descriptor: "Tecnología a medida para empresas",
   description:
     "Aplicaciones a medida, webs con identidad propia, automatización e inteligencia artificial aplicada a tu operativa. Te acompañamos desde la idea hasta el producto funcionando.",
+  /** Versión corta para compartir: WhatsApp y redes cortan a dos líneas. */
+  share:
+    "Aplicaciones, webs y automatización a medida. De la idea al producto funcionando.",
   // TODO: sustituir por el dominio definitivo de BPM Tech cuando exista.
   url: process.env.NEXT_PUBLIC_SITE_URL || "https://www.bpmtechstudio.com",
   // El email de contacto NO se publica en la web: vive en el servidor

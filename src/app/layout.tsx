@@ -36,22 +36,24 @@ export const metadata: Metadata = {
     type: "website",
     locale: "es_ES",
     siteName: site.name,
-    title: "BPM Tech · Tecnología a medida para empresas",
-    description: site.description,
+    // Al compartir el enlace, el titular del hero engancha mejor que el
+    // nombre de la empresa, que ya sale en la imagen y en el dominio.
+    title: "El software que te falta no se compra hecho",
+    description: site.share,
     url: site.url,
     images: [
       {
         url: "/og-1200x630.png",
         width: 1200,
         height: 630,
-        alt: "BPM Tech, tecnología a medida para empresas",
+        alt: "BPM Tech. El software que te falta no se compra hecho, se construye.",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "BPM Tech · Tecnología a medida para empresas",
-    description: site.description,
+    title: "El software que te falta no se compra hecho",
+    description: site.share,
     images: ["/og-1200x630.png"],
   },
   alternates: {
