@@ -4,7 +4,7 @@ export const site = {
   description:
     "Aplicaciones a medida, webs con identidad propia, automatización e inteligencia artificial aplicada a tu operativa. Te acompañamos desde la idea hasta el producto funcionando.",
   // TODO: sustituir por el dominio definitivo de BPM Tech cuando exista.
-  url: process.env.NEXT_PUBLIC_SITE_URL || "https://bpmtech.example",
+  url: process.env.NEXT_PUBLIC_SITE_URL || "https://bpmtechstudio.com",
   // El email de contacto NO se publica en la web: vive en el servidor
   // (variable de entorno CONTACT_EMAIL, ver src/app/api/contact/route.ts).
   location: "Valencia, España",

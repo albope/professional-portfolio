@@ -49,6 +49,6 @@ servidor. Configuración (variables de entorno):
 
 ## Pendiente antes de publicar (TODOs)
 
-1. **Dominio**: definir el dominio real y configurar `NEXT_PUBLIC_SITE_URL` (usado en metadata, sitemap y robots). Fallback actual: `https://bpmtech.example`.
+1. **Dominio**: el dominio es `bpmtechstudio.com` (registrado en Cloudflare). Queda apuntarlo a Vercel y definir `NEXT_PUBLIC_SITE_URL` en el proyecto, que es lo que usan metadata, sitemap y robots.
 2. **Resend**: crear cuenta, configurar `RESEND_API_KEY` (y `CONTACT_EMAIL`/`CONTACT_FROM` si aplica) para que el formulario envíe de verdad.
 3. **Proyectos**: revisar los textos de `src/data/projects.ts` y añadir nuevos casos cuando existan.
