@@ -9,9 +9,19 @@ export function Hero() {
     <section className="border-b border-line pt-32 lg:pt-[184px]">
       <div className="container-editorial pb-14 lg:pb-[90px]">
         <Reveal>
-          <p className="label-mono flex items-center gap-3 text-ink-mute">
-            <span className="inline-block h-[7px] w-[7px] bg-cobalt" aria-hidden />
-            Tecnología a medida para empresas · Valencia
+          {/* Medido: a 11px la etiqueta completa ocupa 402px y parte la línea en
+              móvil. Baja a 10px como el diseño móvil del handoff y reserva
+              "· Valencia" para desktop, donde sobra sitio. En móvil la
+              ubicación sigue estando en el pie. */}
+          <p className="label-mono flex items-center gap-2.5 whitespace-nowrap text-[10px] tracking-[0.16em] text-ink-mute sm:gap-3 sm:text-[11px] sm:tracking-[0.18em]">
+            <span
+              className="inline-block h-1.5 w-1.5 shrink-0 bg-cobalt sm:h-[7px] sm:w-[7px]"
+              aria-hidden
+            />
+            <span>
+              Tecnología a medida para empresas
+              <span className="hidden sm:inline"> · Valencia</span>
+            </span>
           </p>
         </Reveal>
 

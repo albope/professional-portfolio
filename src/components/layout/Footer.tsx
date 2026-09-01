@@ -31,7 +31,7 @@ export function Footer() {
               <Wordmark size={17} />
             </Link>
             <p className="text-sm leading-relaxed text-ink-mute">
-              Aplicaciones, webs y soluciones digitales a medida. Valencia, 2026.
+              Aplicaciones, webs y soluciones digitales a medida.
             </p>
           </div>
 
