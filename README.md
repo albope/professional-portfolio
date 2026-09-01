@@ -44,11 +44,22 @@ servidor. Configuración (variables de entorno):
 | Variable | Obligatoria | Descripción |
 |---|---|---|
 | `RESEND_API_KEY` | Sí | API key de Resend. Sin ella el formulario devuelve error 503. |
-| `CONTACT_EMAIL` | No | Buzón de destino. Por defecto, el provisional del equipo. |
-| `CONTACT_FROM` | No | Remitente. Por defecto `onboarding@resend.dev` (solo permite enviar al email de la propia cuenta de Resend; con dominio verificado, usar `hola@dominio.com`). |
+| `CONTACT_EMAIL` | Sí | Buzón de destino. Sin él el formulario devuelve error 503. |
+| `CONTACT_FROM` | No | Remitente. Por defecto `onboarding@resend.dev`, que solo entrega al email de la propia cuenta de Resend. |
 
-## Pendiente antes de publicar (TODOs)
+Las tres están configuradas en Vercel (Production) como Sensitive.
 
-1. **Dominio**: el dominio es `bpmtechstudio.com` (registrado en Cloudflare). Queda apuntarlo a Vercel y definir `NEXT_PUBLIC_SITE_URL` en el proyecto, que es lo que usan metadata, sitemap y robots.
-2. **Resend**: crear cuenta, configurar `RESEND_API_KEY` (y `CONTACT_EMAIL`/`CONTACT_FROM` si aplica) para que el formulario envíe de verdad.
-3. **Proyectos**: revisar los textos de `src/data/projects.ts` y añadir nuevos casos cuando existan.
+## Infraestructura
+
+| Pieza | Estado |
+|---|---|
+| Dominio | `bpmtechstudio.com` en Cloudflare. El apex redirige con 308 a `www`, que es el canónico. |
+| Hosting | Vercel, proyecto `albertobort`, con `NEXT_PUBLIC_SITE_URL` a `https://www.bpmtechstudio.com`. |
+| Envío de email | Resend con el dominio verificado (región EU). Sus registros MX, SPF y DKIM cuelgan de `send.bpmtechstudio.com`. |
+| Recepción de email | Cloudflare Email Routing. `contacto@bpmtechstudio.com` reenvía al buzón del equipo. Sus MX van en el dominio raíz, así que no chocan con los de Resend. |
+
+## Pendiente
+
+1. **Proyectos**: revisar los textos de `src/data/projects.ts` y añadir nuevos casos cuando existan.
+2. **Capturas de proyecto**: las de `public/screenshots/` muestran marcas de cliente, lo que choca con la regla de mostrar los proyectos reales sin nombre. Decidir si se recortan o se vuelve a los visuales abstractos.
+3. **Limpieza**: en Vercel quedan `TELEGRAM_BOT_TOKEN` y `TELEGRAM_CHAT_ID` del portfolio anterior, que ya no usa nadie.
