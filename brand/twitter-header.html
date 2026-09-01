@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Archivo:wght@400;500;600&family=Fragment+Mono&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    width: 1500px; height: 500px; overflow: hidden;
+    background: #101013; color: #F7F6F2;
+    font-family: 'Archivo', sans-serif;
+    position: relative;
+  }
+  /* Contenido dentro de la zona segura: el avatar ocupa la esquina inferior
+     izquierda y en móvil X recorta los laterales, así que todo vive centrado
+     en vertical y con margen amplio a los lados. */
+  .wrap {
+    position: absolute; inset: 0;
+    padding: 0 96px;
+    display: flex; align-items: center; justify-content: space-between; gap: 64px;
+  }
+
+  .left { display: flex; flex-direction: column; gap: 30px; }
+
+  .lockup { display: flex; align-items: center; gap: 13px; }
+  .word { font-family: 'Fragment Mono', monospace; font-size: 30px; letter-spacing: 0.06em; line-height: 1; }
+  .word b { font-weight: 400; color: #6B83FF; }
+  .glyph { display: flex; align-items: center; gap: 7px; }
+  .glyph .bar { width: 17px; height: 4px; background: #F7F6F2; }
+  .glyph .hollow { width: 17px; height: 17px; border: 2px solid #F7F6F2; }
+  .glyph .solid { width: 17px; height: 17px; background: #6B83FF; }
+
+  h1 {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 62px; line-height: 0.98; letter-spacing: -0.01em;
+    text-transform: uppercase;
+  }
+  .sq { display: inline-block; width: 0.2em; height: 0.2em; background: #6B83FF; margin-left: 0.16em; }
+
+  .domain { font-family: 'Fragment Mono', monospace; font-size: 19px; letter-spacing: 0.04em; color: rgba(247,246,242,0.7); }
+
+  /* Columna derecha: el diagrama de hitos de la web, reducido a su esencia */
+  .right { display: flex; flex-direction: column; align-items: flex-end; gap: 22px; }
+  .track { position: relative; width: 440px; }
+  .line { position: absolute; left: 8px; right: 8px; top: 8px; height: 1px; background: rgba(247,246,242,0.22); }
+  .nodes { display: grid; grid-template-columns: repeat(4, 1fr); position: relative; }
+  .node { width: 17px; height: 17px; border: 1px solid rgba(247,246,242,0.45); }
+  .node.on { border-color: #6B83FF; background: #6B83FF; }
+  .labels { display: grid; grid-template-columns: repeat(4, 1fr); width: 440px; }
+  .labels span { font-family: 'Fragment Mono', monospace; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(247,246,242,0.5); white-space: nowrap; }
+  .caption { font-family: 'Fragment Mono', monospace; font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(247,246,242,0.4); }
+  .domain-top { font-family: 'Fragment Mono', monospace; font-size: 19px; letter-spacing: 0.04em; color: #F7F6F2; }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="left">
+      <div class="lockup">
+        <span class="word">BPM<b>TECH</b></span>
+        <span class="glyph"><span class="bar"></span><span class="hollow"></span><span class="solid"></span></span>
+      </div>
+      <h1>Software, webs<br>y automatización<br>a <span style="white-space:nowrap">medida<span class="sq"></span></span></h1>
+    </div>
+
+    <div class="right">
+      <span class="domain-top">bpmtechstudio.com</span>
+      <span class="caption">De la idea a producción</span>
+      <div class="track">
+        <div class="line"></div>
+        <div class="nodes">
+          <span class="node"></span>
+          <span class="node"></span>
+          <span class="node"></span>
+          <span class="node on"></span>
+        </div>
+      </div>
+      <div class="labels">
+        <span>Necesidad</span>
+        <span>Diseño</span>
+        <span>Código</span>
+        <span>Producción</span>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

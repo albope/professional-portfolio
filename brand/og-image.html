@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Archivo:wght@400;500;600&family=Fragment+Mono&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    width: 1200px; height: 630px; overflow: hidden;
+    background: #101013; color: #F7F6F2;
+    font-family: 'Archivo', sans-serif;
+    display: flex; flex-direction: column; justify-content: space-between;
+    padding: 64px 72px;
+  }
+  /* Fila superior: lockup web + descriptor */
+  .top { display: flex; align-items: center; justify-content: space-between; }
+  .lockup { display: flex; align-items: center; gap: 12px; }
+  .word { font-family: 'Fragment Mono', monospace; font-size: 26px; letter-spacing: 0.06em; color: #F7F6F2; line-height: 1; }
+  .word b { font-weight: 400; color: #6B83FF; }
+  .glyph { display: flex; align-items: center; gap: 6px; }
+  .glyph .bar { width: 15px; height: 4px; background: #F7F6F2; }
+  .glyph .hollow { width: 15px; height: 15px; border: 2px solid #F7F6F2; }
+  .glyph .solid { width: 15px; height: 15px; background: #6B83FF; }
+  .descriptor { font-family: 'Fragment Mono', monospace; font-size: 14px; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(247,246,242,0.45); }
+
+  /* Titular */
+  h1 {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 86px; line-height: 0.95; letter-spacing: -0.01em;
+    text-transform: uppercase; max-width: 1010px;
+  }
+  .sq { display: inline-block; width: 0.2em; height: 0.2em; background: #6B83FF; margin-left: 0.16em; }
+
+  /* Fila inferior */
+  .bottom { display: flex; align-items: flex-end; justify-content: space-between; border-top: 1px solid rgba(247,246,242,0.12); padding-top: 26px; }
+  .claim { font-size: 20px; color: rgba(247,246,242,0.6); max-width: 620px; line-height: 1.5; }
+  .domain { font-family: 'Fragment Mono', monospace; font-size: 16px; color: #F7F6F2; white-space: nowrap; }
+</style>
+</head>
+<body>
+  <div class="top">
+    <div class="lockup">
+      <span class="word">BPM<b>TECH</b></span>
+      <span class="glyph"><span class="bar"></span><span class="hollow"></span><span class="solid"></span></span>
+    </div>
+    <span class="descriptor">Tecnología a medida · Valencia</span>
+  </div>
+
+  <h1>El software que te falta no se compra hecho. Se <span style="white-space:nowrap">construye<span class="sq"></span></span></h1>
+
+  <div class="bottom">
+    <span class="claim">Aplicaciones, webs y automatización a medida. De la idea al producto funcionando.</span>
+    <span class="domain">bpmtechstudio.com</span>
+  </div>
+</body>
+</html>
