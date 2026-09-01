@@ -29,7 +29,7 @@ export function Header() {
     <header className="fixed inset-x-0 top-0 z-50 bg-ink">
       <div className="container-editorial flex h-16 items-center justify-between lg:h-[78px]">
         <Link href="/" aria-label="BPM Tech, inicio" onClick={() => setOpen(false)}>
-          <Wordmark tone="paper" size={16} overlay={open} className="lg:hidden" />
+          <Wordmark tone="paper" size={16} className="lg:hidden" />
           <Wordmark tone="paper" size={19} className="hidden lg:inline-flex" />
         </Link>
 
