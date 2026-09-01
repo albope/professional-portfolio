@@ -36,9 +36,9 @@ export const metadata: Metadata = {
     type: "website",
     locale: "es_ES",
     siteName: site.name,
-    // Al compartir el enlace, el titular del hero engancha mejor que el
-    // nombre de la empresa, que ya sale en la imagen y en el dominio.
-    title: "El software que te falta no se compra hecho",
+    // El titular del hero ya se lee en la imagen, así que el título en
+    // negrita aporta la marca en vez de repetirlo.
+    title: "BPM Tech · Tecnología a medida para empresas",
     description: site.share,
     url: site.url,
     images: [
@@ -52,7 +52,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "El software que te falta no se compra hecho",
+    title: "BPM Tech · Tecnología a medida para empresas",
     description: site.share,
     images: ["/og-1200x630.png"],
   },
