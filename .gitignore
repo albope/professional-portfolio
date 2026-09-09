@@ -35,6 +35,9 @@ yarn-error.log*
 # local env files
 .env*.local
 
+# local assistant permissions
+/.claude/settings.local.json
+
 # vercel
 .vercel
 

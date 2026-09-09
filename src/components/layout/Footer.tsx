@@ -2,6 +2,8 @@ import Link from "next/link";
 import { nav, ctaHref, site } from "@/data/site";
 import { Wordmark } from "@/components/ui/Wordmark";
 
+const [emailLocalPart, emailDomain] = site.email.split("@");
+
 const columns = [
   { label: "Índice", links: nav },
   { label: "Contacto", links: [{ label: "Hablemos", href: ctaHref }] },
@@ -31,7 +33,7 @@ export function Footer() {
 
           <div className="grid grid-cols-2 gap-x-8 gap-y-7 sm:grid-cols-3 lg:gap-x-12">
             {columns.map((column) => (
-              <nav key={column.label} aria-label={column.label} className="flex flex-col">
+              <nav key={column.label} aria-label={column.label} className="flex min-w-0 flex-col">
                 <span className="label-mono mb-2 text-ink-mute">{column.label}</span>
                 {column.links.map((link) => (
                   <Link
@@ -44,6 +46,14 @@ export function Footer() {
                     {link.label}
                   </Link>
                 ))}
+                {column.label === "Contacto" && (
+                  <a
+                    href={`mailto:${site.email}`}
+                    className="inline-flex min-h-11 items-center text-sm text-ink underline underline-offset-4 transition-colors hover:text-cobalt"
+                  >
+                    <span className="[overflow-wrap:anywhere]">{emailLocalPart}@<wbr />{emailDomain}</span>
+                  </a>
+                )}
               </nav>
             ))}
           </div>

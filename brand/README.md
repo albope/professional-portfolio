@@ -16,6 +16,17 @@ y regenerar sin herramientas de diseño.
 | `twitter-header.html` | Portada de X / Twitter | 1500 × 500 |
 | `og-image.html` | Original histórico de la imagen para compartir | 1200 × 630 |
 | `avatar.html` | Foto de perfil de X y GitHub | 512 × 512 |
+| `logo-completo.html` | Logo completo de la cabecera, fuente editable | Según el viewport |
+| `bpm-tech-perfil-cal-512.png` | Logo completo para cargar como perfil de Cal.com | 512 × 512 |
+| `bpm-tech-logo-horizontal-1024.png` | Logo completo horizontal sobre tinta | 1024 × 256 |
+
+Las dos exportaciones del logo completo usan las proporciones de
+`src/components/ui/Wordmark.tsx` (size 19, tone paper), con Fragment Mono local,
+fondo tinta y acento cobalto brillante. El PNG de perfil mantiene margen para el
+recorte circular. El wordmark completo se verá pequeño en avatares de 64 px.
+Para regenerarlos, abrir `logo-completo.html`, esperar `document.fonts.ready`
+y capturar el viewport a escala 1 en las dimensiones indicadas. La licencia de
+la fuente está en `src/assets/fonts/OFL-Fragment-Mono.txt`.
 
 El avatar va a sangre, sin círculo dibujado: X lo recorta en círculo y GitHub
 lo muestra cuadrado, así que el fondo tiene que llegar a los bordes. La marca

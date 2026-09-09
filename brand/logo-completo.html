@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>BPM Tech · Logo completo</title>
+  <style>
+    @font-face {
+      font-family: "Fragment Mono";
+      src: url("../src/assets/fonts/FragmentMono-Regular.ttf") format("truetype");
+      font-weight: 400;
+      font-style: normal;
+      font-display: block;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; width: 100%; height: 100%; }
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      background: #101013;
+      color: #f7f6f2;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+    /* Proporciones de Wordmark.tsx, size=19 y tone="paper". */
+    .lockup { display: inline-flex; align-items: center; gap: 10px; transform: scale(3); }
+    .word { font-family: "Fragment Mono", monospace; font-weight: 400; font-size: 19px; line-height: 1; letter-spacing: .06em; }
+    .accent { color: #6b83ff; }
+    .glyph { display: flex; align-items: center; gap: 5px; }
+    .bar { width: 11px; height: 3px; background: #f7f6f2; }
+    .hollow { width: 11px; height: 11px; border: 2px solid #f7f6f2; }
+    .solid { width: 11px; height: 11px; background: #6b83ff; }
+    /* Export horizontal: viewport de 1024 × 256. */
+    @media (min-width: 800px) { .lockup { transform: scale(6); } }
+  </style>
+</head>
+<body>
+  <div class="lockup" role="img" aria-label="BPM Tech">
+    <span class="word">BPM<span class="accent">TECH</span></span>
+    <span class="glyph" aria-hidden="true"><span class="bar"></span><span class="hollow"></span><span class="solid"></span></span>
+  </div>
+</body>
+</html>

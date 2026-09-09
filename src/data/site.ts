@@ -7,9 +7,9 @@ export const site = {
   share:
     "Software y webs que encajan en tu negocio. Gestión, automatización y desarrollo web a medida, en Valencia y en remoto.",
   url: process.env.NEXT_PUBLIC_SITE_URL || "https://www.bpmtechstudio.com",
-  // El destino del formulario vive exclusivamente en el servidor.
-  // El contacto legal autorizado se gestiona por separado en data/legal.ts.
-  // (variable de entorno CONTACT_EMAIL, ver src/app/api/contact/route.ts).
+  // Dirección pública autorizada para el contacto comercial y legal.
+  email: "bpmtechstudio@gmail.com",
+  // El destino del formulario se configura en el servidor mediante CONTACT_EMAIL.
   location: "Valencia, España",
 } as const;
 

@@ -6,11 +6,15 @@ La web ayuda a explicar el trabajo y facilita el contacto. Para conseguir encarg
 
 Antes de compartir la nueva versión, comprobar que está publicada la versión revisada, que el formulario permite completar el recorrido y que existe una persona responsable de revisar el buzón. La aceptación técnica del envío y la recepción efectiva se comprueban por separado.
 
+El buzón de trabajo y contacto público es `bpmtechstudio@gmail.com`. Centralizar allí las consultas directas y las del formulario, y utilizar esa cuenta para el calendario y Cal.com. La agenda para **Primera conversación · BPM Tech**, de **30 minutos** por Cal Video, está en `https://cal.com/bpmtechstudio/30min` y se ofrece en Contacto y al final de cada caso. URL, duración y etiquetas comunes están en `src/data/booking.ts`.
+
+La integración se revisa en local; aún hay que actualizar el despliegue remoto y completar la credencial de Resend y la comprobación de entrega. La agenda se carga cuando la persona elige reservar. Revisar periódicamente en Cal.com la disponibilidad, calendario conectado y notificaciones, y confirmar cada cita en la propia agenda. Un clic en la web no acredita que exista una reserva.
+
 Preparar estos cuatro elementos:
 
 1. **Una necesidad de entrada.** Elegir inicialmente aquella para la que se puedan mantener conversaciones útiles: organizar una operativa, conectar tareas entre herramientas o construir una web funcional. No hace falta presentar todos los servicios en cada conversación.
 2. **Un caso pertinente.** Compartir la página que mejor explica el trabajo relacionado con esa necesidad. El caso debe conservar su contexto, alcance y leyenda visual. Describir funciones construidas; cualquier resultado de negocio necesita una evidencia propia.
-3. **Un destino sencillo.** Usar la URL pública del caso o una entrada de contacto contextual. Revisar el enlace desde el móvil y comprobar título e imagen al compartir.
+3. **Un destino sencillo.** Usar la URL pública del caso o una entrada de contacto contextual; la reserva de una videollamada es una alternativa al formulario. Revisar el enlace desde el móvil y comprobar título e imagen al compartir.
 4. **Un registro privado.** Copiar la [plantilla de oportunidades](templates/oportunidades.csv) a una ubicación protegida fuera del repositorio. El archivo versionado permanece vacío; los datos reales de conversaciones no deben entrar en Git, `public/` ni logs de analítica.
 
 | Necesidad que expresa la persona | Material que puede ayudar | Enlace público |
@@ -124,6 +128,7 @@ El código recoge eventos operativos en los logs del alojamiento. No hay un pane
 | Señal | Fuente actual | Qué permite observar | Qué no acredita |
 |---|---|---|---|
 | `cta_click` | `stream: bpm-events` | Activaciones del CTA por ubicación y, si se transmite, necesidad o caso; en el hero, `destination: contact` distingue contacto de `destination: projects`, que abre la galería. | Personas únicas o intención de compra. |
+| `cta_click` con `destination: booking` | `bpm-events` | Aperturas de la agenda desde Contacto o un caso; conserva solo categorías permitidas. | Reservas confirmadas, datos completados en Cal.com o asistencia a la llamada. |
 | `case_open` | `bpm-events` | Clics registrados en los enlaces a casos. | Que la página haya terminado de cargar. |
 | `case_view` | `bpm-events` | Visualizaciones instrumentadas de un caso. | Lectura completa, usuario único o clic previo desde la home. |
 | `form_start` | `bpm-events` | Inicio de interacción instrumentado con el formulario. | Una solicitud enviada. |
@@ -131,6 +136,7 @@ El código recoge eventos operativos en los logs del alojamiento. No hay un pane
 | `contact_error` | `bpm-events` | Fallos observados por el cliente, agrupados por código. | Ausencia definitiva de aceptación: un corte de red puede impedir recibir la confirmación. |
 | `provider_accepted` | `stream: bpm-contact` | El proveedor devolvió un identificador válido de aceptación. | Entrega al buzón, lectura, oportunidad o venta. |
 | Consulta recibida | Buzón y revisión humana | Un mensaje disponible para atender. | Que exista encaje comercial. |
+| Reserva confirmada | Agenda de Cal.com y revisión humana | Una cita con fecha y hora disponible para atender. | Asistencia, oportunidad cualificada o encargo. |
 | Cualificada / ganada | Registro privado | Decisión comercial y aceptación del encargo documentadas. | Resultado económico cobrado. |
 
 Para contar aceptaciones técnicas, filtrar `stream = bpm-contact` y `event = provider_accepted` y contar **identificadores `providerId` distintos**. Un reintento puede producir varias líneas para la misma aceptación, incluso entre instancias. El honeypot no emite esa aceptación. Un nuevo envío de la misma persona puede tener otro ID: la deduplicación comercial se realiza al revisar la necesidad en el registro privado.

@@ -1,5 +1,8 @@
 import { SquareWord } from "@/components/ui/SquareWord";
 import { ContactForm } from "@/components/sections/ContactForm";
+import { BookingLink } from "@/components/booking/BookingLink";
+import { booking } from "@/data/booking";
+import { site } from "@/data/site";
 
 export function Contact() {
   return (
@@ -15,6 +18,15 @@ export function Contact() {
             qué te está dando trabajo o qué te gustaría poner en marcha.
           </p>
 
+          <div className="mt-8 max-w-[440px] border border-paper/25 p-5 sm:p-6">
+            <h3 className="text-xl font-semibold text-paper">¿Prefieres hablarlo?</h3>
+            <p className="mt-3 text-sm leading-relaxed text-paper/75">
+              Una videollamada de {booking.durationMinutes} minutos para conocernos,
+              entender qué necesitas y valorar el siguiente paso. Sin compromiso.
+            </p>
+            <BookingLink location="contact" className="mt-5 w-full sm:w-auto" />
+          </div>
+
           <div className="mt-8 max-w-[440px] border-t border-line-dark pt-6">
             <h3 className="text-base font-semibold text-paper">¿Qué pasa después?</h3>
             <p className="mt-3 text-sm leading-relaxed text-paper/70">
@@ -23,6 +35,16 @@ export function Contact() {
               se definen antes de empezar a construir.
             </p>
           </div>
+
+          <p className="mt-6 max-w-[440px] text-sm leading-relaxed text-paper/75">
+            También puedes escribirnos directamente:
+            <a
+              href={`mailto:${site.email}`}
+              className="flex min-h-11 items-center text-paper underline underline-offset-4 hover:text-cobalt-bright"
+            >
+              <span className="[overflow-wrap:anywhere]">{site.email}</span>
+            </a>
+          </p>
         </div>
 
         <ContactForm />

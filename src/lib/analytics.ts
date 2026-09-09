@@ -6,7 +6,7 @@ export type AnalyticsEventName = (typeof ANALYTICS_EVENTS)[number];
 
 const values = {
   location: ["header", "hero", "service", "projects", "case", "about", "contact", "footer"],
-  destination: ["contact", "projects"],
+  destination: ["contact", "projects", "booking"],
   need: ["operativa", "automatizacion", "web"],
   project: ["asistente-ia-gestion-proyectos", "plataforma-clubes-padel", "wms-almacen", "web-boda", "web-radio"],
   field: ["nombre", "empresa", "email", "telefono", "mensaje", "requestId"],

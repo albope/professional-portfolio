@@ -6,6 +6,7 @@ import { site } from "@/data/site";
 import { ProjectVisual } from "@/components/ui/ProjectVisual";
 import { Reveal } from "@/components/ui/Reveal";
 import { SquareWord } from "@/components/ui/SquareWord";
+import { BookingLink } from "@/components/booking/BookingLink";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -152,15 +153,18 @@ export default async function ProjectPage({ params }: PageProps) {
           <p className="mx-auto mt-5 max-w-[580px] text-base leading-relaxed text-paper/75">
             {project.nextStep}
           </p>
-          <Link
-            href={contactHref}
-            data-track="cta_click"
-            data-track-location="case"
-            data-track-project={project.slug}
-            className="mt-7 inline-flex min-h-12 items-center justify-center bg-paper px-7 py-4 text-sm font-semibold text-ink transition-colors hover:bg-cobalt-bright focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cobalt-bright"
-          >
-            Quiero hablar de mi caso
-          </Link>
+          <div className="mt-7 flex flex-col items-stretch justify-center gap-3 sm:flex-row sm:flex-wrap sm:items-center">
+            <Link
+              href={contactHref}
+              data-track="cta_click"
+              data-track-location="case"
+              data-track-project={project.slug}
+              className="inline-flex min-h-12 items-center justify-center bg-paper px-7 py-4 text-sm font-semibold text-ink transition-colors hover:bg-cobalt-bright focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cobalt-bright"
+            >
+              Contar mi caso por escrito
+            </Link>
+            <BookingLink location="case" project={project.slug} />
+          </div>
           <p className="mt-4 text-sm text-paper/75">No necesitas tener definido el proyecto.</p>
           <Link href="/#proyectos" className="mt-6 inline-block py-2 text-sm text-paper underline underline-offset-4">
             Ver otros proyectos

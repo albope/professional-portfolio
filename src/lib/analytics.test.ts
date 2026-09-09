@@ -6,7 +6,7 @@ test("measurement accepts only a fixed vocabulary, never form values or arbitrar
   assert.deepEqual(parseAnalyticsEvent({ name: "cta_click", properties: { location: "hero" } }), {
     name: "cta_click", properties: { location: "hero" },
   });
-  for (const destination of ["contact", "projects"] as const) {
+  for (const destination of ["contact", "projects", "booking"] as const) {
     assert.deepEqual(parseAnalyticsEvent({ name: "cta_click", properties: { location: "hero", destination } }), {
       name: "cta_click", properties: { location: "hero", destination },
     });

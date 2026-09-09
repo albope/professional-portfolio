@@ -43,10 +43,11 @@ src/
     api/events/                eventos operativos con categorías limitadas
   components/
     analytics/                 medición de enlaces y visitas a casos
+    booking/                   acceso a la agenda y diálogo de reserva
     layout/                    cabecera, pie y wrapper estable de contenido
     sections/                  secciones de la home y formulario
     ui/                        primitivas visuales y esquemas de proyectos
-  data/                        site, services, projects, process y legal
+  data/                        site, services, projects, process, legal y booking
   lib/                         contacto, eventos, tests, fuentes y generación OG
 ```
 
@@ -72,16 +73,30 @@ Cada caso tiene su título, canonical e imagen Open Graph. Las OG actuales se ge
 
 ## Contacto y configuración
 
-Las consultas comerciales se envían mediante `POST /api/contact` y Resend desde el servidor. El buzón `CONTACT_EMAIL` es configuración privada y no se incorpora al contenido público. El canal legal publicado es independiente y se centraliza en `src/data/legal.ts`; no debe sustituirse por el buzón de destino del formulario.
+El contacto público de BPM Tech es `bpmtechstudio@gmail.com`, centralizado en `site.email` (`src/data/site.ts`). Contacto, el pie de página y las páginas legales utilizan esa misma dirección. Las consultas del formulario se envían mediante `POST /api/contact` y Resend desde el servidor; configurar `CONTACT_EMAIL` con ese buzón en cada entorno. Esta variable sigue siendo configuración del servidor y no determina el contenido público.
 
 | Variable | Uso |
 |---|---|
 | `NEXT_PUBLIC_SITE_URL` | URL canónica pública, sin barra final. Por defecto: `https://www.bpmtechstudio.com`. |
 | `RESEND_API_KEY` | Credencial del proveedor de correo. Necesaria para enviar. |
-| `CONTACT_EMAIL` | Buzón privado de destino. Necesario para enviar. |
+| `CONTACT_EMAIL` | Destino del formulario: `bpmtechstudio@gmail.com`. Necesario para enviar. |
 | `CONTACT_FROM` | Remitente autorizado. Sin valor usa `BPM Tech <onboarding@resend.dev>`; para producción debe configurarse y verificarse el remitente apropiado. |
 
 Las credenciales se mantienen en el entorno del servidor. No copies sus valores a documentación, logs, capturas o variables con prefijo `NEXT_PUBLIC_`.
+
+Gmail recibe las consultas y permite responderlas. El remitente técnico de Resend (`CONTACT_FROM`) debe pertenecer a un dominio verificado; no sustituirlo por la dirección `@gmail.com`. `onboarding@resend.dev` solo permite pruebas dirigidas al correo de la cuenta de Resend. El `Reply-To` conserva el email validado del visitante para responder a la persona que ha enviado la consulta. Ver [dominios y remitentes](https://resend.com/docs/knowledge-base/how-do-I-create-an-email-address-or-sender-in-resend) y [restricciones del dominio de pruebas](https://resend.com/docs/knowledge-base/403-error-resend-dev-domain).
+
+La configuración local incluye el nuevo destinatario, pero no incorpora credenciales de Resend. Antes de publicar, actualizar las variables del entorno de despliegue y verificar la entrega; cambiar el contenido público o `.env.example` no actualiza Vercel.
+
+### Reserva de llamadas
+
+La alternativa al formulario está integrada en Contacto y al final de los cinco casos: **Primera conversación · BPM Tech**, una videollamada de **30 minutos** por Cal Video. La URL es `https://cal.com/bpmtechstudio/30min`; el enlace, duración y textos comunes se centralizan en `src/data/booking.ts`.
+
+La agenda se carga solo al solicitarla. El componente `BookingLink` abre un diálogo dentro de la web y conserva un enlace directo a Cal.com para continuar allí. La disponibilidad, los datos solicitados y las notificaciones de la reserva se gestionan en Cal.com. Revisar allí cualquier cambio de duración o URL y mantenerlo sincronizado con `booking.ts`.
+
+La integración está preparada para revisión local; estos cambios no actualizan el despliegue remoto. Las pruebas de apertura de agenda no crean citas ni acreditan entrega de sus notificaciones. La política de privacidad describe el proveedor de reserva y videollamada por separado de la medición propia de la web.
+
+### Formulario
 
 El formulario permanece deshabilitado antes de hidratarse y explica el requisito si JavaScript está desactivado. Tiene un destino y método POST defensivos; los datos personales no se envían en la URL. Nombre, email y mensaje son obligatorios; empresa, teléfono y tipo de necesidad son opcionales. Los errores identifican el campo y conservan el borrador mientras la página siga abierta. La política de privacidad se abre sin sustituir la página del formulario.
 
@@ -101,7 +116,7 @@ Los contadores están en memoria de cada proceso. No constituyen protección dis
 
 ## Medición y operación
 
-La aplicación registra eventos en los logs del alojamiento existente. No incorpora SDK de analítica, cookies, almacenamiento local, identificadores de visitante ni un proveedor nuevo.
+La medición propia registra eventos en los logs del alojamiento existente. No incorpora SDK de analítica, cookies, almacenamiento local ni identificadores de visitante. La agenda de Cal.com es un servicio externo que se carga al solicitar una reserva y tiene su propia política de privacidad.
 
 | Registro | Contenido y lectura |
 |---|---|
@@ -109,6 +124,8 @@ La aplicación registra eventos en los logs del alojamiento existente. No incorp
 | `stream: "bpm-contact"` | `event: "provider_accepted"`, identificador técnico de aceptación, necesidad y proyecto permitidos. Contar identificadores de proveedor distintos para evitar duplicar reintentos. |
 
 En los CTA del hero, `destination: "contact"` o `"projects"` distingue la apertura del contacto de la navegación a la galería, aunque ambos compartan `location: "hero"`.
+
+En Contacto y los casos, `cta_click` con `destination: "booking"` registra la apertura de la agenda y conserva únicamente la ubicación y el identificador de caso permitido, cuando existe. **Un clic de reserva no acredita una cita confirmada.** La web no recibe ni registra los campos completados en Cal.com; las reservas efectivas se revisan en la agenda y se siguen por separado en el registro comercial.
 
 Los mensajes de log propios no incluyen nombre, email, empresa, teléfono, texto de la consulta, URL completa ni IP. El proveedor de alojamiento puede conservar otros registros técnicos de las solicitudes según su configuración. La API de eventos utiliza temporalmente la IP para limitar solicitudes y no la añade al evento escrito.
 
