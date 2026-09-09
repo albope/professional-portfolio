@@ -11,7 +11,7 @@
     --ink-2: #18181c;
     --ink-soft: #3d3c35;
     --ink-mute: #5a594f;
-    --ink-faint: #8a887d;
+    --ink-faint: #6a685d;
     --cobalt: #2743e0;
     --cobalt-deep: #1e35b8;
     --cobalt-bright: #6b83ff; /* acento SOLO sobre tinta */
@@ -27,6 +27,14 @@
   @media (prefers-reduced-motion: reduce) {
     html {
       scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
     }
   }
 
@@ -59,7 +67,7 @@
 @layer components {
   /* Microetiqueta técnica: Fragment Mono, mayúsculas, tracking amplio */
   .label-mono {
-    @apply font-mono text-[11px] uppercase tracking-[0.18em];
+    @apply font-mono text-xs uppercase tracking-[0.14em];
   }
 
   /* Titular display: Archivo Black, caja alta */
@@ -83,30 +91,5 @@
   .link-underline:hover,
   .link-underline:focus-visible {
     background-size: 100% 1px;
-  }
-}
-
-@layer utilities {
-  /* Pulso cobalto que recorre la línea del diagrama del hero (única
-     animación en bucle de la web, y única forma redonda de la marca) */
-  @keyframes travel-x {
-    0% {
-      left: 0;
-      opacity: 0;
-    }
-    10% {
-      opacity: 1;
-    }
-    90% {
-      opacity: 1;
-    }
-    100% {
-      left: calc(100% - 7px);
-      opacity: 0;
-    }
-  }
-
-  .animate-travel-x {
-    animation: travel-x 5s cubic-bezier(0.45, 0, 0.55, 1) infinite;
   }
 }

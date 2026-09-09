@@ -3,89 +3,66 @@ import { nav, ctaHref, site } from "@/data/site";
 import { Wordmark } from "@/components/ui/Wordmark";
 
 const columns = [
-  {
-    label: "Índice",
-    links: nav.map((item) => ({ ...item, external: false })),
-  },
-  {
-    label: "Contacto",
-    links: [{ label: "Formulario", href: ctaHref, external: false }],
-  },
+  { label: "Índice", links: nav },
+  { label: "Contacto", links: [{ label: "Hablemos", href: ctaHref }] },
   {
     label: "Legal",
     links: [
-      { label: "Aviso legal", href: "/aviso-legal", external: false },
-      { label: "Privacidad", href: "/privacidad", external: false },
+      { label: "Aviso legal", href: "/aviso-legal" },
+      { label: "Privacidad", href: "/privacidad" },
     ],
   },
 ];
 
-/** Pie web (opción 1b del handoff): papel, marca + tres columnas + masthead. */
 export function Footer() {
   return (
     <footer className="border-t border-line bg-paper">
-      <div className="container-editorial flex flex-col gap-11 pb-[34px] pt-14">
-        <div className="flex flex-col justify-between gap-12 lg:flex-row lg:items-start lg:gap-[60px]">
-          <div className="flex max-w-[320px] flex-col gap-3.5">
-            <Link href="/" aria-label="BPM Tech, inicio">
+      <div className="container-editorial flex flex-col gap-10 pb-7 pt-12">
+        <div className="flex flex-col justify-between gap-9 lg:flex-row lg:items-start lg:gap-16">
+          <div className="flex max-w-[330px] flex-col gap-3">
+            <Link href="/" aria-label="BPMTECH, inicio" className="inline-flex min-h-11 items-center self-start">
               <Wordmark size={17} />
             </Link>
             <p className="text-sm leading-relaxed text-ink-mute">
-              Aplicaciones, webs y soluciones digitales a medida.
+              Software y webs que encajan en tu negocio. Gestión, automatización
+              y desarrollo web a medida.
             </p>
           </div>
 
-          <div className="flex flex-wrap gap-x-14 gap-y-8">
+          <div className="grid grid-cols-2 gap-x-8 gap-y-7 sm:grid-cols-3 lg:gap-x-12">
             {columns.map((column) => (
-              <nav key={column.label} aria-label={column.label} className="flex flex-col gap-[11px]">
-                <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-ink-faint">
-                  {column.label}
-                </span>
-                {column.links.map((link) =>
-                  link.external ? (
-                    <a
-                      key={link.label}
-                      href={link.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-sm text-ink transition-colors duration-300 hover:text-cobalt"
-                    >
-                      {link.label}
-                    </a>
-                  ) : (
-                    <Link
-                      key={link.label}
-                      href={link.href}
-                      className="text-sm text-ink transition-colors duration-300 hover:text-cobalt"
-                    >
-                      {link.label}
-                    </Link>
-                  )
-                )}
+              <nav key={column.label} aria-label={column.label} className="flex flex-col">
+                <span className="label-mono mb-2 text-ink-mute">{column.label}</span>
+                {column.links.map((link) => (
+                  <Link
+                    key={link.label}
+                    href={link.href}
+                    data-track={link.href === ctaHref ? "cta_click" : undefined}
+                    data-track-location={link.href === ctaHref ? "footer" : undefined}
+                    className="inline-flex min-h-11 items-center text-sm text-ink transition-colors hover:text-cobalt"
+                  >
+                    {link.label}
+                  </Link>
+                ))}
               </nav>
             ))}
           </div>
         </div>
 
-        <div className="flex items-center justify-between gap-6 border-t border-[#D8D6CC] pt-5">
-          <span className="font-mono text-[11px] text-ink-faint">
+        <div className="flex flex-wrap items-center justify-between gap-4 border-t border-line pt-5">
+          <span className="font-mono text-xs text-ink-mute">
             © {new Date().getFullYear()} BPM Tech
           </span>
-          <span className="flex items-center gap-5">
-            <span className="font-mono text-[11px] text-ink-faint">{site.location}</span>
+          <div className="flex items-center gap-4">
+            <span className="font-mono text-xs text-ink-mute">{site.location}</span>
             <a
               href="#top"
               aria-label="Volver arriba"
-              className="group flex h-9 w-9 items-center justify-center border border-line text-ink transition-colors duration-300 ease-editorial hover:border-ink active:translate-y-[1px]"
+              className="group flex h-11 w-11 items-center justify-center border border-line text-ink transition-colors hover:border-ink"
             >
-              <span
-                aria-hidden
-                className="font-mono text-[13px] transition-transform duration-300 ease-editorial group-hover:-translate-y-0.5"
-              >
-                ↑
-              </span>
+              <span aria-hidden className="font-mono text-base transition-transform group-hover:-translate-y-0.5 motion-reduce:transform-none">↑</span>
             </a>
-          </span>
+          </div>
         </div>
       </div>
     </footer>

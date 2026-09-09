@@ -1,132 +1,154 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { nav, ctaHref, ctaLabel } from "@/data/site";
 import { Wordmark } from "@/components/ui/Wordmark";
-import { cn } from "@/lib/utils";
 
-/** Cabecera web (opción 1b del handoff): 78px sobre tinta sólida, sin hairline. */
+/** Native modal dialog supplies focus containment and makes the background inert. */
 export function Header() {
   const [open, setOpen] = useState(false);
-  const reduceMotion = useReducedMotion();
+  const dialogRef = useRef<HTMLDialogElement>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  const closeRef = useRef<HTMLButtonElement>(null);
+  const brandRef = useRef<HTMLAnchorElement>(null);
 
   useEffect(() => {
-    document.documentElement.style.overflow = open ? "hidden" : "";
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setOpen(false);
-    };
-    window.addEventListener("keydown", onKey);
+    if (!open) return;
+    const previousOverflow = document.documentElement.style.overflow;
+    document.documentElement.style.overflow = "hidden";
     return () => {
-      document.documentElement.style.overflow = "";
-      window.removeEventListener("keydown", onKey);
+      document.documentElement.style.overflow = previousOverflow;
     };
   }, [open]);
 
+  useEffect(() => {
+    const desktop = window.matchMedia("(min-width: 1024px)");
+    const closeOnDesktop = () => {
+      if (desktop.matches) dialogRef.current?.close();
+    };
+    desktop.addEventListener("change", closeOnDesktop);
+    return () => desktop.removeEventListener("change", closeOnDesktop);
+  }, []);
+
+  function openMenu() {
+    dialogRef.current?.showModal();
+    setOpen(true);
+    closeRef.current?.focus();
+  }
+
+  function closeMenu() {
+    dialogRef.current?.close();
+  }
+
+  function restoreFocus() {
+    setOpen(false);
+    if (window.matchMedia("(min-width: 1024px)").matches) {
+      brandRef.current?.focus();
+    } else {
+      triggerRef.current?.focus();
+    }
+  }
+
   return (
     <>
-    <header className="fixed inset-x-0 top-0 z-50 bg-ink">
-      <div className="container-editorial flex h-16 items-center justify-between lg:h-[78px]">
-        <Link href="/" aria-label="BPM Tech, inicio" onClick={() => setOpen(false)}>
-          <Wordmark tone="paper" size={16} className="lg:hidden" />
-          <Wordmark tone="paper" size={19} className="hidden lg:inline-flex" />
-        </Link>
-
-        {/* Navegación desktop */}
-        <nav aria-label="Principal" className="hidden items-center gap-8 lg:flex">
-          {nav.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className="text-sm text-[#D8D6CC] transition-colors duration-300 hover:text-paper"
-            >
-              {item.label}
-            </Link>
-          ))}
-          <Link
-            href={ctaHref}
-            className="bg-paper px-5 py-[11px] text-[13px] font-semibold text-ink transition-colors duration-300 ease-editorial hover:bg-cobalt hover:text-paper active:translate-y-[1px]"
-          >
-            {ctaLabel}
+      <header className="fixed inset-x-0 top-0 z-50 bg-ink">
+        <div className="container-editorial flex h-16 items-center justify-between lg:h-[78px]">
+          <Link ref={brandRef} href="/" aria-label="BPMTECH, inicio" className="inline-flex min-h-11 items-center">
+            <Wordmark tone="paper" size={16} className="lg:hidden" />
+            <Wordmark tone="paper" size={19} className="hidden lg:inline-flex" />
           </Link>
-        </nav>
 
-        {/* Botón menú móvil */}
-        <button
-          type="button"
-          className="relative -mr-2 flex h-11 w-11 items-center justify-center lg:hidden"
-          aria-expanded={open}
-          aria-controls="menu-movil"
-          aria-label={open ? "Cerrar menú" : "Abrir menú"}
-          onClick={() => setOpen((v) => !v)}
-        >
-          <span
-            className={cn(
-              "absolute h-[1.5px] w-5 bg-paper transition-transform duration-300 ease-editorial",
-              open ? "rotate-45" : "-translate-y-[3.5px]"
-            )}
-          />
-          <span
-            className={cn(
-              "absolute h-[1.5px] w-5 bg-paper transition-transform duration-300 ease-editorial",
-              open ? "-rotate-45" : "translate-y-[3.5px]"
-            )}
-          />
-        </button>
-      </div>
-    </header>
-
-    {/* Menú móvil: overlay tinta a pantalla completa, fuera del <header> */}
-    <AnimatePresence>
-      {open && (
-        <motion.div
-          id="menu-movil"
-          initial={reduceMotion ? { opacity: 1 } : { opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={reduceMotion ? { opacity: 1 } : { opacity: 0 }}
-          transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
-          className="fixed inset-x-0 bottom-0 top-16 z-40 flex flex-col overflow-y-auto bg-ink px-5 pb-8 pt-10 lg:hidden"
-        >
-          <nav aria-label="Principal móvil" className="flex flex-1 flex-col">
-            {nav.map((item, i) => (
-              <motion.div
-                key={item.href}
-                initial={reduceMotion ? undefined : { opacity: 0, y: 18 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.05 + i * 0.06, duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-              >
-                <Link
-                  href={item.href}
-                  onClick={() => setOpen(false)}
-                  className="display flex items-baseline justify-between border-b border-line-dark py-3.5 text-[34px] text-paper"
-                >
-                  {item.label}
-                  <span className="font-mono text-[11px] normal-case tracking-normal text-paper/40">
-                    0{i + 1}
-                  </span>
-                </Link>
-              </motion.div>
+          <nav aria-label="Principal" className="hidden items-center gap-7 lg:flex">
+            {nav.map((item) => (
+              <Link key={item.href} href={item.href} className="inline-flex min-h-11 items-center text-sm text-paper/80 transition-colors hover:text-paper">
+                {item.label}
+              </Link>
             ))}
-
-            <motion.div
-              initial={reduceMotion ? undefined : { opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.35, duration: 0.4 }}
-              className="mt-auto pt-10"
+            <Link
+              href={ctaHref}
+              data-track="cta_click"
+              data-track-location="header"
+              className="inline-flex min-h-11 items-center bg-paper px-5 text-sm font-semibold text-ink transition-colors hover:bg-cobalt hover:text-paper"
             >
+              Hablemos <span aria-hidden className="ml-3">↗</span>
+            </Link>
+          </nav>
+
+          <button
+            ref={triggerRef}
+            type="button"
+            className="js-menu-trigger flex min-h-11 items-center gap-3 px-2 text-sm text-paper lg:hidden"
+            aria-expanded={open}
+            aria-controls="menu-movil"
+            aria-haspopup="dialog"
+            onClick={openMenu}
+          >
+            Menú
+            <span aria-hidden className="flex w-5 flex-col gap-1.5">
+              <span className="h-px w-full bg-paper" />
+              <span className="h-px w-full bg-paper" />
+            </span>
+          </button>
+        </div>
+
+        <noscript>
+          <style>{`.js-menu-trigger { display: none !important; } @media (max-width: 1023px) { main { padding-top: 44px; } main section[id] { scroll-margin-top: 128px; } }`}</style>
+          <nav aria-label="Principal móvil" className="flex gap-6 overflow-x-auto border-t border-line-dark px-5 lg:hidden">
+            {nav.map((item) => (
+              <a key={item.href} href={item.href} className="inline-flex min-h-11 shrink-0 items-center text-sm text-paper">{item.label}</a>
+            ))}
+            <a href={ctaHref} className="inline-flex min-h-11 shrink-0 items-center text-sm text-paper">Contacto</a>
+          </nav>
+        </noscript>
+      </header>
+
+      <dialog
+        ref={dialogRef}
+        id="menu-movil"
+        aria-labelledby="menu-movil-title"
+        onClose={restoreFocus}
+        className="fixed inset-0 m-0 h-dvh max-h-none w-full max-w-none overflow-y-auto border-0 bg-ink p-0 text-paper backdrop:bg-ink"
+      >
+        <div className="container-editorial flex min-h-full flex-col pb-8">
+          <div className="flex h-16 shrink-0 items-center justify-between">
+            <p id="menu-movil-title" className="label-mono text-paper/75">Navegación</p>
+            <button
+              ref={closeRef}
+              type="button"
+              onClick={closeMenu}
+              className="flex min-h-11 items-center gap-3 px-2 text-sm"
+            >
+              Cerrar <span aria-hidden className="text-2xl leading-none">×</span>
+            </button>
+          </div>
+
+          <nav aria-label="Principal móvil" className="flex flex-1 flex-col pt-8">
+            {nav.map((item, index) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                onClick={closeMenu}
+                className="display flex items-baseline justify-between gap-4 border-b border-line-dark py-5 text-[clamp(1.5rem,7vw,2.25rem)] text-paper"
+              >
+                {item.label}
+                <span aria-hidden className="font-mono text-xs font-normal tracking-normal text-paper/70">0{index + 1}</span>
+              </Link>
+            ))}
+            <div className="mt-auto pt-10">
               <Link
                 href={ctaHref}
-                onClick={() => setOpen(false)}
-                className="block bg-paper px-6 py-[17px] text-center text-[15px] font-semibold text-ink transition-colors duration-300 hover:bg-cobalt-bright active:translate-y-[1px]"
+                onClick={closeMenu}
+                data-track="cta_click"
+                data-track-location="header"
+                className="block bg-paper px-5 py-4 text-center text-[15px] font-semibold text-ink transition-colors hover:bg-cobalt-bright"
               >
                 {ctaLabel}
               </Link>
-            </motion.div>
+            </div>
           </nav>
-        </motion.div>
-      )}
-    </AnimatePresence>
+        </div>
+      </dialog>
     </>
   );
 }

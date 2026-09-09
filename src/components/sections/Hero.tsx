@@ -1,57 +1,40 @@
 import { Button } from "@/components/ui/Button";
-import { Reveal } from "@/components/ui/Reveal";
 import { SquareWord } from "@/components/ui/SquareWord";
-import { HeroDiagram } from "@/components/sections/HeroDiagram";
 import { ctaHref, ctaLabel } from "@/data/site";
 
 export function Hero() {
   return (
-    <section className="border-b border-line pt-32 lg:pt-[184px]">
-      <div className="container-editorial pb-14 lg:pb-[90px]">
-        <Reveal>
-          {/* Medido: a 11px la etiqueta completa ocupa 402px y parte la línea en
-              móvil. Baja a 10px como el diseño móvil del handoff y reserva
-              "· Valencia" para desktop, donde sobra sitio. En móvil la
-              ubicación sigue estando en el pie. */}
-          <p className="label-mono flex items-center gap-2.5 whitespace-nowrap text-[10px] tracking-[0.16em] text-ink-mute sm:gap-3 sm:text-[11px] sm:tracking-[0.18em]">
-            <span
-              className="inline-block h-1.5 w-1.5 shrink-0 bg-cobalt sm:h-[7px] sm:w-[7px]"
-              aria-hidden
-            />
-            <span>
-              Tecnología a medida para empresas
-              <span className="hidden sm:inline"> · Valencia</span>
-            </span>
+    <section className="border-b border-line pt-32 lg:pt-[156px]">
+      <div className="container-editorial pb-14 lg:pb-20">
+        <p className="label-mono flex items-center gap-3 text-ink-mute">
+          <span className="h-[7px] w-[7px] shrink-0 bg-cobalt" aria-hidden />
+          BPM Tech · Valencia y en remoto
+        </p>
+
+        <h1 className="display mt-7 max-w-[1120px] text-display-hero text-ink lg:mt-9">
+          Software y webs que encajan en tu <SquareWord word="negocio" />
+        </h1>
+
+        <div className="mt-7 grid items-end gap-x-16 gap-y-7 lg:mt-10 lg:grid-cols-[1.15fr_1fr]">
+          <p className="max-w-[610px] text-base leading-[1.65] text-ink-soft lg:text-lg">
+            Ayudamos a pymes a ordenar su gestión, conectar sus herramientas y
+            presentar mejor su negocio. Diseñamos y desarrollamos software y
+            webs a medida, desde la primera conversación hasta la puesta en marcha.
           </p>
-        </Reveal>
-
-        <Reveal delay={0.08}>
-          <h1 className="display mt-7 max-w-[1100px] text-display-hero text-ink lg:mt-10">
-            El software que te falta no se compra hecho. Se{" "}
-            <SquareWord word="construye" />
-          </h1>
-        </Reveal>
-
-        <Reveal delay={0.16}>
-          <p className="mt-6 max-w-[600px] text-[15px] leading-relaxed text-ink-mute lg:mt-9 lg:text-[19px]">
-            Aplicaciones a medida, webs con identidad propia, automatización e
-            inteligencia artificial aplicada a tu operativa. Te acompañamos
-            desde la idea hasta el producto funcionando.
+          <p className="max-w-[350px] text-sm leading-relaxed text-ink-mute lg:justify-self-end">
+            Puedes venir con una idea, una tarea que se repite o una web que
+            necesita mejorar. No hace falta tener un proyecto definido.
           </p>
-        </Reveal>
+        </div>
 
-        <Reveal delay={0.24} className="mt-8 flex flex-col gap-3 sm:flex-row sm:gap-4 lg:mt-11">
-          <Button href={ctaHref} className="justify-center">
+        <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:gap-4 lg:mt-9">
+          <Button href={ctaHref} trackLocation="hero">
             {ctaLabel}
           </Button>
-          <Button href="/#proyectos" variant="outline" className="justify-center">
-            Ver proyectos
+          <Button href="/#proyectos" variant="outline" trackLocation="hero" trackDestination="projects">
+            Ver proyectos reales
           </Button>
-        </Reveal>
-
-        <Reveal delay={0.32} className="mt-14 lg:mt-[110px]">
-          <HeroDiagram />
-        </Reveal>
+        </div>
       </div>
     </section>
   );

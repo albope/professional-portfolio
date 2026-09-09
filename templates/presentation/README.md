@@ -1,5 +1,12 @@
 # Sistema corporativo de presentaciones BPM Tech
 
+> **Ámbito de este documento:** biblioteca de presentaciones, independiente de
+> la web. La entrega y sus ejemplos conservan su fecha y contenido originales;
+> no acreditan el estado actual del sitio. Antes de reutilizarlos, contrastar
+> casos, afirmaciones, contacto y tokens con el
+> [contexto vigente de la web](../../docs/contexto-actual.md). La mejora web de
+> septiembre de 2026 no ha regenerado estos PPTX, PDF ni sus capturas.
+
 Biblioteca editorial 16:9 para propuestas, presentaciones de proyecto, demos, kick-offs, reuniones ejecutivas, arquitectura, casos de éxito y decks internos. Los contenidos, layouts, componentes y tokens están desacoplados para poder producir nuevos PPTX sin rediseñar cada página.
 
 ## Entregables principales

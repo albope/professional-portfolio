@@ -1,5 +1,12 @@
 # Piezas de marca
 
+Los HTML y PNG de esta carpeta son originales de marca con su propia versión.
+La web genera actualmente sus imágenes Open Graph desde `src/app/opengraph-image.tsx`
+y `src/app/proyectos/[slug]/opengraph-image.tsx`. El antiguo `og-image.html` y
+`public/og-1200x630.png` son referencias históricas, no las fuentes de los
+metadatos actuales. Antes de reutilizar una pieza, contrastar su copy y sus
+colores con el [contexto vigente](../docs/contexto-actual.md) y los tokens del código.
+
 Material gráfico que no forma parte de la web pero usa su misma identidad.
 Cada pieza se escribe en HTML y se exporta a PNG, así que se puede reeditar
 y regenerar sin herramientas de diseño.
@@ -7,7 +14,7 @@ y regenerar sin herramientas de diseño.
 | Fichero | Uso | Medidas |
 |---|---|---|
 | `twitter-header.html` | Portada de X / Twitter | 1500 × 500 |
-| `og-image.html` | Imagen al compartir la web (copia de `public/og-1200x630.png`) | 1200 × 630 |
+| `og-image.html` | Original histórico de la imagen para compartir | 1200 × 630 |
 | `avatar.html` | Foto de perfil de X y GitHub | 512 × 512 |
 
 El avatar va a sangre, sin círculo dibujado: X lo recorta en círculo y GitHub

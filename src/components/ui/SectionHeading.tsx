@@ -5,7 +5,7 @@ interface SectionHeadingProps {
   index: string;
   label: string;
   title: React.ReactNode;
-  /** Nota corta alineada a la derecha (solo desktop del diseño) */
+  /** Nota contextual visible en todos los tamaños. */
   note?: string;
   tone?: "ink" | "paper";
   className?: string;
@@ -28,7 +28,7 @@ export function SectionHeading({
         <p
           className={cn(
             "label-mono mb-6",
-            onPaper ? "text-ink-mute" : "text-paper/45"
+            onPaper ? "text-ink-mute" : "text-paper/70"
           )}
         >
           {index} — {label}
@@ -43,7 +43,7 @@ export function SectionHeading({
         </h2>
       </div>
       {note && (
-        <p className="max-w-[340px] text-[15px] leading-relaxed text-ink-faint">
+        <p className={cn("max-w-[400px] text-[15px] leading-relaxed", onPaper ? "text-ink-mute" : "text-paper/75")}>
           {note}
         </p>
       )}

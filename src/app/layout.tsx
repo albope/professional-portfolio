@@ -5,26 +5,15 @@ import SmoothScroll from "@/components/layout/SmoothScroll";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { site } from "@/data/site";
+import { Analytics } from "@/components/analytics/Analytics";
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: {
-    default: "BPM Tech · Tecnología a medida para empresas",
+    default: "BPM Tech · Software y webs a medida para pymes",
     template: "%s · BPM Tech",
   },
   description: site.description,
-  keywords: [
-    "software a medida",
-    "desarrollo de software",
-    "webs a medida",
-    "automatización de procesos",
-    "inteligencia artificial",
-    "integraciones",
-    "consultoría tecnológica",
-    "digitalización de pymes",
-    "desarrollo web Valencia",
-    "Valencia",
-  ],
   icons: {
     icon: [
       { url: "/favicon-32.png", sizes: "32x32", type: "image/png" },
@@ -36,25 +25,23 @@ export const metadata: Metadata = {
     type: "website",
     locale: "es_ES",
     siteName: site.name,
-    // El titular del hero ya se lee en la imagen, así que el título en
-    // negrita aporta la marca en vez de repetirlo.
-    title: "BPM Tech · Tecnología a medida para empresas",
+    title: "BPM Tech · Software y webs a medida para pymes",
     description: site.share,
     url: site.url,
     images: [
       {
-        url: "/og-1200x630.png",
+        url: "/opengraph-image",
         width: 1200,
         height: 630,
-        alt: "BPM Tech. El software que te falta no se compra hecho, se construye.",
+        alt: "BPM Tech. Software y webs que encajan en tu negocio.",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "BPM Tech · Tecnología a medida para empresas",
+    title: "BPM Tech · Software y webs a medida para pymes",
     description: site.share,
-    images: ["/og-1200x630.png"],
+    images: ["/opengraph-image"],
   },
   alternates: {
     canonical: "/",
@@ -65,11 +52,12 @@ const structuredData = {
   "@context": "https://schema.org",
   "@graph": [
     {
-      "@type": ["Organization", "ProfessionalService"],
+      "@type": "Organization",
       "@id": `${site.url}/#organization`,
       name: site.name,
       description: site.description,
       url: site.url,
+      logo: `${site.url}/avatar-512.png`,
       areaServed: { "@type": "Country", name: "España" },
     },
     {
@@ -95,10 +83,6 @@ export default function RootLayout({
       className={`${archivo.variable} ${archivoBlack.variable} ${fragmentMono.variable} font-sans`}
     >
       <body id="top" className="min-h-screen bg-paper text-ink">
-        {/* Sin JS, los wrappers de animación quedan en opacity 0: forzamos visibilidad */}
-        <noscript>
-          <style>{`[style*="opacity"] { opacity: 1 !important; transform: none !important; }`}</style>
-        </noscript>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
@@ -111,9 +95,10 @@ export default function RootLayout({
             Saltar al contenido
           </a>
           <Header />
-          <main id="contenido">{children}</main>
+          <main id="contenido" tabIndex={-1}>{children}</main>
           <Footer />
         </SmoothScroll>
+        <Analytics />
       </body>
     </html>
   );

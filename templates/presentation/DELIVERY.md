@@ -1,5 +1,11 @@
 # Entrega corporativa BPM Tech · 31 agosto 2026
 
+> Registro histórico de esta entrega de presentaciones. Las comprobaciones
+> enumeradas corresponden al 31 de agosto de 2026. No validan la versión actual
+> de la web ni implican que los archivos de presentación se hayan actualizado con
+> sus cambios posteriores. Consultar el [contexto vigente](../../docs/contexto-actual.md)
+> antes de reutilizar contenido o evidencia.
+
 ## Archivos finales
 
 - `output/Plantilla_Corporativa_BPM_Tech_2026.pptx` — catálogo editable de 21 layouts.

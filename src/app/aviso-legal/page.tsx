@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import Link from "next/link";
+import { legal } from "@/data/legal";
 
 export const metadata: Metadata = {
   title: "Aviso legal",
@@ -18,15 +20,14 @@ export default function AvisoLegalPage() {
       <div className="mt-10 max-w-2xl space-y-6 text-[15px] leading-relaxed text-ink/70">
         <h2 className={h2}>Identificación del titular</h2>
         <p>
-          BPM Tech es una marca comercial de BORT PEREZ MULTI GESTION SOCIEDAD
-          LIMITADA, con NIF B98629470 y domicilio en Avenida Carlos Marx, 1, 12
-          E, 46920 Mislata, Valencia, España. Sociedad inscrita en el Registro
-          Mercantil de Valencia, tomo 9786, libro 7068, folio 52, sección 8,
-          hoja V-159244.
+          BPM Tech es una marca comercial de {legal.name}, con NIF {legal.taxId}
+          {" "}y domicilio en {legal.address}. Sociedad inscrita en el {legal.registry}.
         </p>
         <p>
-          Puedes contactar con el titular a través del formulario de contacto de
-          esta web.
+          Para consultas legales puedes escribir a{" "}
+          <a className="underline underline-offset-4" href={`mailto:${legal.email}`}>{legal.email}</a>.
+          Para hablar de un proyecto, utiliza el{" "}
+          <Link className="underline underline-offset-4" href="/#contacto">formulario de contacto</Link>.
         </p>
 
         <h2 className={h2}>Objeto</h2>

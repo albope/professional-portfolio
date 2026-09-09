@@ -1,5 +1,12 @@
 # Tokens corporativos de presentación
 
+> Estos valores describen la versión de las plantillas de presentación, no los
+> tokens actuales del sitio. La web cambió `ink-faint` a `#6A685D` el 9 de
+> septiembre de 2026 para mejorar el contraste. Los valores web canónicos están
+> en `src/app/globals.css` y `tailwind.config.ts`; véase el
+> [contexto vigente](../../../docs/contexto-actual.md). Esta nota no regenera las
+> presentaciones ni acredita su contraste con el nuevo color.
+
 Fuente de verdad: `Identidad visual pending respuestas.pdf`. La web se utilizó como comprobación de continuidad y la propuesta FELT únicamente como referencia de nivel y estructura.
 
 ## Color

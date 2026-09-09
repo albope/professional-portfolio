@@ -1,5 +1,14 @@
 # Prompt para Claude Design — Identidad + rediseño web de BPM Tech
 
+> **Referencia histórica del encargo inicial.** No es un prompt vigente para
+> volver a diseñar o modificar la web. Desde el 9 de septiembre de 2026, la
+> identidad, el recorrido comercial, los cuatro proyectos reales, la
+> accesibilidad y la separación entre contacto comercial y legal se describen
+> en [contexto-actual.md](contexto-actual.md) y en el [README](../README.md).
+> Las indicaciones posteriores sobre tipografías provisionales, conservación de
+> conceptos, ocultación de todo email o secciones obligatorias han quedado
+> superadas. Se conserva el texto original para consultar la evolución del diseño.
+
 > Copiar desde aquí hacia abajo y pegarlo en Claude Design, enlazando el repositorio
 > https://github.com/albope/professional-portfolio
 

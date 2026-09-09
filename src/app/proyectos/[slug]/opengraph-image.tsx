@@ -1,0 +1,13 @@
+import { getProject } from "@/data/projects";
+import { brandImage } from "@/lib/og";
+
+export const alt = "Proyecto de BPM Tech";
+export const size = { width: 1200, height: 630 };
+export const contentType = "image/png";
+
+export default async function Image({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const project = getProject(slug);
+  if (!project) return new Response(null, { status: 404 });
+  return brandImage(project.title, project.credit ? "Experiencia técnica · Proyecto real" : "Proyecto real · BPM Tech");
+}

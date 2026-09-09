@@ -20,7 +20,7 @@ const config: Config = {
           2: "rgb(24 24 28 / <alpha-value>)",
           soft: "rgb(61 60 53 / <alpha-value>)",
           mute: "rgb(90 89 79 / <alpha-value>)",
-          faint: "rgb(138 136 125 / <alpha-value>)",
+          faint: "rgb(106 104 93 / <alpha-value>)",
         },
         cobalt: {
           DEFAULT: "rgb(39 67 224 / <alpha-value>)",
