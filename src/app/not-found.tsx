@@ -3,7 +3,7 @@ import { SquareWord } from "@/components/ui/SquareWord";
 
 export default function NotFound() {
   return (
-    <div className="container-editorial flex min-h-[75vh] flex-col items-start justify-center pt-24">
+    <div className="container-editorial flex min-h-[70vh] flex-col items-start justify-center py-16">
       <p className="label-mono text-ink-mute">Error 404</p>
       <h1 className="display mt-7 max-w-3xl text-display-case text-ink">
         No encontramos esta <SquareWord word="página" />

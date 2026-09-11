@@ -14,7 +14,7 @@ const link = "underline underline-offset-4 hover:text-cobalt";
 
 export default function PrivacidadPage() {
   return (
-    <div className="container-editorial pb-24 pt-32 md:pt-40">
+    <div className="container-editorial pb-20 pt-12 lg:pb-24 lg:pt-16">
       <p className="label-mono mb-6 text-ink-mute">Legal</p>
       <h1 className="display text-display-sec text-ink">Política de privacidad</h1>
       <div className="mt-10 max-w-2xl space-y-6 text-[15px] leading-relaxed text-ink-soft">

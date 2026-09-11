@@ -11,9 +11,9 @@ const padel = getProject("plataforma-clubes-padel")!;
 export function Hero() {
   return (
     <section aria-label="Presentación">
-      <div className="grid items-start lg:grid-cols-[464px_1fr] lg:gap-x-6 lg:pl-10 lg:pt-14 wide:grid-cols-[648px_1fr] wide:pl-[60px]">
+      <div className="grid items-start lg:grid-cols-[464fr_496fr] lg:gap-x-6 lg:pl-10 lg:pt-14 wide:grid-cols-[648px_1fr] wide:pl-[60px]">
         <div className="px-4 pt-7 md:px-10 lg:px-0 lg:pt-6 wide:pt-10">
-          <h1 className="font-display text-[40px] uppercase leading-[0.96] tracking-[-0.01em] text-ink lg:text-[46px] wide:text-[60px]">
+          <h1 className="font-display text-[40px] uppercase leading-[0.96] tracking-[-0.01em] text-ink lg:text-[clamp(2.5rem,4.15vw,3.75rem)] wide:text-[60px]">
             Software y
             <br className="lg:hidden" /> webs
             <br className="hidden lg:inline" /> que
@@ -59,7 +59,7 @@ export function Hero() {
             compita con la imagen. */}
         <div
           data-tono="oscuro"
-          className="relative hidden h-[520px] overflow-hidden bg-escena-padel lg:block wide:h-[660px]"
+          className="relative hidden overflow-hidden bg-escena-padel lg:block lg:aspect-[708/660]"
         >
           <p className="absolute left-6 top-5 font-mono text-[11px] uppercase tracking-[0.1em] text-escena-padel-texto wide:left-7 wide:top-6 wide:text-xs">
             {padel.sceneLabel}
@@ -77,17 +77,17 @@ export function Hero() {
           <Image
             {...homeShots.padelAcademia}
             alt={homeShots.padelAcademia.alt}
-            sizes="(min-width: 1440px) 600px, 440px"
-            className="absolute right-0 top-16 h-auto w-[440px] border border-escena-padel-borde/55 border-r-0 wide:top-[84px] wide:w-[600px]"
+            sizes="(min-width: 1440px) 600px, 45vw"
+            className="absolute right-0 top-[12.73%] h-auto w-[84.75%] border border-escena-padel-borde/55 border-r-0"
           />
           <Image
             {...homeShots.padelPortal}
             alt={homeShots.padelPortal.alt}
-            sizes="(min-width: 1440px) 196px, 150px"
-            className="absolute left-6 top-[140px] z-20 h-auto w-[150px] border border-escena-padel-borde/55 wide:left-7 wide:top-[176px] wide:w-[196px]"
+            sizes="(min-width: 1440px) 196px, 15vw"
+            className="absolute left-[3.955%] top-[26.67%] z-20 h-auto w-[27.68%] border border-escena-padel-borde/55"
           />
 
-          <div className="absolute left-[198px] right-6 top-[340px] wide:left-64 wide:right-7 wide:top-[452px]">
+          <div className="absolute left-[36.16%] right-[3.955%] top-[68.48%]">
             <h2 className="text-[17px] font-semibold leading-[1.2] tracking-[-0.01em] text-escena-padel-texto wide:text-xl">
               {padel.title}
             </h2>

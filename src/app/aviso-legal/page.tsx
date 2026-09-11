@@ -13,7 +13,7 @@ const h2 = "pt-4 text-xl font-semibold text-ink";
 
 export default function AvisoLegalPage() {
   return (
-    <div className="container-editorial pb-24 pt-32 md:pt-40">
+    <div className="container-editorial pb-20 pt-12 lg:pb-24 lg:pt-16">
       <p className="label-mono mb-6 text-ink-mute">Legal</p>
       <h1 className="display text-display-sec text-ink">Aviso legal</h1>
 
