@@ -7,6 +7,11 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      /* 1440 es el lienzo de referencia del diseño: por encima cambian los
+         márgenes (40 → 60) y la retícula del hero. */
+      screens: {
+        wide: "1440px",
+      },
       /* Colores en formato rgb(... / <alpha-value>) para que funcionen los
          modificadores de opacidad (text-paper/60, bg-cobalt-bright/35...).
          Valores canónicos documentados en globals.css. */
@@ -29,9 +34,30 @@ const config: Config = {
         },
         line: {
           DEFAULT: "rgb(226 224 216 / <alpha-value>)",
+          2: "rgb(216 214 204 / <alpha-value>)",
           dark: "rgba(247, 246, 242, 0.12)",
         },
-        error: "rgb(212 103 74 / <alpha-value>)",
+        /* Borde de las capturas apoyadas sobre papel */
+        shot: "rgb(210 210 194 / <alpha-value>)",
+        error: {
+          DEFAULT: "rgb(212 103 74 / <alpha-value>)",
+          soft: "rgb(229 139 115 / <alpha-value>)",
+        },
+        /* Color propio de cada producto: solo dentro de su escenario */
+        escena: {
+          padel: "rgb(14 92 63 / <alpha-value>)",
+          "padel-borde": "rgb(11 36 26 / <alpha-value>)",
+          "padel-texto": "rgb(246 243 237 / <alpha-value>)",
+          wms: "rgb(10 12 24 / <alpha-value>)",
+          "wms-borde": "rgb(38 43 74 / <alpha-value>)",
+          "wms-texto": "rgb(163 168 199 / <alpha-value>)",
+          evento: "rgb(233 233 225 / <alpha-value>)",
+          "evento-texto": "rgb(88 3 1 / <alpha-value>)",
+          radio: "rgb(0 77 152 / <alpha-value>)",
+          "radio-texto": "rgb(250 250 248 / <alpha-value>)",
+          parrilla: "rgb(246 243 237 / <alpha-value>)",
+          "parrilla-borde": "rgb(221 215 204 / <alpha-value>)",
+        },
       },
       fontFamily: {
         sans: ["var(--font-archivo)", "system-ui", "sans-serif"],

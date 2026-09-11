@@ -16,19 +16,22 @@
     --cobalt-deep: #1e35b8;
     --cobalt-bright: #6b83ff; /* acento SOLO sobre tinta */
     --line: #e2e0d8;
+    --line-2: #d8d6cc; /* líneas sobre papel 2 */
     --line-dark: rgba(247, 246, 242, 0.12);
+    --shot: #d2d2c2; /* borde de capturas sobre papel */
     --error: #d4674a;
-  }
+    --error-soft: #e58b73;
 
-  html {
-    scroll-behavior: smooth;
+    /* Color de cada producto: solo vive dentro de su escenario.
+       No forma parte de la paleta BPM. */
+    --escena-padel: #0e5c3f;
+    --escena-wms: #0a0c18;
+    --escena-evento: #e9e9e1;
+    --escena-radio: #004d98;
+    --escena-parrilla: #f6f3ed;
   }
 
   @media (prefers-reduced-motion: reduce) {
-    html {
-      scroll-behavior: auto;
-    }
-
     *,
     *::before,
     *::after {
@@ -53,8 +56,9 @@
     outline-offset: 3px;
   }
 
-  /* Sobre secciones tinta, el foco usa el cobalto claro (contraste AA) */
-  .bg-ink :focus-visible {
+  /* Sobre tinta y sobre los escenarios oscuros, el foco usa el cobalto claro */
+  .bg-ink :focus-visible,
+  [data-tono="oscuro"] :focus-visible {
     outline-color: var(--cobalt-bright);
   }
 
@@ -76,8 +80,9 @@
     text-wrap: balance;
   }
 
+  /* Márgenes del lienzo: 16 móvil · 40 intermedio · 60 a partir de 1440 */
   .container-editorial {
-    @apply mx-auto w-full max-w-[1320px] px-5 sm:px-8 lg:px-[60px];
+    @apply mx-auto w-full max-w-[1440px] px-4 md:px-10 wide:px-[60px];
   }
 
   .link-underline {
@@ -91,5 +96,67 @@
   .link-underline:hover,
   .link-underline:focus-visible {
     background-size: 100% 1px;
+  }
+}
+
+@layer utilities {
+  /* Única animación continua de la web: la última palabra del titular del
+     hero recorre los sectores atendidos. Cinco capas superpuestas, 12,5 s en
+     bucle y 2,5 s de retardo entre ellas. */
+  @keyframes bpm-palabra {
+    0% {
+      opacity: 0;
+      transform: translateY(0.3em);
+    }
+    5% {
+      opacity: 1;
+      transform: none;
+    }
+    19% {
+      opacity: 1;
+      transform: none;
+    }
+    24% {
+      opacity: 0;
+      transform: translateY(-0.3em);
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(-0.3em);
+    }
+  }
+
+  [data-palabra] {
+    grid-area: 1 / 1;
+    white-space: nowrap;
+    animation: bpm-palabra 12.5s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+  }
+
+  [data-palabra="2"] {
+    opacity: 0;
+    animation-delay: 2.5s;
+  }
+  [data-palabra="3"] {
+    opacity: 0;
+    animation-delay: 5s;
+  }
+  [data-palabra="4"] {
+    opacity: 0;
+    animation-delay: 7.5s;
+  }
+  [data-palabra="5"] {
+    opacity: 0;
+    animation-delay: 10s;
+  }
+
+  /* Con movimiento reducido el titular se queda en la primera palabra. */
+  @media (prefers-reduced-motion: reduce) {
+    [data-palabra] {
+      animation: none !important;
+      opacity: 0 !important;
+    }
+    [data-palabra="1"] {
+      opacity: 1 !important;
+    }
   }
 }

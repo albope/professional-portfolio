@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { archivo, archivoBlack, fragmentMono } from "@/lib/fonts";
-import SmoothScroll from "@/components/layout/SmoothScroll";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { site } from "@/data/site";
@@ -87,17 +86,15 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
         />
-        <SmoothScroll>
-          <a
-            href="#contenido"
-            className="sr-only z-[100] focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:bg-ink focus:px-4 focus:py-2 focus:text-paper"
-          >
-            Saltar al contenido
-          </a>
-          <Header />
-          <main id="contenido" tabIndex={-1}>{children}</main>
-          <Footer />
-        </SmoothScroll>
+        <a
+          href="#contenido"
+          className="sr-only z-[100] focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:bg-ink focus:px-4 focus:py-2 focus:text-paper"
+        >
+          Saltar al contenido
+        </a>
+        <Header />
+        <main id="contenido" tabIndex={-1}>{children}</main>
+        <Footer />
         <Analytics />
       </body>
     </html>

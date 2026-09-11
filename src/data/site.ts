@@ -13,11 +13,12 @@ export const site = {
   location: "Valencia, España",
 } as const;
 
+/** El trabajo va primero: Proyectos abre la navegación y la portada. */
 export const nav = [
-  { label: "Servicios", href: "/#servicios" },
   { label: "Proyectos", href: "/#proyectos" },
+  { label: "Servicios", href: "/#servicios" },
   { label: "Método", href: "/#metodo" },
-  { label: "Sobre BPM Tech", href: "/#nosotros" },
+  { label: "Sobre BPM Tech", href: "/#sobre" },
 ] as const;
 
 export const ctaLabel = "Cuéntanos qué necesitas resolver";
