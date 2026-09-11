@@ -13,10 +13,10 @@ import {
 } from "@/lib/contact";
 
 type Status = "idle" | "sending" | "success" | "error";
-const fieldBase = "w-full bg-transparent px-4 py-3.5 text-[15px] text-paper transition-colors duration-300 focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-cobalt-bright";
-const fieldOk = "border border-paper/40 focus:border-cobalt-bright";
+const fieldBase = "w-full min-h-12 bg-transparent px-4 py-3.5 text-base leading-[1.5] text-paper transition-colors duration-300 ease-editorial focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-cobalt-bright disabled:text-paper/35 sm:min-h-[52px] lg:min-h-12 lg:text-[15px]";
+const fieldOk = "border border-paper/40 focus:border-cobalt-bright disabled:border-paper/20";
 const fieldBad = "border border-error focus:border-error";
-const labelClasses = "font-mono text-[12px] uppercase tracking-[0.12em] text-paper/75";
+const labelClasses = "font-mono text-[11px] uppercase tracking-[0.12em] text-paper/78 [fieldset:disabled_&]:text-paper/50 lg:text-xs";
 const fields: ContactField[] = ["nombre", "empresa", "email", "telefono", "mensaje"];
 const subscribe = () => () => {};
 const noContext: ContactContext = { necesidad: "", proyecto: "" };
@@ -66,7 +66,7 @@ function ContactFormContent({ context, forceDisabled = false }: { context: Conta
   }
 
   function fieldError(field: ContactField) {
-    return errors[field] ? <span id={`contact-${field}-error`} className="text-sm text-error">{errors[field]}</span> : null;
+    return errors[field] ? <span id={`contact-${field}-error`} className="text-sm text-error-soft">{errors[field]}</span> : null;
   }
 
   function showError(message: string, code: AnalyticsProperties["code"]) {
@@ -152,61 +152,67 @@ function ContactFormContent({ context, forceDisabled = false }: { context: Conta
 
   if (status === "success") {
     return (
-      <div ref={successRef} tabIndex={-1} role="status" className="lg:pt-2 focus:outline focus:outline-2 focus:outline-offset-8 focus:outline-cobalt-bright">
-        <span className="mb-7 flex h-11 w-11 items-center justify-center border border-cobalt-bright">
+      <div ref={successRef} tabIndex={-1} role="status" className="focus:outline focus:outline-2 focus:outline-offset-4 focus:outline-cobalt-bright lg:pt-2">
+        <span className="flex h-11 w-11 items-center justify-center border border-cobalt-bright">
           <Check className="h-5 w-5 text-cobalt-bright" strokeWidth={1.5} strokeLinecap="square" aria-hidden />
         </span>
-        <h3 className="display text-[28px] text-paper lg:text-[34px]">Mensaje <SquareWord word="enviado" tone="dark" /></h3>
-        <p className="mt-5 max-w-md text-[15px] leading-[1.65] text-paper/75">
-          Gracias por contarnos qué necesitas. Tu consulta se ha enviado.
-          El siguiente paso es revisarla y responderte al email que has indicado.
+        <h3 className="mt-6 font-display text-[26px] uppercase leading-none tracking-[-0.01em] text-paper lg:text-[30px]">
+          Mensaje <SquareWord word="enviado" tone="dark" />
+        </h3>
+        <p className="mt-4 max-w-[520px] text-[15px] leading-[1.6] text-paper/78">
+          Gracias por contarnos qué necesitas. El siguiente paso es revisarlo y responderte al
+          email que has indicado.
         </p>
-        <Link href="/" className="mt-8 inline-block border border-paper/40 px-6 py-[13px] text-sm font-semibold text-paper transition-colors hover:border-cobalt-bright focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cobalt-bright">Volver a la portada</Link>
+        <Link href="/" className="mt-6 inline-flex min-h-12 items-center border border-paper/45 px-[22px] text-sm font-semibold text-paper transition-colors duration-300 ease-editorial hover:border-cobalt-bright hover:text-cobalt-bright focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cobalt-bright">
+          Volver a la portada
+        </Link>
       </div>
     );
   }
 
   return (
-    <form action="/api/contact" method="post" onSubmit={handleSubmit} onFocusCapture={markStarted} aria-busy={status === "sending"} className="flex flex-col gap-[22px]" noValidate>
+    <form action="/api/contact" method="post" onSubmit={handleSubmit} onFocusCapture={markStarted} aria-busy={status === "sending"} className="flex flex-col gap-[18px] lg:gap-[22px]" noValidate>
       <noscript><p className="border border-paper/40 p-4 text-sm text-paper">Para enviar este formulario necesitas activar JavaScript. Los campos están deshabilitados y no se enviará ningún dato.</p></noscript>
-      <fieldset disabled={disabled} className="flex min-w-0 flex-col gap-[22px]">
+      <fieldset disabled={disabled} className="flex min-w-0 flex-col gap-[18px] lg:gap-[22px]">
         <legend className="sr-only">Cuéntanos qué necesitas resolver</legend>
-        <div className="grid gap-[22px] sm:grid-cols-2">
+        <div className="grid gap-[18px] lg:grid-cols-2 lg:gap-[22px]">
           <label className="flex flex-col gap-2" htmlFor="contact-nombre">
             <span className={labelClasses}>Nombre</span>
             <input {...fieldProps("nombre")} type="text" required autoComplete="name" />
             {fieldError("nombre")}
           </label>
-          <label className="flex flex-col gap-2" htmlFor="contact-empresa">
+          {/* En móvil el formulario se reduce a lo imprescindible; estos campos
+              siguen en el DOM y se envían vacíos, que es su valor por defecto. */}
+          <label className="hidden flex-col gap-2 md:flex" htmlFor="contact-empresa">
             <span className={labelClasses}>Empresa (opcional)</span>
             <input {...fieldProps("empresa")} type="text" autoComplete="organization" />
             {fieldError("empresa")}
           </label>
         </div>
-        <div className="grid gap-[22px] sm:grid-cols-2">
+        <div className="grid gap-[18px] lg:grid-cols-2 lg:gap-[22px]">
           <label className="flex flex-col gap-2" htmlFor="contact-email">
             <span className={labelClasses}>Email</span>
             <input {...fieldProps("email")} type="email" required autoComplete="email" />
             {fieldError("email")}
           </label>
-          <label className="flex flex-col gap-2" htmlFor="contact-telefono">
+          <label className="hidden flex-col gap-2 md:flex" htmlFor="contact-telefono">
             <span className={labelClasses}>Teléfono (opcional)</span>
             <input {...fieldProps("telefono")} type="tel" inputMode="tel" autoComplete="tel" />
             {fieldError("telefono")}
           </label>
         </div>
-        <label className="flex flex-col gap-2" htmlFor="contact-necesidad">
+        <label className="hidden flex-col gap-2 md:flex" htmlFor="contact-necesidad">
           <span className={labelClasses}>¿En qué podemos ayudarte? (opcional)</span>
-          <select id="contact-necesidad" name="necesidad" value={need} onChange={(event) => setSelectedNeed(getContactContext(event.target.value, "").necesidad)} className={`${fieldBase} ${fieldOk}`}>
+          <select id="contact-necesidad" name="necesidad" value={need} onChange={(event) => setSelectedNeed(getContactContext(event.target.value, "").necesidad)} className={`campo-select bg-ink ${fieldBase} ${fieldOk}`}>
             <option value="" className="bg-ink">Todavía no lo tengo claro</option>
             {Object.entries(CONTACT_NEEDS).map(([value, label]) => <option key={value} value={value} className="bg-ink">{label}</option>)}
           </select>
         </label>
-        {context.proyecto && <p className="text-sm leading-relaxed text-paper/75">Proyecto de referencia: <span className="text-paper">{CONTACT_PROJECTS[context.proyecto]}</span></p>}
+        {context.proyecto && <p className="text-sm leading-relaxed text-paper/72">Proyecto de referencia: <span className="text-paper">{CONTACT_PROJECTS[context.proyecto]}</span></p>}
         <label className="flex flex-col gap-2" htmlFor="contact-mensaje">
           <span className={labelClasses}>¿Qué necesitas resolver?</span>
-          <span id="contact-message-help" className="text-sm leading-relaxed text-paper/75">Cuéntanos qué haces y qué te gustaría mejorar. No necesitas tener definido el proyecto.</span>
-          <textarea {...fieldProps("mensaje")} required rows={5} className={`${fieldBase} ${errors.mensaje ? fieldBad : fieldOk} resize-y`} />
+          <span id="contact-message-help" className="sr-only text-sm leading-[1.5] text-paper/72 md:not-sr-only md:block">Cuéntanos qué haces y qué te gustaría mejorar. No necesitas tener definido el proyecto.</span>
+          <textarea {...fieldProps("mensaje")} required rows={5} className={`${fieldBase} ${errors.mensaje ? fieldBad : fieldOk} min-h-[132px] resize-y lg:min-h-[140px]`} />
           {fieldError("mensaje")}
         </label>
         <div className="hidden" aria-hidden="true">
@@ -214,13 +220,13 @@ function ContactFormContent({ context, forceDisabled = false }: { context: Conta
           <input id="contact-web" name="web" type="text" tabIndex={-1} autoComplete="off" />
         </div>
       </fieldset>
-      {Object.values(errors).some(Boolean) && <p role="alert" className="text-sm text-error">Revisa los campos señalados antes de enviar.</p>}
-      {status === "error" && <div ref={errorRef} tabIndex={-1} className="border border-error px-5 py-4 focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-error" role="alert"><p className="text-sm leading-relaxed text-paper">{serverError}</p></div>}
-      <p className="text-[13px] leading-relaxed text-paper/75">
-        BPM Tech (BORT PEREZ MULTI GESTION SOCIEDAD LIMITADA) utilizará tus datos para responder a tu consulta y, si procede, preparar una propuesta. Puedes consultar cómo ejercer tus derechos y el resto de información en la{" "}
-        <a href="/privacidad" target="_blank" rel="noopener noreferrer" className="text-paper underline underline-offset-4 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cobalt-bright">política de privacidad <span className="text-paper/75">(se abre en otra pestaña)</span></a>.
+      {Object.values(errors).some(Boolean) && <p role="alert" className="text-sm text-error-soft">Revisa los campos señalados antes de enviar.</p>}
+      {status === "error" && <div ref={errorRef} tabIndex={-1} className="border border-error px-5 py-4 focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-error" role="alert"><p className="text-sm leading-[1.5] text-paper">{serverError}</p></div>}
+      <p className="text-xs leading-[1.55] text-paper/72 lg:text-[13px]">
+        BPM Tech (BORT PEREZ MULTI GESTION SOCIEDAD LIMITADA) utilizará tus datos para responder a tu consulta y, si procede, preparar una propuesta. Cómo ejercer tus derechos y el resto de información, en la{" "}
+        <a href="/privacidad" target="_blank" rel="noopener noreferrer" className="text-paper underline underline-offset-4 transition-colors duration-300 hover:text-cobalt-bright focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cobalt-bright">política de privacidad <span className="text-paper/72">(se abre en otra pestaña)</span></a>.
       </p>
-      <button type="submit" disabled={disabled} className="self-start bg-paper px-[30px] py-4 text-[15px] font-semibold text-ink transition-colors duration-300 ease-editorial hover:bg-cobalt-bright active:translate-y-[1px] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cobalt-bright disabled:pointer-events-none disabled:opacity-60">
+      <button type="submit" disabled={disabled} className="min-h-[52px] w-full bg-paper px-[30px] text-[15px] font-semibold text-ink transition-colors duration-300 ease-editorial hover:bg-cobalt-bright active:translate-y-[1px] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cobalt-bright disabled:pointer-events-none disabled:opacity-60 md:w-auto md:self-start">
         {status === "sending" ? "Enviando…" : "Enviar consulta"}
       </button>
       <p role="status" aria-live="polite" className="sr-only">{status === "sending" ? "Enviando tu consulta. Espera unos segundos." : ""}</p>

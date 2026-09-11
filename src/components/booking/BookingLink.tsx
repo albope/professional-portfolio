@@ -119,7 +119,7 @@ export function BookingLink({ location, project, className }: BookingLinkProps) 
         data-track-location={location}
         data-track-destination="booking"
         data-track-project={project}
-        className={cn("inline-flex min-h-12 items-center justify-center gap-3 border border-paper/40 px-5 py-4 text-center text-sm font-semibold leading-snug text-paper transition-colors hover:border-cobalt-bright hover:text-cobalt-bright focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cobalt-bright", className)}
+        className={cn("inline-flex min-h-12 items-center justify-center gap-2.5 border border-paper/45 px-5 py-2 text-center text-sm font-semibold leading-snug text-paper transition-colors duration-300 ease-editorial hover:border-cobalt-bright hover:text-cobalt-bright focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cobalt-bright", className)}
       >
         {booking.ctaLabel} <span aria-hidden="true">↗</span>
       </a>

@@ -3,14 +3,20 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { projects, getProject } from "@/data/projects";
 import { site } from "@/data/site";
-import { ProjectVisual } from "@/components/ui/ProjectVisual";
-import { Reveal } from "@/components/ui/Reveal";
 import { SquareWord } from "@/components/ui/SquareWord";
+import { ProjectFigure } from "@/components/ui/ProjectFigure";
+import { Button } from "@/components/ui/Button";
 import { BookingLink } from "@/components/booking/BookingLink";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
 }
+
+/** Los escenarios sangran en móvil y recuperan el margen del lienzo arriba. */
+const inset = "w-full md:px-10 wide:px-[60px]";
+const dtClass = "font-mono text-[10px] uppercase tracking-[0.12em] text-ink-mute lg:text-[11px] lg:tracking-[0.1em]";
+const titleClass = "text-xl font-semibold leading-[1.2] tracking-[-0.015em] lg:text-2xl lg:leading-[1.15]";
+const pairClass = "lg:grid lg:grid-cols-[424fr_872fr] lg:gap-x-6";
 
 export function generateStaticParams() {
   return projects.map((project) => ({ slug: project.slug }));
@@ -55,120 +61,165 @@ export default async function ProjectPage({ params }: PageProps) {
   const project = getProject(slug);
   if (!project) notFound();
   const contactHref = `/?proyecto=${project.slug}#contacto`;
+  const [principal, ...detalles] = project.figures;
 
   return (
-    <article className="pt-28 lg:pt-[170px]">
-      <header className="container-editorial border-b border-line pb-10 lg:pb-14">
-        <Reveal>
-          <div className="mb-7 flex flex-wrap items-center gap-3 lg:mb-9">
-            <Link
-              href="/#proyectos"
-              className="py-2 font-mono text-xs uppercase tracking-[0.1em] text-ink-mute underline-offset-4 hover:underline"
-            >
-              ← Proyectos
-            </Link>
-            <span className="border border-cobalt px-2.5 py-1 font-mono text-xs uppercase tracking-[0.1em] text-cobalt">
-              {project.statusLabel}
-            </span>
-            <span className="font-mono text-xs text-ink-faint">{project.metaCase}</span>
-          </div>
-          <h1 className="display max-w-[1050px] text-display-case text-ink">
-            {project.heroPre} <SquareWord word={project.heroWord} />
-          </h1>
-          <p className="mt-6 max-w-[700px] text-base leading-relaxed text-ink-mute lg:text-lg">
-            {project.intro}
-          </p>
-          {project.credit && <p className="mt-5 max-w-[700px] border-l-2 border-cobalt pl-4 text-sm leading-relaxed text-ink-mute">{project.credit}</p>}
+    <article>
+      <header className="container-editorial pt-6 lg:pt-12">
+        <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between md:gap-6">
           <Link
-            href={contactHref}
-            data-track="cta_click"
-            data-track-location="case"
-            data-track-project={project.slug}
-            className="mt-6 inline-flex min-h-11 items-center gap-3 py-2 text-sm font-semibold text-cobalt underline-offset-4 hover:underline"
+            href="/#proyectos"
+            className="inline-flex min-h-8 items-center self-start font-mono text-[11px] uppercase tracking-[0.1em] text-ink-mute underline-offset-4 transition-colors duration-300 ease-editorial hover:text-ink hover:underline lg:text-xs"
           >
-            Tengo una necesidad parecida <span aria-hidden="true">↗</span>
+            ← Proyectos
           </Link>
-        </Reveal>
+          <p className="flex flex-wrap items-center gap-x-3.5 gap-y-2 font-mono text-[10px] uppercase tracking-[0.12em] text-ink-mute md:flex-nowrap md:whitespace-nowrap lg:text-xs lg:tracking-[0.1em]">
+            <span className="md:hidden">{project.metaShort}</span>
+            {project.meta.map((item) => (
+              <span key={item} className="hidden md:inline">{item}</span>
+            ))}
+            {project.externalUrl && (
+              <a
+                href={project.externalUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex min-h-6 items-center border-b border-ink normal-case tracking-[0.04em] text-ink"
+              >
+                {project.externalLabel} <span aria-hidden>↗</span>
+                <span className="sr-only"> (se abre en otra pestaña)</span>
+              </a>
+            )}
+          </p>
+        </div>
+
+        <h1 className="display mt-5 max-w-[1000px] text-[34px] leading-[0.98] text-ink lg:mt-10 lg:text-[56px]">
+          {project.heroPre} <SquareWord word={project.heroWord} />
+        </h1>
+
+        <div className="mt-5 lg:mt-8 lg:grid lg:grid-cols-[760fr_472fr] lg:items-end lg:gap-x-[88px]">
+          <p className="text-base leading-[1.55] text-ink-soft lg:text-[19px]">{project.intro}</p>
+          {project.aside && (
+            <p className="mt-4 border-l-2 border-cobalt pl-4 text-sm leading-[1.55] text-ink-mute lg:mt-0">
+              {project.aside}
+            </p>
+          )}
+        </div>
       </header>
 
-      <section className="container-editorial border-b border-line" aria-label="Ficha del proyecto">
-        <dl className="grid gap-px bg-line sm:grid-cols-2 lg:grid-cols-4">
+      <ProjectFigure figure={principal} size="principal" className={`mt-6 lg:mt-12 ${inset}`} />
+
+      <div className="container-editorial">
+        <dl className="mt-8 grid grid-cols-2 gap-x-4 gap-y-5 border-y border-b-line border-t-ink pb-6 pt-5 lg:mt-12 lg:grid-cols-4 lg:gap-x-6 lg:pb-7 lg:pt-6">
           {project.ficha.map((entry) => (
-            <div key={entry.label} className="bg-paper py-5 pr-5 sm:px-5 lg:px-6 lg:py-7">
-              <dt className="mb-2 font-mono text-xs uppercase tracking-[0.1em] text-ink-faint">
-                {entry.label}
-              </dt>
-              <dd className="text-sm leading-relaxed text-ink-soft">{entry.body}</dd>
+            <div key={entry.label}>
+              <dt className={dtClass}>{entry.label}</dt>
+              <dd className="mt-1.5 text-sm leading-[1.5] text-ink-soft lg:mt-2.5 lg:text-[15px]">
+                {entry.body}
+              </dd>
             </div>
           ))}
         </dl>
-      </section>
 
-      <section className="bg-ink py-10 lg:py-14" aria-label="Esquema del proyecto">
-        <div className="container-editorial">
-          <figure className="mx-auto max-w-[900px] border border-paper/25 p-5 sm:p-8 lg:p-10">
-            <ProjectVisual variant={project.visual} context="case" />
-            <figcaption className="mt-6 font-mono text-xs leading-relaxed text-paper/75">
-              {project.visualCaption}
-            </figcaption>
-          </figure>
-        </div>
-      </section>
+        <section
+          aria-label="Desarrollo del proyecto"
+          className="flex flex-col gap-9 pt-12 lg:gap-16 lg:pt-24"
+        >
+          <div className={pairClass}>
+            <h2 className={titleClass}>Qué necesitaba resolver</h2>
+            <p className="mt-2.5 text-[15px] leading-[1.6] text-ink-soft lg:mt-0 lg:max-w-[680px] lg:text-[17px] lg:leading-[1.65]">
+              {project.problem}
+            </p>
+          </div>
 
-      {project.capabilities && (
-        <section className="container-editorial border-b border-line py-12 lg:py-20" aria-labelledby="case-capabilities-title">
-          <h2 id="case-capabilities-title" className="display max-w-[760px] text-[30px] leading-tight lg:text-[42px]">Qué permite preparar el asistente</h2>
-          <dl className="mt-8 grid gap-x-9 gap-y-7 md:grid-cols-2 lg:grid-cols-3">
-            {project.capabilities.map((capability) => (
-              <div key={capability.label} className="border-t border-line pt-5">
-                <dt className="text-lg font-semibold text-ink">{capability.label}</dt>
-                <dd className="mt-3 text-[15px] leading-relaxed text-ink-soft">{capability.body}</dd>
-              </div>
-            ))}
-          </dl>
+          <div className={pairClass}>
+            <h2 className={titleClass}>Qué se desarrolló</h2>
+            <div className="mt-2.5 lg:mt-0 lg:max-w-[680px]">
+              <p className="text-[15px] leading-[1.6] text-ink-soft lg:text-[17px] lg:leading-[1.65]">
+                {project.built.body}
+              </p>
+              <ul className="mt-4 grid gap-x-6 text-sm leading-[1.5] text-ink-soft lg:mt-6 lg:grid-cols-2 lg:text-[15px]">
+                {project.built.features.map((feature, index, all) => (
+                  <li
+                    key={feature}
+                    className={`border-t border-line py-2 lg:py-2.5 ${
+                      index === all.length - 1 ? "border-b" : ""
+                    } ${index === all.length - 2 && all.length % 2 === 0 ? "lg:border-b" : ""}`}
+                  >
+                    {feature}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      {detalles.length > 0 && (
+        <section
+          aria-label="Detalles de interfaz"
+          className={`grid items-start gap-y-8 pt-12 lg:gap-x-6 lg:pt-24 ${inset} ${
+            detalles.length > 1 ? "min-[900px]:grid-cols-[760fr_536fr]" : ""
+          }`}
+        >
+          {detalles.map((figure) => (
+            <ProjectFigure key={figure.captionLabel} figure={figure} />
+          ))}
         </section>
       )}
 
-      <section className="container-editorial border-b border-line py-12 lg:py-20" aria-label="Desarrollo del proyecto">
-        <div className="mx-auto flex max-w-[820px] flex-col gap-10 lg:gap-14">
-          {project.caseSections.map((section) => (
-            <Reveal key={section.index}>
-              <div className="grid gap-3 lg:grid-cols-[70px_1fr] lg:gap-8">
-                <span aria-hidden="true" className="font-mono text-xs text-cobalt">{section.index}</span>
-                <div>
-                  <h2 className="text-xl font-semibold text-ink lg:text-[26px]">{section.title}</h2>
-                  <p className="mt-3 text-base leading-[1.7] text-ink-soft">{section.body}</p>
-                </div>
-              </div>
-            </Reveal>
-          ))}
+      <section aria-label="Una decisión concreta" className={`mt-12 lg:mt-24 ${inset}`}>
+        <div className={`bg-paper-2 px-4 pb-8 pt-7 lg:px-10 lg:pb-12 lg:pt-11 ${pairClass}`}>
+          <h2 className={titleClass}>Una decisión concreta</h2>
+          <div className="lg:max-w-[720px]">
+            <p className="mt-2.5 text-[15px] leading-[1.6] text-ink-soft lg:mt-0 lg:text-[17px] lg:leading-[1.65]">
+              {project.decision.body}
+            </p>
+            <p className="mt-4 text-sm leading-[1.55] text-ink-mute lg:mt-5 lg:text-[15px]">
+              <span className="font-mono text-[10px] uppercase tracking-[0.1em] text-ink lg:text-[11px]">
+                Para otro negocio ·{" "}
+              </span>
+              {project.decision.note}
+            </p>
+          </div>
         </div>
       </section>
 
-      <section className="bg-ink py-12 text-center lg:py-20" aria-labelledby="case-contact-title">
-        <div className="container-editorial">
-          <h2 id="case-contact-title" className="display text-[30px] leading-tight text-paper lg:text-[48px]">
-            ¿Necesitas resolver algo parecido<span className="font-sans">?</span>
-          </h2>
-          <p className="mx-auto mt-5 max-w-[580px] text-base leading-relaxed text-paper/75">
-            {project.nextStep}
-          </p>
-          <div className="mt-7 flex flex-col items-stretch justify-center gap-3 sm:flex-row sm:flex-wrap sm:items-center">
-            <Link
+      <section
+        id="contacto"
+        aria-labelledby="ficha-cta"
+        className="mt-12 scroll-mt-6 bg-ink text-paper lg:mt-[120px]"
+      >
+        <div className="container-editorial pb-16 pt-14 lg:grid lg:grid-cols-2 lg:items-start lg:gap-x-6 lg:pb-[104px] lg:pt-24">
+          <div>
+            <h2
+              id="ficha-cta"
+              className="font-display text-[28px] uppercase leading-none tracking-[-0.01em] text-paper lg:text-[40px]"
+            >
+              ¿Necesitas resolver algo parecido<span className="font-sans">?</span>
+            </h2>
+            <p className="mt-4 max-w-[560px] text-[15px] leading-[1.6] text-paper/78 lg:mt-6 lg:text-[17px]">
+              {project.nextStep}
+            </p>
+          </div>
+          <div className="mt-6 flex flex-col items-stretch gap-2.5 lg:mt-0 lg:items-start lg:gap-3 lg:pt-2">
+            <Button
               href={contactHref}
-              data-track="cta_click"
-              data-track-location="case"
-              data-track-project={project.slug}
-              className="inline-flex min-h-12 items-center justify-center bg-paper px-7 py-4 text-sm font-semibold text-ink transition-colors hover:bg-cobalt-bright focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cobalt-bright"
+              tone="paper"
+              size="lg"
+              trackLocation="case"
+              trackProject={project.slug}
+              className="lg:px-7"
             >
               Contar mi caso por escrito
+            </Button>
+            <BookingLink location="case" project={project.slug} className="min-h-[52px] lg:px-6" />
+            <Link
+              href="/#proyectos"
+              className="mt-1.5 inline-flex min-h-11 items-center self-start text-sm text-paper underline underline-offset-4 transition-colors duration-300 ease-editorial hover:text-cobalt-bright lg:mt-3"
+            >
+              Ver otros proyectos
             </Link>
-            <BookingLink location="case" project={project.slug} />
           </div>
-          <p className="mt-4 text-sm text-paper/75">No necesitas tener definido el proyecto.</p>
-          <Link href="/#proyectos" className="mt-6 inline-block py-2 text-sm text-paper underline underline-offset-4">
-            Ver otros proyectos
-          </Link>
         </div>
       </section>
     </article>

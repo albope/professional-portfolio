@@ -92,9 +92,13 @@ export default function RootLayout({
         >
           Saltar al contenido
         </a>
-        <Header />
-        <main id="contenido" tabIndex={-1}>{children}</main>
-        <Footer />
+        {/* 1440 es el lienzo del diseño: por encima, el documento se centra en
+            lugar de estirarse, y los escenarios sangran hasta su borde. */}
+        <div className="mx-auto w-full max-w-[1440px]">
+          <Header />
+          <main id="contenido" tabIndex={-1}>{children}</main>
+          <Footer />
+        </div>
         <Analytics />
       </body>
     </html>

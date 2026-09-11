@@ -9,5 +9,5 @@ export default async function Image({ params }: { params: Promise<{ slug: string
   const { slug } = await params;
   const project = getProject(slug);
   if (!project) return new Response(null, { status: 404 });
-  return brandImage(project.title, project.credit ? "Experiencia técnica · Proyecto real" : "Proyecto real · BPM Tech");
+  return brandImage(project.title, project.metaShort);
 }

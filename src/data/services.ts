@@ -1,95 +1,49 @@
-export interface Service {
-  id: string;
-  index: string;
-  title: string;
-  description: string;
+/**
+ * Las tres puertas de entrada a la oferta. Los identificadores coinciden con
+ * `CONTACT_NEEDS`: el enlace de cada fila llega al formulario con la necesidad
+ * ya seleccionada.
+ */
+export interface ServiceNeed {
+  id: "operativa" | "automatizacion" | "web";
+  /** Situación del visitante, no el nombre del servicio. */
+  situation: string;
+  built: string;
+  builtShort: string;
+  examples: string;
+  examplesShort: string;
+  cta: string;
 }
 
-export const services: Service[] = [
-  {
-    id: "software-a-medida",
-    index: "S.01",
-    title: "Software a medida",
-    description:
-      "Cuando el Excel se queda corto y el ERP no llega, construimos la pieza que falta. Plataformas de gestión y herramientas internas alrededor de tus procesos.",
-  },
-  {
-    id: "aplicaciones-web",
-    index: "S.02",
-    title: "Aplicaciones web",
-    description:
-      "Del primer prototipo navegable a la plataforma en producción con la misma base de código. Portales de cliente, áreas privadas y paneles de operación.",
-  },
-  {
-    id: "webs-a-medida",
-    index: "S.03",
-    title: "Webs a medida",
-    description:
-      "Webs corporativas, personales o de evento con diseño propio y sin plantillas. Rápidas, cuidadas y pensadas desde cero para cada proyecto.",
-  },
-  {
-    id: "automatizacion",
-    index: "S.04",
-    title: "Automatización de procesos",
-    description:
-      "Si tu equipo copia datos de un sitio a otro, ahí hay un proceso que automatizar. Menos trabajo manual, menos errores y trazabilidad completa.",
-  },
-  {
-    id: "inteligencia-artificial",
-    index: "S.05",
-    title: "Inteligencia artificial",
-    description:
-      "IA aplicada a casos concretos, como leer documentos o responder sobre tu conocimiento interno. Te decimos dónde aporta y también dónde no.",
-  },
-  {
-    id: "integraciones",
-    index: "S.06",
-    title: "Integraciones y APIs",
-    description:
-      "Tus sistemas hablando entre sí. Conectamos ERPs, CRMs y plataformas externas con errores controlados y datos consistentes.",
-  },
-  {
-    id: "consultoria",
-    index: "S.07",
-    title: "Consultoría tecnológica",
-    description:
-      "Decidir qué construir antes de escribir código. Analizamos el problema y trazamos una hoja de ruta realista por fases.",
-  },
-];
-
-/** Las tres puertas de entrada a la oferta; sus IDs también contextualizan el contacto. */
-export const serviceNeeds = [
+export const serviceNeeds: ServiceNeed[] = [
   {
     id: "operativa",
-    index: "01",
-    problem: "Tu gestión necesita algo más",
-    title: "Pon orden en tu operativa",
-    description:
-      "Cuando hojas de cálculo, mensajes y herramientas sueltas ya no bastan. Una aplicación que reúna lo que necesitas y encaje en cómo trabajas.",
-    example: "Gestión de almacén, reservas, portales de cliente y paneles internos.",
-    serviceIds: ["software-a-medida", "aplicaciones-web"],
+    situation: "Tu gestión vive en hojas de cálculo, mensajes y herramientas sueltas.",
+    built:
+      "Una aplicación que reúna lo que necesitas y encaje en cómo trabajas: gestión, reservas, portales de cliente o paneles internos.",
+    builtShort: "Una aplicación que reúna lo que necesitas y encaje en cómo trabajas.",
+    examples: "Gestión de almacén · Plataforma de reservas · Portal de socios",
+    examplesShort: "Gestión de almacén · Reservas · Portales de socios",
     cta: "Hablemos de tu gestión",
   },
   {
     id: "automatizacion",
-    index: "02",
-    problem: "Repites tareas entre herramientas",
-    title: "Conecta y automatiza",
-    description:
-      "Si copias datos o repites el mismo trabajo cada día, revisamos el proceso. Conectamos tus sistemas y aplicamos IA cuando ayuda a resolverlo.",
-    example: "Conectar un CRM, procesar documentos o sincronizar información.",
-    serviceIds: ["automatizacion", "integraciones", "inteligencia-artificial"],
+    situation: "Copias datos de un sitio a otro y repites el mismo trabajo cada día.",
+    built:
+      "Revisamos el proceso, conectamos tus sistemas y aplicamos IA cuando ayuda a resolverlo. Te decimos dónde aporta y también dónde no.",
+    builtShort:
+      "Revisamos el proceso, conectamos tus sistemas y aplicamos IA cuando ayuda. Te decimos dónde aporta y dónde no.",
+    examples: "Conectar un CRM · Procesar documentos · Sincronizar información entre sistemas",
+    examplesShort: "Conectar un CRM · Procesar documentos · Sincronizar información",
     cta: "Hablemos de tus procesos",
   },
   {
     id: "web",
-    index: "03",
-    problem: "Tu web no explica lo que aportas",
-    title: "Dale a tu negocio su web",
-    description:
-      "Una web con diseño propio, información clara y un siguiente paso fácil. Para que quien llegue entienda tu propuesta y pueda contactar contigo.",
-    example: "Webs corporativas, proyectos personales y páginas de eventos.",
-    serviceIds: ["webs-a-medida"],
+    situation: "Tu web no explica lo que aportas ni facilita el siguiente paso.",
+    built:
+      "Una web con diseño propio, información clara y un contacto fácil, para que quien llegue entienda tu propuesta y pueda escribirte.",
+    builtShort: "Una web con diseño propio, información clara y un contacto fácil.",
+    examples: "Webs corporativas · Proyectos personales · Páginas de evento",
+    examplesShort: "Webs corporativas · Proyectos personales · Páginas de evento",
     cta: "Hablemos de tu web",
   },
-] as const;
+];

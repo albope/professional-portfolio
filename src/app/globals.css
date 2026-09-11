@@ -80,9 +80,21 @@
     text-wrap: balance;
   }
 
-  /* Márgenes del lienzo: 16 móvil · 40 intermedio · 60 a partir de 1440 */
+  /* Márgenes del lienzo: 16 móvil · 40 intermedio · 60 a partir de 1440.
+     El ancho máximo lo fija el lienzo de 1440 px en el layout. */
   .container-editorial {
-    @apply mx-auto w-full max-w-[1440px] px-4 md:px-10 wide:px-[60px];
+    @apply w-full px-4 md:px-10 wide:px-[60px];
+  }
+
+  /* Chevron dibujado con dos gradientes: el select no hereda el del sistema. */
+  .campo-select {
+    appearance: none;
+    background-image:
+      linear-gradient(45deg, transparent 50%, var(--paper) 50%),
+      linear-gradient(135deg, var(--paper) 50%, transparent 50%);
+    background-position: calc(100% - 22px) 22px, calc(100% - 16px) 22px;
+    background-size: 6px 6px, 6px 6px;
+    background-repeat: no-repeat;
   }
 
   .link-underline {
