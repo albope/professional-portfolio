@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { copyEs, proyectoSlugs, servicioNeeds } from "../data/copy";
+import { copyEs, lineasDelTitular, partirFlecha, proyectoSlugs, servicioNeeds } from "../data/copy";
 import { CONTACT_NEEDS, CONTACT_PROJECTS } from "./contact";
 
 /** Recorre el JSON y devuelve cada cadena con la ruta donde vive. */
@@ -59,4 +59,20 @@ test("the form selector matches the shared contact needs", () => {
 /** Las cinco frases del hero alimentan la única animación de la web. */
 test("the hero animation carries exactly five phrases", () => {
   assert.equal(copyEs.hero.h1_palabras.length, 5);
+});
+
+/** El corte en tres líneas no puede perder ni duplicar una palabra. */
+test("the hero headline breaks into three lines without losing a word", () => {
+  const lineas = lineasDelTitular();
+  assert.equal(lineas.length, 3);
+  assert.equal(lineas.join(" "), copyEs.hero.h1_fijo);
+});
+
+/** La flecha viaja aparte para que el componente pueda animarla. */
+test("a trailing arrow is split off the label, and nothing else is", () => {
+  assert.deepEqual(partirFlecha("Ver proyectos reales ↓"), { texto: "Ver proyectos reales", flecha: "↓" });
+  assert.deepEqual(partirFlecha("Hablemos ↗"), { texto: "Hablemos", flecha: "↗" });
+  assert.deepEqual(partirFlecha("Enviar consulta"), { texto: "Enviar consulta" });
+  // Una flecha en mitad de la frase no es un sufijo y se queda donde está.
+  assert.deepEqual(partirFlecha("Desliza → para ver"), { texto: "Desliza → para ver" });
 });

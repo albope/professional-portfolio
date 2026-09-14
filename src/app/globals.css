@@ -86,6 +86,18 @@
     @apply w-full px-4 md:px-10 wide:px-[60px];
   }
 
+  /* Rejilla de sección: 536 px y 88 px de calle a partir de 1440. Por debajo
+     las dos columnas se reparten en la misma proporción en lugar de fijar los
+     536 px, que dejarían la columna derecha en 320 px a 1024. */
+  .rejilla-editorial {
+    @apply lg:grid lg:grid-cols-[536fr_696fr] lg:items-start lg:gap-x-[88px];
+  }
+
+  /* Aire de sección: 64 en móvil · 96 en el tramo intermedio · 120 desde 1440. */
+  .seccion {
+    @apply py-16 lg:py-24 wide:py-[120px];
+  }
+
   /* Chevron dibujado con dos gradientes: el select no hereda el del sistema. */
   .campo-select {
     appearance: none;
@@ -112,9 +124,11 @@
 }
 
 @layer utilities {
-  /* Única animación continua de la web: la última palabra del titular del
-     hero recorre los sectores atendidos. Cinco capas superpuestas, 12,5 s en
-     bucle y 2,5 s de retardo entre ellas. */
+  /* Única animación continua de la web: la última línea del titular del hero
+     recorre cinco frases. Cinco capas superpuestas, 12,5 s en bucle y 2,5 s
+     de retardo entre ellas. Las frases envuelven a dos líneas cuando hace
+     falta, así que la celda no puede llevar `white-space: nowrap`: la altura
+     la reserva el contenedor. */
   @keyframes bpm-palabra {
     0% {
       opacity: 0;
@@ -140,7 +154,6 @@
 
   [data-palabra] {
     grid-area: 1 / 1;
-    white-space: nowrap;
     animation: bpm-palabra 12.5s cubic-bezier(0.16, 1, 0.3, 1) infinite;
   }
 

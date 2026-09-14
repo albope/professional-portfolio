@@ -28,3 +28,29 @@ export const proyectoSlugs = [
 
 /** Las tres filas de «¿Qué te está frenando?» apuntan a su necesidad del formulario. */
 export const servicioNeeds = ["operativa", "automatizacion", "web"] as const;
+
+export type Flecha = "→" | "↗" | "↓";
+
+/**
+ * El copy trae la flecha pegada al texto. La separamos para que el componente
+ * la pinte aparte: allí va en `aria-hidden` y se separa al pasar el ratón,
+ * cosa que no puede hacer si viaja dentro de la cadena.
+ */
+export function partirFlecha(label: string): { texto: string; flecha?: Flecha } {
+  const match = label.match(/ ([→↗↓])$/);
+  if (!match) return { texto: label };
+  return { texto: label.slice(0, -2), flecha: match[1] as Flecha };
+}
+
+/**
+ * El titular del hero se compone en tres líneas fijas más la línea animada.
+ * El corte se declara en palabras por línea y no como cadenas sueltas, para
+ * que `copy.test.ts` pueda comprobar que reconstruyen `hero.h1_fijo` entero.
+ */
+const CORTE_H1 = [2, 2, 2];
+
+export function lineasDelTitular(frase = copy.hero.h1_fijo): string[] {
+  const palabras = frase.split(" ");
+  let desde = 0;
+  return CORTE_H1.map((cuantas) => palabras.slice(desde, (desde += cuantas)).join(" "));
+}
