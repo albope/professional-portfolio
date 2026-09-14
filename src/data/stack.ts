@@ -21,7 +21,13 @@ export interface Herramienta {
 }
 
 const logos: Record<string, { logo: string; alto: number }> = {
-  // Pendiente: descargar los SVG oficiales de cada marca.
+  "Next.js": { logo: "/logos/nextjs.svg", alto: 20 },
+  React: { logo: "/logos/react.svg", alto: 22 },
+  Supabase: { logo: "/logos/supabase.svg", alto: 18 },
+  Anthropic: { logo: "/logos/anthropic.svg", alto: 22 },
+  // Python exige permiso para cambiar los colores de su marca.
+  // OpenAI prohíbe usar su wordmark como máscara y el Blossom como marca principal.
+  // AWS requiere autorización escrita para este uso.
 };
 
 export const herramientas: Herramienta[] = copyEs.como_trabajamos.stack.items.map((nombre) => ({
