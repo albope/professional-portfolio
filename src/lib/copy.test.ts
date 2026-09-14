@@ -56,6 +56,25 @@ test("the form selector matches the shared contact needs", () => {
   assert.deepEqual(needs, Object.values(CONTACT_NEEDS));
 });
 
+/**
+ * El proyecto de almacén es el único que amplía con ficha de tres filas, y su
+ * rótulo de enlace es el mismo del destacado: la portada pinta uno solo.
+ */
+test("the warehouse project keeps its three-row card and the shared link label", () => {
+  const [almacen, evento, radio, asistente] = copyEs.proyectos.items;
+  assert.deepEqual(Object.keys(almacen.ficha ?? {}), [
+    "Qué se desarrolló",
+    "Una decisión",
+    "Cómo se hizo",
+  ]);
+  assert.equal(almacen.cta, copyEs.destacado.cta);
+  // Solo evento y radio subrayan una decisión de diseño.
+  assert.deepEqual(
+    [evento, radio, asistente].map((item) => Boolean(item.decision)),
+    [true, true, false]
+  );
+});
+
 /** Las cinco frases del hero alimentan la única animación de la web. */
 test("the hero animation carries exactly five phrases", () => {
   assert.equal(copyEs.hero.h1_palabras.length, 5);
