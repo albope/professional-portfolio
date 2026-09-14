@@ -1,0 +1,211 @@
+{
+  "meta": {
+    "proyecto": "BPM Tech Studio",
+    "version": "diseño final",
+    "fecha": "2026-09-15",
+    "idioma": "es-ES"
+  },
+  "nav": {
+    "wordmark": "BPM TECH",
+    "enlaces": ["Proyectos", "Servicios", "Método", "Sobre BPM Tech"],
+    "cta": "Hablemos ↗"
+  },
+  "hero": {
+    "h1_fijo": "Deja de adaptar tu negocio a",
+    "h1_palabras": [
+      "hojas de cálculo",
+      "procesos manuales",
+      "software genérico",
+      "herramientas que no encajan",
+      "parches"
+    ],
+    "entradilla": "Construimos software, automatizaciones y webs a medida para pymes y startups. Hablas directamente con quien entiende el problema, toma las decisiones y desarrolla la solución: menos intermediarios, menos vueltas y más velocidad.",
+    "cta_primaria": "Cuéntanos qué necesitas resolver",
+    "cta_secundaria": "Ver proyectos reales ↓"
+  },
+  "destacado": {
+    "etiqueta": "Padel Club OS · En producción",
+    "enlace_externo": "padelclubos.com ↗",
+    "titulo": "Todo un club de pádel, en una sola plataforma",
+    "texto": "Reservas, socios, pagos y competiciones conectados en una misma herramienta. Un panel para el club y un portal para que el jugador reserve desde el móvil sin instalar nada.",
+    "cta": "Ver el proyecto →"
+  },
+  "proyectos": {
+    "h2": "Problemas reales. Software hecho para resolverlos.",
+    "apoyo": "Sectores distintos, una misma forma de trabajar: entender primero el problema y construir después la herramienta que encaja.",
+    "items": [
+      {
+        "descriptor": "Gestión de almacén · Web + terminal RF",
+        "titulo": "Del control manual a un sistema de almacén conectado",
+        "texto": "Inventario, ubicaciones y movimientos reunidos en una herramienta con permisos por rol, más un terminal RF para operar con escáner o con la cámara del móvil.",
+        "ficha": {
+          "Qué se desarrolló": "Aplicación web completa para productos, ubicaciones, stock, movimientos, recuentos, órdenes e informes.",
+          "Una decisión": "El stock no se edita a mano: es la proyección de un libro de movimientos inmutable. Anular genera un movimiento compensatorio.",
+          "Cómo se hizo": "Diseño y desarrollo en fases acordadas sobre una especificación funcional."
+        },
+        "cta": "Ver el proyecto →"
+      },
+      {
+        "descriptor": "Web de evento",
+        "titulo": "Información, invitados y gestión en una misma web",
+        "texto": "Información del evento, confirmación con preferencias, avisos por email, peticiones musicales y un panel privado de gestión. Todo en dos idiomas.",
+        "decision": "Consultar el horario y responder ocurre en la misma página, sin obligar al invitado a cambiar de sitio."
+      },
+      {
+        "descriptor": "Web de radio",
+        "titulo": "Una web que no interrumpe la emisión",
+        "texto": "Directo, archivo de programas, galería histórica e instalación como app en el móvil, diseñados alrededor de cómo escucha realmente el usuario.",
+        "decision": "El reproductor permanece mientras se navega: se puede explorar el archivo sin cortar la escucha."
+      },
+      {
+        "descriptor": "Asistente de IA",
+        "titulo": "El ChatGPT de tu empresa. Pero con contexto de verdad.",
+        "texto": "Dos agentes que conocen tu documentación, entienden cómo funciona tu negocio y te ayudan a preparar decisiones, estimaciones y siguientes pasos sin empezar de cero en cada conversación."
+      }
+    ]
+  },
+  "servicios": {
+    "h2": "¿Qué te está frenando?",
+    "apoyo": "No necesitas saber qué tecnología necesitas. Cuéntanos qué no está funcionando como debería y encontraremos la forma más sencilla de resolverlo.",
+    "cabeceras": ["Situación", "Qué construimos", "Ejemplos"],
+    "items": [
+      {
+        "situacion": "Tu gestión depende de hojas de cálculo, mensajes y herramientas que no se hablan entre sí.",
+        "que_construimos": "Una aplicación hecha alrededor de cómo trabaja tu negocio: centralizamos información, eliminamos pasos manuales y damos a cada persona justo lo que necesita.",
+        "ejemplos": "Gestión de almacén · Plataformas de reservas · CRM · Portales de socios · Paneles internos",
+        "cta": "Hablemos de tu gestión →"
+      },
+      {
+        "situacion": "Copias datos de un sitio a otro y repites tareas que deberían ocurrir solas.",
+        "que_construimos": "Automatizamos el proceso, conectamos tus sistemas y usamos IA cuando realmente aporta. Menos trabajo repetitivo y menos información perdida entre herramientas.",
+        "ejemplos": "Conectar un CRM · Procesar documentos · Sincronizar sistemas · Automatizar operaciones",
+        "cta": "Hablemos de tus procesos →"
+      },
+      {
+        "situacion": "Tienes una idea, un producto o una web que todavía no representa lo que quieres construir.",
+        "que_construimos": "Desde una web que explique mejor tu negocio hasta un MVP o producto digital completo. Definimos qué merece la pena construir primero y lo convertimos en algo que puedas poner delante de usuarios reales.",
+        "ejemplos": "Webs corporativas · MVP · SaaS · Portales · Productos digitales",
+        "cta": "Hablemos de tu idea →"
+      }
+    ],
+    "cierre": {
+      "texto": "¿Todavía no sabes qué necesitas? Perfecto. No hace falta llegar con la solución pensada. Cuéntanos cómo trabajas hoy y qué te está dando problemas. Nosotros te diremos qué construir, qué conectar y qué quizá no haga falta desarrollar.",
+      "cta": "Cuéntanos tu situación ↗"
+    }
+  },
+  "metodo": {
+    "h2": "Del problema a una solución que puedas usar",
+    "apoyo": "Sin cajas negras ni meses esperando para ver resultados. Cada fase termina con algo que puedes revisar y las decisiones importantes quedan claras antes de seguir avanzando.",
+    "fases": [
+      {
+        "num": "1.0",
+        "nombre": "Entendemos",
+        "texto": "Nos cuentas qué quieres conseguir, qué te está frenando y cómo lo resuelves hoy.",
+        "entregable": "Problema y siguiente paso"
+      },
+      {
+        "num": "2.0",
+        "nombre": "Diseñamos",
+        "texto": "Decidimos qué merece la pena construir primero, qué puede esperar y cómo debe funcionar.",
+        "entregable": "Alcance y propuesta por escrito"
+      },
+      {
+        "num": "3.0",
+        "nombre": "Construimos",
+        "texto": "Desarrollamos por fases y revisas avances mientras la solución toma forma.",
+        "entregable": "Versiones que puedes probar"
+      },
+      {
+        "num": "4.0",
+        "nombre": "Lanzamos",
+        "texto": "Probamos los recorridos importantes y dejamos todo preparado para empezar a utilizarlo.",
+        "entregable": "Solución lista para su uso"
+      },
+      {
+        "num": "5.0",
+        "nombre": "Evolucionamos",
+        "texto": "A partir del uso real decidimos contigo qué merece la pena mejorar, automatizar o ampliar.",
+        "entregable": "Continuidad acordada contigo"
+      }
+    ]
+  },
+  "sobre": {
+    "h2": "Quien decide, construye.",
+    "nombre": "Alberto Bort",
+    "rol": "Dirección de proyectos y tecnología",
+    "parrafos": [
+      "BPM Tech es un estudio de software con base en Valencia. Aquí no explicas tu problema a una persona para que se lo traduzca a otra y termine construyéndolo una tercera. Hablas directamente con quien entiende la necesidad, diseña la solución, toma las decisiones técnicas y la desarrolla.",
+      "Combinamos experiencia en producto, desarrollo e inteligencia artificial para ejecutar con la velocidad y capacidad que antes requerían equipos mucho mayores. Trabajamos principalmente con pymes que quieren dejar atrás procesos manuales y herramientas que no encajan, y con startups que necesitan convertir una idea en un producto real."
+    ],
+    "datos": {
+      "Base": "Valencia, España",
+      "Trabajo": "Presencial y en remoto",
+      "Primera conversación": "30 minutos por videollamada"
+    },
+    "cta": "Cuéntame qué necesitas resolver ↗"
+  },
+  "como_trabajamos": {
+    "kicker": "Menos intermediarios. Más producto.",
+    "h3": "Somos AI-first. El criterio sigue siendo humano.",
+    "apoyo": "La IA multiplicó la capacidad de un estudio pequeño. Lo que no cambió es quién entiende el problema, toma las decisiones y responde por lo que se entrega.",
+    "pilares": [
+      {
+        "titulo": "La IA acelera. El criterio decide.",
+        "texto": "Desarrollo, pruebas, documentación y análisis avanzan mucho más rápido con las herramientas adecuadas. Qué se construye, cómo se estructura y qué se descarta sigue siendo una decisión de producto y de ingeniería."
+      },
+      {
+        "titulo": "Hablas con quien construye",
+        "texto": "No hay una cadena de comercial, project manager, analista y desarrollador entre tu problema y la solución. La misma persona que entiende lo que necesitas participa en las decisiones y en la construcción del producto."
+      },
+      {
+        "titulo": "Usamos tecnología para resolver, no para complicar",
+        "texto": "Si algo puede resolverse con una regla sencilla, no necesita IA. Si existe una herramienta que ya hace bien lo que necesitas, tampoco hace falta reinventarla. Construimos cuando hacerlo aporta una ventaja real."
+      }
+    ],
+    "stack": {
+      "kicker": "Herramientas con las que construimos",
+      "items": ["Next.js", "React", "Supabase", "Python", "Anthropic", "OpenAI", "AWS"]
+    }
+  },
+  "contacto": {
+    "h2": "¿Qué debería funcionar mejor en tu negocio?",
+    "apoyo": "No necesitas llegar con un proyecto definido. Cuéntanos cómo trabajas hoy, qué te está dando problemas o qué idea quieres poner en marcha. Nosotros nos encargamos de convertirlo en el siguiente paso.",
+    "que_pasa_despues": {
+      "titulo": "¿Qué pasa después?",
+      "texto": "Revisamos tu situación y hablamos contigo para entenderla. Si podemos ayudarte, te explicamos cómo lo resolveríamos y qué tendría sentido hacer primero. El alcance y el presupuesto quedan claros antes de empezar a construir."
+    },
+    "llamada": {
+      "titulo": "¿Prefieres explicarlo hablando?",
+      "texto": "Una videollamada de 30 minutos para entender qué necesitas, enseñarte cómo lo abordaríamos y decidir si tiene sentido avanzar. Sin compromiso.",
+      "cta": "Reservar una llamada de 30 min ↗"
+    },
+    "email_directo": "O escríbenos directamente: bpmtechstudio@gmail.com",
+    "formulario": {
+      "campos": ["Nombre", "Empresa (opcional)", "Email", "Teléfono (opcional)"],
+      "selector": {
+        "etiqueta": "¿En qué podemos ayudarte? (opcional)",
+        "opciones": [
+          "Todavía no lo tengo claro",
+          "Organizar la operativa de mi negocio",
+          "Automatizar tareas y conectar herramientas",
+          "Crear una web, un MVP o un producto digital"
+        ]
+      },
+      "mensaje": {
+        "etiqueta": "¿Qué necesitas resolver?",
+        "ayuda": "Cuéntanos qué haces, cómo lo resuelves ahora y qué te gustaría que funcionase mejor. No necesitas saber qué tecnología necesitas."
+      },
+      "aviso_datos": "BPM Tech (BORT PEREZ MULTI GESTION SOCIEDAD LIMITADA) utilizará tus datos para responder a tu consulta y, si procede, preparar una propuesta. Cómo ejercer tus derechos y el resto de información, en la política de privacidad.",
+      "boton": "Enviar consulta"
+    }
+  },
+  "pie": {
+    "wordmark": "BPM TECH",
+    "descriptor": "Software, automatización y productos digitales hechos alrededor de cómo funciona tu negocio. Sin capas intermedias.",
+    "indice": ["Proyectos", "Servicios", "Método", "Sobre BPM Tech"],
+    "contacto": ["Hablemos", "bpmtechstudio@gmail.com", "Reservar una llamada ↗"],
+    "legal": ["Aviso legal", "Privacidad"],
+    "copyright": "© 2026 BPM Tech",
+    "ubicacion": "Valencia, España"
+  }
+}
