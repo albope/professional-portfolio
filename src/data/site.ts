@@ -1,3 +1,5 @@
+import { copyEs } from "@/data/copy";
+
 export const site = {
   name: "BPM Tech",
   descriptor: "Software y webs a medida",
@@ -10,16 +12,25 @@ export const site = {
   // Dirección pública autorizada para el contacto comercial y legal.
   email: "bpmtechstudio@gmail.com",
   // El destino del formulario se configura en el servidor mediante CONTACT_EMAIL.
-  location: "Valencia, España",
+  location: copyEs.pie.ubicacion,
 } as const;
 
-/** El trabajo va primero: Proyectos abre la navegación y la portada. */
-export const nav = [
-  { label: "Proyectos", href: "/#proyectos" },
-  { label: "Servicios", href: "/#servicios" },
-  { label: "Método", href: "/#metodo" },
-  { label: "Sobre BPM Tech", href: "/#sobre" },
-] as const;
+/**
+ * El trabajo va primero: Proyectos abre la navegación y la portada. Los
+ * rótulos salen del copy y el destino vive aquí, así que la cabecera, el
+ * diálogo móvil y el índice del pie comparten una sola lista.
+ */
+const destinos = ["/#proyectos", "/#servicios", "/#metodo", "/#sobre"];
 
-export const ctaLabel = "Cuéntanos qué necesitas resolver";
+export const nav = copyEs.nav.enlaces.map((label, index) => ({
+  label,
+  href: destinos[index],
+}));
+
+export const legalLinks = copyEs.pie.legal.map((label, index) => ({
+  label,
+  href: ["/aviso-legal", "/privacidad"][index],
+}));
+
+export const ctaLabel = copyEs.hero.cta_primaria;
 export const ctaHref = "/#contacto";

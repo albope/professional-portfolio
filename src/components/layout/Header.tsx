@@ -4,11 +4,14 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { nav, ctaHref, ctaLabel, site } from "@/data/site";
+import { copyEs, partirFlecha } from "@/data/copy";
 import { Wordmark } from "@/components/ui/Wordmark";
 import { cn } from "@/lib/utils";
 
 /** A partir de 768 px cabe la navegación completa; por debajo, el diálogo. */
 const DESKTOP = "(min-width: 768px)";
+
+const cta = partirFlecha(copyEs.nav.cta);
 
 const navLink =
   "inline-flex min-h-11 items-center border-b border-transparent text-sm font-medium text-ink-soft transition-colors duration-300 ease-editorial hover:border-ink hover:text-ink wide:text-[15px]";
@@ -94,8 +97,8 @@ export function Header() {
               data-track-location="header"
               className="ml-2 inline-flex min-h-11 items-center gap-2.5 bg-ink px-4 text-sm font-semibold text-paper transition-colors duration-300 ease-editorial hover:bg-cobalt wide:px-5 wide:text-[15px]"
             >
-              Hablemos
-              <span aria-hidden className="font-mono">↗</span>
+              {cta.texto}
+              <span aria-hidden className="font-mono">{cta.flecha}</span>
             </Link>
           </nav>
 

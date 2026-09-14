@@ -1,15 +1,14 @@
 import Link from "next/link";
-import { nav, ctaHref, site } from "@/data/site";
+import { nav, legalLinks, ctaHref, site } from "@/data/site";
 import { booking } from "@/data/booking";
+import { copyEs, partirFlecha } from "@/data/copy";
 import { Wordmark } from "@/components/ui/Wordmark";
 
-const legalLinks = [
-  { label: "Aviso legal", href: "/aviso-legal" },
-  { label: "Privacidad", href: "/privacidad" },
-];
+const { pie } = copyEs;
+const [rotuloHablemos, , rotuloReserva] = pie.contacto;
+const reserva = partirFlecha(rotuloReserva);
 
-const columnTitle =
-  "mb-2 font-mono text-[11px] uppercase tracking-[0.12em] text-ink-mute";
+const columnTitle = "mb-2 font-mono text-[11px] uppercase tracking-[0.12em] text-ink-mute";
 const columnLink =
   "inline-flex min-h-9 items-center text-sm text-ink transition-colors duration-300 ease-editorial hover:text-cobalt";
 
@@ -24,8 +23,7 @@ export function Footer() {
               <Wordmark size={17} className="hidden wide:inline-flex" />
             </Link>
             <p className="mt-2 max-w-[330px] text-[13px] leading-[1.55] text-ink-mute md:text-sm">
-              Software y webs que encajan en tu negocio. Gestión, automatización
-              y desarrollo web a medida.
+              {pie.descriptor}
             </p>
           </div>
 
@@ -59,7 +57,7 @@ export function Footer() {
               data-track-location="footer"
               className={columnLink}
             >
-              Hablemos
+              {rotuloHablemos}
             </Link>
             <a href={`mailto:${site.email}`} className={`${columnLink} underline underline-offset-4`}>
               <span className="[overflow-wrap:anywhere]">{site.email}</span>
@@ -73,7 +71,7 @@ export function Footer() {
               data-track-destination="booking"
               className={columnLink}
             >
-              Reservar una llamada <span aria-hidden>↗</span>
+              {reserva.texto} <span aria-hidden>{reserva.flecha}</span>
               <span className="sr-only"> (se abre en otra pestaña)</span>
             </a>
           </nav>
@@ -89,10 +87,13 @@ export function Footer() {
         </div>
 
         <div className="mt-5 flex items-center justify-between gap-4 border-t border-line pt-4 font-mono text-[11px] text-ink-mute md:mt-10 md:pt-5 md:text-xs">
-          <span className="md:hidden">© {new Date().getFullYear()} BPM Tech · Valencia</span>
-          <span className="hidden md:inline">© {new Date().getFullYear()} BPM Tech</span>
+          {/* El año se calcula: el copy fija 2026 y el pie no puede envejecer solo. */}
+          <span>
+            © {new Date().getFullYear()} {site.name}
+            <span className="md:hidden"> · Valencia</span>
+          </span>
           <div className="flex items-center gap-4">
-            <span className="hidden md:inline">{site.location}</span>
+            <span className="hidden md:inline">{pie.ubicacion}</span>
             <a
               href="#top"
               aria-label="Volver arriba"
