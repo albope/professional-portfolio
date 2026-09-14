@@ -2,6 +2,8 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 import { copyEs, lineasDelTitular, partirFlecha, proyectoSlugs, servicioNeeds } from "../data/copy";
 import { CONTACT_NEEDS, CONTACT_PROJECTS } from "./contact";
+import { site } from "../data/site";
+import { booking } from "../data/booking";
 
 /** Recorre el JSON y devuelve cada cadena con la ruta donde vive. */
 function strings(value: unknown, path = ""): Array<[string, string]> {
@@ -47,6 +49,19 @@ test("the four grid projects and three service rows keep their references", () =
 
   assert.equal(copyEs.servicios.items.length, servicioNeeds.length);
   for (const need of servicioNeeds) assert.ok(Object.hasOwn(CONTACT_NEEDS, need), need);
+});
+
+/**
+ * Contacto pinta tres cadenas del copy partidas en dos: el aviso de datos
+ * enlaza sobre «política de privacidad», la frase del email enlaza sobre la
+ * dirección y el botón de reserva lo compone BookingLink. Si alguna de esas
+ * piezas se mueve, el enlace desaparece sin que se note en pantalla.
+ */
+test("contact copy keeps the fragments its links are painted over", () => {
+  const sinTildes = (value: string) => value.normalize("NFD").replace(/\p{Diacritic}/gu, "").toLowerCase();
+  assert.ok(sinTildes(copyEs.contacto.formulario.aviso_datos).includes("politica de privacidad"));
+  assert.ok(copyEs.contacto.email_directo.includes(site.email));
+  assert.equal(copyEs.contacto.llamada.cta, `${booking.ctaLabel} ↗`);
 });
 
 /** El selector del formulario es el copy, no una lista paralela. */

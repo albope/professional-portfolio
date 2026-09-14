@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { Check } from "lucide-react";
 import { SquareWord } from "@/components/ui/SquareWord";
+import { copyEs } from "@/data/copy";
 import { trackEvent, type AnalyticsProperties } from "@/lib/analytics";
 import {
   CONTACT_LIMITS, CONTACT_NEEDS, CONTACT_PROJECTS, CONTACT_TIMEOUTS,
@@ -18,6 +19,28 @@ const fieldOk = "border border-paper/40 focus:border-cobalt-bright disabled:bord
 const fieldBad = "border border-error focus:border-error";
 const labelClasses = "font-mono text-[11px] uppercase tracking-[0.12em] text-paper/78 [fieldset:disabled_&]:text-paper/50 lg:text-xs";
 const fields: ContactField[] = ["nombre", "empresa", "email", "telefono", "mensaje"];
+
+const formulario = copyEs.contacto.formulario;
+const [rotuloNombre, rotuloEmpresa, rotuloEmail, rotuloTelefono] = formulario.campos;
+/** La primera opcion del selector es el marcador; las tres siguientes son CONTACT_NEEDS. */
+const [sinDecidir] = formulario.selector.opciones;
+/**
+ * El aviso de datos termina enlazando a la politica. Se parte por esa frase
+ * exacta para poder pintar el enlace sin reescribir el texto. `copy.test.ts`
+ * comprueba que la frase sigue estando.
+ */
+const ENLACE_PRIVACIDAD = "politica de privacidad";
+const avisoPartido = (() => {
+  const texto = formulario.aviso_datos;
+  const normalizado = texto.normalize("NFD").replace(/\p{Diacritic}/gu, "").toLowerCase();
+  const at = normalizado.indexOf(ENLACE_PRIVACIDAD);
+  if (at === -1) return { antes: texto, enlace: "", despues: "" };
+  return {
+    antes: texto.slice(0, at),
+    enlace: texto.slice(at, at + ENLACE_PRIVACIDAD.length),
+    despues: texto.slice(at + ENLACE_PRIVACIDAD.length),
+  };
+})();
 const subscribe = () => () => {};
 const noContext: ContactContext = { necesidad: "", proyecto: "" };
 
@@ -131,18 +154,18 @@ function ContactFormContent({ context, forceDisabled = false }: { context: Conta
           ? `Espera ${Math.ceil(seconds / 60)} min antes de reintentar.` : "Espera unos minutos antes de reintentar.";
         showError(`Has enviado varias solicitudes. ${delay} Tu mensaje sigue aquí.`, "rate_limited");
       } else if (response.status === 503) {
-        showError("El envío no está disponible en este momento. Tu mensaje sigue aquí; puedes copiarlo y volver más tarde.", "unavailable");
+        showError("El envío no está disponible en este momento. Tu mensaje sigue aquí, puedes copiarlo y volver más tarde.", "unavailable");
       } else if (response.status === 408 || response.status === 504) {
-        showError("La confirmación está tardando demasiado. Tu mensaje sigue aquí; puedes volver a enviarlo.", "timeout");
+        showError("La confirmación está tardando demasiado. Tu mensaje sigue aquí, puedes volver a enviarlo.", "timeout");
       } else if (response.status === 413) {
         showError("El mensaje es demasiado grande. Acórtalo y vuelve a enviarlo.", "too_large");
       } else {
-        showError("No se ha podido confirmar el envío. Tu mensaje sigue aquí; puedes volver a intentarlo.", response.ok ? "unexpected" : "provider");
+        showError("No se ha podido confirmar el envío. Tu mensaje sigue aquí, puedes volver a intentarlo.", response.ok ? "unexpected" : "provider");
       }
     } catch {
       showError(controller.signal.aborted
-        ? "La confirmación está tardando demasiado. Tu mensaje sigue aquí; puedes volver a enviarlo."
-        : "No hemos podido conectar. Revisa tu conexión y vuelve a intentarlo; tu mensaje sigue aquí.",
+        ? "La confirmación está tardando demasiado. Tu mensaje sigue aquí, puedes volver a enviarlo."
+        : "No hemos podido conectar. Revisa tu conexión y vuelve a intentarlo, tu mensaje sigue aquí.",
       controller.signal.aborted ? "timeout" : "network");
     } finally {
       clearTimeout(timer);
@@ -177,41 +200,39 @@ function ContactFormContent({ context, forceDisabled = false }: { context: Conta
         <legend className="sr-only">Cuéntanos qué necesitas resolver</legend>
         <div className="grid gap-[18px] lg:grid-cols-2 lg:gap-[22px]">
           <label className="flex flex-col gap-2" htmlFor="contact-nombre">
-            <span className={labelClasses}>Nombre</span>
+            <span className={labelClasses}>{rotuloNombre}</span>
             <input {...fieldProps("nombre")} type="text" required autoComplete="name" />
             {fieldError("nombre")}
           </label>
-          {/* En móvil el formulario se reduce a lo imprescindible; estos campos
-              siguen en el DOM y se envían vacíos, que es su valor por defecto. */}
-          <label className="hidden flex-col gap-2 md:flex" htmlFor="contact-empresa">
-            <span className={labelClasses}>Empresa (opcional)</span>
+          <label className="flex flex-col gap-2" htmlFor="contact-empresa">
+            <span className={labelClasses}>{rotuloEmpresa}</span>
             <input {...fieldProps("empresa")} type="text" autoComplete="organization" />
             {fieldError("empresa")}
           </label>
         </div>
         <div className="grid gap-[18px] lg:grid-cols-2 lg:gap-[22px]">
           <label className="flex flex-col gap-2" htmlFor="contact-email">
-            <span className={labelClasses}>Email</span>
+            <span className={labelClasses}>{rotuloEmail}</span>
             <input {...fieldProps("email")} type="email" required autoComplete="email" />
             {fieldError("email")}
           </label>
-          <label className="hidden flex-col gap-2 md:flex" htmlFor="contact-telefono">
-            <span className={labelClasses}>Teléfono (opcional)</span>
+          <label className="flex flex-col gap-2" htmlFor="contact-telefono">
+            <span className={labelClasses}>{rotuloTelefono}</span>
             <input {...fieldProps("telefono")} type="tel" inputMode="tel" autoComplete="tel" />
             {fieldError("telefono")}
           </label>
         </div>
-        <label className="hidden flex-col gap-2 md:flex" htmlFor="contact-necesidad">
-          <span className={labelClasses}>¿En qué podemos ayudarte? (opcional)</span>
+        <label className="flex flex-col gap-2" htmlFor="contact-necesidad">
+          <span className={labelClasses}>{formulario.selector.etiqueta}</span>
           <select id="contact-necesidad" name="necesidad" value={need} onChange={(event) => setSelectedNeed(getContactContext(event.target.value, "").necesidad)} className={`campo-select bg-ink ${fieldBase} ${fieldOk}`}>
-            <option value="" className="bg-ink">Todavía no lo tengo claro</option>
+            <option value="" className="bg-ink">{sinDecidir}</option>
             {Object.entries(CONTACT_NEEDS).map(([value, label]) => <option key={value} value={value} className="bg-ink">{label}</option>)}
           </select>
         </label>
         {context.proyecto && <p className="text-sm leading-relaxed text-paper/72">Proyecto de referencia: <span className="text-paper">{CONTACT_PROJECTS[context.proyecto]}</span></p>}
         <label className="flex flex-col gap-2" htmlFor="contact-mensaje">
-          <span className={labelClasses}>¿Qué necesitas resolver?</span>
-          <span id="contact-message-help" className="sr-only text-sm leading-[1.5] text-paper/72 md:not-sr-only md:block">Cuéntanos qué haces y qué te gustaría mejorar. No necesitas tener definido el proyecto.</span>
+          <span className={labelClasses}>{formulario.mensaje.etiqueta}</span>
+          <span id="contact-message-help" className="text-sm leading-[1.5] text-paper/78">{formulario.mensaje.ayuda}</span>
           <textarea {...fieldProps("mensaje")} required rows={5} className={`${fieldBase} ${errors.mensaje ? fieldBad : fieldOk} min-h-[132px] resize-y lg:min-h-[140px]`} />
           {fieldError("mensaje")}
         </label>
@@ -222,12 +243,15 @@ function ContactFormContent({ context, forceDisabled = false }: { context: Conta
       </fieldset>
       {Object.values(errors).some(Boolean) && <p role="alert" className="text-sm text-error-soft">Revisa los campos señalados antes de enviar.</p>}
       {status === "error" && <div ref={errorRef} tabIndex={-1} className="border border-error px-5 py-4 focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-error" role="alert"><p className="text-sm leading-[1.5] text-paper">{serverError}</p></div>}
-      <p className="text-xs leading-[1.55] text-paper/72 lg:text-[13px]">
-        BPM Tech (BORT PEREZ MULTI GESTION SOCIEDAD LIMITADA) utilizará tus datos para responder a tu consulta y, si procede, preparar una propuesta. Cómo ejercer tus derechos y el resto de información, en la{" "}
-        <a href="/privacidad" target="_blank" rel="noopener noreferrer" className="text-paper underline underline-offset-4 transition-colors duration-300 hover:text-cobalt-bright focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cobalt-bright">política de privacidad <span className="text-paper/72">(se abre en otra pestaña)</span></a>.
+      <p className="text-xs leading-[1.55] text-paper/78 lg:text-[13px]">
+        {avisoPartido.antes}
+        {avisoPartido.enlace && (
+          <a href="/privacidad" target="_blank" rel="noopener noreferrer" className="text-paper underline underline-offset-4 transition-colors duration-300 hover:text-cobalt-bright focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cobalt-bright">{avisoPartido.enlace}<span className="sr-only"> (se abre en otra pestaña)</span></a>
+        )}
+        {avisoPartido.despues}
       </p>
       <button type="submit" disabled={disabled} className="min-h-[52px] w-full bg-paper px-[30px] text-[15px] font-semibold text-ink transition-colors duration-300 ease-editorial hover:bg-cobalt-bright active:translate-y-[1px] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cobalt-bright disabled:pointer-events-none disabled:opacity-60 md:w-auto md:self-start">
-        {status === "sending" ? "Enviando…" : "Enviar consulta"}
+        {status === "sending" ? "Enviando…" : formulario.boton}
       </button>
       <p role="status" aria-live="polite" className="sr-only">{status === "sending" ? "Enviando tu consulta. Espera unos segundos." : ""}</p>
     </form>
