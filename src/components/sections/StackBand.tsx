@@ -62,7 +62,7 @@ export function StackBand() {
           </p>
           <ul className="mt-4 grid grid-cols-4 items-center gap-x-4 gap-y-4 lg:mt-6 lg:flex lg:justify-between lg:gap-x-8">
             {herramientas.map((item) => (
-              <li key={item.nombre} className="flex items-center">
+              <li key={item.nombre} className="flex items-center lg:min-w-0 lg:flex-1">
                 {item.logo ? (
                   <span
                     role="img"
