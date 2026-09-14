@@ -15,8 +15,8 @@ interface PageProps {
 /** Los escenarios sangran en móvil y recuperan el margen del lienzo arriba. */
 const inset = "w-full md:px-10 wide:px-[60px]";
 const dtClass = "font-mono text-[10px] uppercase tracking-[0.12em] text-ink-mute lg:text-[11px] lg:tracking-[0.1em]";
-const titleClass = "text-xl font-semibold leading-[1.2] tracking-[-0.015em] lg:text-2xl lg:leading-[1.15]";
-const pairClass = "lg:grid lg:grid-cols-[424fr_872fr] lg:gap-x-6";
+const titleClass = "text-xl font-semibold leading-[1.2] tracking-[-0.015em] lg:text-[26px] lg:leading-[1.15] wide:text-[30px]";
+const pairClass = "rejilla-editorial";
 
 export function generateStaticParams() {
   return projects.map((project) => ({ slug: project.slug }));
@@ -92,11 +92,11 @@ export default async function ProjectPage({ params }: PageProps) {
           </p>
         </div>
 
-        <h1 className="display mt-5 max-w-[1000px] text-[34px] leading-[0.98] text-ink lg:mt-10 lg:text-[56px]">
+        <h1 className="display mt-5 max-w-[1000px] text-[34px] leading-[0.98] text-ink lg:mt-10 lg:text-[clamp(2.75rem,3.75vw,3.375rem)] wide:text-[54px]">
           {project.heroPre} <SquareWord word={project.heroWord} />
         </h1>
 
-        <div className="mt-5 lg:mt-8 lg:grid lg:grid-cols-[760fr_472fr] lg:items-end lg:gap-x-[88px]">
+        <div className="mt-5 lg:mt-8 lg:grid lg:grid-cols-[696fr_536fr] lg:items-end lg:gap-x-[88px]">
           <p className="text-base leading-[1.55] text-ink-soft lg:text-[19px]">{project.intro}</p>
           {project.aside && (
             <p className="mt-4 border-l-2 border-cobalt pl-4 text-sm leading-[1.55] text-ink-mute lg:mt-0">
@@ -122,7 +122,7 @@ export default async function ProjectPage({ params }: PageProps) {
 
         <section
           aria-label="Desarrollo del proyecto"
-          className="flex flex-col gap-9 pt-12 lg:gap-16 lg:pt-24"
+          className="flex flex-col gap-9 pt-12 lg:gap-16 lg:pt-24 wide:gap-20 wide:pt-[120px]"
         >
           <div className={pairClass}>
             <h2 className={titleClass}>Qué necesitaba resolver</h2>
@@ -157,8 +157,8 @@ export default async function ProjectPage({ params }: PageProps) {
       {detalles.length > 0 && (
         <section
           aria-label="Detalles de interfaz"
-          className={`grid items-start gap-y-8 pt-12 lg:gap-x-6 lg:pt-24 ${inset} ${
-            detalles.length > 1 ? "min-[900px]:grid-cols-[760fr_536fr]" : ""
+          className={`grid items-start gap-y-8 pt-12 lg:pt-24 wide:pt-[120px] ${inset} ${
+            detalles.length > 1 ? "min-[900px]:grid-cols-[696fr_536fr] lg:gap-x-[88px]" : ""
           }`}
         >
           {detalles.map((figure) => (
@@ -167,7 +167,7 @@ export default async function ProjectPage({ params }: PageProps) {
         </section>
       )}
 
-      <section aria-label="Una decisión concreta" className={`mt-12 lg:mt-24 ${inset}`}>
+      <section aria-label="Una decisión concreta" className={`mt-12 lg:mt-24 wide:mt-[120px] ${inset}`}>
         <div className={`bg-paper-2 px-4 pb-8 pt-7 lg:px-10 lg:pb-12 lg:pt-11 ${pairClass}`}>
           <h2 className={titleClass}>Una decisión concreta</h2>
           <div className="lg:max-w-[720px]">
@@ -187,9 +187,9 @@ export default async function ProjectPage({ params }: PageProps) {
       <section
         id="contacto"
         aria-labelledby="ficha-cta"
-        className="mt-12 scroll-mt-6 bg-ink text-paper lg:mt-[120px]"
+        className="mt-12 scroll-mt-6 bg-ink text-paper lg:mt-24 wide:mt-[120px]"
       >
-        <div className="container-editorial pb-16 pt-14 lg:grid lg:grid-cols-2 lg:items-start lg:gap-x-6 lg:pb-[104px] lg:pt-24">
+        <div className="container-editorial rejilla-editorial pb-16 pt-14 lg:pb-[104px] lg:pt-24">
           <div>
             <h2
               id="ficha-cta"

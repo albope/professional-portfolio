@@ -191,7 +191,7 @@ export const projects: Project[] = [
       {
         shot: {
           ...files.movimientos,
-          alt: "Pantalla de movimientos: libro de entradas, salidas, traspasos y ajustes con sus filtros; la marca del producto aparece difuminada",
+          alt: "Pantalla de movimientos: libro de entradas, salidas, traspasos y ajustes con sus filtros. La marca del producto aparece difuminada",
         },
         scene: "wms",
         legend: "Libro de movimientos",
@@ -286,7 +286,7 @@ export const projects: Project[] = [
       "La web combina la presentación del evento con una tarea concreta: recoger las confirmaciones y las preferencias de los invitados. Había que resolver las dos cosas sin que una estorbase a la otra.",
     built: {
       body:
-        "La web de invitación, el flujo de confirmación con avisos por email, una galería colaborativa y un panel privado. La parte pública informa y recoge respuestas; el espacio privado permite gestionarlas.",
+        "La web de invitación, el flujo de confirmación con avisos por email, una galería colaborativa y un panel privado. La parte pública informa y recoge respuestas, el espacio privado permite gestionarlas.",
       features: [
         "Información del evento y horario",
         "Confirmación de asistencia",
@@ -328,7 +328,7 @@ export const projects: Project[] = [
       {
         shot: {
           ...files.radioPortada,
-          alt: "Portada de la web: cabecera con navegación y botón En directo, titular grande sobre la fotografía del equipo y reproductor fijo en la parte inferior; la marca aparece difuminada",
+          alt: "Portada de la web: cabecera con navegación y botón En directo, titular grande sobre la fotografía del equipo y reproductor fijo en la parte inferior. La marca aparece difuminada",
         },
         scene: "radio",
         legend: "Portada y directo",
@@ -340,7 +340,7 @@ export const projects: Project[] = [
       {
         shot: {
           ...files.radioMovil,
-          alt: "Versión móvil de la web: cabecera, titular de la emisión en directo y tarjeta del reproductor; la marca aparece difuminada",
+          alt: "Versión móvil de la web: cabecera, titular de la emisión en directo y tarjeta del reproductor. La marca aparece difuminada",
         },
         scene: "radio",
         legend: "En el móvil",
@@ -443,7 +443,7 @@ export const homeShots = {
   },
   almacenMovimientos: {
     ...files.movimientos,
-    alt: "Pantalla de movimientos: libro de entradas, salidas, traspasos y ajustes; la marca del producto aparece difuminada",
+    alt: "Pantalla de movimientos: libro de entradas, salidas, traspasos y ajustes. La marca del producto aparece difuminada",
   },
   almacenRf: {
     ...files.rfEntrada,
@@ -459,11 +459,11 @@ export const homeShots = {
   },
   radioPortada: {
     ...files.radioPortada,
-    alt: "Portada de la web de radio: cabecera con navegación y botón En directo, titular grande sobre la fotografía del equipo y reproductor fijo inferior; la marca aparece difuminada",
+    alt: "Portada de la web de radio: cabecera con navegación y botón En directo, titular grande sobre la fotografía del equipo y reproductor fijo inferior. La marca aparece difuminada",
   },
   radioMovil: {
     ...files.radioMovil,
-    alt: "Versión móvil de la web de radio: cabecera, titular de la emisión en directo y tarjeta del reproductor; la marca aparece difuminada",
+    alt: "Versión móvil de la web de radio: cabecera, titular de la emisión en directo y tarjeta del reproductor. La marca aparece difuminada",
   },
   asistente: {
     ...files.asistentePanel,

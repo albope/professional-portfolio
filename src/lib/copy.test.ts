@@ -4,6 +4,7 @@ import { copyEs, lineasDelTitular, partirFlecha, proyectoSlugs, servicioNeeds } 
 import { CONTACT_NEEDS, CONTACT_PROJECTS } from "./contact";
 import { site } from "../data/site";
 import { booking } from "../data/booking";
+import { projects, homeShots } from "../data/projects";
 
 /** Recorre el JSON y devuelve cada cadena con la ruta donde vive. */
 function strings(value: unknown, path = ""): Array<[string, string]> {
@@ -24,6 +25,19 @@ const todo = strings(copyEs);
 test("no copy string uses a semicolon", () => {
   for (const [path, value] of todo) {
     assert.equal(value.includes(";"), false, `Punto y coma en ${path}: «${value}»`);
+  }
+});
+
+/**
+ * La misma regla alcanza al copy de las fichas de proyecto y a los textos
+ * alternativos, que viven fuera del JSON pero se leen igual en pantalla.
+ */
+test("no project copy or alt text uses a semicolon", () => {
+  for (const [path, value] of strings(projects)) {
+    assert.equal(value.includes(";"), false, `Punto y coma en projects.${path}: «${value}»`);
+  }
+  for (const [path, shot] of Object.entries(homeShots)) {
+    assert.equal(shot.alt.includes(";"), false, `Punto y coma en homeShots.${path}`);
   }
 });
 
