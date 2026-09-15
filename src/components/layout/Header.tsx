@@ -14,7 +14,7 @@ const DESKTOP = "(min-width: 768px)";
 const cta = partirFlecha(copyEs.nav.cta);
 
 const navLink =
-  "inline-flex min-h-11 items-center border-b border-transparent text-sm font-medium text-ink-soft transition-colors duration-300 ease-editorial hover:border-ink hover:text-ink wide:text-[15px]";
+  "inline-flex min-h-11 items-center border-b border-transparent text-sm font-medium text-paper/72 transition-colors duration-300 ease-editorial hover:border-paper hover:text-paper wide:text-[15px]";
 
 /** Native modal dialog supplies focus containment and makes the background inert. */
 export function Header() {
@@ -68,7 +68,10 @@ export function Header() {
 
   return (
     <>
-      <header className="border-b border-line bg-paper">
+      {/* Cabecera sobre tinta: abre la página en oscuro y enlaza sin salto con
+          el menú móvil, que ya era de tinta. El anillo de foco lo resuelve la
+          regla `.bg-ink :focus-visible` de globals.css. */}
+      <header className="bg-ink text-paper">
         <div className="container-editorial flex h-[60px] items-center justify-between md:h-16 wide:h-[72px]">
           <Link
             ref={brandRef}
@@ -76,8 +79,8 @@ export function Header() {
             aria-label="BPM Tech, inicio"
             className="inline-flex min-h-11 items-center"
           >
-            <Wordmark size={16} className="wide:hidden" />
-            <Wordmark size={19} className="hidden wide:inline-flex" />
+            <Wordmark tone="paper" size={16} className="wide:hidden" />
+            <Wordmark tone="paper" size={19} className="hidden wide:inline-flex" />
           </Link>
 
           <nav aria-label="Principal" className="hidden items-center gap-6 md:flex wide:gap-8">
@@ -86,7 +89,7 @@ export function Header() {
                 key={item.href}
                 href={item.href}
                 aria-current={isActive(item.href) ? "page" : undefined}
-                className={cn(navLink, isActive(item.href) && "border-ink text-ink")}
+                className={cn(navLink, isActive(item.href) && "border-paper text-paper")}
               >
                 {item.label}
               </Link>
@@ -95,7 +98,7 @@ export function Header() {
               href={ctaHref}
               data-track="cta_click"
               data-track-location="header"
-              className="ml-2 inline-flex min-h-11 items-center gap-2.5 bg-ink px-4 text-sm font-semibold text-paper transition-colors duration-300 ease-editorial hover:bg-cobalt wide:px-5 wide:text-[15px]"
+              className="ml-2 inline-flex min-h-11 items-center gap-2.5 bg-paper px-4 text-sm font-semibold text-ink transition-colors duration-300 ease-editorial hover:bg-cobalt-bright wide:px-5 wide:text-[15px]"
             >
               {cta.texto}
               <span aria-hidden className="font-mono">{cta.flecha}</span>
@@ -105,7 +108,7 @@ export function Header() {
           <button
             ref={triggerRef}
             type="button"
-            className="js-menu-trigger -mr-1 flex min-h-11 items-center gap-3 pl-2 pr-1 text-sm font-medium text-ink md:hidden"
+            className="js-menu-trigger -mr-1 flex min-h-11 items-center gap-3 pl-2 pr-1 text-sm font-medium text-paper md:hidden"
             aria-expanded={open}
             aria-controls="menu-movil"
             aria-haspopup="dialog"
@@ -113,19 +116,19 @@ export function Header() {
           >
             Menú
             <span aria-hidden className="flex w-5 flex-col gap-1.5">
-              <span className="h-px w-full bg-ink" />
-              <span className="h-px w-full bg-ink" />
+              <span className="h-px w-full bg-paper" />
+              <span className="h-px w-full bg-paper" />
             </span>
           </button>
         </div>
 
         <noscript>
           <style>{`.js-menu-trigger { display: none !important; } @media (max-width: 767px) { main section[id] { scroll-margin-top: 56px; } }`}</style>
-          <nav aria-label="Principal móvil" className="flex gap-6 overflow-x-auto border-t border-line px-4 md:hidden">
+          <nav aria-label="Principal móvil" className="flex gap-6 overflow-x-auto border-t border-line-dark px-4 md:hidden">
             {nav.map((item) => (
-              <a key={item.href} href={item.href} className="inline-flex min-h-11 shrink-0 items-center text-sm text-ink">{item.label}</a>
+              <a key={item.href} href={item.href} className="inline-flex min-h-11 shrink-0 items-center text-sm text-paper">{item.label}</a>
             ))}
-            <a href={ctaHref} className="inline-flex min-h-11 shrink-0 items-center text-sm text-ink">Contacto</a>
+            <a href={ctaHref} className="inline-flex min-h-11 shrink-0 items-center text-sm text-paper">Contacto</a>
           </nav>
         </noscript>
       </header>

@@ -86,9 +86,11 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
         />
+        {/* Cobalto, no tinta: el salto aparece sobre la cabecera, que es de
+            tinta, pero al estar fijo también puede caer sobre papel. */}
         <a
           href="#contenido"
-          className="sr-only z-[100] focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:bg-ink focus:px-4 focus:py-2 focus:text-paper"
+          className="sr-only z-[100] focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:bg-cobalt focus:px-4 focus:py-2 focus:text-paper"
         >
           Saltar al contenido
         </a>

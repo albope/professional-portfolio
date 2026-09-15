@@ -80,6 +80,19 @@ const config: Config = {
         ],
         lead: ["clamp(1rem, 1.35vw, 1.1875rem)", { lineHeight: "1.6" }],
       },
+      /* La escala de opacidad de Tailwind va de cinco en cinco, así que un
+         modificador como text-paper/78 no genera ninguna regla y la utilidad
+         desaparece en silencio: el texto hereda el color del contenedor y se
+         ve a plena opacidad. Estos son los valores que usa el diseño sobre
+         tinta; se declaran para conservarlos tal cual, en vez de redondearlos. */
+      opacity: {
+        16: "0.16",
+        24: "0.24",
+        28: "0.28",
+        62: "0.62",
+        72: "0.72",
+        78: "0.78",
+      },
       transitionTimingFunction: {
         editorial: "cubic-bezier(0.16, 1, 0.3, 1)",
       },
