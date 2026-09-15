@@ -24,6 +24,8 @@ Los visuales son capturas reales de los productos con datos de demo, servidas de
 - **Web de radio**: marca difuminada, sin nombre ni enlace hasta tener permiso del cliente.
 - **Asistente de IA**: captura sin la marca del producto ni avatar. Revisar nombres de clientes y personas visibles antes de cada publicación.
 
+La banda tinta cierra con una fila de siete herramientas —Next.js, React, Supabase, Python, Anthropic, OpenAI y AWS— pintadas en monocromo papel mediante máscara CSS sobre el SVG de cada marca. **Python, OpenAI y AWS piden autorización para recolorear su marca o reservan su wordmark.** Alberto Bort decidió publicarlas igualmente en septiembre de 2026 y asume esa responsabilidad; la decisión no está revisada con esas marcas y queda anotada en `src/data/stack.ts`.
+
 La sección Sobre BPM Tech publica el retrato y el nombre **Alberto Bort** junto al rol «Dirección de proyectos y tecnología», confirmado por él en septiembre de 2026. No se inventa tamaño de equipo, capacidad ni disponibilidad. Propiedad, documentación, presupuesto y soporte se acuerdan en cada propuesta.
 
 ## Estado técnico

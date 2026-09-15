@@ -60,15 +60,16 @@ export function StackBand() {
           <p className="font-mono text-[10px] uppercase tracking-[0.12em] text-paper/62 lg:text-xs lg:tracking-[0.1em]">
             {como.stack.kicker}
           </p>
-          <ul className="mt-4 grid grid-cols-4 items-center gap-x-4 gap-y-4 lg:mt-6 lg:flex lg:justify-between lg:gap-x-8">
+          <ul className="mt-5 flex flex-wrap items-center gap-x-6 gap-y-5 lg:mt-6 lg:flex-nowrap lg:justify-between lg:gap-x-8">
             {herramientas.map((item) => (
-              <li key={item.nombre} className="flex items-center lg:min-w-0 lg:flex-1">
+              <li key={item.nombre} className="flex items-center">
                 {item.logo ? (
                   <span
                     role="img"
                     aria-label={item.nombre}
                     style={{
                       height: item.alto,
+                      width: item.ancho,
                       maskImage: `url(${item.logo})`,
                       WebkitMaskImage: `url(${item.logo})`,
                       maskRepeat: "no-repeat",
@@ -78,7 +79,7 @@ export function StackBand() {
                       maskSize: "contain",
                       WebkitMaskSize: "contain",
                     }}
-                    className="block w-full bg-paper"
+                    className="block shrink-0 bg-paper"
                   />
                 ) : (
                   <span className="font-mono text-[11px] tracking-[0.06em] text-paper lg:text-[13px]">
