@@ -1,5 +1,6 @@
 import { copyEs } from "@/data/copy";
 import { herramientas } from "@/data/stack";
+import { AutoCarousel } from "@/components/ui/AutoCarousel";
 
 const { como_trabajamos: como } = copyEs;
 
@@ -10,9 +11,10 @@ const { como_trabajamos: como } = copyEs;
  * Sangra hasta los bordes del lienzo: la sección la envuelve con el margen del
  * contenedor y la banda lo recupera con márgenes negativos.
  *
- * En móvil los tres pilares se recorren en horizontal con anclaje obligatorio.
- * La fila es un `ul` con `tabindex`, para que quien navegue con teclado pueda
- * desplazarla sin ratón.
+ * En móvil los tres pilares se recorren en horizontal con anclaje obligatorio
+ * y avanzan solos hasta que el visitante toma el control; las condiciones de
+ * ese movimiento están en `AutoCarousel`. La fila es un `ul` con `tabindex`,
+ * para que quien navegue con teclado pueda desplazarla sin ratón.
  */
 export function StackBand() {
   return (
@@ -33,12 +35,13 @@ export function StackBand() {
         </div>
 
         {/* Móvil: tres tarjetas de 268 px que se recorren en horizontal. */}
-        <p className="mt-9 font-mono text-[10px] uppercase tracking-[0.12em] text-paper/62 lg:hidden">
-          Desliza <span aria-hidden>→</span>
-        </p>
-        <ul
-          tabIndex={0}
-          aria-label="Cómo trabajamos"
+        <AutoCarousel
+          label="Cómo trabajamos"
+          hint={
+            <>
+              Desliza <span aria-hidden>→</span>
+            </>
+          }
           className="-mx-4 mt-3 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-1 md:-mx-10 md:px-10 lg:mx-0 lg:mt-14 lg:grid lg:grid-cols-3 lg:gap-x-[88px] lg:overflow-visible lg:px-0 lg:pb-0"
         >
           {como.pilares.map((pilar) => (
@@ -54,7 +57,7 @@ export function StackBand() {
               </p>
             </li>
           ))}
-        </ul>
+        </AutoCarousel>
 
         <div className="mt-11 border-t border-paper/16 pt-6 lg:mt-16 lg:pt-7">
           <p className="font-mono text-[10px] uppercase tracking-[0.12em] text-paper/62 lg:text-xs lg:tracking-[0.1em]">

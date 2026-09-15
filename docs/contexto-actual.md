@@ -35,7 +35,7 @@ La sección Sobre BPM Tech publica el retrato y el nombre **Alberto Bort** junto
 - `ink-faint` actualizado a `#6a685d`; etiquetas legibles y contraste revisado en las combinaciones utilizadas.
 - Lienzo de 1440 px centrado; márgenes 16 / 40 / 60 con punto de ruptura propio `wide` en 1440. Esquinas rectas y sin sombras salvo en las capturas de evento y radio.
 - Cabecera estática sobre papel: 60 px en móvil, 64 entre 768 y 1439, 72 a partir de 1440. La navegación completa aparece desde 768 px.
-- Una sola animación continua en toda la web: la última palabra del titular del hero recorre negocio, club, almacén, evento y radio. Con `prefers-reduced-motion` se queda en «negocio».
+- Dos movimientos automáticos en toda la web, ambos apagados con `prefers-reduced-motion`. El primero es la última palabra del titular del hero, que recorre negocio, club, almacén, evento y radio; con movimiento reducido se queda en «negocio». El segundo, decidido en septiembre de 2026, es el carril de los tres pilares de la banda tinta: por debajo de 1024 px avanza una tarjeta cada cinco segundos, solo mientras la sección está en pantalla y la pestaña visible, y **se detiene de forma definitiva en cuanto el visitante toca, teclea o enfoca el carril**. Unos trazos bajo la pista de deslizamiento marcan la posición.
 - Contenido servido visible, sin depender de la hidratación para aparecer. Framer Motion y Lenis retirados.
 - Scroll nativo (sin `scroll-behavior: smooth`), movimiento reducido y árbol estable para preservar el formulario.
 - Menú móvil mediante diálogo nativo: fondo inerte, foco contenido, cierre con Escape, devolución del foco y cierre al ampliar a escritorio. Navegación alternativa cuando JavaScript está desactivado.
