@@ -15,6 +15,11 @@ const { como_trabajamos: como } = copyEs;
  * y avanzan solos hasta que el visitante toma el control; las condiciones de
  * ese movimiento están en `AutoCarousel`. La fila es un `ul` con `tabindex`,
  * para que quien navegue con teclado pueda desplazarla sin ratón.
+ *
+ * El carril sangra hasta el borde de la banda con `-mx-4`, así que necesita
+ * `scroll-pl-4` a juego con su `px-4`: el anclaje se mide contra la caja de
+ * relleno, no contra el contenido, y sin ese ajuste cada tarjeta anclada se
+ * quedaba cuatro unidades a la izquierda de la columna de la sección.
  */
 export function StackBand() {
   return (
@@ -42,7 +47,7 @@ export function StackBand() {
               Desliza <span aria-hidden>→</span>
             </>
           }
-          className="-mx-4 mt-3 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-1 md:-mx-10 md:px-10 lg:mx-0 lg:mt-14 lg:grid lg:grid-cols-3 lg:gap-x-[88px] lg:overflow-visible lg:px-0 lg:pb-0"
+          className="-mx-4 mt-3 flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-pl-4 px-4 pb-1 md:-mx-10 md:scroll-pl-10 md:px-10 lg:mx-0 lg:mt-14 lg:grid lg:grid-cols-3 lg:gap-x-[88px] lg:overflow-visible lg:px-0 lg:pb-0"
         >
           {como.pilares.map((pilar) => (
             <li

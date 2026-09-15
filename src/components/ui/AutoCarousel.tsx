@@ -12,7 +12,7 @@ import { cn } from "@/lib/utils";
 /** Por debajo de 1024 px el carril se desliza; a partir de ahí es una rejilla. */
 const RAIL = "(max-width: 1023.98px)";
 const REDUCED = "(prefers-reduced-motion: reduce)";
-const STEP_MS = 5000;
+const STEP_MS = 4000;
 
 /**
  * Índice de la tarjeta que ocupa el borde izquierdo del carril.
@@ -59,6 +59,10 @@ type Props = {
  * visitante toca, teclea o enfoca el carril: a partir de ahí manda él. Solo
  * corre mientras la sección está en pantalla y la pestaña visible, nunca por
  * encima de 1024 px y nunca con `prefers-reduced-motion`.
+ *
+ * Si el carril tiene relleno propio, quien lo usa debe darle un
+ * `scroll-padding` a juego: el anclaje se mide contra la caja de relleno y
+ * sin él las tarjetas ancladas se salen de la columna de la sección.
  */
 export function AutoCarousel({ label, hint, className, children }: Props) {
   const rail = useRef<HTMLUListElement>(null);
