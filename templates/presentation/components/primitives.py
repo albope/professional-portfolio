@@ -216,12 +216,43 @@ def eyebrow(slide, text: str, *, dark: bool = False, x: float = GRID.left, y: fl
     )
 
 
-def wordmark(slide, *, dark: bool = False, x: float = 10.9, y: float = 0.48, scale: float = 1.0):
-    ink = PALETTE.paper if dark else PALETTE.ink
+def wordmark(slide, *, dark: bool = False, x: float | None = None, y: float = 0.48, scale: float = 1.0):
+    """Wordmark web de BPM Tech (decisión de marca del 17-sep-2026): «BPM» + «TECH» en
+    Fragment Mono seguido del glifo de tres piezas (barra, cuadrado hueco y cuadrado
+    sólido). Todo son formas editables. Se alinea a la derecha del margen de la
+    retícula; `x` se conserva por compatibilidad con las llamadas existentes."""
+    base = PALETTE.paper if dark else PALETTE.ink
     accent = PALETTE.cobalt_bright if dark else PALETTE.cobalt
-    textbox(slide, "BPM", x, y, 0.7 * scale, 0.28 * scale, font=FONTS.display, size=13 * scale, color=ink)
-    textbox(slide, "TECH", x + 0.67 * scale, y + 0.065 * scale, 0.55 * scale, 0.2 * scale, font=FONTS.display, size=7.2 * scale, color=accent)
-    rect(slide, x + 1.19 * scale, y + 0.14 * scale, 0.08 * scale, 0.08 * scale, fill=ink)
+    size = 10 * scale
+    text_w = 0.76 * scale
+    text_h = 0.21 * scale
+    symbol = 0.09 * scale
+    symbol_gap = 0.04 * scale
+    text_gap = 0.065 * scale
+    total_w = text_w + text_gap + symbol * 3 + symbol_gap * 2
+    left = GRID.width - GRID.right - total_w
+    shape = slide.shapes.add_textbox(Inches(left), Inches(y), Inches(text_w), Inches(text_h))
+    tf = shape.text_frame
+    tf.clear()
+    tf.margin_left = tf.margin_right = tf.margin_top = tf.margin_bottom = 0
+    tf.vertical_anchor = MSO_ANCHOR.MIDDLE
+    tf.word_wrap = False
+    paragraph = tf.paragraphs[0]
+    for text, color in (("BPM", base), ("TECH", accent)):
+        run = paragraph.add_run()
+        run.text = text
+        run.font.name = FONTS.mono
+        run.font.size = Pt(size)
+        run.font.bold = False
+        run.font.color.rgb = rgb(color)
+        run._r.get_or_add_rPr().set("spc", str(int(0.06 * size * 100)))
+    glyph_left = left + text_w + text_gap
+    glyph_top = y + (text_h - symbol) / 2
+    bar_h = 0.025 * scale
+    rect(slide, glyph_left, glyph_top + (symbol - bar_h) / 2, symbol, bar_h, fill=base)
+    outline_left = glyph_left + symbol + symbol_gap
+    rect(slide, outline_left, glyph_top, symbol, symbol, line=base, line_width=1.25)
+    rect(slide, outline_left + symbol + symbol_gap, glyph_top, symbol, symbol, fill=accent)
 
 
 def footer(slide, number: int, total: int, *, dark: bool = False, label: str = "BPM TECH · PROPUESTA"):
@@ -266,16 +297,23 @@ def title_block(
     tf.margin_bottom = 0
     tf.word_wrap = True
     p = tf.paragraphs[0]
+    text = title.upper().strip()
+    # El cuadrado cobalto sustituye al punto final del titular. Tras una pregunta o
+    # una exclamación no se añade: el signo ya cierra el titular (plantilla del DS).
+    closes_itself = text.endswith(("?", "!"))
+    if text.endswith("."):
+        text = text[:-1].rstrip()
     title_run = p.add_run()
-    title_run.text = title.upper()
+    title_run.text = text
     title_run.font.name = FONTS.display
     title_run.font.size = Pt(size)
     title_run.font.color.rgb = rgb(color)
-    square_run = p.add_run()
-    square_run.text = " ■"
-    square_run.font.name = "Arial"
-    square_run.font.size = Pt(size * 0.30)
-    square_run.font.color.rgb = rgb(dark_accent(dark))
+    if not closes_itself:
+        square_run = p.add_run()
+        square_run.text = " ■"
+        square_run.font.name = "Arial"
+        square_run.font.size = Pt(size * 0.30)
+        square_run.font.color.rgb = rgb(dark_accent(dark))
     return shape
 
 

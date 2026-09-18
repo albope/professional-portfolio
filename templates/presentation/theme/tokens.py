@@ -8,7 +8,7 @@ class Palette:
     ink_2: str = "18181C"
     ink_soft: str = "3D3C35"
     ink_mute: str = "5A594F"
-    ink_faint: str = "8A887D"
+    ink_faint: str = "6A685D"
     cobalt: str = "2743E0"
     cobalt_deep: str = "1E35B8"
     cobalt_bright: str = "6B83FF"

@@ -19,7 +19,7 @@ Fuente de verdad: `Identidad visual pending respuestas.pdf`. La web se utilizó 
 | `ink_2` | `#18181C` | Superficie sobre fondo oscuro |
 | `ink_soft` | `#3D3C35` | Texto secundario fuerte |
 | `ink_mute` | `#5A594F` | Texto explicativo |
-| `ink_faint` | `#8A887D` | Captions y metadatos |
+| `ink_faint` | `#6A685D` | Captions y metadatos (alineado con la web el 18-sep-2026, antes `#8A887D`) |
 | `cobalt` | `#2743E0` | Acento sobre papel |
 | `cobalt_deep` | `#1E35B8` | Variante de apoyo |
 | `cobalt_bright` | `#6B83FF` | Acento legible sobre tinta |
