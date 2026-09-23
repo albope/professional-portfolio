@@ -11,6 +11,7 @@ El estado funcional del repositorio se resume en [docs/contexto-actual.md](docs/
 - Archivo Black para titulares, Archivo para texto y Fragment Mono para etiquetas, cargadas con `next/font`.
 - Renderizado del contenido en servidor y navegación mediante enlaces normales. El menú móvil utiliza un diálogo nativo.
 - Scroll nativo y respeto a `prefers-reduced-motion`. No se utilizan Framer Motion ni Lenis. El contenido permanece visible sin JavaScript.
+- La portada usa contenido estático servido desde el servidor, capturas reales y scroll nativo. Antes del contacto hay cinco preguntas frecuentes con desplegables nativos. El asistente de ideas, el canvas y las secciones animadas de la propuesta anterior ya no se montan en la home.
 
 Con Node 24 activo:
 
@@ -34,21 +35,23 @@ Los tests de correo sustituyen al proveedor y no envían mensajes reales. El bui
 
 ## Contenido y estructura
 
-La home sigue este recorrido: propuesta, tres necesidades, proyectos reales, método, responsable del trabajo y contacto. Las necesidades son **ordenar la operativa**, **conectar y automatizar** y **crear o mejorar una web**. La consultoría ayuda a decidir el siguiente paso cuando todavía no hay una solución definida.
+La home presenta una oferta directa, tres proyectos destacados (pádel, almacén y radio), tres servicios, un proceso de tres pasos, una presentación de Alberto, preguntas frecuentes y contacto. Evento y asistente de IA conservan enlaces a sus fichas. El bloque «Lo que conviene tener claro» responde sobre presupuesto, herramientas actuales, empezar por una mejora, mantenimiento y necesidades todavía poco definidas. La primera respuesta aparece abierta y todas funcionan sin JavaScript.
 
 ```text
 src/
   app/                         home, casos, legales, 404, sitemap, robots y OG
     api/contact/               recepción de consultas
+    api/diagnostico/           diagnóstico en directo con la API de Anthropic
     api/events/                eventos operativos con categorías limitadas
   components/
     analytics/                 medición de enlaces y visitas a casos
     booking/                   acceso a la agenda y diálogo de reserva
-    layout/                    cabecera, pie y wrapper estable de contenido
+    diagnostico/               formulario del diagnóstico en directo
+    layout/                    cabecera fija, pie y wrapper estable de contenido
     sections/                  secciones de la home y formulario
-    ui/                        primitivas visuales y esquemas de proyectos
-  data/                        site, services, projects, process, legal y booking
-  lib/                         contacto, eventos, tests, fuentes y generación OG
+    ui/                        primitivas visuales, canvas de la portada y esquemas
+  data/                        site, copy, projects, legal y booking
+  lib/                         contacto, diagnóstico, motor del canvas, eventos, tests, fuentes y OG
 ```
 
 Los datos de servicios, proyectos, fases e identidad se editan en `src/data/`. El copy de las secciones y la estructura visual también viven en sus componentes. `Reveal` conserva un wrapper de contenido visible en servidor; su nombre no implica una animación.
@@ -57,13 +60,13 @@ Los datos de servicios, proyectos, fases e identidad se editan en `src/data/`. E
 
 | Ruta | Proyecto |
 |---|---|
-| `/proyectos/asistente-ia-gestion-proyectos` | Asistente de IA para gestión de proyectos, destacado |
+| `/proyectos/asistente-ia-gestion-proyectos` | Asistente de IA para gestión de proyectos |
 | `/proyectos/plataforma-clubes-padel` | Plataforma de gestión para clubes de pádel |
 | `/proyectos/wms-almacen` | Sistema de gestión de almacén |
 | `/proyectos/web-boda` | Web de evento con confirmación de invitados |
 | `/proyectos/web-radio` | Web para un programa de radio con directo |
 
-Los cinco se presentan como **proyectos reales**: tres de software, con el asistente de IA destacado, y dos webs. Las fichas explican necesidad, trabajo realizado, alcance y decisiones. Los visuales son esquemas funcionales identificados como tales. No se publican métricas, testimonios, nombres de terceros o resultados comerciales sin evidencia y autorización.
+Los cinco se presentan como proyectos reales. Las fichas explican necesidad, trabajo realizado, alcance y decisiones. Los visuales son capturas reales con datos de demo y las restricciones de marca documentadas en `docs/contexto-actual.md`. No se publican métricas, testimonios, nombres de terceros o resultados comerciales sin evidencia y autorización.
 
 El asistente de IA se acredita como experiencia profesional de la dirección de proyectos y tecnología, desarrollada en un equipo interno y presentada de forma anónima. Es un desarrollo funcional para un piloto interno: dos agentes para conocimiento y gestión de proyectos, documentos, seguimiento, decisiones y estimaciones revisables. Sus conexiones dependen de configuración y permisos; el caso no acredita una implantación generalizada ni resultados de negocio.
 
@@ -81,6 +84,8 @@ El contacto público de BPM Tech es `bpmtechstudio@gmail.com`, centralizado en `
 | `RESEND_API_KEY` | Credencial del proveedor de correo. Necesaria para enviar. |
 | `CONTACT_EMAIL` | Destino del formulario: `bpmtechstudio@gmail.com`. Necesario para enviar. |
 | `CONTACT_FROM` | Remitente autorizado. Sin valor usa `BPM Tech <onboarding@resend.dev>`; para producción debe configurarse y verificarse el remitente apropiado. |
+| `ANTHROPIC_API_KEY` | Diagnóstico en directo. Sin ella `POST /api/diagnostico` responde 503 y la web usa la plantilla por palabras clave. |
+| `ANTHROPIC_MODEL` | Opcional. Modelo de la API de Anthropic; por defecto `claude-opus-5`. |
 
 Las credenciales se mantienen en el entorno del servidor. No copies sus valores a documentación, logs, capturas o variables con prefijo `NEXT_PUBLIC_`.
 
@@ -96,9 +101,15 @@ La agenda se carga solo al solicitarla. El componente `BookingLink` abre un diá
 
 La integración está preparada para revisión local; estos cambios no actualizan el despliegue remoto. Las pruebas de apertura de agenda no crean citas ni acreditan entrega de sus notificaciones. La política de privacidad describe el proveedor de reserva y videollamada por separado de la medición propia de la web.
 
+### Asistente de ideas retirado de la portada
+
+El asistente fue sustituido por preguntas frecuentes el 23 de septiembre de 2026. Sus componentes y API se conservan, pero no se montan ni se ofrecen desde la portada. La implementación existente usa `POST /api/diagnostico`, valida y limpia la respuesta de Anthropic y ofrece una plantilla identificada cuando el proveedor no está disponible.
+
+Límites: entre 12 y 1.500 caracteres, 12.288 bytes de cuerpo, 5 segundos de lectura, 30 de proveedor y 35 en el cliente, y diez peticiones por IP y cuarto de hora con el mismo limitador en memoria del contacto. El texto del visitante no se registra: el log `bpm-diagnostico` guarda solo resultado o código de error y modelo. «Llevar esta idea al formulario» copia el texto y el titular del diagnóstico al mensaje del formulario de contacto y preselecciona la necesidad «Necesito ayuda para definir mi proyecto». El resultado es un borrador orientativo y así se rotula: el alcance y el presupuesto se deciden con la persona.
+
 ### Formulario
 
-El formulario permanece deshabilitado antes de hidratarse y explica el requisito si JavaScript está desactivado. Tiene un destino y método POST defensivos; los datos personales no se envían en la URL. Nombre, email y mensaje son obligatorios; empresa, teléfono y tipo de necesidad son opcionales. Los errores identifican el campo y conservan el borrador mientras la página siga abierta. La política de privacidad se abre sin sustituir la página del formulario.
+El formulario permanece deshabilitado antes de hidratarse y explica el requisito si JavaScript está desactivado. Tiene un destino y método POST defensivos; los datos personales no se envían en la URL. Nombre, email y mensaje son obligatorios. Empresa y teléfono son opcionales y se agrupan en un desplegable. El tipo de necesidad es opcional y se preselecciona al llegar desde un servicio. Los errores identifican el campo y conservan el borrador mientras la página siga abierta. La política de privacidad se abre sin sustituir la página del formulario.
 
 Los enlaces de servicios y casos pueden aportar exclusivamente los identificadores permitidos mediante `necesidad` y `proyecto`. El formulario y el servidor descartan referencias no reconocidas. No incluyas datos del interesado en enlaces de campaña.
 
@@ -120,7 +131,8 @@ La medición propia registra eventos en los logs del alojamiento existente. No i
 
 | Registro | Contenido y lectura |
 |---|---|
-| `stream: "bpm-events"` | `cta_click`, `case_open`, `case_view`, `form_start`, `form_validation_error` y `contact_error`, con categorías previamente permitidas. |
+| `stream: "bpm-events"` | `cta_click`, `case_open`, `case_view`, `form_start`, `form_validation_error`, `contact_error`, `diagnostico_submit`, `diagnostico_result` (con `source: "ia"` o `"plantilla"`) y `diagnostico_error`, con categorías previamente permitidas. |
+| `stream: "bpm-diagnostico"` | `event: "result"` o `"error"` con su código y el modelo usado. Nunca el texto del visitante. |
 | `stream: "bpm-contact"` | `event: "provider_accepted"`, identificador técnico de aceptación, necesidad y proyecto permitidos. Contar identificadores de proveedor distintos para evitar duplicar reintentos. |
 
 En los CTA del hero, `destination: "contact"` o `"projects"` distingue la apertura del contacto de la navegación a la galería, aunque ambos compartan `location: "hero"`.

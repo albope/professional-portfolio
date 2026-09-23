@@ -2,82 +2,36 @@ import { ArrowLink } from "@/components/ui/ArrowLink";
 import { copyEs, partirFlecha, servicioNeeds } from "@/data/copy";
 
 const { servicios } = copyEs;
-const [situacion, construimos, ejemplos] = servicios.cabeceras;
-const cierre = partirFlecha(servicios.cierre.cta);
-
-/** Tres columnas a partir de 1100; debajo, los ejemplos pasan bajo el texto. */
-const row = "md:grid md:grid-cols-2 md:gap-x-6 md:gap-y-5 min-[1100px]:grid-cols-3";
-const columnTitle = "font-mono text-[11px] uppercase tracking-[0.1em] text-ink-mute";
 
 export function Services() {
   return (
-    <section id="servicios" aria-label="Servicios" className="scroll-mt-6">
-      <div className="container-editorial pt-16 lg:pt-24 wide:pt-[120px]">
-        <div className="rejilla-editorial">
-          <h2 className="display text-[26px] leading-[1.02] lg:text-[32px] wide:text-[40px]">
-            {servicios.h2}
-          </h2>
-          <p className="mt-3 max-w-[520px] text-[15px] leading-[1.55] text-ink-mute lg:mt-0 lg:text-base wide:text-[17px] wide:leading-[1.6]">
-            {servicios.apoyo}
-          </p>
+    <section id="servicios" aria-labelledby="services-title" className="bg-paper-2">
+      <div className="container-editorial seccion">
+        <div className="grid items-end gap-6 lg:grid-cols-[1.1fr_1fr] lg:gap-20">
+          <div>
+            <p className="label-mono text-cobalt">{servicios.kicker}</p>
+            <h2 id="services-title" className="display mt-4 text-display-sec">{servicios.h2}</h2>
+          </div>
+          <p className="max-w-[520px] text-base leading-relaxed text-ink-soft">{servicios.apoyo}</p>
         </div>
-
-        <div className={`mt-10 hidden border-b border-ink pb-3 lg:mt-14 ${row}`}>
-          <span className={columnTitle}>{situacion}</span>
-          <span className={columnTitle}>{construimos}</span>
-          <span className={`hidden min-[1100px]:block ${columnTitle}`}>{ejemplos}</span>
-        </div>
-
-        <div className="mt-6 md:mt-0">
+        <div className="mt-10 grid border-t border-ink md:grid-cols-3">
           {servicios.items.map((item, index) => {
+            const need = servicioNeeds[index];
             const cta = partirFlecha(item.cta);
             return (
-              <div
-                key={servicioNeeds[index]}
-                className={`border-b border-line pb-6 pt-5 md:py-8 ${row} ${
-                  index === 0 ? "border-t border-t-ink md:border-t-0" : ""
-                }`}
-              >
-                <h3 className="text-lg font-semibold leading-[1.25] tracking-[-0.015em] md:col-start-1 md:row-start-1 md:max-w-[420px] md:text-[21px] md:leading-[1.2]">
-                  {item.situacion}
-                </h3>
-                <p className="mt-2.5 text-[15px] leading-[1.55] text-ink-soft md:col-start-2 md:row-start-1 md:mt-0 md:text-base">
-                  {item.que_construimos}
-                </p>
-                <div className="md:col-start-2 md:row-start-2 min-[1100px]:col-start-3 min-[1100px]:row-start-1 min-[1100px]:flex min-[1100px]:flex-col min-[1100px]:justify-between min-[1100px]:gap-5">
-                  <p className="mt-2.5 text-[13px] leading-[1.5] text-ink-mute md:mt-0 md:text-sm">
-                    {item.ejemplos}
-                  </p>
-                  <ArrowLink
-                    href={`/?necesidad=${servicioNeeds[index]}#contacto`}
-                    arrow={cta.flecha}
-                    className="mt-1 md:mt-2 min-[1100px]:mt-0"
-                    trackEvent="cta_click"
-                    trackLocation="service"
-                    trackNeed={servicioNeeds[index]}
-                  >
-                    {cta.texto}
-                  </ArrowLink>
+              <article key={need} className="flex flex-col border-b border-line-2 py-7 md:border-b-0 md:border-r md:px-6 md:py-8 md:first:pl-0 md:last:border-r-0 md:last:pr-0 wide:px-9">
+                <p aria-hidden className="font-mono text-xs text-cobalt">0{index + 1}</p>
+                <h3 className="mt-5 max-w-[330px] text-2xl font-semibold leading-[1.15] tracking-[-0.025em]">{item.titulo}</h3>
+                <p className="mt-4 text-base leading-relaxed text-ink-soft">{item.que_construimos}</p>
+                <p className="mt-5 border-t border-line-2 pt-4 text-sm leading-relaxed text-ink-mute">{item.ejemplos}</p>
+                <div className="mt-auto pt-5">
+                  <ArrowLink href={`/?necesidad=${need}#contacto`} arrow={cta.flecha} trackEvent="cta_click" trackLocation="service" trackNeed={need} trackDestination="contact">{cta.texto}</ArrowLink>
                 </div>
-              </div>
+              </article>
             );
           })}
         </div>
-
-        <div className="flex flex-col gap-3 pt-6 md:flex-row md:items-start md:justify-between md:gap-10 md:pt-7">
-          <p className="max-w-[720px] text-sm leading-[1.55] text-ink-mute md:text-[15px]">
-            {servicios.cierre.texto}
-          </p>
-          <ArrowLink
-            href="/#contacto"
-            arrow={cierre.flecha}
-            className="shrink-0"
-            trackEvent="cta_click"
-            trackLocation="service"
-          >
-            {cierre.texto}
-          </ArrowLink>
-        </div>
+        <p className="mt-8 max-w-[760px] text-sm leading-relaxed text-ink-mute">{servicios.nota}</p>
       </div>
     </section>
   );

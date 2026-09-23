@@ -4,8 +4,9 @@ import copy from "./copy.json";
  * Copy definitivo de la web pública. El texto vive en `copy.json` y las
  * secciones lo leen desde aquí: ningún componente escribe copy propio.
  *
- * Regla de estilo del sistema: sin punto y coma en ningún texto, punto o coma
- * según convenga. `copy.test.ts` la vigila sobre el JSON entero.
+ * Reglas de estilo del sistema: sin punto y coma ni rayas en ningún texto,
+ * punto o coma según convenga, y las flechas al final. `copy.test.ts` las
+ * vigila sobre el JSON entero.
  */
 export const copyEs = copy;
 
@@ -13,20 +14,23 @@ export type Copy = typeof copy;
 export type ProyectoItem = Copy["proyectos"]["items"][number];
 export type ServicioItem = Copy["servicios"]["items"][number];
 export type Fase = Copy["metodo"]["fases"][number];
-export type Pilar = Copy["como_trabajamos"]["pilares"][number];
+export type Pilar = Copy["ai_first"]["pilares"][number];
 
 /**
  * Los cuatro proyectos de la rejilla en el orden del copy, emparejados con el
- * caso del que cuelgan. El destacado (Padel Club OS) va aparte, en el hero.
+ * caso del que cuelgan. El destacado (Padel Club OS) va aparte, encabezando
+ * la sección.
  */
 export const proyectoSlugs = [
   "wms-almacen",
-  "web-boda",
   "web-radio",
+  "web-boda",
   "asistente-ia-gestion-proyectos",
 ] as const;
 
-/** Las tres filas de «¿Qué te está frenando?» apuntan a su necesidad del formulario. */
+/**
+ * Los tres servicios llevan su necesidad al formulario de contacto.
+ */
 export const servicioNeeds = ["operativa", "automatizacion", "web"] as const;
 
 export type Flecha = "→" | "↗" | "↓";
@@ -43,14 +47,12 @@ export function partirFlecha(label: string): { texto: string; flecha?: Flecha } 
 }
 
 /**
- * El titular del hero se compone en tres líneas fijas más la línea animada.
- * El corte se declara en palabras por línea y no como cadenas sueltas, para
- * que `copy.test.ts` pueda comprobar que reconstruyen `hero.h1_fijo` entero.
+ * La última palabra de un titular clave termina en cuadrado cobalto. Se
+ * separa aquí para que el componente la envuelva junto al cuadrado en
+ * `nowrap` sin reescribir el texto.
  */
-const CORTE_H1 = [2, 2, 2];
-
-export function lineasDelTitular(frase = copy.hero.h1_fijo): string[] {
-  const palabras = frase.split(" ");
-  let desde = 0;
-  return CORTE_H1.map((cuantas) => palabras.slice(desde, (desde += cuantas)).join(" "));
+export function partirUltimaPalabra(frase: string): { antes: string; ultima: string } {
+  const at = frase.lastIndexOf(" ");
+  if (at === -1) return { antes: "", ultima: frase };
+  return { antes: frase.slice(0, at + 1), ultima: frase.slice(at + 1) };
 }

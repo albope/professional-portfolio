@@ -43,9 +43,12 @@ export function createContactRateLimiter(options: {
   };
 }
 
-class BodyTooLarge extends Error {}
-class BodyInterrupted extends Error {}
-async function readJsonBody(request: Request, timeoutMs: number): Promise<unknown> {
+export class BodyTooLarge extends Error {}
+export class BodyInterrupted extends Error {}
+/** Lee el cuerpo acotando bytes reales y tiempo. Lo comparten contacto y diagnóstico. */
+export async function readJsonBody(
+  request: Request, timeoutMs: number, maxBytes: number = CONTACT_LIMITS.requestBytes,
+): Promise<unknown> {
   if (!request.body) throw new SyntaxError("Empty body");
   const reader = request.body.getReader();
   const chunks: Uint8Array[] = [];
@@ -64,7 +67,7 @@ async function readJsonBody(request: Request, timeoutMs: number): Promise<unknow
       if (done) break;
       if (value.byteLength === 0) continue;
       bytes += value.byteLength;
-      if (bytes > CONTACT_LIMITS.requestBytes) {
+      if (bytes > maxBytes) {
         void reader.cancel().catch(() => undefined);
         throw new BodyTooLarge();
       }

@@ -23,6 +23,7 @@ export default defineConfig([
     "build/**",
     "next-env.d.ts",
     "design_handoff_bpm_tech/**",
+    "design_handoff_landing_el_punto/**",
     "templates/**",
   ]),
 ]);

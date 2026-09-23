@@ -14,6 +14,7 @@ interface ArrowLinkProps {
   arrow?: "→" | "↗" | "↓";
   external?: boolean;
   className?: string;
+  onClick?: () => void;
   trackEvent?: "cta_click" | "case_open";
   trackLocation?: string;
   trackNeed?: string;
@@ -27,6 +28,7 @@ export function ArrowLink({
   arrow = "→",
   external,
   className,
+  onClick,
   trackEvent,
   trackLocation,
   trackNeed,
@@ -54,14 +56,14 @@ export function ArrowLink({
 
   if (external) {
     return (
-      <a href={href} target="_blank" rel="noopener noreferrer" className={classes} {...tracking}>
+      <a href={href} target="_blank" rel="noopener noreferrer" className={classes} onClick={onClick} {...tracking}>
         {content}
       </a>
     );
   }
 
   return (
-    <Link href={href} className={classes} {...tracking}>
+    <Link href={href} className={classes} onClick={onClick} {...tracking}>
       {content}
     </Link>
   );

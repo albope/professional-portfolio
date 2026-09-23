@@ -65,11 +65,26 @@ const config: Config = {
         mono: ["var(--font-fragment-mono)", "ui-monospace", "monospace"],
       },
       fontSize: {
-        /* Escala display (Archivo Black, caja alta) */
+        /* Escala display de la portada (Archivo Black, caja alta), mayor que la
+           anterior. La del hero y la del método se acotan también por alto de
+           ventana porque viven en escenarios fijados de 100vh. */
         "display-hero": [
-          "clamp(2.5rem, 6.2vw, 5.5rem)",
-          { lineHeight: "0.96", letterSpacing: "-0.01em" },
+          "clamp(32px, min(6.6vw, 9.5vh), 112px)",
+          { lineHeight: "0.92", letterSpacing: "-0.01em" },
         ],
+        "display-seccion": [
+          "clamp(34px, 4.8vw, 80px)",
+          { lineHeight: "0.94", letterSpacing: "-0.01em" },
+        ],
+        "display-grande": [
+          "clamp(40px, 7vw, 124px)",
+          { lineHeight: "0.9", letterSpacing: "-0.01em" },
+        ],
+        "display-banda": [
+          "clamp(36px, 6vw, 104px)",
+          { lineHeight: "0.92", letterSpacing: "-0.01em" },
+        ],
+        /* Escala interior: fichas de proyecto, legales y 404 */
         "display-case": [
           "clamp(2.125rem, 5vw, 4.5rem)",
           { lineHeight: "0.98", letterSpacing: "-0.01em" },
@@ -92,6 +107,7 @@ const config: Config = {
         62: "0.62",
         72: "0.72",
         78: "0.78",
+        82: "0.82",
       },
       transitionTimingFunction: {
         editorial: "cubic-bezier(0.16, 1, 0.3, 1)",

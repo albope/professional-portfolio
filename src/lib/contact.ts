@@ -10,9 +10,10 @@ export const CONTACT_LIMITS = {
 
 export const CONTACT_TIMEOUTS = { body: 5_000, provider: 10_000, client: 20_000 } as const;
 export const CONTACT_NEEDS = {
-  operativa: "Organizar la operativa de mi negocio",
+  diagnostico: "Necesito ayuda para definir mi proyecto",
+  operativa: "Organizar la gestión de mi negocio",
   automatizacion: "Automatizar tareas y conectar herramientas",
-  web: "Crear una web, un MVP o un producto digital",
+  web: "Crear una web o una aplicación",
 } as const;
 export const CONTACT_PROJECTS = {
   "asistente-ia-gestion-proyectos": "Asistente de IA para gestión de proyectos",

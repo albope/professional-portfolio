@@ -46,6 +46,14 @@
     text-rendering: optimizeLegibility;
   }
 
+  html {
+    scroll-padding-top: 88px;
+  }
+
+  section[id] {
+    scroll-margin-top: 16px;
+  }
+
   ::selection {
     background: var(--cobalt);
     color: var(--paper);
@@ -98,6 +106,12 @@
     @apply py-16 lg:py-24 wide:py-[120px];
   }
 
+  /* La cabecera fija necesita espacio tanto en la portada como en las
+     fichas de proyecto, las páginas legales y la 404. */
+  .pagina-interior {
+    @apply mt-[60px] md:mt-16 wide:mt-[72px];
+  }
+
   /* Chevron dibujado con dos gradientes: el select no hereda el del sistema. */
   .campo-select {
     appearance: none;
@@ -124,11 +138,60 @@
 }
 
 @layer utilities {
-  /* Única animación continua de la web: la última línea del titular del hero
-     recorre cinco frases. Cinco capas superpuestas, 12,5 s en bucle y 2,5 s
-     de retardo entre ellas. Las frases envuelven a dos líneas cuando hace
-     falta, así que la celda no puede llevar `white-space: nowrap`: la altura
-     la reserva el contenedor. */
+  /* Brillo del wordmark de la cabecera: un reflejo recorre BPMTECH y el glifo
+     de izquierda a derecha, 7 s por vuelta con 2 s de retardo, con la curva
+     única del sistema. `overlay` solo aclara lo que ya es claro, así que sobre
+     la tinta de la cabecera se ve en las letras y no en el fondo. Se apaga
+     con movimiento reducido. */
+  .bpm-wordmark {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .bpm-wordmark::after {
+    content: "";
+    position: absolute;
+    top: -20%;
+    bottom: -20%;
+    left: 0;
+    width: 45%;
+    background: linear-gradient(
+      100deg,
+      rgba(247, 246, 242, 0) 0%,
+      rgba(247, 246, 242, 0.55) 50%,
+      rgba(247, 246, 242, 0) 100%
+    );
+    transform: translateX(-120%) skewX(-18deg);
+    animation: bpm-brillo 7s cubic-bezier(0.16, 1, 0.3, 1) 2s infinite;
+    pointer-events: none;
+    mix-blend-mode: overlay;
+  }
+
+  @keyframes bpm-brillo {
+    0% {
+      transform: translateX(-120%) skewX(-18deg);
+    }
+    22% {
+      transform: translateX(330%) skewX(-18deg);
+    }
+    100% {
+      transform: translateX(330%) skewX(-18deg);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .bpm-wordmark::after {
+      animation: none;
+      display: none;
+    }
+  }
+
+  /* La última línea del titular del hero recorre cinco frases. Cinco capas
+     superpuestas, 12,5 s en bucle y 2,5 s de retardo entre ellas. El motor
+     del canvas lee el tiempo de esta animación para elegir el modo de la
+     hoja de cálculo. Las frases envuelven a dos líneas cuando hace falta,
+     así que la celda no puede llevar `white-space: nowrap`: la altura la
+     reserva el contenedor. */
   @keyframes bpm-palabra {
     0% {
       opacity: 0;

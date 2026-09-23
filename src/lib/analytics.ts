@@ -1,16 +1,19 @@
 /** Fixed vocabulary only. Form values, URLs and visitor identifiers never belong here. */
 export const ANALYTICS_EVENTS = [
   "cta_click", "case_open", "case_view", "form_start", "form_validation_error", "contact_error",
+  "diagnostico_submit", "diagnostico_result", "diagnostico_error",
 ] as const;
 export type AnalyticsEventName = (typeof ANALYTICS_EVENTS)[number];
 
 const values = {
-  location: ["header", "hero", "service", "projects", "case", "about", "contact", "footer"],
-  destination: ["contact", "projects", "booking"],
-  need: ["operativa", "automatizacion", "web"],
+  location: ["header", "hero", "service", "diagnostico", "projects", "case", "about", "contact", "footer"],
+  destination: ["contact", "projects", "booking", "diagnostico"],
+  need: ["diagnostico", "operativa", "automatizacion", "web"],
   project: ["asistente-ia-gestion-proyectos", "plataforma-clubes-padel", "wms-almacen", "web-boda", "web-radio"],
   field: ["nombre", "empresa", "email", "telefono", "mensaje", "requestId"],
   code: ["required", "invalid", "too_long", "network", "timeout", "rate_limited", "unavailable", "provider", "unexpected", "invalid_request", "too_large"],
+  /** Origen del diagnóstico: la IA o la plantilla por palabras clave. */
+  source: ["ia", "plantilla"],
 } as const;
 
 export type AnalyticsProperties = {

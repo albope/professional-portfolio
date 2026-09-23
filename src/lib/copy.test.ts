@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { copyEs, lineasDelTitular, partirFlecha, proyectoSlugs, servicioNeeds } from "../data/copy";
+import { copyEs, partirFlecha, partirUltimaPalabra, proyectoSlugs, servicioNeeds } from "../data/copy";
 import { CONTACT_NEEDS, CONTACT_PROJECTS } from "./contact";
 import { site } from "../data/site";
 import { booking } from "../data/booking";
@@ -25,6 +25,13 @@ const todo = strings(copyEs);
 test("no copy string uses a semicolon", () => {
   for (const [path, value] of todo) {
     assert.equal(value.includes(";"), false, `Punto y coma en ${path}: «${value}»`);
+  }
+});
+
+/** Tampoco rayas ni semirrayas: coma o punto según convenga. */
+test("no copy string uses a dash", () => {
+  for (const [path, value] of todo) {
+    assert.equal(/[—–]/.test(value), false, `Raya en ${path}: «${value}»`);
   }
 });
 
@@ -57,7 +64,15 @@ test("only the authorised project carries a name and an outbound link", () => {
   assert.deepEqual(linked.map(([path]) => path).sort(), [...allowed].sort());
 });
 
-test("the four grid projects and three service rows keep their references", () => {
+/** Sin precios, plazos ni métricas inventadas en el copy ni en el diagnóstico. */
+test("copy carries no invented figures", () => {
+  const figures = /\d+\s?(€|%|clientes|proyectos entregados)|\d+\s?(días|semanas|meses) de (entrega|plazo)/i;
+  for (const [path, value] of todo) {
+    assert.equal(figures.test(value), false, `Cifra inventada en ${path}: «${value}»`);
+  }
+});
+
+test("projects and services keep their contact references", () => {
   assert.equal(copyEs.proyectos.items.length, proyectoSlugs.length);
   for (const slug of proyectoSlugs) assert.ok(Object.hasOwn(CONTACT_PROJECTS, slug), slug);
 
@@ -86,41 +101,43 @@ test("the form selector matches the shared contact needs", () => {
 });
 
 /**
- * El proyecto de almacén es el único que amplía con ficha de tres filas, y su
- * rótulo de enlace es el mismo del destacado: la portada pinta uno solo.
+ * El destacado es el único que amplía con ficha de cuatro datos. Las cuatro
+ * tarjetas subrayan una decisión y comparten el rótulo de enlace del
+ * destacado: la portada pinta uno solo.
  */
-test("the warehouse project keeps its three-row card and the shared link label", () => {
-  const [almacen, evento, radio, asistente] = copyEs.proyectos.items;
-  assert.deepEqual(Object.keys(almacen.ficha ?? {}), [
-    "Qué se desarrolló",
-    "Una decisión",
-    "Cómo se hizo",
-  ]);
-  assert.equal(almacen.cta, copyEs.destacado.cta);
-  // Solo evento y radio subrayan una decisión de diseño.
-  assert.deepEqual(
-    [evento, radio, asistente].map((item) => Boolean(item.decision)),
-    [true, true, false]
-  );
+test("the featured project keeps its card and every grid project states a decision", () => {
+  assert.deepEqual(Object.keys(copyEs.destacado.ficha), ["Necesidad", "Alcance", "Una decisión", "Puede encajar en"]);
+  for (const item of copyEs.proyectos.items) {
+    assert.ok(item.decision, item.descriptor);
+    assert.equal("cta" in item, false, item.descriptor);
+  }
+  assert.equal(partirFlecha(copyEs.destacado.cta).flecha, "→");
 });
 
-/** Las cinco frases del hero alimentan la única animación de la web. */
-test("the hero animation carries exactly five phrases", () => {
-  assert.equal(copyEs.hero.h1_palabras.length, 5);
-});
-
-/** El corte en tres líneas no puede perder ni duplicar una palabra. */
-test("the hero headline breaks into three lines without losing a word", () => {
-  const lineas = lineasDelTitular();
-  assert.equal(lineas.length, 3);
-  assert.equal(lineas.join(" "), copyEs.hero.h1_fijo);
+/** El diagnóstico rota tres placeholders y ofrece cuatro ejemplos con texto propio. */
+test("the live diagnosis copy is complete", () => {
+  const { diagnostico } = copyEs;
+  assert.equal(diagnostico.placeholders.length, 3);
+  assert.equal(diagnostico.ejemplos.length, 4);
+  for (const ejemplo of diagnostico.ejemplos) assert.ok(ejemplo.rotulo && ejemplo.texto.length >= 12);
+  assert.equal(diagnostico.resultado.columnas.length, 3);
+  assert.equal(partirFlecha(diagnostico.resultado.cta_llamada).flecha, "↗");
+  assert.equal(partirFlecha(diagnostico.resultado.cta_escrito).flecha, "↓");
 });
 
 /** La flecha viaja aparte para que el componente pueda animarla. */
 test("a trailing arrow is split off the label, and nothing else is", () => {
-  assert.deepEqual(partirFlecha("Ver proyectos reales ↓"), { texto: "Ver proyectos reales", flecha: "↓" });
+  assert.deepEqual(partirFlecha("Prueba el diagnóstico ↓"), { texto: "Prueba el diagnóstico", flecha: "↓" });
   assert.deepEqual(partirFlecha("Hablemos ↗"), { texto: "Hablemos", flecha: "↗" });
   assert.deepEqual(partirFlecha("Enviar consulta"), { texto: "Enviar consulta" });
   // Una flecha en mitad de la frase no es un sufijo y se queda donde está.
   assert.deepEqual(partirFlecha("Desliza → para ver"), { texto: "Desliza → para ver" });
+});
+
+/** El cuadrado de cierre va pegado a la última palabra del titular de Contacto. */
+test("the closing square keeps the last word of the contact headline", () => {
+  const { antes, ultima } = partirUltimaPalabra(copyEs.contacto.h2);
+  assert.equal(antes + ultima, copyEs.contacto.h2);
+  assert.equal(ultima.includes(" "), false);
+  assert.deepEqual(partirUltimaPalabra("Hola"), { antes: "", ultima: "Hola" });
 });

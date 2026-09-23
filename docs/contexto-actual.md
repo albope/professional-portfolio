@@ -1,14 +1,14 @@
 # Contexto vigente de la web BPM Tech
 
-Actualizado: 11 de septiembre de 2026, tras aplicar el rediseño del handoff «Evolución de la web de BPM Tech Studio». Este documento describe el árbol de trabajo revisado en esta fecha. No acredita un despliegue, la entrega de correo ni resultados comerciales. Los resultados concretos de las comprobaciones deben consultarse en la entrega de implementación correspondiente.
+Actualizado: 23 de septiembre de 2026, tras simplificar la landing a petición de Alberto. Este documento describe el árbol local. No acredita despliegue, entrega de correo ni resultados comerciales.
 
 ## Dirección comercial
 
-BPM Tech presenta software y webs a medida para pymes, con startups y proyectos particulares como perfiles complementarios. El titular es «Software y webs que encajan en tu negocio». La entrada al contacto es «Cuéntanos qué necesitas resolver» y admite necesidades todavía poco definidas.
+BPM Tech presenta software, automatizaciones y webs para negocios. El titular fijo es «Software, automatizaciones y webs para tu negocio.» y la llamada principal es «Cuéntame qué necesitas». La primera conversación se ofrece sin compromiso.
 
-La oferta se organiza por tres necesidades: ordenar la operativa, conectar y automatizar herramientas, y crear o mejorar una web. La consultoría permite definir prioridades. La IA sigue formando parte de la oferta cuando aporta valor al problema concreto.
+La oferta se organiza en tres servicios: aplicaciones para gestionar el negocio, automatización de tareas y webs y productos digitales. Se describen con ejemplos cotidianos. La IA aparece dentro de automatización cuando aporta valor a una tarea concreta.
 
-La home contiene Hero, Trabajo reciente, Servicios, Método, Sobre BPM Tech y Contacto, en ese orden: el trabajo va antes que el discurso. El hero cede su mitad derecha a una captura real de Padel Club OS que sangra hasta el borde del lienzo; en móvil esa misma captura abre Trabajo reciente. No hay un bloque de stack protagonista ni un diagrama en el hero.
+La home sigue este orden: Hero, Proyectos, Servicios, Método, Sobre Alberto, Preguntas frecuentes y Contacto. No hay intro ni método fijados al scroll, canvas ni banda AI-first. Los tres pasos del método son hablar de la necesidad, recibir una propuesta y construir revisando los avances. Las preguntas sustituyen al asistente de ideas por petición de Alberto: resuelven dudas sobre presupuesto, herramientas existentes, alcance inicial, mantenimiento y cómo empezar.
 
 ## Evidencia y persona responsable
 
@@ -24,20 +24,24 @@ Los visuales son capturas reales de los productos con datos de demo, servidas de
 - **Web de radio**: marca difuminada, sin nombre ni enlace hasta tener permiso del cliente.
 - **Asistente de IA**: captura sin la marca del producto ni avatar. Revisar nombres de clientes y personas visibles antes de cada publicación.
 
-La banda tinta cierra con una fila de siete herramientas —Next.js, React, Supabase, Python, Anthropic, OpenAI y AWS— pintadas en monocromo papel mediante máscara CSS sobre el SVG de cada marca. **Python, OpenAI y AWS piden autorización para recolorear su marca o reservan su wordmark.** Alberto Bort decidió publicarlas igualmente en septiembre de 2026 y asume esa responsabilidad; la decisión no está revisada con esas marcas y queda anotada en `src/data/stack.ts`.
+La fila de siete herramientas de la banda tinta (Next.js, React, Supabase, Python, Anthropic, OpenAI y AWS) se retiró el 23 de septiembre de 2026 con la landing «El punto», que no la contempla. Los SVG siguen en `public/logos/` sin uso. Si volviera, recordar que Python, OpenAI y AWS piden autorización para recolorear su marca o reservan su wordmark.
 
-La sección Sobre BPM Tech publica el retrato y el nombre **Alberto Bort** junto al rol «Dirección de proyectos y tecnología», confirmado por él en septiembre de 2026. No se inventa tamaño de equipo, capacidad ni disponibilidad. Propiedad, documentación, presupuesto y soporte se acuerdan en cada propuesta.
+Padel Club OS, almacén y radio tienen capturas y explicación en portada. Evento y asistente de IA conservan enlaces breves a sus casos. Los cinco proyectos siguen siendo accesibles desde la home.
+
+La sección personal muestra el retrato y el nombre Alberto Bort con el rótulo «Consultoría y desarrollo». El texto explica la participación directa desde la conversación hasta la puesta en marcha. No se inventan tamaño de equipo, capacidad, disponibilidad ni resultados.
 
 ## Estado técnico
 
 - Node 24.x, Next.js 16.3.3, React 19.2.8, TypeScript y Tailwind CSS 3.
 - Identidad conservada: papel, tinta y cobalto; Archivo Black, Archivo y Fragment Mono.
 - `ink-faint` actualizado a `#6a685d`; etiquetas legibles y contraste revisado en las combinaciones utilizadas.
-- Lienzo de 1440 px centrado; márgenes 16 / 40 / 60 con punto de ruptura propio `wide` en 1440. Esquinas rectas y sin sombras salvo en las capturas de evento y radio.
-- Cabecera estática **sobre tinta** desde septiembre de 2026: 60 px en móvil, 64 entre 768 y 1439, 72 a partir de 1440. La navegación completa aparece desde 768 px. El wordmark usa `tone="paper"` y el CTA se invierte a papel sobre tinta; al abrir el menú móvil, que ya era de tinta, no hay salto de color. El enlace «Saltar al contenido» es de cobalto para verse tanto sobre la cabecera como sobre el papel. El pie sigue sobre papel: la sección Contacto que lo precede ya es de tinta y fundirlos daría un único bloque oscuro.
-- La escala de opacidad de Tailwind va de cinco en cinco. Los valores del diseño que no encajan —16, 24, 28, 62, 72 y 78— están declarados en `tailwind.config.ts`. Sin esa declaración la utilidad no genera regla y desaparece en silencio: el texto hereda el color del contenedor y se ve a plena opacidad, y un borde sin color cae en `currentColor`. Antes de septiembre de 2026 eso afectaba a veinte utilidades sobre tinta, que se veían blancas en lugar de atenuadas.
-- Dos movimientos automáticos en toda la web, ambos apagados con `prefers-reduced-motion`. El primero es la última palabra del titular del hero, que recorre negocio, club, almacén, evento y radio; con movimiento reducido se queda en «negocio». El segundo, decidido en septiembre de 2026, es el carril de los tres pilares de la banda tinta: por debajo de 1024 px avanza una tarjeta cada cinco segundos, solo mientras la sección está en pantalla y la pestaña visible, y **se detiene de forma definitiva en cuanto el visitante toca, teclea o enfoca el carril**. Unos trazos bajo la pista de deslizamiento marcan la posición.
-- Contenido servido visible, sin depender de la hidratación para aparecer. Framer Motion y Lenis retirados.
+- Lienzo de 1440 px centrado, márgenes 16 / 40 / 60 y esquinas rectas. Las capturas tienen sombras discretas. El diseño se comprueba desde 320 px.
+- Cabecera fija sobre tinta: 60 px en móvil, 64 entre 768 y 1439, 72 a partir de 1440. Portada e interiores reservan el alto con `.pagina-interior`. Los destinos de ancla tienen margen para quedar visibles. La navegación completa aparece desde 768 px y el menú móvil conserva su diálogo nativo.
+- La escala de opacidad de Tailwind va de cinco en cinco. Los valores del diseño que no encajan —16, 24, 28, 62, 72, 78 y 82— están declarados en `tailwind.config.ts`. Sin esa declaración la utilidad no genera regla y desaparece en silencio: el texto hereda el color del contenedor y se ve a plena opacidad, y un borde sin color cae en `currentColor`. Antes de septiembre de 2026 eso afectaba a veinte utilidades sobre tinta, que se veían blancas en lugar de atenuadas.
+- Movimiento limitado a estados de interacción y al brillo de la marca, respetando `prefers-reduced-motion`. La información principal no rota, no se oculta y no depende del scroll.
+- `PuntoCanvas`, `punto-engine`, `RotatingPhrase` y `AiFirst` quedan como código de la propuesta anterior sin montarse en la portada. No se carga ni ejecuta el motor del canvas en la home.
+- El titular adapta su tamaño al ancho, con corrección para 320 px. Las secciones usan `display-sec`. No se reserva altura artificial para animaciones.
+- El contenido principal se sirve visible y funciona sin JavaScript. El contacto conserva alternativas de email y reserva. Las cinco preguntas usan `details` y `summary` nativos, con la primera respuesta abierta.
 - Scroll nativo (sin `scroll-behavior: smooth`), movimiento reducido y árbol estable para preservar el formulario.
 - Menú móvil mediante diálogo nativo: fondo inerte, foco contenido, cierre con Escape, devolución del foco y cierre al ampliar a escritorio. Navegación alternativa cuando JavaScript está desactivado.
 - Método con hijos `li` directos dentro de `ol`.
@@ -48,6 +52,8 @@ La sección Sobre BPM Tech publica el retrato y el nombre **Alberto Bort** junto
 El contacto público autorizado es `bpmtechstudio@gmail.com`, centralizado en `site.email` y compartido por Contacto, el pie y las páginas legales. El formulario utiliza Resend y su destinatario se configura por separado mediante `CONTACT_EMAIL` en el servidor, con esa misma dirección. Gmail recibe las consultas; Cloudflare gestiona el dominio y DNS. El remitente técnico de Resend debe conservar un dominio verificado y `Reply-To` apunta al visitante.
 
 El nuevo destinatario está configurado en desarrollo local. No se han añadido credenciales de Resend, actualizado variables remotas ni acreditado entrega real de correo.
+
+El asistente de ideas ya no se monta en la portada. Sus componentes y `POST /api/diagnostico` se conservan como implementación anterior. El formulario mantiene la opción «Necesito ayuda para definir mi proyecto» (`diagnostico`) como necesidad comercial válida, independiente del asistente.
 
 Cal.com está integrado en Contacto y como CTA secundario al final de cada caso. La primera conversación dura **30 minutos**, se realiza por Cal Video y utiliza `https://cal.com/bpmtechstudio/30min`. La configuración pública se centraliza en `src/data/booking.ts`. El diálogo carga la agenda al solicitarla y ofrece acceso directo a Cal.com; la disponibilidad y los campos se administran en la cuenta del proveedor. La integración permanece en revisión local y no acredita un despliegue remoto ni la creación de citas de prueba.
 

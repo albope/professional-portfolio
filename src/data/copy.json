@@ -1,17 +1,23 @@
 {
   "meta": {
     "proyecto": "BPM Tech Studio",
-    "version": "diseño final",
-    "fecha": "2026-09-15",
+    "version": "Landing clara · Proyectos y contacto",
+    "fecha": "2026-09-23",
     "idioma": "es-ES"
   },
   "nav": {
     "wordmark": "BPM TECH",
-    "enlaces": ["Proyectos", "Servicios", "Método", "Sobre BPM Tech"],
+    "enlaces": [
+      "Proyectos",
+      "Servicios",
+      "Cómo trabajamos",
+      "Sobre mí"
+    ],
     "cta": "Hablemos ↗"
   },
   "hero": {
-    "h1_fijo": "Deja de adaptar tu negocio a",
+    "etiqueta": "Software a medida · Desde Valencia, para toda España",
+    "h1_fijo": "Software, automatizaciones y webs",
     "h1_palabras": [
       "hojas de cálculo",
       "procesos manuales",
@@ -19,134 +25,209 @@
       "herramientas que no encajan",
       "parches"
     ],
-    "entradilla": "Construimos software, automatizaciones y webs a medida para pymes y startups. Hablas directamente con quien entiende el problema, toma las decisiones y desarrolla la solución: menos intermediarios, menos vueltas y más velocidad.",
-    "cta_primaria": "Cuéntanos qué necesitas resolver",
-    "cta_secundaria": "Ver proyectos reales ↓"
+    "celda": "B18:F22",
+    "entradilla": "Organiza la gestión, conecta tus herramientas y quítate tareas manuales. Creamos la solución que encaja en tu forma de trabajar.",
+    "cta_primaria": "Cuéntame qué necesitas",
+    "cta_secundaria": "Ver proyectos ↓",
+    "leyenda": [
+      "Software · Automatización · Webs · IA aplicada",
+      "Desplaza para ordenarlo ↓"
+    ],
+    "barra": {
+      "ref": "C4",
+      "fx": "fx",
+      "formula": "=SUMA(C2:C9)",
+      "archivo": "operativa_v7_FINAL.xlsx"
+    },
+    "h1_final": "para tu negocio.",
+    "nota": "Primera conversación sin compromiso.",
+    "confianza": [
+      "Trato directo con quien desarrolla",
+      "Alcance y presupuesto por escrito",
+      "Avances que puedes ver y probar"
+    ],
+    "visual": {
+      "rotulo": "De la idea a una herramienta real",
+      "nombre": "Padel Club OS",
+      "descripcion": "Una plataforma para gestionar el club.",
+      "detalle": "Reservas, socios y pagos conectados",
+      "cta": "Ver caso"
+    }
+  },
+  "manifiesto": {
+    "kicker": "01 · Lo que hacemos",
+    "h2": "El software que te falta no se compra hecho. Se construye.",
+    "texto": "Cada celda de esa hoja es una tarea que alguien repite a mano. La convertimos en sistema: una herramienta hecha alrededor de cómo trabaja tu negocio, que ordena la información, conecta lo que hoy va por separado y da a cada persona justo lo que necesita.",
+    "necesidades": [
+      "Conectar y automatizar",
+      "Ordenar la operativa",
+      "Construir producto"
+    ]
+  },
+  "servicios": {
+    "kicker": "02 · Servicios",
+    "h2": "¿Qué necesitas mejorar?",
+    "apoyo": "No hace falta que sepas qué tecnología necesitas. Empezamos por lo que quieres conseguir.",
+    "nota": "Primero buscamos la solución más sencilla. Si una herramienta que ya existe resuelve tu necesidad, te lo diremos.",
+    "items": [
+      {
+        "titulo": "Aplicaciones para gestionar tu negocio",
+        "que_construimos": "Reúne la información en un solo sitio y deja de depender de hojas de cálculo y mensajes para saber qué está pasando.",
+        "ejemplos": "Reservas, inventario, clientes y paneles de gestión.",
+        "cta": "Quiero organizar mi gestión →"
+      },
+      {
+        "titulo": "Automatización de tareas",
+        "que_construimos": "Conecta las herramientas que ya usas para evitar copiar datos y repetir trabajo. Aplicamos IA cuando ayuda a resolver una tarea concreta.",
+        "ejemplos": "Pedidos que pasan a facturación, documentos clasificados y avisos automáticos.",
+        "cta": "Quiero ahorrar trabajo manual →"
+      },
+      {
+        "titulo": "Webs y productos digitales",
+        "que_construimos": "Una web que explique bien tu negocio o una aplicación para poner en marcha tu idea. Clara, fácil de usar y preparada para crecer.",
+        "ejemplos": "Webs corporativas, portales de clientes y nuevas aplicaciones.",
+        "cta": "Quiero crear una web o aplicación →"
+      }
+    ]
+  },
+  "diagnostico": {
+    "kicker": "Recurso opcional",
+    "h2": "Explora una idea antes de hablar.",
+    "apoyo": "Describe una tarea que te gustaría mejorar y recibe una orientación automática. Puedes usarla como punto de partida para nuestra conversación.",
+    "etiqueta": "Describe cómo trabajas hoy y qué te frena",
+    "placeholders": [
+      "Llevamos el stock en tres hojas de cálculo y nunca cuadra…",
+      "Copiamos pedidos de la web al programa de facturación a mano…",
+      "Queremos lanzar un MVP pero no sabemos qué construir primero…"
+    ],
+    "ejemplos_rotulo": "Ejemplos",
+    "ejemplos": [
+      {
+        "rotulo": "Stock en tres Excel",
+        "texto": "Llevamos el stock de dos almacenes en tres hojas de cálculo distintas y nunca cuadra con lo que hay de verdad."
+      },
+      {
+        "rotulo": "Pedidos copiados a mano",
+        "texto": "Cada mañana copiamos a mano los pedidos de la tienda online al programa de facturación. Perdemos horas y se cuelan errores."
+      },
+      {
+        "rotulo": "Reservas por WhatsApp",
+        "texto": "Gestionamos las reservas de clases por WhatsApp y una agenda en papel. Los cobros los apuntamos aparte."
+      },
+      {
+        "rotulo": "Una idea de producto",
+        "texto": "Queremos lanzar una plataforma para que nuestros clientes gestionen sus pedidos online, pero no sabemos por dónde empezar."
+      }
+    ],
+    "boton": "Ver cómo lo abordaríamos",
+    "boton_ocupado": "Analizando…",
+    "boton_repetir": "Volver a analizar",
+    "nota_boton": "Orientación automática, sin compromiso.",
+    "error_corto": "Cuéntanos un poco más para poder ayudarte: al menos una frase.",
+    "cargando": [
+      "Leyendo tu situación",
+      "Identificando la necesidad",
+      "Buscando una primera solución",
+      "Preparando la orientación"
+    ],
+    "resultado": {
+      "rotulo": "Orientación inicial",
+      "fuente_ia": "Generado con IA · Pendiente de revisión contigo",
+      "fuente_plantilla": "Ejemplo orientativo basado en una plantilla",
+      "columnas": [
+        "Qué construiríamos",
+        "Qué conectaríamos",
+        "Qué quizá no haga falta desarrollar"
+      ],
+      "pregunta": "La pregunta que te haríamos",
+      "cta_llamada": "Revisarlo juntos en 30 min ↗",
+      "cta_escrito": "Llevar esta idea al formulario ↓",
+      "nota": "Esta orientación es automática. Revisaremos contigo la solución, el presupuesto y los plazos antes de empezar."
+    },
+    "mensaje_formulario": "Orientación del asistente",
+    "resumen": "Probar el asistente de ideas",
+    "sin_js": "Para usar el asistente necesitas activar JavaScript. También puedes contármelo directamente en el formulario de contacto."
+  },
+  "proyectos": {
+    "kicker": "01 · Proyectos",
+    "h2": "Así se ve una solución que encaja.",
+    "apoyo": "Herramientas reales para necesidades concretas. Explora qué había que resolver y qué construimos.",
+    "captura": "Captura real · Datos de demo",
+    "decision_rotulo": "Qué cambia",
+    "items": [
+      {
+        "descriptor": "Aplicación de gestión",
+        "titulo": "Un almacén con la información al día",
+        "texto": "Inventario, ubicaciones y entradas y salidas en una misma herramienta. El equipo registra cada movimiento desde el móvil o un lector.",
+        "decision": "Cada movimiento queda registrado para saber qué hay y dónde está."
+      },
+      {
+        "descriptor": "Desarrollo web",
+        "titulo": "Escuchar la radio y seguir explorando",
+        "texto": "Una web con emisión en directo, programas anteriores y acceso desde el móvil.",
+        "decision": "La emisión continúa mientras navegas por los programas."
+      },
+      {
+        "descriptor": "Web de evento",
+        "titulo": "Una web para organizar un evento",
+        "texto": "Confirmación con preferencias, avisos por email, peticiones musicales y un panel privado de gestión. En dos idiomas.",
+        "decision": "Los invitados consultan la información y confirman su asistencia en el mismo sitio."
+      },
+      {
+        "descriptor": "Asistente de IA · Gestión de proyectos",
+        "titulo": "Un asistente que conoce la documentación de tu empresa",
+        "texto": "Ayuda a consultar información y preparar el trabajo sin buscar en documentos dispersos.",
+        "decision": "El equipo revisa las propuestas antes de tomar decisiones."
+      }
+    ],
+    "mas": "Otros proyectos",
+    "problema_rotulo": "La necesidad",
+    "solucion_rotulo": "La solución"
   },
   "destacado": {
     "etiqueta": "Padel Club OS · En producción",
     "enlace_externo": "padelclubos.com ↗",
-    "titulo": "Todo un club de pádel, en una sola plataforma",
-    "texto": "Reservas, socios, pagos y competiciones conectados en una misma herramienta. Un panel para el club y un portal para que el jugador reserve desde el móvil sin instalar nada.",
-    "cta": "Ver el proyecto →"
-  },
-  "proyectos": {
-    "h2": "Problemas reales. Software hecho para resolverlos.",
-    "apoyo": "Sectores distintos, una misma forma de trabajar: entender primero el problema y construir después la herramienta que encaja.",
-    "items": [
-      {
-        "descriptor": "Gestión de almacén · Web + terminal RF",
-        "titulo": "Del control manual a un sistema de almacén conectado",
-        "texto": "Inventario, ubicaciones y movimientos reunidos en una herramienta con permisos por rol, más un terminal RF para operar con escáner o con la cámara del móvil.",
-        "ficha": {
-          "Qué se desarrolló": "Aplicación web completa para productos, ubicaciones, stock, movimientos, recuentos, órdenes e informes.",
-          "Una decisión": "El stock no se edita a mano: es la proyección de un libro de movimientos inmutable. Anular genera un movimiento compensatorio.",
-          "Cómo se hizo": "Diseño y desarrollo en fases acordadas sobre una especificación funcional."
-        },
-        "cta": "Ver el proyecto →"
-      },
-      {
-        "descriptor": "Web de evento",
-        "titulo": "Información, invitados y gestión en una misma web",
-        "texto": "Información del evento, confirmación con preferencias, avisos por email, peticiones musicales y un panel privado de gestión. Todo en dos idiomas.",
-        "decision": "Consultar el horario y responder ocurre en la misma página, sin obligar al invitado a cambiar de sitio."
-      },
-      {
-        "descriptor": "Web de radio",
-        "titulo": "Una web que no interrumpe la emisión",
-        "texto": "Directo, archivo de programas, galería histórica e instalación como app en el móvil, diseñados alrededor de cómo escucha realmente el usuario.",
-        "decision": "El reproductor permanece mientras se navega: se puede explorar el archivo sin cortar la escucha."
-      },
-      {
-        "descriptor": "Asistente de IA",
-        "titulo": "El ChatGPT de tu empresa. Pero con contexto de verdad.",
-        "texto": "Dos agentes que conocen tu documentación, entienden cómo funciona tu negocio y te ayudan a preparar decisiones, estimaciones y siguientes pasos sin empezar de cero en cada conversación."
-      }
-    ]
-  },
-  "servicios": {
-    "h2": "¿Qué te está frenando?",
-    "apoyo": "No necesitas saber qué tecnología necesitas. Cuéntanos qué no está funcionando como debería y encontraremos la forma más sencilla de resolverlo.",
-    "cabeceras": ["Situación", "Qué construimos", "Ejemplos"],
-    "items": [
-      {
-        "situacion": "Tu gestión depende de hojas de cálculo, mensajes y herramientas que no se hablan entre sí.",
-        "que_construimos": "Una aplicación hecha alrededor de cómo trabaja tu negocio: centralizamos información, eliminamos pasos manuales y damos a cada persona justo lo que necesita.",
-        "ejemplos": "Gestión de almacén · Plataformas de reservas · CRM · Portales de socios · Paneles internos",
-        "cta": "Hablemos de tu gestión →"
-      },
-      {
-        "situacion": "Copias datos de un sitio a otro y repites tareas que deberían ocurrir solas.",
-        "que_construimos": "Automatizamos el proceso, conectamos tus sistemas y usamos IA cuando realmente aporta. Menos trabajo repetitivo y menos información perdida entre herramientas.",
-        "ejemplos": "Conectar un CRM · Procesar documentos · Sincronizar sistemas · Automatizar operaciones",
-        "cta": "Hablemos de tus procesos →"
-      },
-      {
-        "situacion": "Tienes una idea, un producto o una web que todavía no representa lo que quieres construir.",
-        "que_construimos": "Desde una web que explique mejor tu negocio hasta un MVP o producto digital completo. Definimos qué merece la pena construir primero y lo convertimos en algo que puedas poner delante de usuarios reales.",
-        "ejemplos": "Webs corporativas · MVP · SaaS · Portales · Productos digitales",
-        "cta": "Hablemos de tu idea →"
-      }
-    ],
-    "cierre": {
-      "texto": "¿Todavía no sabes qué necesitas? Perfecto. No hace falta llegar con la solución pensada. Cuéntanos cómo trabajas hoy y qué te está dando problemas. Nosotros te diremos qué construir, qué conectar y qué quizá no haga falta desarrollar.",
-      "cta": "Cuéntanos tu situación ↗"
-    }
+    "titulo": "Todo el club, en un solo sitio.",
+    "texto": "Reservas, socios y pagos conectados. El club gestiona el día a día y los jugadores reservan desde el móvil.",
+    "ficha": {
+      "Necesidad": "Coordinar disponibilidad, reservas y socios sin WhatsApp, Excel ni papel.",
+      "Alcance": "Panel del club, portal del jugador, reservas, cobros, competiciones y academia.",
+      "Una decisión": "Dos espacios separados sobre los mismos datos. Cada persona ve solo lo propio de su papel.",
+      "Puede encajar en": "Negocios con reservas, cuotas, espacios o actividades."
+    },
+    "cta": "Ver el proyecto →",
+    "problema": "Coordinar pistas, reservas y cobros sin información dispersa.",
+    "resultado": "Un panel para el club y un espacio para que cada jugador gestione sus reservas."
   },
   "metodo": {
-    "h2": "Del problema a una solución que puedas usar",
-    "apoyo": "Sin cajas negras ni meses esperando para ver resultados. Cada fase termina con algo que puedes revisar y las decisiones importantes quedan claras antes de seguir avanzando.",
+    "kicker": "03 · Cómo trabajamos",
+    "h2": "Sabes qué viene después.",
+    "apoyo": "Hablas directamente conmigo durante todo el proyecto. Acordamos qué hacer y revisamos juntos cómo avanza.",
+    "total": "/ 5.0",
     "fases": [
       {
-        "num": "1.0",
-        "nombre": "Entendemos",
-        "texto": "Nos cuentas qué quieres conseguir, qué te está frenando y cómo lo resuelves hoy.",
-        "entregable": "Problema y siguiente paso"
+        "num": "01",
+        "nombre": "Hablamos de tu necesidad",
+        "texto": "Me cuentas cómo trabajas, qué te frena y qué quieres conseguir. Vemos si puedo ayudarte y por dónde empezar.",
+        "entregable": "Un siguiente paso claro"
       },
       {
-        "num": "2.0",
-        "nombre": "Diseñamos",
-        "texto": "Decidimos qué merece la pena construir primero, qué puede esperar y cómo debe funcionar.",
-        "entregable": "Alcance y propuesta por escrito"
+        "num": "02",
+        "nombre": "Recibes una propuesta",
+        "texto": "Definimos qué vamos a construir, cuánto cuesta y cómo lo entregaremos. Lo conoces antes de decidir.",
+        "entregable": "Alcance y presupuesto por escrito"
       },
       {
-        "num": "3.0",
-        "nombre": "Construimos",
-        "texto": "Desarrollamos por fases y revisas avances mientras la solución toma forma.",
-        "entregable": "Versiones que puedes probar"
-      },
-      {
-        "num": "4.0",
-        "nombre": "Lanzamos",
-        "texto": "Probamos los recorridos importantes y dejamos todo preparado para empezar a utilizarlo.",
-        "entregable": "Solución lista para su uso"
-      },
-      {
-        "num": "5.0",
-        "nombre": "Evolucionamos",
-        "texto": "A partir del uso real decidimos contigo qué merece la pena mejorar, automatizar o ampliar.",
-        "entregable": "Continuidad acordada contigo"
+        "num": "03",
+        "nombre": "Construimos y revisamos",
+        "texto": "Pruebas los avances, revisamos los detalles y ponemos la solución en marcha. Acordamos también cómo mantenerla.",
+        "entregable": "Una solución que puedes usar"
       }
     ]
   },
-  "sobre": {
-    "h2": "Quien decide, construye.",
-    "nombre": "Alberto Bort",
-    "rol": "Dirección de proyectos y tecnología",
-    "parrafos": [
-      "BPM Tech es un estudio de software con base en Valencia. Aquí no explicas tu problema a una persona para que se lo traduzca a otra y termine construyéndolo una tercera. Hablas directamente con quien entiende la necesidad, diseña la solución, toma las decisiones técnicas y la desarrolla.",
-      "Combinamos experiencia en producto, desarrollo e inteligencia artificial para ejecutar con la velocidad y capacidad que antes requerían equipos mucho mayores. Trabajamos principalmente con pymes que quieren dejar atrás procesos manuales y herramientas que no encajan, y con startups que necesitan convertir una idea en un producto real."
-    ],
-    "datos": {
-      "Base": "Valencia, España",
-      "Trabajo": "Presencial y en remoto",
-      "Primera conversación": "30 minutos por videollamada"
-    },
-    "cta": "Cuéntame qué necesitas resolver ↗"
-  },
-  "como_trabajamos": {
+  "ai_first": {
     "kicker": "Menos intermediarios. Más producto.",
-    "h3": "Somos AI-first. El criterio sigue siendo humano.",
+    "h2": "Somos AI-first. El criterio sigue siendo humano.",
     "apoyo": "La IA multiplicó la capacidad de un estudio pequeño. Lo que no cambió es quién entiende el problema, toma las decisiones y responde por lo que se entrega.",
     "pilares": [
       {
@@ -155,45 +236,92 @@
       },
       {
         "titulo": "Hablas con quien construye",
-        "texto": "No hay una cadena de comercial, project manager, analista y desarrollador entre tu problema y la solución. La misma persona que entiende lo que necesitas participa en las decisiones y en la construcción del producto."
+        "texto": "No hay una cadena de comercial, project manager, analista y desarrollador entre tu problema y la solución. La misma persona que entiende lo que necesitas participa en las decisiones y en la construcción."
       },
       {
-        "titulo": "Usamos tecnología para resolver, no para complicar",
-        "texto": "Si algo puede resolverse con una regla sencilla, no necesita IA. Si existe una herramienta que ya hace bien lo que necesitas, tampoco hace falta reinventarla. Construimos cuando hacerlo aporta una ventaja real."
+        "titulo": "Tecnología para resolver, no para complicar",
+        "texto": "Si algo puede resolverse con una regla sencilla, no necesita IA. Si una herramienta ya hace bien lo que necesitas, no hace falta reinventarla. Construimos cuando hacerlo aporta una ventaja real."
       }
+    ]
+  },
+  "sobre": {
+    "kicker": "04 · La persona detrás",
+    "h2": "Soy Alberto. Hablamos tú y yo.",
+    "nombre": "Alberto Bort",
+    "rol": "Consultoría y desarrollo",
+    "parrafos": [
+      "Soy Alberto Bort, la persona detrás de BPM Tech. Te acompaño desde la primera conversación hasta la puesta en marcha: entiendo lo que necesitas, diseño la solución y la desarrollo.",
+      "Trabajo desde Valencia, de forma presencial y en remoto. Mi objetivo es que la tecnología te quite trabajo y te ayude a gestionar mejor tu negocio."
     ],
-    "stack": {
-      "kicker": "Herramientas con las que construimos",
-      "items": ["Next.js", "React", "Supabase", "Python", "Anthropic", "OpenAI", "AWS"]
-    }
+    "datos": {
+      "Base": "Valencia, España",
+      "Trabajo": "Presencial y en remoto"
+    },
+    "cta": "Hablemos de tu proyecto ↗"
+  },
+  "preguntas": {
+    "kicker": "05 · Antes de empezar",
+    "h2": "Lo que conviene tener claro.",
+    "apoyo": "Presupuesto, herramientas y continuidad. Respuestas para decidir tu siguiente paso.",
+    "items": [
+      {
+        "pregunta": "¿Cuánto puede costar mi proyecto?",
+        "respuesta": "Depende de lo que necesites construir y de las herramientas que haya que conectar. Tras entender tu caso, te preparo una propuesta con alcance y presupuesto por escrito. Si necesitas empezar con una inversión menor, podemos definir una primera versión más pequeña."
+      },
+      {
+        "pregunta": "¿Tengo que cambiar las herramientas que ya uso?",
+        "respuesta": "No necesariamente. Primero revisamos qué funciona y qué te está haciendo perder tiempo. A veces basta con conectar tus herramientas o automatizar un paso. Desarrollamos algo a medida cuando aporta una mejora que las opciones existentes no cubren."
+      },
+      {
+        "pregunta": "¿Podemos empezar por una sola mejora?",
+        "respuesta": "Sí. Podemos centrarnos en una tarea repetitiva, una parte de la gestión o la función principal de una aplicación. Así puedes probar la solución en tu día a día antes de decidir si merece la pena ampliarla."
+      },
+      {
+        "pregunta": "¿Qué pasa con el mantenimiento y los costes posteriores?",
+        "respuesta": "La propuesta debe dejar claro qué necesitas después de la puesta en marcha: alojamiento, servicios externos y mantenimiento, cuando correspondan. Acordamos qué soporte se incluye y qué mejoras se presupuestarían aparte."
+      },
+      {
+        "pregunta": "¿Y si todavía no sé exactamente lo que necesito?",
+        "respuesta": "Puedes empezar contándome cómo trabajas hoy, qué tarea te complica el día o qué te gustaría conseguir. No necesitas preparar un documento técnico. La primera conversación sirve para ordenar esa necesidad y ver qué siguiente paso tiene sentido."
+      }
+    ]
   },
   "contacto": {
-    "h2": "¿Qué debería funcionar mejor en tu negocio?",
-    "apoyo": "No necesitas llegar con un proyecto definido. Cuéntanos cómo trabajas hoy, qué te está dando problemas o qué idea quieres poner en marcha. Nosotros nos encargamos de convertirlo en el siguiente paso.",
+    "kicker": "Hablemos",
+    "h2": "Cuéntame qué necesitas.",
+    "apoyo": "No hace falta tener un proyecto definido. Cuéntame qué te gustaría mejorar y vemos por dónde empezar.",
+    "opcion_hablando": "Si prefieres hablar",
+    "opcion_escrito": "Escríbeme aquí",
     "que_pasa_despues": {
       "titulo": "¿Qué pasa después?",
-      "texto": "Revisamos tu situación y hablamos contigo para entenderla. Si podemos ayudarte, te explicamos cómo lo resolveríamos y qué tendría sentido hacer primero. El alcance y el presupuesto quedan claros antes de empezar a construir."
+      "texto": "Leo tu consulta y te respondo para entender mejor la necesidad. Si encaja, recibirás una propuesta con el alcance y el presupuesto antes de empezar."
     },
     "llamada": {
-      "titulo": "¿Prefieres explicarlo hablando?",
-      "texto": "Una videollamada de 30 minutos para entender qué necesitas, enseñarte cómo lo abordaríamos y decidir si tiene sentido avanzar. Sin compromiso.",
+      "titulo": "Una primera conversación de 30 minutos",
+      "texto": "Hablamos de tu negocio, resolvemos dudas y vemos si puedo ayudarte. Sin compromiso.",
       "cta": "Reservar una llamada de 30 min ↗"
     },
     "email_directo": "O escríbenos directamente: bpmtechstudio@gmail.com",
     "formulario": {
-      "campos": ["Nombre", "Empresa (opcional)", "Email", "Teléfono (opcional)"],
+      "campos": [
+        "Nombre",
+        "Empresa (opcional)",
+        "Email",
+        "Teléfono (opcional)"
+      ],
       "selector": {
         "etiqueta": "¿En qué podemos ayudarte? (opcional)",
         "opciones": [
           "Todavía no lo tengo claro",
-          "Organizar la operativa de mi negocio",
+          "Necesito ayuda para definir mi proyecto",
+          "Organizar la gestión de mi negocio",
           "Automatizar tareas y conectar herramientas",
-          "Crear una web, un MVP o un producto digital"
+          "Crear una web o una aplicación"
         ]
       },
       "mensaje": {
         "etiqueta": "¿Qué necesitas resolver?",
-        "ayuda": "Cuéntanos qué haces, cómo lo resuelves ahora y qué te gustaría que funcionase mejor. No necesitas saber qué tecnología necesitas."
+        "ayuda": "Qué te gustaría mejorar o qué idea tienes. Con unas frases es suficiente."
       },
       "aviso_datos": "BPM Tech (BORT PEREZ MULTI GESTION SOCIEDAD LIMITADA) utilizará tus datos para responder a tu consulta y, si procede, preparar una propuesta. Cómo ejercer tus derechos y el resto de información, en la política de privacidad.",
       "boton": "Enviar consulta"
@@ -201,10 +329,22 @@
   },
   "pie": {
     "wordmark": "BPM TECH",
-    "descriptor": "Software, automatización y productos digitales hechos alrededor de cómo funciona tu negocio. Sin capas intermedias.",
-    "indice": ["Proyectos", "Servicios", "Método", "Sobre BPM Tech"],
-    "contacto": ["Hablemos", "bpmtechstudio@gmail.com", "Reservar una llamada ↗"],
-    "legal": ["Aviso legal", "Privacidad"],
+    "descriptor": "Software, automatizaciones y webs para facilitar el día a día de tu negocio.",
+    "indice": [
+      "Proyectos",
+      "Servicios",
+      "Cómo trabajamos",
+      "Sobre mí"
+    ],
+    "contacto": [
+      "Hablemos",
+      "bpmtechstudio@gmail.com",
+      "Reservar una llamada ↗"
+    ],
+    "legal": [
+      "Aviso legal",
+      "Privacidad"
+    ],
     "copyright": "© 2026 BPM Tech",
     "ubicacion": "Valencia, España"
   }

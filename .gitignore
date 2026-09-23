@@ -47,3 +47,4 @@ next-env.d.ts
 
 # handoff de diseño (vive fuera del repo)
 design_handoff_bpm_tech/
+/design_handoff_landing_el_punto/

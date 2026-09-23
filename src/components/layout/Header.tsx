@@ -68,19 +68,21 @@ export function Header() {
 
   return (
     <>
-      {/* Cabecera sobre tinta: abre la página en oscuro y enlaza sin salto con
-          el menú móvil, que ya era de tinta. El anillo de foco lo resuelve la
-          regla `.bg-ink :focus-visible` de globals.css. */}
-      <header className="bg-ink text-paper">
-        <div className="container-editorial flex h-[60px] items-center justify-between md:h-16 wide:h-[72px]">
+      {/* Cabecera fija sobre tinta: abre la página en oscuro y enlaza sin
+          salto con el menú móvil, que ya era de tinta. Va por encima del
+          canvas de la portada (z-50 frente a z-1) y las páginas interiores
+          reservan su alto con `.pagina-interior`. El anillo de foco lo
+          resuelve la regla `.bg-ink :focus-visible` de globals.css. */}
+      <header className="fixed inset-x-0 top-0 z-50 bg-ink text-paper">
+        <div className="container-editorial mx-auto flex h-[60px] max-w-[1440px] items-center justify-between md:h-16 wide:h-[72px]">
           <Link
             ref={brandRef}
             href="/"
             aria-label="BPM Tech, inicio"
             className="inline-flex min-h-11 items-center"
           >
-            <Wordmark tone="paper" size={16} className="wide:hidden" />
-            <Wordmark tone="paper" size={19} className="hidden wide:inline-flex" />
+            <Wordmark tone="paper" size={16} shine className="wide:hidden" />
+            <Wordmark tone="paper" size={19} shine className="hidden wide:inline-flex" />
           </Link>
 
           <nav aria-label="Principal" className="hidden items-center gap-6 md:flex wide:gap-8">
@@ -123,7 +125,7 @@ export function Header() {
         </div>
 
         <noscript>
-          <style>{`.js-menu-trigger { display: none !important; } @media (max-width: 767px) { main section[id] { scroll-margin-top: 56px; } }`}</style>
+          <style>{`.js-menu-trigger { display: none !important; } header { position: static !important; } .pagina-interior { margin-top: 0 !important; }`}</style>
           <nav aria-label="Principal móvil" className="flex gap-6 overflow-x-auto border-t border-line-dark px-4 md:hidden">
             {nav.map((item) => (
               <a key={item.href} href={item.href} className="inline-flex min-h-11 shrink-0 items-center text-sm text-paper">{item.label}</a>

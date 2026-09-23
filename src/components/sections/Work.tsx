@@ -5,263 +5,71 @@ import { homeShots, getProject } from "@/data/projects";
 import { copyEs, partirFlecha, proyectoSlugs } from "@/data/copy";
 
 const { proyectos, destacado } = copyEs;
-const [almacen, evento, radio, asistente] = proyectos.items;
-const [slugAlmacen, slugEvento, slugRadio, slugAsistente] = proyectoSlugs;
-const padel = getProject("plataforma-clubes-padel")!;
-
-/**
- * Los cuatro proyectos de la rejilla llevan el mismo rótulo de enlace que el
- * destacado. Es copy que ya existe, no texto inventado: sin él las fichas de
- * evento, radio y asistente quedarían sin ninguna entrada desde la portada.
- */
 const verProyecto = partirFlecha(destacado.cta);
-
-/** Leyenda del escenario: nombre del trabajo, nunca el tipo de relación. */
-const legend = "font-mono text-[10px] uppercase tracking-[0.12em] lg:text-xs lg:tracking-[0.1em]";
-/** El escenario sangra hasta los bordes del lienzo en móvil. */
-const bleed = "-mx-4 md:-mx-10 lg:mx-0";
-const cardTitle =
-  "text-[17px] font-semibold leading-[1.25] tracking-[-0.01em] lg:text-[25px] lg:leading-[1.15] lg:tracking-[-0.015em]";
-const decisionLabel = "font-mono text-[11px] uppercase tracking-[0.1em]";
+const padel = getProject("plataforma-clubes-padel")!;
+const cards = [
+  { item: proyectos.items[0], slug: proyectoSlugs[0], shot: homeShots.almacenMovimientos, scene: "bg-escena-wms" },
+  { item: proyectos.items[1], slug: proyectoSlugs[1], shot: homeShots.radioPortada, scene: "bg-escena-radio" },
+];
 
 export function Work() {
   return (
-    <section id="proyectos" aria-label="Proyectos" className="scroll-mt-6">
-      <div className="container-editorial pt-16 lg:pt-24 wide:pt-[120px]">
-        <div className="rejilla-editorial">
-          <h2 className="display text-[26px] leading-[1.02] lg:text-[32px] wide:text-[40px]">
-            {proyectos.h2}
-          </h2>
-          <p className="mt-3 max-w-[520px] text-[15px] leading-[1.55] text-ink-mute lg:mt-0 lg:text-base wide:text-[17px] wide:leading-[1.6]">
-            {proyectos.apoyo}
-          </p>
+    <section id="proyectos" aria-labelledby="work-title" className="border-t border-line bg-paper">
+      <div className="container-editorial seccion">
+        <div className="grid items-end gap-6 lg:grid-cols-[1.1fr_1fr] lg:gap-20">
+          <div>
+            <p className="label-mono text-cobalt">{proyectos.kicker}</p>
+            <h2 id="work-title" className="display mt-4 max-w-[700px] text-display-sec">{proyectos.h2}</h2>
+          </div>
+          <p className="max-w-[460px] text-base leading-relaxed text-ink-soft">{proyectos.apoyo}</p>
         </div>
 
-        {/* Padel Club OS abre la sección en móvil: en escritorio ya ocupa el hero. */}
-        <article className="mt-8 lg:hidden">
-          <Link
-            href={`/proyectos/${padel.slug}`}
-            data-track="case_open"
-            data-track-location="projects"
-            data-track-project={padel.slug}
-            data-tono="oscuro"
-            className={`group relative block h-[360px] overflow-hidden bg-escena-padel sm:h-[420px] ${bleed}`}
-          >
-            <p className={`absolute left-4 top-4 text-escena-padel-texto ${legend}`}>
-              {destacado.etiqueta}
-            </p>
-            <Image
-              {...homeShots.padelAcademia}
-              alt={homeShots.padelAcademia.alt}
-              sizes="74vw"
-              className="absolute right-0 top-12 h-auto w-[74%] max-w-[420px] border border-escena-padel-borde/55 border-r-0"
-            />
-            <Image
-              {...homeShots.padelPortal}
-              alt={homeShots.padelPortal.alt}
-              sizes="30vw"
-              className="absolute left-4 top-[76px] z-20 h-auto w-[30%] max-w-[150px] border border-escena-padel-borde/55"
-            />
-            <div className="absolute bottom-4 left-[154px] right-4">
-              <h3 className="text-[15px] font-semibold leading-[1.25] text-escena-padel-texto group-hover:underline group-hover:underline-offset-4">
-                {destacado.titulo}
-              </h3>
-              <span className="mt-2 inline-flex min-h-11 items-center gap-1.5 text-[13px] font-semibold text-escena-padel-texto">
-                <span className="border-b border-escena-padel-texto/50">{verProyecto.texto}</span>
-                <span aria-hidden>{verProyecto.flecha}</span>
-              </span>
-            </div>
+        <article className="mt-10 grid overflow-hidden border border-line lg:grid-cols-[0.85fr_1.15fr]">
+          <div className="flex flex-col items-start bg-paper-2 p-6 md:p-9 wide:p-11">
+            <p className="label-mono text-[10px] leading-relaxed text-ink-mute">{destacado.etiqueta}</p>
+            <h3 className="mt-5 text-[clamp(28px,3vw,42px)] font-semibold leading-[1.08] tracking-[-0.035em]">{destacado.titulo}</h3>
+            <p className="mt-4 text-base leading-relaxed text-ink-soft">{destacado.texto}</p>
+            <dl className="mt-6 space-y-4 border-t border-line-2 pt-5">
+              <div>
+                <dt className="text-xs font-semibold text-ink">{proyectos.problema_rotulo}</dt>
+                <dd className="mt-1 text-sm leading-relaxed text-ink-mute">{destacado.problema}</dd>
+              </div>
+              <div>
+                <dt className="text-xs font-semibold text-ink">{proyectos.solucion_rotulo}</dt>
+                <dd className="mt-1 text-sm leading-relaxed text-ink-mute">{destacado.resultado}</dd>
+              </div>
+            </dl>
+            <ArrowLink href={`/proyectos/${padel.slug}`} arrow={verProyecto.flecha} className="mt-6" trackEvent="case_open" trackLocation="projects" trackProject={padel.slug}>{verProyecto.texto}</ArrowLink>
+          </div>
+          <Link href={`/proyectos/${padel.slug}`} aria-label={`${verProyecto.texto}: ${destacado.titulo}`} data-track="case_open" data-track-location="projects" data-track-project={padel.slug} data-tono="oscuro" className="group relative flex min-h-[270px] items-center overflow-hidden bg-escena-padel p-5 py-14 sm:min-h-[360px] sm:p-9">
+            <span className="absolute left-5 top-5 font-mono text-[10px] uppercase tracking-[0.1em] text-paper/82 sm:left-9">{proyectos.captura}</span>
+            <Image {...homeShots.padelRecepcion} alt={homeShots.padelRecepcion.alt} sizes="(min-width: 1440px) 630px, (min-width: 1024px) 48vw, 90vw" className="h-auto w-full border border-paper/28 shadow-2xl transition-transform duration-500 ease-editorial group-hover:-translate-y-1" />
+            <Image {...homeShots.padelPortal} alt={homeShots.padelPortal.alt} sizes="(min-width: 1440px) 125px, (min-width: 1024px) 10vw, 18vw" className="absolute bottom-5 right-5 h-auto w-[18%] max-w-[125px] border border-paper/28 shadow-2xl sm:bottom-7 sm:right-7" />
           </Link>
         </article>
 
-        {/* Gestión de almacén: escenario a sangre y ficha de tres filas. */}
-        <article className="mt-8 lg:mt-14">
-          <div
-            data-tono="oscuro"
-            className={`relative h-[280px] overflow-hidden bg-escena-wms lg:aspect-[66/26] lg:h-auto ${bleed}`}
-          >
-            <p className={`absolute left-4 top-4 text-escena-wms-texto lg:left-7 lg:top-6 ${legend}`}>
-              {almacen.descriptor}
-            </p>
-            <Image
-              {...homeShots.almacenMovimientos}
-              alt={homeShots.almacenMovimientos.alt}
-              sizes="(min-width: 1440px) 1000px, (min-width: 1024px) 76vw, 74vw"
-              className="absolute right-0 top-12 h-auto w-[74%] max-w-[420px] border border-escena-wms-borde border-r-0 lg:left-[22.73%] lg:right-auto lg:top-[12.3%] lg:w-[75.76%] lg:max-w-none lg:border-r"
-            />
-            <Image
-              {...homeShots.almacenRf}
-              alt={homeShots.almacenRf.alt}
-              sizes="(min-width: 1440px) 220px, (min-width: 1024px) 17vw, 25vw"
-              className="absolute left-4 top-24 z-20 h-auto w-[24.6%] max-w-[120px] border border-escena-wms-borde lg:left-[3.03%] lg:top-[18.5%] lg:w-[16.67%] lg:max-w-none"
-            />
-          </div>
-
-          <div className="rejilla-editorial pt-5 lg:pt-8">
-            <div>
-              <p className={`text-ink-mute lg:hidden ${legend}`}>{almacen.descriptor}</p>
-              <h3 className={`mt-2 lg:mt-0 ${cardTitle}`}>{almacen.titulo}</h3>
-              <p className="mt-2.5 text-sm leading-[1.55] text-ink-soft lg:mt-3.5 lg:text-base">
-                {almacen.texto}
-              </p>
-              <ArrowLink
-                href={`/proyectos/${slugAlmacen}`}
-                arrow={verProyecto.flecha}
-                className="mt-1.5 lg:mt-4"
-                trackEvent="case_open"
-                trackLocation="projects"
-                trackProject={slugAlmacen}
-              >
-                {verProyecto.texto}
-              </ArrowLink>
-            </div>
-            {almacen.ficha && (
-              <dl className="mt-6 grid gap-y-5 border-t border-line pt-5 lg:mt-0 lg:grid-cols-3 lg:gap-x-6 lg:border-t-0 lg:pt-1.5">
-                {Object.entries(almacen.ficha).map(([label, body]) => (
-                  <div key={label}>
-                    <dt className="font-mono text-[10px] uppercase tracking-[0.12em] text-ink-mute lg:text-[11px] lg:tracking-[0.1em]">
-                      {label}
-                    </dt>
-                    <dd className="mt-2 text-sm leading-[1.5] text-ink-soft lg:text-[15px]">{body}</dd>
-                  </div>
-                ))}
-              </dl>
-            )}
-          </div>
-        </article>
-
-        {/* Web de evento y web de radio: sin nombre de cliente y sin enlace externo. */}
-        <div className="mt-10 grid gap-x-[88px] gap-y-10 min-[900px]:grid-cols-[536fr_696fr] lg:mt-[72px]">
-          <article>
-            <Link
-              href={`/proyectos/${slugEvento}`}
-              data-track="case_open"
-              data-track-location="projects"
-              data-track-project={slugEvento}
-              className="group block"
-            >
-              <div className="relative flex h-[210px] items-center justify-center overflow-hidden border border-shot bg-escena-evento lg:block lg:aspect-[536/460] lg:h-auto">
-                <p className={`absolute left-4 top-4 text-escena-evento-texto lg:left-6 lg:top-[22px] ${legend}`}>
-                  {evento.descriptor}
-                </p>
-                <Image
-                  {...homeShots.eventoPortada}
-                  alt={homeShots.eventoPortada.alt}
-                  sizes="(min-width: 900px) 42vw, 77vw"
-                  className="h-auto w-[77%] max-w-[360px] border border-escena-evento-texto/20 shadow-[0_10px_28px_rgba(88,3,1,0.18)] lg:absolute lg:left-[4.5%] lg:top-[13%] lg:w-[85%] lg:max-w-none lg:shadow-[0_16px_40px_rgba(88,3,1,0.18)]"
-                />
-                <Image
-                  {...homeShots.eventoCuenta}
-                  alt={homeShots.eventoCuenta.alt}
-                  sizes="42vw"
-                  className="absolute left-[10.4%] top-[49.6%] hidden h-auto w-[85%] border border-escena-evento-texto/20 shadow-[0_16px_40px_rgba(88,3,1,0.18)] lg:block"
-                />
-              </div>
-              <div className="pt-4 lg:pt-6">
-                <p className={`text-ink-mute lg:hidden ${legend}`}>{evento.descriptor}</p>
-                <h3 className={`mt-1.5 group-hover:underline group-hover:underline-offset-4 lg:mt-0 ${cardTitle}`}>
-                  {evento.titulo}
-                </h3>
-                <p className="mt-2.5 text-sm leading-[1.55] text-ink-soft lg:text-[15px]">
-                  {evento.texto}
-                </p>
-                <p className="mt-3 text-sm leading-[1.5] text-ink-mute">
-                  <span className={decisionLabel}>Decisión · </span>
-                  {evento.decision}
-                </p>
-                <span className="mt-1.5 inline-flex min-h-11 items-center gap-2 text-[15px] font-semibold text-cobalt underline-offset-4 transition-all duration-300 ease-editorial group-hover:gap-3 group-hover:text-cobalt-deep">
-                  {verProyecto.texto}
-                  <span aria-hidden className="font-mono">{verProyecto.flecha}</span>
-                </span>
-              </div>
-            </Link>
-          </article>
-
-          <article>
-            <Link
-              href={`/proyectos/${slugRadio}`}
-              data-track="case_open"
-              data-track-location="projects"
-              data-track-project={slugRadio}
-              data-tono="oscuro"
-              className="group block"
-            >
-              <div className="relative h-[210px] overflow-hidden bg-escena-radio lg:aspect-[696/460] lg:h-auto">
-                <p className={`absolute left-4 top-4 text-escena-radio-texto lg:left-7 lg:top-[22px] ${legend}`}>
-                  {radio.descriptor}
-                </p>
-                <Image
-                  {...homeShots.radioPortada}
-                  alt={homeShots.radioPortada.alt}
-                  sizes="(min-width: 900px) 50vw, 59vw"
-                  className="absolute left-4 top-[52px] h-auto w-[59%] max-w-[300px] shadow-[0_10px_28px_rgba(0,0,0,0.3)] lg:left-[14.7%] lg:top-[17.8%] lg:w-[85.3%] lg:max-w-none lg:shadow-[0_16px_40px_rgba(0,0,0,0.3)]"
-                />
-                <Image
-                  {...homeShots.radioMovil}
-                  alt={homeShots.radioMovil.alt}
-                  sizes="(min-width: 900px) 12vw, 25vw"
-                  className="absolute right-4 top-[31px] z-20 h-auto w-[24.6%] max-w-[120px] shadow-[0_10px_28px_rgba(0,0,0,0.35)] lg:left-[3.7%] lg:right-auto lg:top-[45.2%] lg:w-[19.7%] lg:max-w-none lg:shadow-[0_16px_40px_rgba(0,0,0,0.35)]"
-                />
-              </div>
-              <div className="pt-4 lg:grid lg:grid-cols-2 lg:gap-x-6 lg:pt-6">
-                <div>
-                  <p className={`text-ink-mute lg:hidden ${legend}`}>{radio.descriptor}</p>
-                  <h3 className={`mt-1.5 group-hover:underline group-hover:underline-offset-4 lg:mt-0 ${cardTitle}`}>
-                    {radio.titulo}
-                  </h3>
-                  <p className="mt-2.5 text-sm leading-[1.55] text-ink-soft lg:text-[15px]">
-                    {radio.texto}
-                  </p>
-                  <span className="mt-1.5 inline-flex min-h-11 items-center gap-2 text-[15px] font-semibold text-cobalt underline-offset-4 transition-all duration-300 ease-editorial group-hover:gap-3 group-hover:text-cobalt-deep">
-                    {verProyecto.texto}
-                    <span aria-hidden className="font-mono">{verProyecto.flecha}</span>
-                  </span>
-                </div>
-                <p className="mt-3 text-sm leading-[1.5] text-ink-mute lg:mt-0 lg:pt-1">
-                  <span className={decisionLabel}>Decisión · </span>
-                  {radio.decision}
-                </p>
-              </div>
-            </Link>
-          </article>
+        <div className="mt-9 grid gap-10 md:grid-cols-2 md:gap-8">
+          {cards.map(({ item, slug, shot, scene }) => (
+            <article key={slug}>
+              <Link href={`/proyectos/${slug}`} aria-label={`${verProyecto.texto}: ${item.titulo}`} data-track="case_open" data-track-location="projects" data-track-project={slug} data-tono="oscuro" className={`group flex aspect-[16/10] items-center overflow-hidden p-6 md:p-8 ${scene}`}>
+                <Image {...shot} alt={shot.alt} sizes="(min-width: 1440px) 580px, (min-width: 768px) 42vw, 85vw" className="h-auto w-full border border-paper/24 shadow-xl transition-transform duration-500 ease-editorial group-hover:-translate-y-1" />
+              </Link>
+              <p className="label-mono mt-6 text-[10px] text-cobalt">{item.descriptor}</p>
+              <h3 className="mt-3 text-[25px] font-semibold leading-[1.15] tracking-[-0.025em]">{item.titulo}</h3>
+              <p className="mt-3 max-w-[570px] text-base leading-relaxed text-ink-soft">{item.texto}</p>
+              <p className="mt-3 max-w-[550px] text-sm leading-relaxed text-ink-mute">{item.decision}</p>
+              <ArrowLink href={`/proyectos/${slug}`} arrow={verProyecto.flecha} className="mt-3" trackEvent="case_open" trackLocation="projects" trackProject={slug}>{verProyecto.texto}</ArrowLink>
+            </article>
+          ))}
         </div>
-
-        {/* Asistente de IA: la captura va sin la marca del producto. */}
-        <article
-          className={`mt-10 bg-paper-2 px-4 pb-7 pt-6 lg:mt-[72px] lg:grid lg:grid-cols-[496fr_680fr] lg:gap-x-16 lg:px-10 lg:pb-11 lg:pt-10 ${bleed}`}
-        >
-          <div>
-            <p className={`text-ink-mute ${legend}`}>{asistente.descriptor}</p>
-            <h3 className={`mt-2 lg:mt-4 ${cardTitle}`}>{asistente.titulo}</h3>
-            <p className="mt-2.5 text-sm leading-[1.55] text-ink-soft lg:mt-3.5 lg:text-base">
-              {asistente.texto}
-            </p>
-            <ArrowLink
-              href={`/proyectos/${slugAsistente}`}
-              arrow={verProyecto.flecha}
-              className="mt-1.5 lg:mt-4"
-              trackEvent="case_open"
-              trackLocation="projects"
-              trackProject={slugAsistente}
-            >
-              {verProyecto.texto}
+        <div className="mt-10 flex flex-wrap items-center gap-x-8 gap-y-2 border-t border-line pt-5">
+          <p className="label-mono text-[10px] text-ink-mute">{proyectos.mas}</p>
+          {[2, 3].map((index) => (
+            <ArrowLink key={proyectoSlugs[index]} href={`/proyectos/${proyectoSlugs[index]}`} trackEvent="case_open" trackLocation="projects" trackProject={proyectoSlugs[index]} className="max-w-full text-sm">
+              {proyectos.items[index].titulo}
             </ArrowLink>
-          </div>
-          <figure className="m-0 mt-5 lg:mt-0">
-            <Image
-              {...homeShots.asistenteMovil}
-              alt={homeShots.asistenteMovil.alt}
-              sizes="92vw"
-              className="h-auto w-full border border-shot lg:hidden"
-            />
-            <Image
-              {...homeShots.asistente}
-              alt={homeShots.asistente.alt}
-              sizes="(min-width: 1440px) 712px, 50vw"
-              className="hidden h-auto w-full border border-shot lg:block"
-            />
-          </figure>
-        </article>
+          ))}
+        </div>
       </div>
     </section>
   );

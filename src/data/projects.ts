@@ -433,6 +433,10 @@ export const projects: Project[] = [
 
 /** Capturas que solo usa la portada, con su recorte propio para móvil. */
 export const homeShots = {
+  padelRecepcion: {
+    ...files.recepcion,
+    alt: "Panel de administración: recepción del día con reservas activas, participantes, cobros y filtros por estado",
+  },
   padelAcademia: {
     ...files.academia,
     alt: "Panel de administración: módulo de academia con clases, asistencia y cuotas",

@@ -1,11 +1,12 @@
 import { Hero } from "@/components/sections/Hero";
-import { Work } from "@/components/sections/Work";
 import { Services } from "@/components/sections/Services";
+import { Faq } from "@/components/sections/Faq";
+import { Work } from "@/components/sections/Work";
 import { Process } from "@/components/sections/Process";
 import { About } from "@/components/sections/About";
 import { Contact } from "@/components/sections/Contact";
 
-/** El trabajo va antes que el discurso: proyectos es la segunda sección. */
+/** Oferta, pruebas reales y contacto. El contenido principal se sirve visible. */
 export default function HomePage() {
   return (
     <>
@@ -14,6 +15,7 @@ export default function HomePage() {
       <Services />
       <Process />
       <About />
+      <Faq />
       <Contact />
     </>
   );

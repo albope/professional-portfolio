@@ -64,7 +64,7 @@ export default async function ProjectPage({ params }: PageProps) {
   const [principal, ...detalles] = project.figures;
 
   return (
-    <article>
+    <article className="pagina-interior">
       <header className="container-editorial pt-6 lg:pt-12">
         <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between md:gap-6">
           <Link

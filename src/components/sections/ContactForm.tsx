@@ -7,6 +7,7 @@ import { Check } from "lucide-react";
 import { SquareWord } from "@/components/ui/SquareWord";
 import { copyEs } from "@/data/copy";
 import { trackEvent, type AnalyticsProperties } from "@/lib/analytics";
+import { DIAGNOSTICO_EVENT } from "@/lib/diagnostico";
 import {
   CONTACT_LIMITS, CONTACT_NEEDS, CONTACT_PROJECTS, CONTACT_TIMEOUTS,
   getContactContext, isAcceptedContactResponse, validateContactPayload,
@@ -56,12 +57,32 @@ function ContactFormContent({ context, forceDisabled = false }: { context: Conta
   const activeRequest = useRef<AbortController | null>(null);
   const successRef = useRef<HTMLDivElement>(null);
   const errorRef = useRef<HTMLDivElement>(null);
+  const mensajeRef = useRef<HTMLTextAreaElement>(null);
   const disabled = forceDisabled || !hydrated || status === "sending";
 
   useEffect(() => () => activeRequest.current?.abort(), []);
   useEffect(() => {
     if (status === "success") successRef.current?.focus();
   }, [status]);
+
+  // «Enviarlo por escrito» en el diagnóstico rellena el mensaje y preselecciona la necesidad.
+  useEffect(() => {
+    const onDiagnostico = (event: Event) => {
+      const detail = (event as CustomEvent<unknown>).detail;
+      const el = mensajeRef.current;
+      if (typeof detail !== "string" || !el) return;
+      el.value = detail.slice(0, CONTACT_LIMITS.mensaje);
+      setErrors((previous) => ({ ...previous, mensaje: undefined }));
+      setSelectedNeed("diagnostico");
+      if (!started.current && hydrated && !forceDisabled) {
+        started.current = true;
+        trackEvent("form_start", { location: "contact", need: "diagnostico" });
+      }
+      requestAnimationFrame(() => el.focus({ preventScroll: true }));
+    };
+    window.addEventListener(DIAGNOSTICO_EVENT, onDiagnostico);
+    return () => window.removeEventListener(DIAGNOSTICO_EVENT, onDiagnostico);
+  }, [hydrated, forceDisabled]);
 
   function analyticsContext(): AnalyticsProperties {
     return { location: "contact", ...(need ? { need } : {}), ...(context.proyecto ? { project: context.proyecto } : {}) };
@@ -204,22 +225,10 @@ function ContactFormContent({ context, forceDisabled = false }: { context: Conta
             <input {...fieldProps("nombre")} type="text" required autoComplete="name" />
             {fieldError("nombre")}
           </label>
-          <label className="flex flex-col gap-2" htmlFor="contact-empresa">
-            <span className={labelClasses}>{rotuloEmpresa}</span>
-            <input {...fieldProps("empresa")} type="text" autoComplete="organization" />
-            {fieldError("empresa")}
-          </label>
-        </div>
-        <div className="grid gap-[18px] lg:grid-cols-2 lg:gap-[22px]">
           <label className="flex flex-col gap-2" htmlFor="contact-email">
             <span className={labelClasses}>{rotuloEmail}</span>
             <input {...fieldProps("email")} type="email" required autoComplete="email" />
             {fieldError("email")}
-          </label>
-          <label className="flex flex-col gap-2" htmlFor="contact-telefono">
-            <span className={labelClasses}>{rotuloTelefono}</span>
-            <input {...fieldProps("telefono")} type="tel" inputMode="tel" autoComplete="tel" />
-            {fieldError("telefono")}
           </label>
         </div>
         <label className="flex flex-col gap-2" htmlFor="contact-necesidad">
@@ -233,9 +242,24 @@ function ContactFormContent({ context, forceDisabled = false }: { context: Conta
         <label className="flex flex-col gap-2" htmlFor="contact-mensaje">
           <span className={labelClasses}>{formulario.mensaje.etiqueta}</span>
           <span id="contact-message-help" className="text-sm leading-[1.5] text-paper/78">{formulario.mensaje.ayuda}</span>
-          <textarea {...fieldProps("mensaje")} required rows={5} className={`${fieldBase} ${errors.mensaje ? fieldBad : fieldOk} min-h-[132px] resize-y lg:min-h-[140px]`} />
+          <textarea {...fieldProps("mensaje")} ref={mensajeRef} required rows={5} className={`${fieldBase} ${errors.mensaje ? fieldBad : fieldOk} min-h-[132px] resize-y lg:min-h-[140px]`} />
           {fieldError("mensaje")}
         </label>
+        <details className="border-y border-paper/28 py-1" open={errors.empresa || errors.telefono ? true : undefined}>
+          <summary className="min-h-11 cursor-pointer py-3 text-sm text-paper/78">Empresa y teléfono (opcional)</summary>
+          <div className="grid gap-[18px] pb-4 pt-2 lg:grid-cols-2 lg:gap-[22px]">
+            <label className="flex flex-col gap-2" htmlFor="contact-empresa">
+              <span className={labelClasses}>{rotuloEmpresa}</span>
+              <input {...fieldProps("empresa")} type="text" autoComplete="organization" />
+              {fieldError("empresa")}
+            </label>
+            <label className="flex flex-col gap-2" htmlFor="contact-telefono">
+              <span className={labelClasses}>{rotuloTelefono}</span>
+              <input {...fieldProps("telefono")} type="tel" inputMode="tel" autoComplete="tel" />
+              {fieldError("telefono")}
+            </label>
+          </div>
+        </details>
         <div className="hidden" aria-hidden="true">
           <label htmlFor="contact-web">Web</label>
           <input id="contact-web" name="web" type="text" tabIndex={-1} autoComplete="off" />
