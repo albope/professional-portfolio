@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
-import { join } from "node:path";
+import { readdirSync, readFileSync } from "node:fs";
+import { join, relative, sep } from "node:path";
 import { test } from "node:test";
 import { projects, homeShots, type Shot } from "../data/projects";
 import { CONTACT_PROJECTS, getContactContext } from "./contact";
@@ -46,6 +46,20 @@ test("declared screenshot sizes match the files, so the scene reserves its space
     const real = readSize(shot.src);
     assert.deepEqual({ width: shot.width, height: shot.height }, real, shot.src);
   }
+});
+
+/**
+ * Un archivo de `public/` se descarga aunque ninguna página lo muestre. Cada
+ * captura publicada debe estar declarada en los datos, así que un original
+ * sin anonimizar no puede quedarse servido por olvido.
+ */
+test("every file served under public/proyectos is a declared screenshot", () => {
+  const root = join(process.cwd(), "public", "proyectos");
+  const served = readdirSync(root, { recursive: true, withFileTypes: true })
+    .filter((entry) => entry.isFile())
+    .map((entry) => `/proyectos/${relative(root, join(entry.parentPath, entry.name)).split(sep).join("/")}`);
+  const declared = new Set(allShots.map((shot) => shot.src));
+  for (const file of served) assert.ok(declared.has(file), `Archivo público sin declarar: ${file}`);
 });
 
 test("every screenshot describes the screen it shows", () => {

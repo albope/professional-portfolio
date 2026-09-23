@@ -21,12 +21,10 @@ const files = {
   portalMovil: { src: "/proyectos/padel/portal-movil.png", width: 390, height: 884 },
   movimientos: { src: "/proyectos/almacen/movimientos.png", width: 3200, height: 1800 },
   rfEntrada: { src: "/proyectos/almacen/rf-entrada.png", width: 960, height: 1600 },
-  eventoPortada: { src: "/proyectos/evento/portada.jpg", width: 1120, height: 512 },
-  eventoCuenta: { src: "/proyectos/evento/cuenta.jpg", width: 1120, height: 512 },
-  radioPortada: { src: "/proyectos/radio/portada.jpg", width: 1296, height: 593 },
+  eventoCuenta: { src: "/proyectos/evento/cuenta-anonima.jpg", width: 1120, height: 512 },
+  radioPortada: { src: "/proyectos/radio/portada-anonima.jpg", width: 1296, height: 593 },
   radioMovil: { src: "/proyectos/radio/movil.jpg", width: 514, height: 786 },
-  asistentePanel: { src: "/proyectos/asistente/panel.png", width: 1343, height: 638 },
-  asistentePanelMovil: { src: "/proyectos/asistente/panel-movil.png", width: 833, height: 510 },
+  asistenteTraza: { src: "/proyectos/asistente/traza.png", width: 1343, height: 638 },
 } as const;
 
 /** Color del propio producto. Solo vive dentro de su escenario. */
@@ -259,26 +257,14 @@ export const projects: Project[] = [
     figures: [
       {
         shot: {
-          ...files.eventoPortada,
-          alt: "Portada de la web: monograma, nombres, fecha y botón de confirmar asistencia sobre una fotografía en sepia",
-        },
-        scene: "evento",
-        legend: "Portada",
-        captionLabel: "Portada",
-        caption:
-          "La invitación y la acción principal comparten pantalla: quien llega ve la fecha y puede confirmar sin buscar dónde hacerlo.",
-        variant: "ancha",
-      },
-      {
-        shot: {
           ...files.eventoCuenta,
-          alt: "Sección de cuenta atrás de la web, con la navegación superior y el botón de confirmar asistencia",
+          alt: "Sección de cuenta atrás de la web, con la navegación superior y el botón de confirmar asistencia. El monograma y la fecha aparecen difuminados",
         },
         scene: "evento",
         legend: "Cuenta atrás",
         captionLabel: "Cuenta atrás",
         caption:
-          "La navegación y el botón de confirmar acompañan al invitado durante todo el recorrido de la página.",
+          "La navegación y el botón de confirmar acompañan al invitado durante todo el recorrido de la página. Monograma y fecha difuminados.",
         variant: "ancha",
       },
     ],
@@ -328,7 +314,7 @@ export const projects: Project[] = [
       {
         shot: {
           ...files.radioPortada,
-          alt: "Portada de la web: cabecera con navegación y botón En directo, titular grande sobre la fotografía del equipo y reproductor fijo en la parte inferior. La marca aparece difuminada",
+          alt: "Portada de la web: cabecera con navegación y botón En directo, y reproductor fijo en la parte inferior. La marca, el titular y la fotografía aparecen difuminados",
         },
         scene: "radio",
         legend: "Portada y directo",
@@ -395,14 +381,14 @@ export const projects: Project[] = [
     figures: [
       {
         shot: {
-          ...files.asistentePanel,
-          alt: "Pantalla del asistente: el agente de gestión de proyectos resume correo y mensajería en un informe con hechos y la traza de fuentes consultadas",
+          ...files.asistenteTraza,
+          alt: "Pantalla del asistente: el agente de gestión de proyectos con la traza de pasos y fuentes consultadas. Las conversaciones, los nombres y el contenido de la respuesta aparecen difuminados",
         },
         scene: "papel",
         legend: "Agente de gestión de proyectos",
         captionLabel: "Resumen con traza",
         caption:
-          "49 pasos con memoria, correo, mensajería y base de conocimiento. La traza permite revisar qué fuentes y herramientas se han utilizado.",
+          "49 pasos con memoria, correo, mensajería y base de conocimiento. La traza permite revisar qué fuentes y herramientas se han utilizado. Contenido difuminado.",
         variant: "ancha",
       },
     ],
@@ -453,29 +439,21 @@ export const homeShots = {
     ...files.rfEntrada,
     alt: "Terminal RF en el móvil: entrada de producto por escáner",
   },
-  eventoPortada: {
-    ...files.eventoPortada,
-    alt: "Portada de la web del evento: monograma, nombres, fecha y botón de confirmar asistencia sobre una fotografía en sepia",
-  },
   eventoCuenta: {
     ...files.eventoCuenta,
-    alt: "Sección de cuenta atrás de la web del evento, con navegación superior y botón de confirmar asistencia",
+    alt: "Sección de cuenta atrás de la web del evento, con navegación superior y botón de confirmar asistencia. El monograma y la fecha aparecen difuminados",
   },
   radioPortada: {
     ...files.radioPortada,
-    alt: "Portada de la web de radio: cabecera con navegación y botón En directo, titular grande sobre la fotografía del equipo y reproductor fijo inferior. La marca aparece difuminada",
+    alt: "Portada de la web de radio: cabecera con navegación y botón En directo, y reproductor fijo inferior. La marca, el titular y la fotografía aparecen difuminados",
   },
   radioMovil: {
     ...files.radioMovil,
     alt: "Versión móvil de la web de radio: cabecera, titular de la emisión en directo y tarjeta del reproductor. La marca aparece difuminada",
   },
   asistente: {
-    ...files.asistentePanel,
-    alt: "Pantalla del asistente de IA: el agente de gestión de proyectos resume correo y mensajería en un informe con hechos y traza",
-  },
-  asistenteMovil: {
-    ...files.asistentePanelMovil,
-    alt: "Pantalla del asistente de IA en formato reducido: resumen del agente de gestión de proyectos",
+    ...files.asistenteTraza,
+    alt: "Pantalla del asistente de IA: el agente de gestión de proyectos con la traza de pasos y fuentes. Conversaciones, nombres y respuesta difuminados",
   },
 } satisfies Record<string, Shot>;
 
