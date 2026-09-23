@@ -60,25 +60,18 @@ export function ProjectFigure({
     const { crop } = figure;
     return (
       <figure className={cn("m-0", className)}>
-        <div className="border-y border-ink bg-paper-2 px-4 py-8 md:border-x lg:px-10 lg:py-10">
-          <p className="label-mono mb-5 text-[10.5px] text-ink sm:text-xs">{figure.legend}</p>
+        <div className="grid items-end gap-6 border-y border-ink bg-paper-2 px-4 py-8 md:border-x lg:grid-cols-[auto_minmax(0,1fr)] lg:gap-12 lg:px-10 lg:py-10">
           <div
-            className="plate-crop outline outline-1 -outline-offset-1 outline-ink/60"
+            className="plate-crop w-full outline outline-1 -outline-offset-1 outline-ink/60 lg:w-[380px]"
             style={{ "--cx": crop.x, "--cy": crop.y, "--cw": crop.w, "--ch": crop.h, "--iw": figure.shot.width, maxWidth: crop.w } as CSSProperties}
           >
-            <Image
-              {...figure.shot}
-              alt={figure.shot.alt}
-              sizes={`${figure.shot.width}px`}
-            />
+            <Image {...figure.shot} alt={figure.shot.alt} sizes={`${figure.shot.width}px`} />
           </div>
+          <figcaption className="max-w-[460px] lg:pb-2">
+            <span className="label-mono block text-[10.5px] text-ink sm:text-xs">{figure.captionLabel}</span>
+            <span className="mt-3 block text-base leading-relaxed text-ink-soft lg:text-[17px]">{figure.caption}</span>
+          </figcaption>
         </div>
-        <figcaption className="mt-3 px-4 text-[13px] leading-[1.55] text-ink-mute md:px-0 lg:mt-3.5 lg:max-w-[600px] lg:text-sm">
-          <span className="font-mono text-[10px] uppercase tracking-[0.1em] text-ink lg:text-[11px]">
-            {figure.captionLabel} ·{" "}
-          </span>
-          {figure.caption}
-        </figcaption>
       </figure>
     );
   }

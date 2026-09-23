@@ -371,7 +371,7 @@ export const projects: Project[] = [
       "Dos agentes para consultar documentación, analizar el estado de un proyecto y preparar decisiones y estimaciones con contexto.",
     meta: ["IA aplicada · Proyectos y conocimiento interno"],
     metaShort: "IA aplicada",
-    heroPre: "El contexto de tus proyectos, a mano para",
+    heroPre: "El contexto de tus proyectos, a\u00a0mano para",
     heroWord: "decidir",
     intro:
       "Desarrollo de una aplicación de IA con un agente de gestión de proyectos y otro de conocimiento de producto. Reúne consultas, documentos y herramientas de trabajo en una interfaz que muestra las fuentes consultadas y los pasos de cada respuesta.",
