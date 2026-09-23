@@ -29,13 +29,20 @@ const calendarUi = {
 } as const;
 
 interface BookingLinkProps {
-  location: "contact" | "case";
+  location: "hero" | "contact" | "case";
   project?: string;
+  /** "ink": botón claro sobre tinta · "paper": enlace discreto sobre papel. */
+  tone?: "ink" | "paper";
   className?: string;
 }
 
+const triggerTone = {
+  ink: "min-h-12 justify-center border border-paper/45 px-5 py-2 text-center text-sm font-semibold text-paper hover:border-cobalt-bright hover:text-cobalt-bright focus-visible:outline-cobalt-bright",
+  paper: "min-h-11 text-[15px] font-semibold text-ink underline decoration-line-2 underline-offset-[6px] hover:text-cobalt hover:decoration-cobalt focus-visible:outline-cobalt",
+} as const;
+
 /** The ordinary link also works before hydration, without JS, or in another tab. */
-export function BookingLink({ location, project, className }: BookingLinkProps) {
+export function BookingLink({ location, project, tone = "ink", className }: BookingLinkProps) {
   const id = useId();
   const namespace = `bpm-booking-${id.replace(/[^a-zA-Z0-9-]/g, "")}`;
   const dialogRef = useRef<HTMLDialogElement>(null);
@@ -119,7 +126,7 @@ export function BookingLink({ location, project, className }: BookingLinkProps) 
         data-track-location={location}
         data-track-destination="booking"
         data-track-project={project}
-        className={cn("inline-flex min-h-12 items-center justify-center gap-2.5 border border-paper/45 px-5 py-2 text-center text-sm font-semibold leading-snug text-paper transition-colors duration-300 ease-editorial hover:border-cobalt-bright hover:text-cobalt-bright focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cobalt-bright", className)}
+        className={cn("inline-flex items-center gap-2.5 leading-snug transition-colors duration-300 ease-editorial focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4", triggerTone[tone], className)}
       >
         {booking.ctaLabel} <span aria-hidden="true">↗</span>
       </a>

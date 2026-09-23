@@ -81,8 +81,8 @@ export function Header() {
             aria-label="BPM Tech, inicio"
             className="inline-flex min-h-11 items-center"
           >
-            <Wordmark tone="paper" size={16} shine className="wide:hidden" />
-            <Wordmark tone="paper" size={19} shine className="hidden wide:inline-flex" />
+            <Wordmark tone="paper" size={16} className="wide:hidden" />
+            <Wordmark tone="paper" size={19} className="hidden wide:inline-flex" />
           </Link>
 
           <nav aria-label="Principal" className="hidden items-center gap-6 md:flex wide:gap-8">
@@ -107,21 +107,33 @@ export function Header() {
             </Link>
           </nav>
 
-          <button
-            ref={triggerRef}
-            type="button"
-            className="js-menu-trigger -mr-1 flex min-h-11 items-center gap-3 pl-2 pr-1 text-sm font-medium text-paper md:hidden"
-            aria-expanded={open}
-            aria-controls="menu-movil"
-            aria-haspopup="dialog"
-            onClick={openMenu}
-          >
-            Menú
-            <span aria-hidden className="flex w-5 flex-col gap-1.5">
-              <span className="h-px w-full bg-paper" />
-              <span className="h-px w-full bg-paper" />
-            </span>
-          </button>
+          <div className="flex items-center gap-1 md:hidden">
+            {/* El contacto no espera al menú: también a mano en el móvil. */}
+            <Link
+              href={ctaHref}
+              data-track="cta_click"
+              data-track-location="header"
+              className="hidden min-h-11 items-center gap-2 bg-paper px-3.5 text-sm font-semibold text-ink transition-colors duration-300 ease-editorial hover:bg-cobalt-bright min-[360px]:inline-flex"
+            >
+              {cta.texto}
+              <span aria-hidden className="font-mono">{cta.flecha}</span>
+            </Link>
+            <button
+              ref={triggerRef}
+              type="button"
+              className="js-menu-trigger -mr-1 flex min-h-11 items-center gap-3 pl-3 pr-1 text-sm font-medium text-paper"
+              aria-expanded={open}
+              aria-controls="menu-movil"
+              aria-haspopup="dialog"
+              onClick={openMenu}
+            >
+              {copyEs.nav.menu}
+              <span aria-hidden className="flex w-5 flex-col gap-1.5">
+                <span className="h-px w-full bg-paper" />
+                <span className="h-px w-full bg-paper" />
+              </span>
+            </button>
+          </div>
         </div>
 
         <noscript>

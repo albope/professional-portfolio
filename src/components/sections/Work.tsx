@@ -1,74 +1,141 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowLink } from "@/components/ui/ArrowLink";
-import { homeShots, getProject } from "@/data/projects";
+import type { CSSProperties } from "react";
+import { PlateNotes, TitleBlock } from "@/components/ui/Plate";
+import { PlateStage } from "@/components/ui/PlateStage";
 import { copyEs, partirFlecha, proyectoSlugs } from "@/data/copy";
+import { almacenPlate, radioPlate, strips, type Plate } from "@/data/plates";
+import { getProject } from "@/data/projects";
+import { cn } from "@/lib/utils";
 
-const { proyectos, destacado } = copyEs;
-const verProyecto = partirFlecha(destacado.cta);
-const padel = getProject("plataforma-clubes-padel")!;
-const cards = [
-  { item: proyectos.items[0], slug: proyectoSlugs[0], shot: homeShots.almacenMovimientos, scene: "bg-escena-wms" },
-  { item: proyectos.items[1], slug: proyectoSlugs[1], shot: homeShots.radioPortada, scene: "bg-escena-radio" },
-];
+const { proyectos } = copyEs;
+const ver = partirFlecha(proyectos.ver);
+
+function CaseLink({ slug, className }: { slug: string; className?: string }) {
+  return (
+    <Link
+      href={`/proyectos/${slug}`}
+      data-track="case_open"
+      data-track-location="projects"
+      data-track-project={slug}
+      className={cn(
+        "group inline-flex min-h-11 items-center gap-2 text-[15px] font-semibold text-cobalt underline-offset-4 transition-colors duration-300 ease-editorial hover:gap-3 hover:text-cobalt-deep hover:underline",
+        className
+      )}
+    >
+      {ver.texto}
+      <span aria-hidden className="font-mono">{ver.flecha}</span>
+      <span className="sr-only">: {getProject(slug)?.title}</span>
+    </Link>
+  );
+}
+
+/**
+ * Lámina a sangre del lienzo: escenario con el color del producto, notas y
+ * cajetín debajo. `reverse` alterna el lado del cajetín para que dos láminas
+ * seguidas no se lean como plantilla.
+ */
+function PlateSection({ plate, reverse }: { plate: Plate; reverse?: boolean }) {
+  const titleId = `lamina-${plate.num}`;
+  return (
+    <article aria-labelledby={titleId} className="plate mt-16 lg:mt-24">
+      <h3 id={titleId} className="sr-only">
+        Proyecto {plate.num}: {plate.name}
+      </h3>
+      <PlateStage
+        plate={plate}
+        label={`Proyecto ${plate.num} · ${plate.name}`}
+        caption={proyectos.captura}
+        reverse={reverse}
+      />
+      <div
+        className={cn(
+          "container-editorial grid gap-x-10 lg:grid-cols-[minmax(0,8fr)_minmax(0,4fr)] wide:gap-x-14",
+          reverse && "lg:grid-cols-[minmax(0,4fr)_minmax(0,8fr)]"
+        )}
+      >
+        <PlateNotes notes={plate.notes} className={cn("md:grid-cols-3 md:gap-x-6", reverse && "lg:order-2")} />
+        <div className={cn("mt-4 lg:mt-0", reverse && "lg:order-1")}>
+          <TitleBlock entries={plate.block.slice(1)} />
+          <CaseLink slug={plate.slug} className="mt-2" />
+        </div>
+      </div>
+    </article>
+  );
+}
 
 export function Work() {
   return (
-    <section id="proyectos" aria-labelledby="work-title" className="border-t border-line bg-paper">
-      <div className="container-editorial seccion">
-        <div className="grid items-end gap-6 lg:grid-cols-[1.1fr_1fr] lg:gap-20">
-          <div>
-            <p className="label-mono text-cobalt">{proyectos.kicker}</p>
-            <h2 id="work-title" className="display mt-4 max-w-[700px] text-display-sec">{proyectos.h2}</h2>
-          </div>
-          <p className="max-w-[460px] text-base leading-relaxed text-ink-soft">{proyectos.apoyo}</p>
+    <section id="proyectos" aria-labelledby="work-title" className="border-t border-line bg-paper pb-16 lg:pb-24 wide:pb-[120px]">
+      <div className="container-editorial grid gap-10 pt-14 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-x-14 lg:pt-20 wide:pt-24">
+        <div>
+          <p className="label-mono text-cobalt">{proyectos.kicker}</p>
+          <h2 id="work-title" className="display mt-4 text-display-sec">{proyectos.h2}</h2>
+          <p className="mt-5 max-w-[460px] text-base leading-relaxed text-ink-soft">{proyectos.apoyo}</p>
         </div>
 
-        <article className="mt-10 grid overflow-hidden border border-line lg:grid-cols-[0.85fr_1.15fr]">
-          <div className="flex flex-col items-start bg-paper-2 p-6 md:p-9 wide:p-11">
-            <p className="label-mono text-[10px] leading-relaxed text-ink-mute">{destacado.etiqueta}</p>
-            <h3 className="mt-5 text-[clamp(28px,3vw,42px)] font-semibold leading-[1.08] tracking-[-0.035em]">{destacado.titulo}</h3>
-            <p className="mt-4 text-base leading-relaxed text-ink-soft">{destacado.texto}</p>
-            <dl className="mt-6 space-y-4 border-t border-line-2 pt-5">
-              <div>
-                <dt className="text-xs font-semibold text-ink">{proyectos.problema_rotulo}</dt>
-                <dd className="mt-1 text-sm leading-relaxed text-ink-mute">{destacado.problema}</dd>
-              </div>
-              <div>
-                <dt className="text-xs font-semibold text-ink">{proyectos.solucion_rotulo}</dt>
-                <dd className="mt-1 text-sm leading-relaxed text-ink-mute">{destacado.resultado}</dd>
-              </div>
-            </dl>
-            <ArrowLink href={`/proyectos/${padel.slug}`} arrow={verProyecto.flecha} className="mt-6" trackEvent="case_open" trackLocation="projects" trackProject={padel.slug}>{verProyecto.texto}</ArrowLink>
-          </div>
-          <Link href={`/proyectos/${padel.slug}`} aria-label={`${verProyecto.texto}: ${destacado.titulo}`} data-track="case_open" data-track-location="projects" data-track-project={padel.slug} data-tono="oscuro" className="group relative flex min-h-[270px] items-center overflow-hidden bg-escena-padel p-5 py-14 sm:min-h-[360px] sm:p-9">
-            <span className="absolute left-5 top-5 font-mono text-[10px] uppercase tracking-[0.1em] text-paper/82 sm:left-9">{proyectos.captura}</span>
-            <Image {...homeShots.padelRecepcion} alt={homeShots.padelRecepcion.alt} sizes="(min-width: 1440px) 630px, (min-width: 1024px) 48vw, 90vw" className="h-auto w-full border border-paper/28 shadow-2xl transition-transform duration-500 ease-editorial group-hover:-translate-y-1" />
-            <Image {...homeShots.padelPortal} alt={homeShots.padelPortal.alt} sizes="(min-width: 1440px) 125px, (min-width: 1024px) 10vw, 18vw" className="absolute bottom-5 right-5 h-auto w-[18%] max-w-[125px] border border-paper/28 shadow-2xl sm:bottom-7 sm:right-7" />
-          </Link>
-        </article>
+        <nav aria-label={proyectos.indice_rotulo} className="lg:pt-1">
+          <p className="label-mono text-[10.5px] text-ink-mute">{proyectos.indice_rotulo}</p>
+          <ol className="mt-3 divide-y divide-line-2 border-y border-ink">
+            {proyectoSlugs.map((slug, index) => {
+              const project = getProject(slug)!;
+              const item = proyectos.items[index];
+              return (
+                <li key={slug}>
+                  <Link
+                    href={`/proyectos/${slug}`}
+                    data-track="case_open"
+                    data-track-location="projects"
+                    data-track-project={slug}
+                    className="group grid min-h-14 grid-cols-[2.25rem_minmax(0,1fr)_1.25rem] items-baseline gap-x-3 gap-y-0.5 py-3 transition-colors duration-300 ease-editorial hover:bg-paper-2 sm:grid-cols-[2.75rem_minmax(0,1fr)_minmax(0,1fr)_1.25rem] lg:px-2"
+                  >
+                    <span className="col-start-1 row-start-1 font-mono text-sm text-cobalt">{String(index + 1).padStart(2, "0")}</span>
+                    <span className="col-start-2 row-start-1 text-lg font-semibold leading-snug tracking-[-0.015em] text-ink group-hover:text-cobalt">
+                      {project.sceneLabel.split(" · ")[0]}
+                    </span>
+                    <span className="col-start-2 row-start-2 text-sm leading-snug text-ink-mute sm:col-start-3 sm:row-start-1">{item.descriptor}</span>
+                    <span aria-hidden className="col-start-3 row-start-1 text-right font-mono text-ink-faint transition-transform duration-300 ease-editorial group-hover:translate-x-1 group-hover:text-cobalt sm:col-start-4">→</span>
+                  </Link>
+                </li>
+              );
+            })}
+          </ol>
+        </nav>
+      </div>
 
-        <div className="mt-9 grid gap-10 md:grid-cols-2 md:gap-8">
-          {cards.map(({ item, slug, shot, scene }) => (
-            <article key={slug}>
-              <Link href={`/proyectos/${slug}`} aria-label={`${verProyecto.texto}: ${item.titulo}`} data-track="case_open" data-track-location="projects" data-track-project={slug} data-tono="oscuro" className={`group flex aspect-[16/10] items-center overflow-hidden p-6 md:p-8 ${scene}`}>
-                <Image {...shot} alt={shot.alt} sizes="(min-width: 1440px) 580px, (min-width: 768px) 42vw, 85vw" className="h-auto w-full border border-paper/24 shadow-xl transition-transform duration-500 ease-editorial group-hover:-translate-y-1" />
-              </Link>
-              <p className="label-mono mt-6 text-[10px] text-cobalt">{item.descriptor}</p>
-              <h3 className="mt-3 text-[25px] font-semibold leading-[1.15] tracking-[-0.025em]">{item.titulo}</h3>
-              <p className="mt-3 max-w-[570px] text-base leading-relaxed text-ink-soft">{item.texto}</p>
-              <p className="mt-3 max-w-[550px] text-sm leading-relaxed text-ink-mute">{item.decision}</p>
-              <ArrowLink href={`/proyectos/${slug}`} arrow={verProyecto.flecha} className="mt-3" trackEvent="case_open" trackLocation="projects" trackProject={slug}>{verProyecto.texto}</ArrowLink>
-            </article>
-          ))}
-        </div>
-        <div className="mt-10 flex flex-wrap items-center gap-x-8 gap-y-2 border-t border-line pt-5">
-          <p className="label-mono text-[10px] text-ink-mute">{proyectos.mas}</p>
-          {[2, 3].map((index) => (
-            <ArrowLink key={proyectoSlugs[index]} href={`/proyectos/${proyectoSlugs[index]}`} trackEvent="case_open" trackLocation="projects" trackProject={proyectoSlugs[index]} className="max-w-full text-sm">
-              {proyectos.items[index].titulo}
-            </ArrowLink>
-          ))}
+      <PlateSection plate={almacenPlate} />
+      <PlateSection plate={radioPlate} reverse />
+
+      <div className="container-editorial mt-16 lg:mt-24">
+        <p className="label-mono text-[10.5px] text-ink-mute">{proyectos.mas_rotulo}</p>
+        <div className="mt-3 grid gap-y-10 border-t border-ink pt-6 md:grid-cols-2 md:gap-x-10 wide:gap-x-14">
+          {strips.map((strip) => {
+            const project = getProject(strip.slug)!;
+            const index = proyectoSlugs.indexOf(strip.slug);
+            const crop = strip.crop;
+            return (
+              <article key={strip.slug} aria-labelledby={`franja-${strip.num}`} className="flex flex-col">
+                <p className="font-mono text-sm text-cobalt">{strip.num}</p>
+                <h3 id={`franja-${strip.num}`} className="mt-2 text-2xl font-semibold leading-tight tracking-[-0.02em]">
+                  {project.sceneLabel}
+                </h3>
+                <p className="mt-2 text-base leading-relaxed text-ink-soft">{proyectos.items[index].descriptor}.</p>
+                <figure className="m-0 mt-5">
+                  <div
+                    className="plate-crop border border-line-2 bg-paper-2"
+                    style={{ "--cx": crop.x, "--cy": crop.y, "--cw": crop.w, "--ch": crop.h, "--iw": strip.shot.width, maxWidth: Math.round(crop.w * 1.3) } as CSSProperties}
+                  >
+                    <Image src={strip.shot.src} width={strip.shot.width} height={strip.shot.height} alt={strip.shot.alt} sizes="(min-width: 1440px) 1600px, (min-width: 768px) 120vw, 250vw" />
+                  </div>
+                  <figcaption className="mt-3 flex gap-2.5 text-sm leading-relaxed text-ink-mute">
+                    <span aria-hidden className="mt-[7px] h-2 w-2 shrink-0 bg-cobalt" />
+                    {strip.note}
+                  </figcaption>
+                </figure>
+                <CaseLink slug={strip.slug} className="mt-2" />
+              </article>
+            );
+          })}
         </div>
       </div>
     </section>

@@ -123,6 +123,105 @@
     background-repeat: no-repeat;
   }
 
+  /* Planos anotados. El recorte y los marcadores llegan en píxeles de la
+     imagen original como variables (--m-* por debajo de 1024 px, --d-* por
+     encima) y aquí se convierten en porcentajes del recorte. La caja reserva
+     su proporción, así que la captura no provoca saltos al cargar. */
+  .plate-shot {
+    --cx: var(--m-cx);
+    --cy: var(--m-cy);
+    --cw: var(--m-cw);
+    --ch: var(--m-ch);
+    position: relative;
+  }
+
+  @media (min-width: 1024px) {
+    .plate-shot {
+      --cx: var(--d-cx);
+      --cy: var(--d-cy);
+      --cw: var(--d-cw);
+      --ch: var(--d-ch);
+    }
+  }
+
+  .plate-crop {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: var(--cw) / var(--ch);
+  }
+
+  .plate-crop > img {
+    position: absolute;
+    max-width: none;
+    height: auto;
+    width: calc(var(--iw) / var(--cw) * 100%);
+    left: calc(var(--cx) / var(--cw) * -100%);
+    top: calc(var(--cy) / var(--ch) * -100%);
+  }
+
+  /* El marcador es el cuadrado macizo del glifo con su número. */
+  .plate-marker {
+    position: absolute;
+    left: calc((var(--x) - var(--cx)) / var(--cw) * 100%);
+    top: calc((var(--y) - var(--cy)) / var(--ch) * 100%);
+    transform: translate(-50%, -50%);
+    display: grid;
+    place-items: center;
+    width: 26px;
+    height: 26px;
+    background: var(--cobalt);
+    color: var(--paper);
+    font-family: var(--font-fragment-mono), ui-monospace, monospace;
+    font-size: 13px;
+    line-height: 1;
+    box-shadow: 0 0 0 2px var(--paper);
+    transition: background-color 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+      transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .plate-note-num {
+    display: grid;
+    place-items: center;
+    width: 26px;
+    height: 26px;
+    flex-shrink: 0;
+    background: var(--cobalt);
+    color: var(--paper);
+    font-family: var(--font-fragment-mono), ui-monospace, monospace;
+    font-size: 13px;
+    line-height: 1;
+    transition: background-color 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  /* Gesto: pasar por una nota señala su marcador y al revés. Solo con
+     puntero fino; sin él, todo se ve igual y nada depende de esto. */
+  @media (hover: hover) and (pointer: fine) {
+    .plate:has([data-note]:hover, [data-marker]:hover) .plate-marker {
+      background: var(--ink-faint);
+    }
+
+    .plate:has([data-note="1"]:hover, [data-marker="1"]:hover) [data-marker="1"],
+    .plate:has([data-note="2"]:hover, [data-marker="2"]:hover) [data-marker="2"],
+    .plate:has([data-note="3"]:hover, [data-marker="3"]:hover) [data-marker="3"] {
+      background: var(--ink);
+      transform: translate(-50%, -50%) scale(1.15);
+    }
+
+    .plate:has([data-marker="1"]:hover) [data-note="1"],
+    .plate:has([data-marker="2"]:hover) [data-note="2"],
+    .plate:has([data-marker="3"]:hover) [data-note="3"],
+    .plate [data-note]:hover {
+      box-shadow: inset 0 2px 0 var(--ink);
+    }
+
+    .plate:has([data-marker="1"]:hover) [data-note="1"] .plate-note-num,
+    .plate:has([data-marker="2"]:hover) [data-note="2"] .plate-note-num,
+    .plate:has([data-marker="3"]:hover) [data-note="3"] .plate-note-num,
+    .plate [data-note]:hover .plate-note-num {
+      background: var(--ink);
+    }
+  }
+
   .link-underline {
     background-image: linear-gradient(currentColor, currentColor);
     background-size: 0% 1px;
@@ -137,114 +236,3 @@
   }
 }
 
-@layer utilities {
-  /* Brillo del wordmark de la cabecera: un reflejo recorre BPMTECH y el glifo
-     de izquierda a derecha, 7 s por vuelta con 2 s de retardo, con la curva
-     única del sistema. `overlay` solo aclara lo que ya es claro, así que sobre
-     la tinta de la cabecera se ve en las letras y no en el fondo. Se apaga
-     con movimiento reducido. */
-  .bpm-wordmark {
-    position: relative;
-    overflow: hidden;
-  }
-
-  .bpm-wordmark::after {
-    content: "";
-    position: absolute;
-    top: -20%;
-    bottom: -20%;
-    left: 0;
-    width: 45%;
-    background: linear-gradient(
-      100deg,
-      rgba(247, 246, 242, 0) 0%,
-      rgba(247, 246, 242, 0.55) 50%,
-      rgba(247, 246, 242, 0) 100%
-    );
-    transform: translateX(-120%) skewX(-18deg);
-    animation: bpm-brillo 7s cubic-bezier(0.16, 1, 0.3, 1) 2s infinite;
-    pointer-events: none;
-    mix-blend-mode: overlay;
-  }
-
-  @keyframes bpm-brillo {
-    0% {
-      transform: translateX(-120%) skewX(-18deg);
-    }
-    22% {
-      transform: translateX(330%) skewX(-18deg);
-    }
-    100% {
-      transform: translateX(330%) skewX(-18deg);
-    }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .bpm-wordmark::after {
-      animation: none;
-      display: none;
-    }
-  }
-
-  /* La última línea del titular del hero recorre cinco frases. Cinco capas
-     superpuestas, 12,5 s en bucle y 2,5 s de retardo entre ellas. El motor
-     del canvas lee el tiempo de esta animación para elegir el modo de la
-     hoja de cálculo. Las frases envuelven a dos líneas cuando hace falta,
-     así que la celda no puede llevar `white-space: nowrap`: la altura la
-     reserva el contenedor. */
-  @keyframes bpm-palabra {
-    0% {
-      opacity: 0;
-      transform: translateY(0.3em);
-    }
-    5% {
-      opacity: 1;
-      transform: none;
-    }
-    19% {
-      opacity: 1;
-      transform: none;
-    }
-    24% {
-      opacity: 0;
-      transform: translateY(-0.3em);
-    }
-    100% {
-      opacity: 0;
-      transform: translateY(-0.3em);
-    }
-  }
-
-  [data-palabra] {
-    grid-area: 1 / 1;
-    animation: bpm-palabra 12.5s cubic-bezier(0.16, 1, 0.3, 1) infinite;
-  }
-
-  [data-palabra="2"] {
-    opacity: 0;
-    animation-delay: 2.5s;
-  }
-  [data-palabra="3"] {
-    opacity: 0;
-    animation-delay: 5s;
-  }
-  [data-palabra="4"] {
-    opacity: 0;
-    animation-delay: 7.5s;
-  }
-  [data-palabra="5"] {
-    opacity: 0;
-    animation-delay: 10s;
-  }
-
-  /* Con movimiento reducido el titular se queda en la primera palabra. */
-  @media (prefers-reduced-motion: reduce) {
-    [data-palabra] {
-      animation: none !important;
-      opacity: 0 !important;
-    }
-    [data-palabra="1"] {
-      opacity: 1 !important;
-    }
-  }
-}

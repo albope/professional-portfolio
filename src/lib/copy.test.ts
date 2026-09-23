@@ -57,10 +57,14 @@ test("copy never states the kind of relationship with a project", () => {
   }
 });
 
-/** Evento, radio y asistente se muestran sin nombre de cliente y sin enlace. */
+/**
+ * Evento, radio y asistente se muestran sin nombre de cliente y sin enlace.
+ * El copy solo nombra el email público; el enlace autorizado de Padel Club OS
+ * vive en el cajetín de su lámina (`plates.ts`) y lo vigila `projects.test.ts`.
+ */
 test("only the authorised project carries a name and an outbound link", () => {
   const linked = todo.filter(([, value]) => /https?:\/\/|\.com|\.es\b/i.test(value));
-  const allowed = ["destacado.enlace_externo", "contacto.email_directo", "pie.contacto[1]"];
+  const allowed = ["contacto.email_directo", "pie.contacto[1]"];
   assert.deepEqual(linked.map(([path]) => path).sort(), [...allowed].sort());
 });
 
@@ -101,17 +105,22 @@ test("the form selector matches the shared contact needs", () => {
 });
 
 /**
- * El destacado es el único que amplía con ficha de cuatro datos. Las cuatro
- * tarjetas subrayan una decisión y comparten el rótulo de enlace del
- * destacado: la portada pinta uno solo.
+ * Rediseño «Planos anotados» (septiembre de 2026): el bloque «destacado» y la
+ * rejilla de cuatro tarjetas se sustituyen por un índice numerado de los cinco
+ * proyectos. Cada fila del índice necesita su descriptor, y cada servicio
+ * enlaza solo a proyectos que existen en ese índice.
  */
-test("the featured project keeps its card and every grid project states a decision", () => {
-  assert.deepEqual(Object.keys(copyEs.destacado.ficha), ["Necesidad", "Alcance", "Una decisión", "Puede encajar en"]);
-  for (const item of copyEs.proyectos.items) {
-    assert.ok(item.decision, item.descriptor);
-    assert.equal("cta" in item, false, item.descriptor);
+test("the project index and the service proofs point at real projects", () => {
+  assert.equal(copyEs.proyectos.items.length, proyectoSlugs.length);
+  for (const item of copyEs.proyectos.items) assert.ok(item.descriptor.length > 10, item.descriptor);
+  for (const servicio of copyEs.servicios.items) {
+    assert.ok(servicio.pruebas.length > 0, servicio.titulo);
+    for (const num of servicio.pruebas) {
+      assert.match(num, /^0[1-5]$/, `${servicio.titulo}: ${num}`);
+      assert.ok(proyectoSlugs[Number(num) - 1], num);
+    }
   }
-  assert.equal(partirFlecha(copyEs.destacado.cta).flecha, "→");
+  assert.equal(partirFlecha(copyEs.proyectos.ver).flecha, "→");
 });
 
 /** El diagnóstico rota tres placeholders y ofrece cuatro ejemplos con texto propio. */

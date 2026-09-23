@@ -7,15 +7,15 @@ import { site } from "@/data/site";
 const { contacto } = copyEs;
 /** El copy trae el email dentro de la frase. Se parte para enlazarlo. */
 const [anteEmail] = contacto.email_directo.split(site.email);
-/** La última palabra conserva el cuadrado de la marca. */
-const titular = partirUltimaPalabra(contacto.h2);
+/** El cuadrado de la marca hace de punto final, como en el titular del hero. */
+const titular = partirUltimaPalabra(contacto.h2.replace(/\.$/, ""));
 
 /** Contacto directo por escrito o mediante una primera conversación. */
 export function Contact() {
   return (
     <section id="contacto" data-tono="oscuro" aria-label="Contacto" className="relative bg-ink text-paper">
       <div className="container-editorial seccion">
-        <p className="label-mono text-paper/78">{contacto.kicker}</p>
+        <p className="label-mono text-cobalt-bright">{contacto.kicker}</p>
         <h2 className="display mt-5 max-w-[1050px] text-[clamp(28px,5.5vw,80px)] leading-[1.02] text-paper">
           {titular.antes}
           <SquareWord word={titular.ultima} tone="dark" />

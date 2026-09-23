@@ -14,19 +14,22 @@ export type Copy = typeof copy;
 export type ProyectoItem = Copy["proyectos"]["items"][number];
 export type ServicioItem = Copy["servicios"]["items"][number];
 export type Fase = Copy["metodo"]["fases"][number];
-export type Pilar = Copy["ai_first"]["pilares"][number];
 
 /**
- * Los cuatro proyectos de la rejilla en el orden del copy, emparejados con el
- * caso del que cuelgan. El destacado (Padel Club OS) va aparte, encabezando
- * la sección.
+ * Los cinco proyectos en el orden de su numeración (01 a 05), emparejados
+ * con el caso del que cuelgan. El 01 abre la portada anotado en el hero.
  */
 export const proyectoSlugs = [
+  "plataforma-clubes-padel",
   "wms-almacen",
   "web-radio",
   "web-boda",
   "asistente-ia-gestion-proyectos",
 ] as const;
+
+/** Número público de cada proyecto: «01» a «05». */
+export const proyectoNum = (slug: (typeof proyectoSlugs)[number]) =>
+  String(proyectoSlugs.indexOf(slug) + 1).padStart(2, "0");
 
 /**
  * Los tres servicios llevan su necesidad al formulario de contacto.

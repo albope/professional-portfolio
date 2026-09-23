@@ -4,8 +4,6 @@ interface WordmarkProps {
   tone?: "ink" | "paper";
   /** Cuerpo del wordmark: 19 header desktop · 17 footer · 16 móvil */
   size?: 19 | 17 | 16;
-  /** Reflejo que recorre las letras y el glifo (solo en la cabecera). */
-  shine?: boolean;
   className?: string;
 }
 
@@ -17,11 +15,8 @@ interface WordmarkProps {
  *
  * Sobre tinta (tone="paper") el acento pasa a cobalto brillante: el cobalto
  * normal se hunde contra el fondo oscuro y desequilibra la lectura de BPMTECH.
- *
- * Con `shine`, un `::after` definido en globals.css (`.bpm-wordmark`) recorre
- * el lockup de izquierda a derecha cada siete segundos.
  */
-export function Wordmark({ tone = "ink", size = 19, shine, className }: WordmarkProps) {
+export function Wordmark({ tone = "ink", size = 19, className }: WordmarkProps) {
   const s = size === 19 ? 11 : size === 17 ? 10 : 9;
   const barHeight = s >= 10 ? 3 : 2.5;
   const glyphGap = s >= 10 ? 5 : 4;
@@ -31,7 +26,7 @@ export function Wordmark({ tone = "ink", size = 19, shine, className }: Wordmark
 
   return (
     <span
-      className={cn("inline-flex items-center", shine && "bpm-wordmark", className)}
+      className={cn("inline-flex items-center", className)}
       style={{ gap: size === 16 ? 8 : 10 }}
     >
       <span

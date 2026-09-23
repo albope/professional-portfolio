@@ -5,6 +5,9 @@ import { projects, getProject } from "@/data/projects";
 import { site } from "@/data/site";
 import { SquareWord } from "@/components/ui/SquareWord";
 import { ProjectFigure } from "@/components/ui/ProjectFigure";
+import { PlateNotes } from "@/components/ui/Plate";
+import { PlateStage } from "@/components/ui/PlateStage";
+import { platesBySlug } from "@/data/plates";
 import { Button } from "@/components/ui/Button";
 import { BookingLink } from "@/components/booking/BookingLink";
 
@@ -61,7 +64,12 @@ export default async function ProjectPage({ params }: PageProps) {
   const project = getProject(slug);
   if (!project) notFound();
   const contactHref = `/?proyecto=${project.slug}#contacto`;
-  const [principal, ...detalles] = project.figures;
+  const plate = platesBySlug[project.slug];
+  // Con lámina, la figura principal es la lámina anotada y los detalles no
+  // repiten las capturas que ya enseña.
+  const enLamina = new Set(plate?.views.map((view) => view.shot.src));
+  const [principal, ...resto] = project.figures;
+  const detalles = plate ? project.figures.filter((figure) => !enLamina.has(figure.shot.src)) : resto;
 
   return (
     <article className="pagina-interior">
@@ -106,7 +114,23 @@ export default async function ProjectPage({ params }: PageProps) {
         </div>
       </header>
 
-      <ProjectFigure figure={principal} size="principal" className={`mt-6 lg:mt-12 ${inset}`} />
+      {plate ? (
+        <section aria-label="Notas sobre la pantalla" className="plate mt-6 lg:mt-12">
+          <PlateStage
+            plate={plate}
+            label={`Proyecto ${plate.num} · ${plate.name}`}
+            caption="Captura real · Datos de demo"
+            layout={plate.layout}
+            phoneClassName="lg:right-10 lg:w-[13%] wide:right-[60px]"
+            eager
+          />
+          <div className="container-editorial">
+            <PlateNotes notes={plate.notes} className="md:grid-cols-3 md:gap-x-6 lg:mt-6" />
+          </div>
+        </section>
+      ) : (
+        <ProjectFigure figure={principal} size="principal" className={`mt-6 lg:mt-12 ${inset}`} />
+      )}
 
       <div className="container-editorial">
         <dl className="mt-8 grid grid-cols-2 gap-x-4 gap-y-5 border-y border-b-line border-t-ink pb-6 pt-5 lg:mt-12 lg:grid-cols-4 lg:gap-x-6 lg:pb-7 lg:pt-6">

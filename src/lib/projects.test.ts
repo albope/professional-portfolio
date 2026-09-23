@@ -3,6 +3,7 @@ import { readdirSync, readFileSync } from "node:fs";
 import { join, relative, sep } from "node:path";
 import { test } from "node:test";
 import { projects, homeShots, type Shot } from "../data/projects";
+import { padelPlate, almacenPlate, radioPlate, strips, type Rect } from "../data/plates";
 import { CONTACT_PROJECTS, getContactContext } from "./contact";
 import { parseAnalyticsEvent } from "./analytics";
 
@@ -99,4 +100,52 @@ test("only the authorised project links out to its own site", () => {
   for (const project of linked) {
     assert.ok(project.externalLabel, project.slug);
   }
+});
+
+const plates = [padelPlate, almacenPlate, radioPlate];
+const within = (rect: Rect, shot: Shot) =>
+  rect.x >= 0 && rect.y >= 0 && rect.w > 0 && rect.h > 0 && rect.x + rect.w <= shot.width && rect.y + rect.h <= shot.height;
+const contains = (rect: Rect, [x, y]: [number, number]) =>
+  x >= rect.x && x <= rect.x + rect.w && y >= rect.y && y <= rect.y + rect.h;
+
+/** Un recorte fuera de la imagen deja el escenario con un hueco vacío. */
+test("plate and strip crops stay inside their screenshots", () => {
+  for (const plate of plates) {
+    for (const view of plate.views) {
+      assert.ok(within(view.desktop, view.shot), `${plate.num} ${view.shot.src} escritorio`);
+      if (view.mobile) assert.ok(within(view.mobile, view.shot), `${plate.num} ${view.shot.src} móvil`);
+    }
+  }
+  for (const strip of strips) assert.ok(within(strip.crop, strip.shot), strip.slug);
+});
+
+/**
+ * Cada nota numerada tiene su marcador visible en escritorio y en móvil: una
+ * nota sin marcador en la captura rompe la lectura del plano.
+ */
+test("every plate note has a visible marker at both crops", () => {
+  for (const plate of plates) {
+    assert.deepEqual(plate.notes.map((note) => note.n), [1, 2, 3], plate.num);
+    for (const note of plate.notes) {
+      const view = plate.views[note.view];
+      assert.ok(view, `${plate.num}.${note.n} sin vista`);
+      assert.ok(contains(view.desktop, note.at), `${plate.num}.${note.n} fuera del recorte de escritorio`);
+      assert.ok(contains(view.mobile ?? view.desktop, note.at), `${plate.num}.${note.n} fuera del recorte móvil`);
+    }
+  }
+});
+
+/** Las láminas cuelgan de casos reales y solo Padel Club OS enlaza fuera. */
+test("plates belong to real cases and only the authorised one links out", () => {
+  for (const plate of plates) assert.ok(projects.some((project) => project.slug === plate.slug), plate.slug);
+  for (const strip of strips) assert.ok(projects.some((project) => project.slug === strip.slug), strip.slug);
+  const outbound = plates.flatMap((plate) => plate.block.filter((entry) => entry.href).map((entry) => `${plate.slug} ${entry.href}`));
+  assert.deepEqual(outbound, ["plataforma-clubes-padel https://www.padelclubos.com"]);
+});
+
+/** Las notas describen decisiones: sin rótulos de relación ni cifras de negocio. */
+test("plate notes never state the relationship or invented figures", () => {
+  const text = JSON.stringify([plates.map((plate) => [plate.notes, plate.block]), strips.map((strip) => strip.note)]);
+  const hit = text.match(/producto propio|proyecto personal|piloto|encargo|cliente|\d+\s?(%|€)/i);
+  assert.equal(hit, null, `Texto no permitido en una lámina: ${hit?.[0]}`);
 });

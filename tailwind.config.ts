@@ -65,12 +65,11 @@ const config: Config = {
         mono: ["var(--font-fragment-mono)", "ui-monospace", "monospace"],
       },
       fontSize: {
-        /* Escala display de la portada (Archivo Black, caja alta), mayor que la
-           anterior. La del hero y la del método se acotan también por alto de
-           ventana porque viven en escenarios fijados de 100vh. */
+        /* Titular del primer pantallazo: dos líneas a todo el lienzo desde
+           1024 px, para que la lámina anotada quepa debajo. */
         "display-hero": [
-          "clamp(32px, min(6.6vw, 9.5vh), 112px)",
-          { lineHeight: "0.92", letterSpacing: "-0.01em" },
+          "clamp(34px, 5.35vw, 77px)",
+          { lineHeight: "0.94", letterSpacing: "-0.012em" },
         ],
         "display-seccion": [
           "clamp(34px, 4.8vw, 80px)",

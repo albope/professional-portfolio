@@ -1,7 +1,7 @@
 {
   "meta": {
     "proyecto": "BPM Tech Studio",
-    "version": "Landing clara · Proyectos y contacto",
+    "version": "Planos anotados · Trabajo real explicado",
     "fecha": "2026-09-23",
     "idioma": "es-ES"
   },
@@ -13,79 +13,58 @@
       "Cómo trabajamos",
       "Sobre mí"
     ],
-    "cta": "Hablemos ↗"
+    "cta": "Hablemos ↗",
+    "menu": "Menú"
   },
   "hero": {
-    "etiqueta": "Software a medida · Desde Valencia, para toda España",
-    "h1_fijo": "Software, automatizaciones y webs",
-    "h1_palabras": [
-      "hojas de cálculo",
-      "procesos manuales",
-      "software genérico",
-      "herramientas que no encajan",
-      "parches"
-    ],
-    "celda": "B18:F22",
-    "entradilla": "Organiza la gestión, conecta tus herramientas y quítate tareas manuales. Creamos la solución que encaja en tu forma de trabajar.",
+    "etiqueta": "Software a medida · Automatizaciones · Webs",
+    "lugar": "Valencia, presencial y en remoto",
+    "h1": "Software a medida para lo que hoy haces a mano.",
+    "entradilla": "Aplicaciones de gestión, automatizaciones e integraciones, y webs para negocios. Lo diseño y lo desarrollo yo, desde la primera conversación hasta la puesta en marcha.",
     "cta_primaria": "Cuéntame qué necesitas",
-    "cta_secundaria": "Ver proyectos ↓",
-    "leyenda": [
-      "Software · Automatización · Webs · IA aplicada",
-      "Desplaza para ordenarlo ↓"
-    ],
-    "barra": {
-      "ref": "C4",
-      "fx": "fx",
-      "formula": "=SUMA(C2:C9)",
-      "archivo": "operativa_v7_FINAL.xlsx"
-    },
-    "h1_final": "para tu negocio.",
     "nota": "Primera conversación sin compromiso.",
-    "confianza": [
-      "Trato directo con quien desarrolla",
-      "Alcance y presupuesto por escrito",
-      "Avances que puedes ver y probar"
-    ],
-    "visual": {
-      "rotulo": "De la idea a una herramienta real",
-      "nombre": "Padel Club OS",
-      "descripcion": "Una plataforma para gestionar el club.",
-      "detalle": "Reservas, socios y pagos conectados",
-      "cta": "Ver caso"
-    }
-  },
-  "manifiesto": {
-    "kicker": "01 · Lo que hacemos",
-    "h2": "El software que te falta no se compra hecho. Se construye.",
-    "texto": "Cada celda de esa hoja es una tarea que alguien repite a mano. La convertimos en sistema: una herramienta hecha alrededor de cómo trabaja tu negocio, que ordena la información, conecta lo que hoy va por separado y da a cada persona justo lo que necesita.",
-    "necesidades": [
-      "Conectar y automatizar",
-      "Ordenar la operativa",
-      "Construir producto"
-    ]
+    "firma": {
+      "nombre": "Alberto Bort",
+      "rol": "BPM Tech · Consultoría y desarrollo"
+    },
+    "lamina": "Proyecto 01 · Padel Club OS",
+    "lamina_pie": "Notas sobre una pantalla real"
   },
   "servicios": {
-    "kicker": "02 · Servicios",
-    "h2": "¿Qué necesitas mejorar?",
+    "kicker": "Servicios",
+    "h2": "¿Qué te está costando más de la cuenta?",
     "apoyo": "No hace falta que sepas qué tecnología necesitas. Empezamos por lo que quieres conseguir.",
-    "nota": "Primero buscamos la solución más sencilla. Si una herramienta que ya existe resuelve tu necesidad, te lo diremos.",
+    "nota": "Primero busco la solución más sencilla. Si una herramienta que ya existe resuelve tu necesidad, te lo diré.",
+    "ejemplos_rotulo": "Por ejemplo",
+    "prueba_rotulo": "Lo puedes ver en",
     "items": [
       {
-        "titulo": "Aplicaciones para gestionar tu negocio",
-        "que_construimos": "Reúne la información en un solo sitio y deja de depender de hojas de cálculo y mensajes para saber qué está pasando.",
+        "titulo": "Organizar la gestión",
+        "que_construimos": "Una aplicación que reúne en un solo sitio lo que hoy está repartido en hojas de cálculo, mensajes y papel.",
         "ejemplos": "Reservas, inventario, clientes y paneles de gestión.",
+        "pruebas": [
+          "01",
+          "02"
+        ],
         "cta": "Quiero organizar mi gestión →"
       },
       {
-        "titulo": "Automatización de tareas",
-        "que_construimos": "Conecta las herramientas que ya usas para evitar copiar datos y repetir trabajo. Aplicamos IA cuando ayuda a resolver una tarea concreta.",
+        "titulo": "Quitar trabajo repetido",
+        "que_construimos": "Conectar las herramientas que ya usas para no copiar datos a mano. La IA entra cuando resuelve una tarea concreta.",
         "ejemplos": "Pedidos que pasan a facturación, documentos clasificados y avisos automáticos.",
+        "pruebas": [
+          "05"
+        ],
         "cta": "Quiero ahorrar trabajo manual →"
       },
       {
-        "titulo": "Webs y productos digitales",
+        "titulo": "Una web o una aplicación nueva",
         "que_construimos": "Una web que explique bien tu negocio o una aplicación para poner en marcha tu idea. Clara, fácil de usar y preparada para crecer.",
         "ejemplos": "Webs corporativas, portales de clientes y nuevas aplicaciones.",
+        "pruebas": [
+          "03",
+          "04"
+        ],
         "cta": "Quiero crear una web o aplicación →"
       }
     ]
@@ -149,61 +128,41 @@
     "sin_js": "Para usar el asistente necesitas activar JavaScript. También puedes contármelo directamente en el formulario de contacto."
   },
   "proyectos": {
-    "kicker": "01 · Proyectos",
-    "h2": "Así se ve una solución que encaja.",
-    "apoyo": "Herramientas reales para necesidades concretas. Explora qué había que resolver y qué construimos.",
-    "captura": "Captura real · Datos de demo",
-    "decision_rotulo": "Qué cambia",
+    "kicker": "Proyectos",
+    "h2": "Trabajo real, explicado.",
+    "apoyo": "Capturas de los proyectos con datos de demo. Cada nota señala una decisión: qué había que resolver y cómo lo resuelve la pantalla.",
+    "indice_rotulo": "Los cinco proyectos",
     "items": [
       {
-        "descriptor": "Aplicación de gestión",
-        "titulo": "Un almacén con la información al día",
-        "texto": "Inventario, ubicaciones y entradas y salidas en una misma herramienta. El equipo registra cada movimiento desde el móvil o un lector.",
-        "decision": "Cada movimiento queda registrado para saber qué hay y dónde está."
+        "descriptor": "Reservas, socios, pagos y competiciones",
+        "estado": "En producción"
       },
       {
-        "descriptor": "Desarrollo web",
-        "titulo": "Escuchar la radio y seguir explorando",
-        "texto": "Una web con emisión en directo, programas anteriores y acceso desde el móvil.",
-        "decision": "La emisión continúa mientras navegas por los programas."
+        "descriptor": "Inventario, ubicaciones y terminal RF",
+        "estado": "Aplicación web"
       },
       {
-        "descriptor": "Web de evento",
-        "titulo": "Una web para organizar un evento",
-        "texto": "Confirmación con preferencias, avisos por email, peticiones musicales y un panel privado de gestión. En dos idiomas.",
-        "decision": "Los invitados consultan la información y confirman su asistencia en el mismo sitio."
+        "descriptor": "Directo, archivo y reproductor persistente",
+        "estado": "Web a medida"
       },
       {
-        "descriptor": "Asistente de IA · Gestión de proyectos",
-        "titulo": "Un asistente que conoce la documentación de tu empresa",
-        "texto": "Ayuda a consultar información y preparar el trabajo sin buscar en documentos dispersos.",
-        "decision": "El equipo revisa las propuestas antes de tomar decisiones."
+        "descriptor": "Confirmación de invitados en dos idiomas",
+        "estado": "Web a medida"
+      },
+      {
+        "descriptor": "Dos agentes con traza de fuentes",
+        "estado": "IA aplicada"
       }
     ],
-    "mas": "Otros proyectos",
-    "problema_rotulo": "La necesidad",
-    "solucion_rotulo": "La solución"
-  },
-  "destacado": {
-    "etiqueta": "Padel Club OS · En producción",
-    "enlace_externo": "padelclubos.com ↗",
-    "titulo": "Todo el club, en un solo sitio.",
-    "texto": "Reservas, socios y pagos conectados. El club gestiona el día a día y los jugadores reservan desde el móvil.",
-    "ficha": {
-      "Necesidad": "Coordinar disponibilidad, reservas y socios sin WhatsApp, Excel ni papel.",
-      "Alcance": "Panel del club, portal del jugador, reservas, cobros, competiciones y academia.",
-      "Una decisión": "Dos espacios separados sobre los mismos datos. Cada persona ve solo lo propio de su papel.",
-      "Puede encajar en": "Negocios con reservas, cuotas, espacios o actividades."
-    },
-    "cta": "Ver el proyecto →",
-    "problema": "Coordinar pistas, reservas y cobros sin información dispersa.",
-    "resultado": "Un panel para el club y un espacio para que cada jugador gestione sus reservas."
+    "ver": "Ver el proyecto →",
+    "arriba": "Anotado arriba ↑",
+    "captura": "Captura real · Datos de demo",
+    "mas_rotulo": "También"
   },
   "metodo": {
-    "kicker": "03 · Cómo trabajamos",
+    "kicker": "Cómo trabajamos",
     "h2": "Sabes qué viene después.",
     "apoyo": "Hablas directamente conmigo durante todo el proyecto. Acordamos qué hacer y revisamos juntos cómo avanza.",
-    "total": "/ 5.0",
     "fases": [
       {
         "num": "01",
@@ -214,7 +173,7 @@
       {
         "num": "02",
         "nombre": "Recibes una propuesta",
-        "texto": "Definimos qué vamos a construir, cuánto cuesta y cómo lo entregaremos. Lo conoces antes de decidir.",
+        "texto": "Qué se construye, cuánto cuesta y cómo se entrega. Por escrito, antes de empezar, para que decidas con todo delante.",
         "entregable": "Alcance y presupuesto por escrito"
       },
       {
@@ -223,30 +182,12 @@
         "texto": "Pruebas los avances, revisamos los detalles y ponemos la solución en marcha. Acordamos también cómo mantenerla.",
         "entregable": "Una solución que puedes usar"
       }
-    ]
-  },
-  "ai_first": {
-    "kicker": "Menos intermediarios. Más producto.",
-    "h2": "Somos AI-first. El criterio sigue siendo humano.",
-    "apoyo": "La IA multiplicó la capacidad de un estudio pequeño. Lo que no cambió es quién entiende el problema, toma las decisiones y responde por lo que se entrega.",
-    "pilares": [
-      {
-        "titulo": "La IA acelera. El criterio decide.",
-        "texto": "Desarrollo, pruebas, documentación y análisis avanzan mucho más rápido con las herramientas adecuadas. Qué se construye, cómo se estructura y qué se descarta sigue siendo una decisión de producto y de ingeniería."
-      },
-      {
-        "titulo": "Hablas con quien construye",
-        "texto": "No hay una cadena de comercial, project manager, analista y desarrollador entre tu problema y la solución. La misma persona que entiende lo que necesitas participa en las decisiones y en la construcción."
-      },
-      {
-        "titulo": "Tecnología para resolver, no para complicar",
-        "texto": "Si algo puede resolverse con una regla sencilla, no necesita IA. Si una herramienta ya hace bien lo que necesitas, no hace falta reinventarla. Construimos cuando hacerlo aporta una ventaja real."
-      }
-    ]
+    ],
+    "entregable_rotulo": "Te llevas"
   },
   "sobre": {
-    "kicker": "04 · La persona detrás",
-    "h2": "Soy Alberto. Hablamos tú y yo.",
+    "kicker": "Quién hay detrás",
+    "h2": "Soy Alberto. Hablas con quien lo construye.",
     "nombre": "Alberto Bort",
     "rol": "Consultoría y desarrollo",
     "parrafos": [
@@ -260,7 +201,7 @@
     "cta": "Hablemos de tu proyecto ↗"
   },
   "preguntas": {
-    "kicker": "05 · Antes de empezar",
+    "kicker": "Antes de empezar",
     "h2": "Lo que conviene tener claro.",
     "apoyo": "Presupuesto, herramientas y continuidad. Respuestas para decidir tu siguiente paso.",
     "items": [
@@ -287,7 +228,7 @@
     ]
   },
   "contacto": {
-    "kicker": "Hablemos",
+    "kicker": "Contacto",
     "h2": "Cuéntame qué necesitas.",
     "apoyo": "No hace falta tener un proyecto definido. Cuéntame qué te gustaría mejorar y vemos por dónde empezar.",
     "opcion_hablando": "Si prefieres hablar",
