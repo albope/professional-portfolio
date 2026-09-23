@@ -32,7 +32,7 @@ export const metadata: Metadata = {
         url: "/opengraph-image",
         width: 1200,
         height: 630,
-        alt: "BPM Tech. Software y webs que encajan en tu negocio.",
+        alt: "BPM Tech. Software a medida para lo que hoy haces a mano.",
       },
     ],
   },

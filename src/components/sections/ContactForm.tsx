@@ -204,7 +204,7 @@ function ContactFormContent({ context, forceDisabled = false }: { context: Conta
           Mensaje <SquareWord word="enviado" tone="dark" />
         </h3>
         <p className="mt-4 max-w-[520px] text-[15px] leading-[1.6] text-paper/78">
-          Gracias por contarnos qué necesitas. El siguiente paso es revisarlo y responderte al
+          Gracias por contarme qué necesitas. El siguiente paso es revisarlo y responderte al
           email que has indicado.
         </p>
         <Link href="/" className="mt-6 inline-flex min-h-12 items-center border border-paper/45 px-[22px] text-sm font-semibold text-paper transition-colors duration-300 ease-editorial hover:border-cobalt-bright hover:text-cobalt-bright focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cobalt-bright">
@@ -218,7 +218,7 @@ function ContactFormContent({ context, forceDisabled = false }: { context: Conta
     <form action="/api/contact" method="post" onSubmit={handleSubmit} onFocusCapture={markStarted} aria-busy={status === "sending"} className="flex flex-col gap-[18px] lg:gap-[22px]" noValidate>
       <noscript><p className="border border-paper/40 p-4 text-sm text-paper">Para enviar este formulario necesitas activar JavaScript. Los campos están deshabilitados y no se enviará ningún dato.</p></noscript>
       <fieldset disabled={disabled} className="flex min-w-0 flex-col gap-[18px] lg:gap-[22px]">
-        <legend className="sr-only">Cuéntanos qué necesitas resolver</legend>
+        <legend className="sr-only">Cuéntame qué necesitas resolver</legend>
         <div className="grid gap-[18px] lg:grid-cols-2 lg:gap-[22px]">
           <label className="flex flex-col gap-2" htmlFor="contact-nombre">
             <span className={labelClasses}>{rotuloNombre}</span>

@@ -1,0 +1,365 @@
+<!-- Prototipo de exploración del 23-09-2026, dirección C · Índice de problemas (descartado). Solo el hero y el inicio de la sección siguiente. No es contenido publicado ni se sirve en la web: ver docs/rediseno/README.md. -->
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BPM Tech · Software a medida</title>
+<meta name="description" content="Software a medida, automatización y webs para pymes. Alberto Bort, Valencia.">
+<style>
+@font-face{font-family:"Archivo Black";src:url(../../../src/assets/fonts/ArchivoBlack-Regular.ttf) format("truetype");font-weight:400;font-display:swap}
+@font-face{font-family:"Archivo";src:url(../../../templates/presentation/assets/fonts/Archivo-Variable.ttf) format("truetype");font-weight:100 900;font-display:swap}
+@font-face{font-family:"Fragment Mono";src:url(../../../src/assets/fonts/FragmentMono-Regular.ttf) format("truetype");font-weight:400;font-display:swap}
+
+:root{
+  --paper:#f7f6f2;--paper-2:#efede6;--ink:#101013;--ink-2:#18181c;
+  --ink-soft:#3d3c35;--ink-mute:#5a594f;--ink-faint:#6a685d;
+  --cobalt:#2743e0;--cobalt-deep:#1e35b8;--cobalt-bright:#6b83ff;
+  --line:#e2e0d8;--line-2:#d8d6cc;
+  --padel:#0e5c3f;--almacen:#0a0c18;--radio:#004d98;
+  --m:16px;--gut:16px;
+  --display:"Archivo Black","Arial Black",sans-serif;
+  --text:"Archivo",system-ui,sans-serif;
+  --mono:"Fragment Mono",ui-monospace,monospace;
+}
+@media (min-width:700px){:root{--m:40px;--gut:24px}}
+@media (min-width:1440px){:root{--m:60px}}
+
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--text);font-size:17px;line-height:1.5;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+img{display:block;max-width:100%;height:auto}
+a{color:inherit}
+h1,h2,h3,p,dl,dd,figure,ol{margin:0;padding:0}
+ol{list-style:none}
+.wrap{width:100%;max-width:1440px;margin:0 auto;padding:0 var(--m)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+:focus-visible{outline:2px solid var(--cobalt);outline-offset:3px}
+.skip{position:absolute;left:var(--m);top:-60px;background:var(--paper);color:var(--ink);padding:10px 14px;z-index:10}
+.skip:focus{top:8px}
+
+/* ---------- Cabecera ---------- */
+.top{position:relative;z-index:5;background:var(--ink);color:var(--paper)}
+.top :focus-visible{outline-color:var(--cobalt-bright)}
+.top .wrap{display:flex;align-items:center;gap:24px;height:64px}
+.brand{display:inline-flex;align-items:center;gap:12px;text-decoration:none;font-family:var(--mono);font-size:17px;letter-spacing:.06em;line-height:1;min-height:44px}
+.brand b{font-weight:400}
+.brand .t{color:var(--cobalt-bright)}
+.glyph{display:inline-flex;align-items:center;gap:5px}
+.glyph i{display:block;width:11px;height:11px}
+.glyph i:nth-child(1){height:3px;background:var(--paper)}
+.glyph i:nth-child(2){border:2px solid var(--paper)}
+.glyph i:nth-child(3){background:var(--cobalt-bright)}
+.nav{margin-left:auto}
+.nav ul{display:flex;gap:4px;list-style:none;margin:0;padding:0}
+.nav a{display:inline-flex;align-items:center;min-height:44px;padding:0 14px;text-decoration:none;font-size:15px;font-weight:500;color:#d9d7cf}
+.nav a:hover{color:var(--paper);text-decoration:underline;text-underline-offset:6px;text-decoration-thickness:1px}
+.btn-top{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 18px;background:var(--paper);color:var(--ink);text-decoration:none;font-weight:600;font-size:15px;margin-left:12px}
+.btn-top:hover{background:#fff}
+.menu{display:none}
+
+/* ---------- Hero ---------- */
+.hero{padding:40px 0 0}
+.hero-grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--gut)}
+.intro{grid-column:1 / 9}
+h1{font-family:var(--display);font-weight:400;text-transform:uppercase;font-size:56px;line-height:.98;letter-spacing:-.005em}
+h1 br.m{display:none}
+.lede br.lb{display:inline}
+.lede{margin-top:24px;max-width:36em;font-size:18px;line-height:1.5;color:var(--ink-soft)}
+.lede strong{font-weight:600;color:var(--ink);white-space:nowrap}
+.ctas{display:flex;flex-wrap:wrap;align-items:center;gap:8px 28px;margin-top:24px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:56px;padding:0 26px;background:var(--ink);color:var(--paper);text-decoration:none;font-weight:600;font-size:17px}
+.btn:hover{background:var(--cobalt-deep)}
+.alt{display:inline-flex;align-items:center;min-height:44px;font-size:16px;font-weight:500;color:var(--ink);text-decoration:underline;text-decoration-color:var(--line-2);text-decoration-thickness:1px;text-underline-offset:7px}
+.alt:hover{text-decoration-color:var(--ink)}
+
+/* Visor */
+.viewer{grid-column:9 / 13;align-self:start;position:relative;padding-top:4px}
+.vf{display:none}
+.vf.is-on{display:block}
+.stage{position:relative;aspect-ratio:16 / 10;background:var(--scene,var(--paper-2));overflow:hidden}
+.stage img{position:absolute;inset:16px;width:calc(100% - 32px);height:calc(100% - 32px);object-fit:contain}
+.stage--text{background:var(--paper-2);border:1px solid var(--line-2);padding:22px 24px 18px;display:flex;flex-direction:column;justify-content:space-between}
+.stage--text .tt{font-size:28px;line-height:1.1;font-weight:600;letter-spacing:-.015em;max-width:13em;text-wrap:balance}
+.stage--text ul{list-style:none;margin:0;padding:0;font-family:var(--mono);font-size:13px;line-height:1.4;color:var(--ink)}
+.stage--text li{padding:7px 0;border-top:1px solid var(--line-2)}
+.stage--text li.tn{color:var(--ink-faint);font-size:12px}
+.vf figcaption{display:grid;grid-template-columns:auto 1fr;column-gap:12px;margin-top:12px;font-size:14px;line-height:1.45;color:var(--ink-mute)}
+.vf figcaption .vn{font-family:var(--mono);font-size:13px;color:var(--cobalt);line-height:1.55}
+.vf figcaption b{font-weight:600;color:var(--ink)}
+
+/* Índice */
+.index{grid-column:1 / -1;margin-top:36px}
+.ihead{display:grid;grid-template-columns:72px minmax(0,1fr) 300px;align-items:end;padding:0 0 10px;border-bottom:2px solid var(--ink)}
+.ihead h2,.ihead span{font-family:var(--mono);font-weight:400;font-size:12px;line-height:1.4;letter-spacing:.06em;text-transform:uppercase}
+.ihead h2{color:var(--ink);text-wrap:balance}
+.ihead span{color:var(--ink-faint)}
+.row{position:relative;display:grid;grid-template-columns:72px minmax(0,1fr) 300px;align-items:last baseline;padding:13px 0 15px;border-bottom:1px solid var(--line-2);text-decoration:none;color:var(--ink)}
+.row::before{content:"";position:absolute;inset:-1px -16px 0;background:transparent;z-index:-1}
+.num{font-family:var(--mono);font-size:15px;color:var(--cobalt);letter-spacing:.02em}
+.need{font-family:var(--text);font-weight:600;font-size:clamp(26px,calc((100vw - 2 * var(--m) - 372px) / 24.5),34px);line-height:1.12;letter-spacing:-.018em;text-wrap:balance}
+.work{display:flex;align-items:last baseline;gap:14px;font-family:var(--mono);font-size:15px;line-height:1.35}
+.wname{display:flex;flex-direction:column;flex:1}
+.wname small{font-size:12px;color:var(--ink-faint);margin-top:2px}
+.arr{font-family:var(--text);font-size:24px;line-height:1;color:var(--ink)}
+.thumb{display:none}
+.index li:last-child .row{border-bottom:1px solid var(--ink)}
+@media (hover:hover) and (min-width:1100px){
+  .row:hover::before,.row.is-on::before{background:var(--paper-2)}
+  .row:hover .arr,.row.is-on .arr{color:var(--cobalt)}
+  .row:hover .wname > span,.row.is-on .wname > span{text-decoration:underline;text-underline-offset:5px;text-decoration-thickness:1px}
+}
+.index ol{position:relative;z-index:0}
+
+/* ---------- Caso 01 ---------- */
+.case{margin-top:104px;padding-bottom:120px}
+.eyebrow{display:flex;justify-content:space-between;gap:16px;padding-top:14px;border-top:2px solid var(--ink);font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:36px}
+.eyebrow .c{color:var(--cobalt)}
+.eyebrow > span{text-wrap:balance}
+.case-grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--gut);align-items:start}
+.case-main{grid-column:1 / 9}
+.case-side{grid-column:9 / 13}
+.case h2{font-family:var(--display);font-weight:400;text-transform:uppercase;font-size:72px;line-height:.9;letter-spacing:-.01em}
+.case-fig{margin-top:36px}
+.case-stage{background:var(--padel);padding:40px;display:flex;gap:24px;align-items:flex-end}
+.case-stage .a{flex:1778 1 0;min-width:0}
+.case-stage .b{flex:441 1 0;min-width:0}
+.case-fig figcaption{margin-top:12px;font-family:var(--mono);font-size:12px;line-height:1.5;color:var(--ink-faint)}
+.case-sub{font-size:19px;line-height:1.45;color:var(--ink);max-width:24em}
+.case-link{display:inline-flex;align-items:center;min-height:44px;margin-top:8px;font-family:var(--mono);font-size:14px;color:var(--ink);text-underline-offset:6px;text-decoration-thickness:1px;text-decoration-color:var(--line-2)}
+.case-link:hover{text-decoration-color:var(--ink)}
+.facts{margin-top:28px;border-top:1px solid var(--ink)}
+.facts div{padding:16px 0 20px;border-bottom:1px solid var(--line-2)}
+.facts dt{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-faint)}
+.facts dd{margin-top:8px;font-size:17px;line-height:1.5;color:var(--ink)}
+.facts .dec dt{color:var(--cobalt)}
+.facts .dec dd{font-weight:600;font-size:21px;line-height:1.3;letter-spacing:-.01em}
+.facts .dec dd span{display:block;margin-top:8px;font-weight:400;font-size:16px;line-height:1.5;color:var(--ink-soft);letter-spacing:0}
+
+/* ---------- Tablet ---------- */
+@media (max-width:1099px){
+  .nav ul{gap:0}
+  .nav a{padding:0 10px}
+  .intro{grid-column:1 / -1}
+  h1{font-size:clamp(38px,5.8vw,60px)}
+  .viewer{display:none}
+  .index{margin-top:56px}
+  .ihead{grid-template-columns:56px minmax(0,1fr)}
+  .ihead span:last-child{display:none}
+  .row{grid-template-columns:56px minmax(0,1fr);row-gap:14px;padding:20px 0;align-items:baseline}
+  .need{font-size:30px}
+  .work{grid-column:2;align-items:center}
+  .thumb{display:block;width:88px;height:56px;object-fit:cover;object-position:left top;background:var(--scene)}
+  .case h2{font-size:clamp(40px,8vw,72px)}
+  .case-grid{display:flex;flex-direction:column;align-items:stretch}
+  .case-main,.case-side{display:contents}
+  .case h2{order:1}
+  .case-sub{order:2;margin-top:20px;max-width:34em}
+  .case-link{order:3;align-self:flex-start}
+  .case-fig{order:4;margin-top:28px}
+  .facts{order:5;margin-top:36px}
+}
+@media (max-width:899px){
+  .nav{display:none}
+  .menu{display:block;margin-left:auto}
+  .menu summary{list-style:none;display:inline-flex;align-items:center;min-height:44px;padding:0 12px;font-size:15px;font-weight:500;cursor:pointer;color:#d9d7cf}
+  .menu summary::-webkit-details-marker{display:none}
+  .menu ul{position:absolute;left:0;right:0;top:100%;background:var(--ink);list-style:none;margin:0;padding:4px var(--m) 20px}
+  .menu li{border-top:1px solid #2c2c33}
+  .menu a{display:flex;align-items:center;min-height:52px;text-decoration:none;font-size:18px;font-weight:500}
+  .menu[open] summary{color:var(--paper);text-decoration:underline;text-underline-offset:6px}
+  .btn-top{margin-left:0}
+}
+
+/* ---------- Móvil ---------- */
+@media (max-width:699px){
+  body{font-size:16px}
+  .top .wrap{height:56px;gap:4px}
+  .brand{font-size:16px;gap:10px}
+  .btn-top{padding:0 14px;font-size:14px}
+  .hero{padding-top:28px}
+  h1{font-size:clamp(32px,10.2vw,40px);line-height:1}
+  h1 br.m{display:inline}
+  .lede br.lb{display:none}
+  .lede{font-size:17px;margin-top:18px}
+  .ctas{flex-direction:column;align-items:stretch;gap:4px;margin-top:22px}
+  .btn{width:100%;justify-content:space-between;padding:0 20px}
+  .alt{justify-content:flex-start;min-height:48px}
+  .index{margin-top:40px}
+  .ihead{grid-template-columns:1fr;padding-bottom:10px}
+  .ihead span{display:none}
+  .row{grid-template-columns:34px minmax(0,1fr);row-gap:12px;padding:18px 0 16px}
+  .num{font-size:13px}
+  .need{font-size:clamp(22px,6.6vw,26px);line-height:1.15;letter-spacing:-.015em}
+  .work{gap:12px}
+  .thumb{width:88px;height:56px}
+  .wname{font-size:14px}
+  .arr{font-size:22px}
+  .case{margin-top:72px;padding-bottom:72px}
+  .eyebrow{flex-direction:column;gap:4px;margin-bottom:20px}
+  .case h2{font-size:clamp(30px,9.8vw,48px);line-height:.95}
+  .case-sub{font-size:18px}
+  .case-fig{margin:28px calc(var(--m) * -1) 0}
+  .case-stage{padding:16px 12px;gap:10px}
+  .case-fig figcaption{padding:0 var(--m)}
+  .facts .dec dd{font-size:19px}
+}
+@media (max-width:359px){
+  .btn-top{display:none}
+}
+@media (prefers-reduced-motion:no-preference){
+  .row::before{transition:background-color .12s linear}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Saltar al contenido</a>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#" aria-label="BPM Tech, inicio"><span><b>BPM</b><b class="t">TECH</b></span><span class="glyph" aria-hidden="true"><i></i><i></i><i></i></span></a>
+    <nav class="nav" aria-label="Principal">
+      <ul>
+        <li><a href="#proyectos">Proyectos</a></li>
+        <li><a href="#servicios">Servicios</a></li>
+        <li><a href="#metodo">Cómo trabajamos</a></li>
+        <li><a href="#sobre-mi">Sobre mí</a></li>
+      </ul>
+    </nav>
+    <details class="menu">
+      <summary>Menú</summary>
+      <nav aria-label="Principal móvil">
+        <ul>
+          <li><a href="#proyectos">Proyectos</a></li>
+          <li><a href="#servicios">Servicios</a></li>
+          <li><a href="#metodo">Cómo trabajamos</a></li>
+          <li><a href="#sobre-mi">Sobre mí</a></li>
+        </ul>
+      </nav>
+    </details>
+    <a class="btn-top" href="#contacto">Hablemos ↗</a>
+  </div>
+</header>
+
+<main id="main">
+  <section class="hero" aria-labelledby="h1">
+    <div class="wrap hero-grid">
+      <div class="intro">
+        <h1 id="h1">Software<br class="m"> a medida<br> para lo que<br class="m"> tu negocio<br> hace a mano.</h1>
+        <p class="lede">Aplicaciones de gestión, automatizaciones, integraciones y webs para pymes.<br class="lb"> Soy <strong>Alberto Bort</strong>, trabajo desde Valencia para toda España y llevo cada proyecto de la primera conversación a la puesta en marcha.</p>
+        <div class="ctas">
+          <a class="btn" href="#contacto">Cuéntame qué necesitas <span aria-hidden="true">↗</span></a>
+          <a class="alt" href="#llamada">Reservar una llamada de 30 min ↗</a>
+        </div>
+      </div>
+
+      <aside class="viewer" aria-label="Visor del índice">
+        <figure class="vf is-on" data-i="0" style="--scene:var(--padel)">
+          <div class="stage"><img src="../../../public/proyectos/padel/recepcion.png" width="1280" height="720" alt="Padel Club OS, pantalla de recepción del día: reservas activas, participantes, cobrado hoy y pendiente, aviso de jornada cerrada y filtros por estado."></div>
+          <figcaption><span class="vn">01</span><span><b>Padel Club OS.</b> Recepción del día: reservas, participantes y cobros. Datos de demo.</span></figcaption>
+        </figure>
+        <figure class="vf" data-i="1" style="--scene:var(--almacen)">
+          <div class="stage"><img src="../../../public/proyectos/almacen/movimientos.png" width="3200" height="1800" loading="lazy" alt="Gestión de almacén, listado de movimientos: entradas, salidas y traspasos con documento, fecha, usuario, motivo y estado contabilizado."></div>
+          <figcaption><span class="vn">02</span><span><b>Gestión de almacén.</b> Libro de movimientos de entradas, salidas y traspasos. Marca difuminada, datos de demo.</span></figcaption>
+        </figure>
+        <figure class="vf" data-i="2" style="--scene:var(--radio)">
+          <div class="stage"><img src="../../../public/proyectos/radio/movil.jpg" width="514" height="786" loading="lazy" alt="Web de radio en el móvil: sección de radio en directo con el reproductor y el control de volumen."></div>
+          <figcaption><span class="vn">03</span><span><b>Web de radio.</b> El directo en el móvil, con un reproductor que no corta la escucha al navegar. Marca difuminada.</span></figcaption>
+        </figure>
+        <figure class="vf" data-i="3">
+          <div class="stage stage--text">
+            <p class="tt">Web de evento</p>
+            <ul><li>Confirmación de invitados</li><li>Dos idiomas</li><li>Panel privado</li><li class="tn">Sin captura publicada. Caso descrito solo con texto.</li></ul>
+          </div>
+          <figcaption><span class="vn">04</span><span><b>Web de evento.</b> Confirmaciones en un solo sitio.</span></figcaption>
+        </figure>
+        <figure class="vf" data-i="4">
+          <div class="stage stage--text">
+            <p class="tt">Asistente de IA para gestión de proyectos</p>
+            <ul><li>Dos agentes</li><li>Traza de fuentes</li><li class="tn">Sin captura publicada. Caso descrito solo con texto.</li></ul>
+          </div>
+          <figcaption><span class="vn">05</span><span><b>Asistente de IA.</b> El contexto reunido antes de decidir.</span></figcaption>
+        </figure>
+      </aside>
+
+      <nav class="index" id="proyectos" aria-labelledby="idx-h">
+        <div class="ihead">
+          <span>Nº</span>
+          <h2 id="idx-h">Cinco necesidades, cinco herramientas reales</h2>
+          <span>El trabajo</span>
+        </div>
+        <ol>
+          <li><a class="row is-on" href="#padel" data-i="0" style="--scene:var(--padel)">
+            <span class="num">01</span>
+            <span class="need">Reservas por WhatsApp y cobros apuntados aparte</span>
+            <span class="work"><img class="thumb" src="../../../public/proyectos/padel/recepcion.png" alt="" width="1280" height="720"><span class="wname"><span>Padel Club OS</span><small>En producción</small></span><span class="arr" aria-hidden="true">→</span></span>
+          </a></li>
+          <li><a class="row" href="#almacen" data-i="1" style="--scene:var(--almacen)">
+            <span class="num">02</span>
+            <span class="need">No saber qué hay en el almacén ni dónde está</span>
+            <span class="work"><img class="thumb" src="../../../public/proyectos/almacen/movimientos.png" alt="" width="3200" height="1800" loading="lazy"><span class="wname"><span>Gestión de almacén</span><small>Inventario y terminal RF</small></span><span class="arr" aria-hidden="true">→</span></span>
+          </a></li>
+          <li><a class="row" href="#radio" data-i="2" style="--scene:var(--radio)">
+            <span class="num">03</span>
+            <span class="need">El directo y los programas, sin un sitio propio</span>
+            <span class="work"><img class="thumb" src="../../../public/proyectos/radio/movil.jpg" alt="" width="514" height="786" loading="lazy"><span class="wname"><span>Web de radio</span><small>Directo y archivo</small></span><span class="arr" aria-hidden="true">→</span></span>
+          </a></li>
+          <li><a class="row" href="#evento" data-i="3">
+            <span class="num">04</span>
+            <span class="need">Confirmaciones de invitados repartidas en mensajes</span>
+            <span class="work"><span class="wname"><span>Web de evento</span><small>Dos idiomas, panel privado</small></span><span class="arr" aria-hidden="true">→</span></span>
+          </a></li>
+          <li><a class="row" href="#asistente" data-i="4">
+            <span class="num">05</span>
+            <span class="need">Contexto disperso para preparar decisiones</span>
+            <span class="work"><span class="wname"><span>Asistente de IA</span><small>Dos agentes, traza de fuentes</small></span><span class="arr" aria-hidden="true">→</span></span>
+          </a></li>
+        </ol>
+      </nav>
+    </div>
+  </section>
+
+  <section class="case" id="padel" aria-labelledby="padel-h">
+    <div class="wrap">
+      <p class="eyebrow"><span><span class="c">01</span> Reservas por WhatsApp y cobros apuntados aparte</span><span>En producción</span></p>
+      <div class="case-grid">
+        <div class="case-main">
+          <h2 id="padel-h">Padel Club OS</h2>
+          <figure class="case-fig">
+            <div class="case-stage">
+              <img class="a" src="../../../public/proyectos/padel/recepcion.png" width="1280" height="720" loading="lazy" alt="Recepción del día en Padel Club OS con reservas activas, participantes, cobros y el aviso de jornada cerrada que se puede reabrir.">
+              <img class="b" src="../../../public/proyectos/padel/portal-movil.png" width="390" height="884" loading="lazy" alt="Portal del jugador en el móvil, sección Mis clases con grupos, asistencia y navegación inferior para reservar.">
+            </div>
+            <figcaption>Recepción del día en el panel del club y portal del jugador en el móvil. Datos de demo.</figcaption>
+          </figure>
+        </div>
+        <div class="case-side">
+          <p class="case-sub">Reservas, socios, pagos y competiciones para un club de pádel. Un panel para el club y un portal para el jugador.</p>
+          <a class="case-link" href="https://padelclubos.com" rel="noopener">padelclubos.com ↗</a>
+          <dl class="facts">
+            <div><dt>La necesidad</dt><dd>Coordinar disponibilidad, reservas y gestión de socios sin WhatsApp, Excel ni papel.</dd></div>
+            <div><dt>Qué se construyó</dt><dd>Un panel para el club y un portal donde el jugador reserva desde el móvil sin instalar nada.</dd></div>
+            <div class="dec"><dt>Una decisión</dt><dd>Cerrar la jornada no es definitivo.<span>Se cierra desde recepción y puede reabrirse para corregir cobros o asistencias.</span></dd></div>
+          </dl>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script>
+(function(){
+  var rows=document.querySelectorAll('.row[data-i]');
+  var figs=document.querySelectorAll('.vf[data-i]');
+  function set(i){
+    figs.forEach(function(f){f.classList.toggle('is-on',f.dataset.i===i)});
+    rows.forEach(function(r){r.classList.toggle('is-on',r.dataset.i===i)});
+  }
+  rows.forEach(function(r){
+    r.addEventListener('pointerenter',function(){set(r.dataset.i)});
+    r.addEventListener('focus',function(){set(r.dataset.i)});
+  });
+})();
+</script>
+</body>
+</html>

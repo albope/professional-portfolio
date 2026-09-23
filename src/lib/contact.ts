@@ -75,7 +75,7 @@ export function validateContactPayload(payload: unknown): ValidationResult {
   if (!value.nombre) fields.nombre = "Indica tu nombre.";
   if (!value.email) fields.email = "Indica un email para poder responderte.";
   else if (!EMAIL_RE.test(value.email)) fields.email = "Revisa el email, parece incompleto.";
-  if (!value.mensaje) fields.mensaje = "Cuéntanos brevemente qué necesitas resolver.";
+  if (!value.mensaje) fields.mensaje = "Cuéntame brevemente qué necesitas resolver.";
   if (Object.keys(fields).length) {
     return { ok: false, error: "Revisa los campos señalados antes de enviar.", fields };
   }

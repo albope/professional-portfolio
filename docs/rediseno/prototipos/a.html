@@ -1,0 +1,365 @@
+<!-- Prototipo de exploración del 23-09-2026, dirección A · Trazo, marco, bloque (descartado). Solo el hero y el inicio de la sección siguiente. No es contenido publicado ni se sirve en la web: ver docs/rediseno/README.md. -->
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BPM Tech · Software a medida</title>
+<meta name="description" content="Aplicaciones de gestión, automatizaciones, integraciones y webs para pymes y negocios. Lo diseña y lo construye Alberto Bort, en Valencia.">
+<style>
+@font-face { font-family: "Archivo Black"; src: url("../../../src/assets/fonts/ArchivoBlack-Regular.ttf") format("truetype"); font-display: swap; }
+@font-face { font-family: "Archivo"; src: url("../../../templates/presentation/assets/fonts/Archivo-Variable.ttf") format("truetype"); font-weight: 100 900; font-stretch: 62% 125%; font-display: swap; }
+@font-face { font-family: "Fragment Mono"; src: url("../../../src/assets/fonts/FragmentMono-Regular.ttf") format("truetype"); font-display: swap; }
+
+:root {
+  --paper: #f7f6f2; --paper-2: #efede6;
+  --ink: #101013; --ink-2: #18181c; --ink-soft: #3d3c35; --ink-mute: #5a594f; --ink-faint: #6a685d;
+  --cobalt: #2743e0; --cobalt-deep: #1e35b8; --cobalt-bright: #6b83ff;
+  --line: #e2e0d8; --line-2: #d8d6cc;
+  --on-ink: rgba(247,246,242,.9); --on-ink-mute: rgba(247,246,242,.7); --on-ink-line: rgba(247,246,242,.16);
+  --padel: #0e5c3f; --almacen: #0a0c18; --radio: #004d98;
+  --m: 16px;
+  --display: "Archivo Black", "Arial Black", sans-serif;
+  --text: "Archivo", system-ui, sans-serif;
+  --mono: "Fragment Mono", ui-monospace, monospace;
+  /* la retícula sale del glifo: 11 · 5 · 11 · 5 · 11 */
+  --glyph: 11fr 5fr 11fr 5fr 11fr;
+}
+@media (min-width: 700px) { :root { --m: 40px; } }
+@media (min-width: 1440px) { :root { --m: 60px; } }
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--text); font-size: 17px; line-height: 1.5; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+img { display: block; max-width: 100%; }
+a { color: inherit; }
+:focus-visible { outline: 2px solid var(--cobalt); outline-offset: 3px; }
+.site-head :focus-visible, .case :focus-visible, .block :focus-visible { outline-color: var(--cobalt-bright); }
+.wrap { width: 100%; max-width: 1440px; margin: 0 auto; padding: 0 var(--m); }
+.lab { font-family: var(--mono); font-size: 12px; line-height: 1.3; letter-spacing: .07em; text-transform: uppercase; }
+
+/* marcadores: las tres piezas sueltas */
+.mk { display: inline-block; flex: none; width: 11px; height: 11px; }
+.mk-bar { height: 3px; background: currentColor; }
+.mk-frame { border: 2px solid currentColor; }
+.mk-block { background: currentColor; }
+.g { display: inline-flex; align-items: flex-end; gap: 5px; flex: none; }
+
+/* ---------- Cabecera ---------- */
+.site-head { background: var(--ink); color: var(--paper); position: relative; z-index: 5; }
+.site-head .wrap { display: flex; align-items: center; justify-content: space-between; height: 64px; gap: 24px; }
+.brand { display: inline-flex; align-items: center; gap: 12px; min-height: 44px; text-decoration: none; font-family: var(--mono); font-size: 17px; letter-spacing: .06em; }
+.brand .tech { color: var(--cobalt-bright); }
+.brand .g { margin-bottom: 2px; }
+.brand .mk-block { background: var(--cobalt-bright); }
+.nav { display: flex; align-items: center; }
+.nav > ul { list-style: none; display: flex; margin: 0 12px 0 0; padding: 0; }
+.nav > ul a { display: inline-flex; align-items: center; min-height: 44px; padding: 0 14px; white-space: nowrap; text-decoration: none; font-size: 15px; font-weight: 500; color: var(--on-ink-mute); }
+.nav > ul a:hover { color: var(--paper); }
+.btn-head { white-space: nowrap; display: inline-flex; align-items: center; min-height: 44px; padding: 0 18px; border: 1px solid rgba(247,246,242,.55); text-decoration: none; font-size: 15px; font-weight: 600; }
+.btn-head:hover { background: var(--paper); color: var(--ink); }
+.menu { display: none; }
+
+/* ---------- Hero ---------- */
+.hero { padding: 44px 0 0; }
+.hero-grid { display: grid; grid-template-columns: var(--glyph); align-items: end; }
+.hero h1 { grid-column: 1 / 5; margin: 0; font-family: var(--display); font-weight: 400; text-transform: uppercase; font-size: clamp(40px, 5.3vw, 76px); line-height: .9; letter-spacing: -.012em; }
+.hero h1 .dot { color: var(--cobalt); }
+.hero h1 br.m { display: none; }
+.intro { grid-column: 5; }
+.lede { margin: 0 0 16px; font-size: 18px; line-height: 1.42; color: var(--ink-soft); text-wrap: pretty; }
+.lede strong { color: var(--ink); font-weight: 600; }
+.ctas { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; }
+.btn { display: inline-flex; align-items: center; justify-content: space-between; gap: 18px; min-height: 54px; padding: 0 20px; background: var(--ink); color: var(--paper); text-decoration: none; font-weight: 600; font-size: 17px; }
+.btn:hover { background: var(--cobalt-deep); }
+.link-alt { display: inline-flex; align-items: center; min-height: 44px; margin-bottom: -10px; font-size: 15px; font-weight: 500; color: var(--ink-soft); text-decoration: underline; text-decoration-color: var(--line-2); text-underline-offset: 5px; text-decoration-thickness: 1px; }
+.link-alt:hover { color: var(--ink); text-decoration-color: currentColor; }
+
+/* ---------- La secuencia: el glifo a escala ---------- */
+.seq { list-style: none; margin: 44px 0 0; padding: 0; display: grid; grid-template-columns: var(--glyph); align-items: end; }
+.seq > li { position: relative; display: flex; flex-direction: column; }
+.p-bar { grid-column: 1; align-self: stretch; }
+.p-frame { grid-column: 3; }
+.p-block { grid-column: 5; }
+.piece-lab { margin: 0; display: flex; gap: 10px; color: var(--ink-faint); transition: color .15s; }
+.piece-lab b { font-weight: 400; color: var(--ink); }
+.say { margin: 26px 0 0; font-weight: 650; font-size: clamp(21px, 2.08vw, 30px); line-height: 1.16; letter-spacing: -.015em; text-wrap: balance; }
+
+/* 01 · trazo: la barra baja y larga, con lo que hoy se hace a mano */
+.p-bar { padding-top: 22px; }
+.p-bar .say { color: var(--ink-soft); }
+.bar-wrap { margin-top: auto; }
+.bar-tab { margin: 0 0 8px; color: var(--ink-faint); }
+.bar { aspect-ratio: 11 / 3; background: var(--ink); color: var(--paper); display: flex; align-items: center; padding: 0 20px; }
+.bar ul { list-style: none; margin: 0; padding: 0; font-family: var(--mono); font-size: 13.5px; line-height: 1.5; letter-spacing: .01em; }
+.bar li { display: flex; align-items: flex-start; gap: 12px; }
+.bar li .mk { width: 9px; margin-top: .72em; }
+
+/* 02 · marco: el cuadrado hueco, lo que se acuerda por escrito */
+.frame { aspect-ratio: 1; border: 2px solid var(--ink); padding: 20px 22px 12px; display: flex; flex-direction: column; background: var(--paper); }
+.frame .say em { font-style: normal; color: var(--cobalt); }
+.frame .foot { margin-top: auto; display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.frame .foot span { color: var(--ink-faint); }
+.frame .foot a { display: inline-flex; align-items: center; min-height: 44px; font-family: var(--mono); font-size: 13px; letter-spacing: .02em; text-decoration: underline; text-underline-offset: 5px; text-decoration-thickness: 1px; }
+
+/* 03 · bloque: el cuadrado macizo, software en uso */
+.block { aspect-ratio: 1; margin: 0; background: var(--padel); color: var(--paper); position: relative; overflow: hidden; }
+.block .piece-lab { position: absolute; top: 22px; left: 22px; color: rgba(247,246,242,.75); }
+.block .piece-lab b { color: var(--paper); }
+.crop { position: absolute; left: 22px; top: 58px; right: 0; bottom: 0; overflow: hidden; background: #f4f2ec; }
+.crop img { max-width: none; height: auto; }
+/* recepcion.png a media escala: desde el título «Recepción Hoy», sangrando a la derecha y abajo */
+.shot-d { width: 203.2%; margin-left: -43.2%; margin-top: -20.6%; }
+.shot-m { display: none; }
+.block figcaption { position: absolute; left: 0; bottom: 0; z-index: 2; }
+.block figcaption a { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; padding: 0 16px 0 22px; background: var(--ink); color: var(--paper); text-decoration: none; }
+.block figcaption a:hover { background: var(--cobalt-deep); }
+.block figcaption a:focus-visible { outline-offset: -5px; }
+.block figcaption .mk { background: var(--cobalt-bright); width: 9px; height: 9px; }
+
+.seq > li:hover .piece-lab, .seq > li:focus-within .piece-lab { color: var(--ink); }
+.seq > li.p-block:hover .piece-lab, .seq > li.p-block:focus-within .piece-lab { color: var(--paper); }
+.seq > li:hover .piece-lab b, .seq > li:focus-within .piece-lab b { text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 2px; }
+
+/* ---------- Proyectos ---------- */
+.projects { margin-top: 88px; }
+.proj-head { display: grid; grid-template-columns: var(--glyph); align-items: end; padding: 22px 0 34px; border-top: 2px solid var(--ink); }
+.proj-head h2 { grid-column: 1 / 3; margin: 0; display: flex; align-items: flex-end; gap: 14px; font-family: var(--display); font-weight: 400; text-transform: uppercase; font-size: clamp(34px, 3.3vw, 48px); line-height: .82; }
+.proj-head h2 .mk { width: .62em; height: .62em; background: var(--ink); }
+.proj-head p { grid-column: 3; margin: 0; font-size: 16px; line-height: 1.45; color: var(--ink-mute); }
+.proj-index { grid-column: 5; list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 4px 20px; font-family: var(--mono); font-size: 12px; line-height: 1.4; color: var(--ink-mute); }
+.proj-index span { color: var(--ink); margin-right: 6px; }
+
+.case { background: var(--almacen); color: var(--paper); }
+.case .wrap { display: grid; grid-template-columns: repeat(12, 1fr); gap: 0 24px; padding-top: 52px; padding-bottom: 64px; }
+.case-text { grid-column: 1 / 5; }
+.case-num { margin: 0; display: flex; align-items: flex-start; justify-content: space-between; color: var(--on-ink-mute); }
+.case-num b { font-family: var(--display); font-weight: 400; font-size: 104px; line-height: .78; color: var(--paper); letter-spacing: -.02em; }
+.case h3 { margin: 30px 0 12px; font-family: var(--display); font-weight: 400; text-transform: uppercase; font-size: 34px; line-height: .95; }
+.case .tags { margin: 0 0 30px; font-family: var(--mono); font-size: 12px; color: var(--on-ink-mute); letter-spacing: 0; }
+.case dl { margin: 0; }
+.case dt { display: flex; align-items: center; gap: 10px; padding-top: 14px; border-top: 1px solid var(--on-ink-line); color: var(--cobalt-bright); }
+.case dd { margin: 8px 0 20px; font-size: 16px; line-height: 1.5; color: var(--on-ink); }
+.case dd.decision { font-size: 20px; line-height: 1.3; font-weight: 600; color: var(--paper); letter-spacing: -.01em; }
+.case-shots { grid-column: 5 / 13; display: grid; grid-template-columns: 1fr 25%; gap: 20px; align-items: end; align-self: start; padding-left: 24px; }
+.case-shots figure { margin: 0; }
+.case-shots .cut { overflow: hidden; border: 1px solid var(--on-ink-line); background: #f8f9fb; }
+.case-shots .cut img { max-width: none; height: auto; }
+/* movimientos: sin la barra lateral, con el título y el libro */
+.cut-mov { aspect-ratio: 2672 / 1400; }
+.cut-mov img { width: 119.76%; margin-left: -19.76%; }
+/* terminal RF: la parte útil de la pantalla */
+.cut-rf { aspect-ratio: 960 / 1180; }
+.cut-rf img { width: 100%; }
+.case-shots figcaption { margin-top: 12px; font-family: var(--mono); font-size: 12px; color: var(--on-ink-mute); letter-spacing: .02em; line-height: 1.45; }
+
+/* ---------- Tablet ---------- */
+@media (max-width: 1099px) {
+  .hero-grid { grid-template-columns: 1fr; gap: 28px; }
+  .hero h1 { grid-column: 1; font-size: clamp(40px, 7.3vw, 76px); }
+  .intro { grid-column: 1; max-width: 520px; }
+  .seq { grid-template-columns: 1fr 32px 1fr; }
+  .p-bar { grid-column: 1 / 4; padding-top: 0; margin-bottom: 36px; }
+  .p-bar .say { max-width: 520px; margin-top: 14px; }
+  .bar-wrap { margin-top: 24px; }
+  .bar { aspect-ratio: auto; min-height: 96px; padding: 14px 20px; }
+  .p-frame { grid-column: 1; }
+  .p-block { grid-column: 3; }
+  .frame .say { font-size: clamp(26px, 3.5vw, 36px); }
+  .projects { margin-top: 64px; }
+  .proj-head { grid-template-columns: 1fr 1fr; gap: 20px 32px; }
+  .proj-head h2 { grid-column: 1 / 3; }
+  .proj-head p { grid-column: 1; }
+  .proj-index { grid-column: 2; }
+  .case-text { grid-column: 1 / 13; margin-bottom: 44px; max-width: 640px; }
+  .case-shots { grid-column: 1 / 13; padding-left: 0; }
+}
+
+@media (max-width: 899px) {
+  .nav > ul { display: none; }
+  .menu { display: block; margin-left: 8px; }
+  .menu summary { list-style: none; display: inline-flex; align-items: center; min-height: 44px; padding: 0 16px; border: 1px solid rgba(247,246,242,.55); font-size: 15px; font-weight: 600; cursor: pointer; }
+  .menu summary::-webkit-details-marker { display: none; }
+  .menu[open] summary { background: var(--paper); color: var(--ink); }
+  .menu ul { position: absolute; left: 0; right: 0; top: 100%; list-style: none; margin: 0; padding: 4px var(--m) 16px; background: var(--ink); border-top: 1px solid var(--on-ink-line); }
+  .menu li a { display: flex; align-items: center; min-height: 52px; text-decoration: none; font-size: 18px; font-weight: 600; border-bottom: 1px solid var(--on-ink-line); }
+  .menu li:last-child a { border: 0; color: var(--cobalt-bright); }
+}
+
+/* ---------- Móvil ---------- */
+@media (max-width: 699px) {
+  body { font-size: 16px; }
+  .site-head .wrap { height: 56px; }
+  .brand { font-size: 16px; gap: 10px; }
+  .btn-head { display: none; }
+
+  .hero { padding-top: 30px; }
+  .hero h1 { font-size: clamp(34px, 11vw, 44px); line-height: .9; }
+  .hero h1 br.d { display: none; }
+  .hero h1 br.m { display: inline; }
+  .hero-grid { gap: 22px; }
+  .lede { font-size: 17px; margin-bottom: 22px; }
+  .ctas { align-items: stretch; }
+  .btn { width: 100%; }
+  .link-alt { align-self: flex-start; margin-bottom: 0; }
+
+  .seq { grid-template-columns: 1fr; margin-top: 48px; border-top: 1px solid var(--line-2); padding-top: 22px; }
+  .p-bar, .p-frame, .p-block { grid-column: 1; }
+  .p-bar { margin-bottom: 40px; }
+  .p-bar .say { margin-top: 16px; font-size: 24px; }
+  .bar-wrap { margin-top: 22px; }
+  .bar { min-height: 98px; padding: 14px 18px; }
+  .p-frame { margin-bottom: 40px; }
+  .frame { aspect-ratio: auto; min-height: 300px; padding: 18px 18px 8px; }
+  .frame .say { font-size: 27px; }
+  .p-block { margin: 0 calc(var(--m) * -1); }
+  .block { aspect-ratio: 390 / 430; }
+  .block .piece-lab { left: var(--m); top: 20px; }
+  .shot-d { display: none; }
+  .shot-m { display: block; width: 100%; }
+  .crop { left: var(--m); right: var(--m); top: 54px; }
+  .block figcaption a { padding-left: var(--m); }
+
+  .projects { margin-top: 64px; }
+  .proj-head { grid-template-columns: 1fr; gap: 16px; padding-top: 20px; }
+  .proj-head h2, .proj-head p, .proj-index { grid-column: 1; }
+  .proj-index { grid-template-columns: 1fr; }
+  .case .wrap { padding-top: 40px; padding-bottom: 48px; }
+  .case-num b { font-size: 76px; }
+  .case h3 { font-size: 28px; margin-top: 24px; }
+  .case dd.decision { font-size: 19px; }
+  .case-shots { grid-template-columns: 1fr; gap: 28px; }
+  .case-shots .rf { width: 64%; }
+}
+
+@media (max-width: 359px) { .bar ul { font-size: 12.5px; letter-spacing: 0; } .bar { padding: 14px 14px; } }
+
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body>
+<header class="site-head">
+  <div class="wrap">
+    <a class="brand" href="#" aria-label="BPM Tech, inicio">
+      <span>BPM<span class="tech">TECH</span></span>
+      <span class="g" aria-hidden="true"><i class="mk mk-bar"></i><i class="mk mk-frame"></i><i class="mk mk-block"></i></span>
+    </a>
+    <nav class="nav" aria-label="Principal">
+      <ul>
+        <li><a href="#proyectos">Proyectos</a></li>
+        <li><a href="#servicios">Servicios</a></li>
+        <li><a href="#como-trabajamos">Cómo trabajamos</a></li>
+        <li><a href="#sobre-mi">Sobre mí</a></li>
+      </ul>
+      <a class="btn-head" href="#contacto">Hablemos ↗</a>
+      <details class="menu">
+        <summary>Menú</summary>
+        <ul>
+          <li><a href="#proyectos">Proyectos</a></li>
+          <li><a href="#servicios">Servicios</a></li>
+          <li><a href="#como-trabajamos">Cómo trabajamos</a></li>
+          <li><a href="#sobre-mi">Sobre mí</a></li>
+          <li><a href="#contacto">Hablemos ↗</a></li>
+        </ul>
+      </details>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="hero" aria-labelledby="h1">
+    <div class="wrap">
+      <div class="hero-grid">
+        <h1 id="h1">Software<br class="m"> a medida<br class="d"><br class="m"> para lo que<br class="m"> hoy<br class="d"> haces<br class="m"> a mano<span class="dot">.</span></h1>
+        <div class="intro">
+          <p class="lede">Aplicaciones de gestión, automatizaciones, integraciones y webs para pymes y negocios. <strong>Lo diseña y lo construye Alberto Bort, en Valencia.</strong></p>
+          <div class="ctas">
+            <a class="btn" href="#contacto">Cuéntame qué necesitas <span aria-hidden="true">↗</span></a>
+            <a class="link-alt" href="#llamada">Reservar una llamada de 30 min ↗</a>
+          </div>
+        </div>
+      </div>
+
+      <ol class="seq" aria-label="De lo que hoy haces a mano al software en uso, en tres piezas">
+        <li class="p-bar">
+          <p class="piece-lab lab"><b>01 · Trazo</b><span>Tu necesidad</span></p>
+          <p class="say">Tareas que dependen de copiar, pegar y acordarse.</p>
+          <div class="bar-wrap">
+            <p class="bar-tab lab">Ejemplos</p>
+            <div class="bar">
+              <ul>
+                <li><span class="mk mk-bar" aria-hidden="true"></span>Reservas por WhatsApp</li>
+                <li><span class="mk mk-bar" aria-hidden="true"></span>Stock en tres hojas de cálculo</li>
+                <li><span class="mk mk-bar" aria-hidden="true"></span>Pedidos copiados a mano</li>
+              </ul>
+            </div>
+          </div>
+        </li>
+        <li class="p-frame">
+          <div class="frame">
+            <p class="piece-lab lab"><b>02 · Marco</b><span>La propuesta</span></p>
+            <p class="say">Qué se construye, cuánto cuesta y cómo se entrega. <em>Por escrito, antes de empezar.</em></p>
+            <div class="foot">
+              <a href="#como-trabajamos">Cómo trabajamos ↓</a>
+            </div>
+          </div>
+        </li>
+        <li class="p-block">
+          <figure class="block">
+            <p class="piece-lab lab"><b>03 · Bloque</b><span>El software</span></p>
+            <div class="crop">
+              <img class="shot-d" src="../../../public/proyectos/padel/recepcion.png" width="1280" height="720" alt="Padel Club OS, recepción del día: título Recepción Hoy con la jornada cerrada, indicadores de reservas, participantes y cobros, y filtros por estado. Datos de demo.">
+              <img class="shot-m" src="../../../public/proyectos/padel/portal-movil.png" width="390" height="884" alt="Padel Club OS en el móvil del jugador: pantalla Mis clases con sus grupos, cuotas y asistencia. Datos de demo.">
+            </div>
+            <figcaption><a href="https://padelclubos.com" rel="noopener"><span class="mk mk-block" aria-hidden="true"></span><span class="lab">En uso · Padel Club OS ↗</span></a></figcaption>
+          </figure>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="projects" id="proyectos" aria-labelledby="h-proyectos">
+    <div class="wrap">
+      <div class="proj-head">
+        <h2 id="h-proyectos"><span class="mk" aria-hidden="true"></span>Proyectos</h2>
+        <p>Cada bloque es software construido. Capturas reales, con datos de demo.</p>
+        <ol class="proj-index" aria-label="Índice de proyectos">
+          <li><span>01</span>Gestión de almacén</li>
+          <li><span>02</span>Padel Club OS</li>
+          <li><span>03</span>Web de radio</li>
+          <li><span>04</span>Web de evento</li>
+          <li><span>05</span>Asistente de IA</li>
+        </ol>
+      </div>
+    </div>
+    <article class="case" aria-labelledby="h-almacen">
+      <div class="wrap">
+        <div class="case-text">
+          <p class="case-num"><b>01</b><span class="lab">Datos de demo</span></p>
+          <h3 id="h-almacen">Gestión de almacén</h3>
+          <p class="tags">Inventario · Ubicaciones · Movimientos · Terminal&nbsp;RF</p>
+          <dl>
+            <dt class="lab"><span class="mk mk-bar" aria-hidden="true"></span>La necesidad</dt>
+            <dd>Saber qué hay, en qué ubicación y quién lo ha movido, con permisos distintos para cada rol.</dd>
+            <dt class="lab"><span class="mk mk-frame" aria-hidden="true"></span>Qué se construyó</dt>
+            <dd>Inventario, ubicaciones y movimientos, más un terminal RF para operar con escáner o con la cámara del móvil.</dd>
+            <dt class="lab"><span class="mk mk-block" aria-hidden="true"></span>Una decisión</dt>
+            <dd class="decision">El stock no se edita a mano. Es la proyección de un libro de movimientos inmutable, y anular genera un movimiento compensatorio.</dd>
+          </dl>
+        </div>
+        <div class="case-shots">
+          <figure>
+            <div class="cut cut-mov"><img src="../../../public/proyectos/almacen/movimientos.png" width="3200" height="1800" loading="lazy" alt="Pantalla Movimientos del almacén: libro de traspasos, salidas y entradas con documento, fecha, usuario, motivo y estado contabilizado. Datos de demo."></div>
+            <figcaption>Movimientos. Un libro inmutable de entradas, salidas, traspasos y ajustes.</figcaption>
+          </figure>
+          <figure class="rf">
+            <div class="cut cut-rf"><img src="../../../public/proyectos/almacen/rf-entrada.png" width="960" height="1600" loading="lazy" alt="Terminal RF en el móvil: entrada de mercancía con destino, producto y cantidad, a la espera de escanear el producto. Datos de demo."></div>
+            <figcaption>Terminal RF. Entrada con escáner o cámara.</figcaption>
+          </figure>
+        </div>
+      </div>
+    </article>
+  </section>
+</main>
+</body>
+</html>

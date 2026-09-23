@@ -34,17 +34,21 @@ export function Hero() {
         </h1>
 
         <div className="mt-8 grid gap-10 md:mt-10 xl:grid-cols-[minmax(0,4fr)_minmax(0,8fr)] xl:gap-x-10 wide:gap-x-14">
-          <div className="flex flex-col items-start md:max-w-[640px] xl:max-w-none">
-            <p className="text-[17px] leading-[1.6] text-ink-soft md:text-lg xl:text-[17px] wide:text-lg">{hero.entradilla}</p>
-            <div className="mt-7 flex w-full flex-col items-stretch gap-3 sm:w-auto sm:items-start">
-              <Button href={ctaHref} size="lg" trackLocation="hero" className="w-full sm:w-auto">
-                {hero.cta_primaria} <span aria-hidden>↗</span>
-              </Button>
-              <BookingLink location="hero" tone="paper" />
+          {/* Entre 768 y 1279 la firma acompaña a la entradilla en su fila para
+              que la lámina suba al primer pantallazo. Desde 1280 va debajo. */}
+          <div className="grid gap-8 md:grid-cols-[minmax(0,7fr)_minmax(0,5fr)] md:items-end md:gap-x-10 xl:flex xl:flex-col xl:items-stretch xl:gap-0">
+            <div className="flex flex-col items-start">
+              <p className="text-[17px] leading-[1.6] text-ink-soft md:text-lg xl:text-[17px] wide:text-lg">{hero.entradilla}</p>
+              <div className="mt-7 flex w-full flex-col items-stretch gap-3 sm:w-auto sm:items-start">
+                <Button href={ctaHref} size="lg" trackLocation="hero" className="w-full sm:w-auto">
+                  {hero.cta_primaria} <span aria-hidden>↗</span>
+                </Button>
+                <BookingLink location="hero" tone="paper" />
+              </div>
+              <p className="mt-3 text-sm text-ink-mute">{hero.nota}</p>
             </div>
-            <p className="mt-3 text-sm text-ink-mute">{hero.nota}</p>
 
-            <div className="mt-8 flex w-full items-center gap-4 border-t border-line pt-5">
+            <div className="flex w-full items-center gap-4 border-t border-line pt-5 xl:mt-8">
               <Image
                 src="/sobre/retrato-1x1.jpg"
                 width={716}

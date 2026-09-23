@@ -242,7 +242,7 @@
       "texto": "Hablamos de tu negocio, resolvemos dudas y vemos si puedo ayudarte. Sin compromiso.",
       "cta": "Reservar una llamada de 30 min ↗"
     },
-    "email_directo": "O escríbenos directamente: bpmtechstudio@gmail.com",
+    "email_directo": "O escríbeme directamente: bpmtechstudio@gmail.com",
     "formulario": {
       "campos": [
         "Nombre",
@@ -251,7 +251,7 @@
         "Teléfono (opcional)"
       ],
       "selector": {
-        "etiqueta": "¿En qué podemos ayudarte? (opcional)",
+        "etiqueta": "¿En qué puedo ayudarte? (opcional)",
         "opciones": [
           "Todavía no lo tengo claro",
           "Necesito ayuda para definir mi proyecto",

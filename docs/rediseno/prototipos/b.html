@@ -1,0 +1,449 @@
+<!-- Prototipo de exploración del 23-09-2026, dirección B · Planos anotados (elegido). Solo el hero y el inicio de la sección siguiente. No es contenido publicado ni se sirve en la web: ver docs/rediseno/README.md. -->
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BPM Tech · Software a medida para pymes</title>
+<meta name="description" content="Aplicaciones de gestión, automatizaciones, integraciones y webs para pymes. Alberto Bort, Valencia.">
+<style>
+@font-face{font-family:"Archivo Black";src:url(../../../src/assets/fonts/ArchivoBlack-Regular.ttf) format("truetype");font-display:swap}
+@font-face{font-family:"Archivo";src:url(../../../templates/presentation/assets/fonts/Archivo-Variable.ttf) format("truetype");font-weight:100 900;font-stretch:62% 125%;font-display:swap}
+@font-face{font-family:"Fragment Mono";src:url(../../../src/assets/fonts/FragmentMono-Regular.ttf) format("truetype");font-display:swap}
+
+:root{
+  --paper:#f7f6f2;--paper-2:#efede6;--ink:#101013;--ink-2:#18181c;
+  --ink-soft:#3d3c35;--ink-mute:#5a594f;--ink-faint:#6a685d;
+  --cobalt:#2743e0;--cobalt-deep:#1e35b8;--cobalt-bright:#6b83ff;
+  --line:#e2e0d8;--line-2:#d8d6cc;
+  --padel:#0e5c3f;--almacen:#0a0c18;--radio:#004d98;
+  --f-black:"Archivo Black","Archivo",system-ui,sans-serif;
+  --f-text:"Archivo",system-ui,sans-serif;
+  --f-mono:"Fragment Mono",ui-monospace,monospace;
+  --m:16px;--g:16px;
+  --bleed:calc(var(--m) + max(0px,(100vw - 1440px) / 2));
+  --mk:24px;
+}
+@media (min-width:768px){:root{--m:40px;--g:24px}}
+@media (min-width:1440px){:root{--m:60px;--mk:26px}}
+
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;overflow-x:clip}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--f-text);font-size:17px;line-height:1.5;overflow-x:clip;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+img{display:block;max-width:100%;height:auto}
+a{color:inherit}
+h1,h2,h3,p,ol,ul,dl,dd,figure{margin:0}
+ol,ul{padding:0;list-style:none}
+:focus-visible{outline:2px solid var(--cobalt);outline-offset:3px}
+.top :focus-visible{outline-color:var(--cobalt-bright)}
+.wrap{max-width:1440px;margin:0 auto;padding:0 var(--m)}
+.mono{font-family:var(--f-mono);font-weight:400}
+.skip{position:absolute;left:var(--m);top:-60px;z-index:10;background:var(--paper);color:var(--ink);padding:12px 16px;font-family:var(--f-mono);font-size:13px}
+.skip:focus{top:8px}
+
+/* ── Cabecera ─────────────────────────────── */
+.top{background:var(--ink);color:var(--paper);position:relative;z-index:5}
+.top__in{display:flex;align-items:center;gap:32px;height:60px}
+.wm{display:inline-flex;align-items:center;gap:10px;text-decoration:none;min-height:44px;font-family:var(--f-mono);font-size:17px;letter-spacing:.06em;line-height:1;color:var(--paper)}
+.wm b{font-weight:400;color:var(--cobalt-bright)}
+.wm .gl{display:inline-flex;align-items:center;gap:5px}
+.wm .gl i{display:block;width:11px;height:11px}
+.wm .gl i:nth-child(1){height:3px;background:var(--paper)}
+.wm .gl i:nth-child(2){border:2px solid var(--paper)}
+.wm .gl i:nth-child(3){background:var(--cobalt-bright)}
+.nav{margin-left:auto}
+.nav ul{display:flex;gap:4px}
+.nav a{display:flex;align-items:center;min-height:44px;padding:0 14px;text-decoration:none;font-size:15px;font-weight:500;color:#cfcdc6}
+.nav a:hover{color:var(--paper);text-decoration:underline;text-underline-offset:6px;text-decoration-thickness:1px}
+.top__cta{display:inline-flex;align-items:center;min-height:44px;padding:0 16px;border:1px solid rgba(247,246,242,.5);text-decoration:none;font-size:15px;font-weight:600;color:var(--paper);white-space:nowrap}
+.top__cta:hover{background:var(--paper);color:var(--ink);border-color:var(--paper)}
+.menu{display:none}
+
+/* ── Hero ─────────────────────────────────── */
+.hero{padding:40px 0 52px}
+.hero__grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--g)}
+.hero__text{grid-column:1 / span 5;display:flex;flex-direction:column;padding-right:16px}
+.rotulo{display:flex;align-items:center;gap:10px;font-family:var(--f-mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-mute);line-height:1.4}
+.rotulo::before{content:"";flex:none;width:9px;height:9px;background:var(--cobalt)}
+.rotulo--hero{flex-wrap:wrap}
+h1{font-family:var(--f-black);font-weight:400;text-transform:uppercase;font-size:58px;line-height:.97;letter-spacing:-.012em;margin-top:26px;color:var(--ink)}
+h1 .l{display:block}
+.lead{text-wrap:pretty;margin-top:28px;font-size:19px;line-height:1.5;color:var(--ink-soft);max-width:31em}
+.lead strong{font-weight:600;color:var(--ink)}
+.acts{margin-top:34px;display:flex;flex-wrap:wrap;align-items:center;gap:14px 28px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:56px;padding:0 26px;background:var(--ink);color:var(--paper);text-decoration:none;font-size:16px;font-weight:600;letter-spacing:.005em}
+.btn:hover{background:var(--cobalt)}
+.alt{display:inline-flex;align-items:center;min-height:44px;font-size:15.5px;font-weight:500;color:var(--ink);text-decoration:underline;text-decoration-color:var(--line-2);text-decoration-thickness:1px;text-underline-offset:6px}
+.alt:hover{text-decoration-color:var(--cobalt);color:var(--cobalt)}
+.firma{margin-top:auto;display:flex;align-items:center;gap:14px;height:66px;border-top:1px solid var(--ink);border-bottom:1px solid var(--ink);font-size:15px;line-height:1.35;color:var(--ink-soft)}
+.firma img{width:48px;height:48px;object-fit:cover;flex:none}
+.firma strong{font-weight:600;color:var(--ink)}
+.nw{white-space:nowrap}
+
+/* ── Lámina (sistema común) ───────────────── */
+.lam{position:relative}
+.lam__stage{position:relative}
+.stage-lab{position:absolute;top:0;left:var(--sl,28px);right:var(--sr,28px);height:var(--st,36px);display:flex;align-items:center;justify-content:space-between;gap:16px;font-family:var(--f-mono);font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:rgba(247,246,242,.94);white-space:nowrap;overflow:hidden}
+.stage-lab span:last-child{color:rgba(247,246,242,.8)}
+.frame{position:relative;overflow:hidden;aspect-ratio:var(--cw) / var(--ch);background:var(--paper-2)}
+.sheet{position:absolute;left:calc(var(--cx) / var(--cw) * -100%);top:calc(var(--cy) / var(--ch) * -100%);width:calc(var(--iw) / var(--cw) * 100%)}
+.sheet img{width:100%}
+.lam--02 .frame::after{content:"";position:absolute;inset:0;border:1px solid rgba(247,246,242,.16);pointer-events:none}
+.zona{position:absolute;left:var(--x);top:var(--y);width:var(--w);height:var(--h);border:1px solid var(--cobalt);pointer-events:auto;transition:background-color .18s ease,border-color .18s ease,opacity .18s ease}
+.marca{position:absolute;left:var(--mx);top:var(--my);transform:translate(-50%,-50%);width:var(--mk);height:var(--mk);display:grid;place-items:center;background:var(--cobalt);color:var(--paper);font-family:var(--f-mono);font-size:13px;line-height:1;box-shadow:0 0 0 2px var(--paper);transition:background-color .18s ease,transform .18s ease;pointer-events:auto}
+
+.cajetin{display:grid;border:1px solid var(--ink);background:var(--paper)}
+.cajetin > div{padding:9px 14px 11px;border-left:1px solid var(--line-2);min-width:0}
+.cajetin > div:first-child{border-left:0}
+.cajetin dt{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-mute);line-height:1.3}
+.cajetin dd{font-family:var(--f-mono);font-size:13.5px;line-height:1.35;margin-top:4px;color:var(--ink)}
+.cajetin .num dd{font-family:var(--f-black);font-size:26px;line-height:1;margin-top:3px;letter-spacing:-.01em}
+.cajetin a,.mail a{position:relative}
+.cajetin a::after,.mail a::after{content:"";position:absolute;inset:-12px -6px}
+.cajetin a{display:inline-flex;align-items:center;min-height:24px;text-decoration:underline;text-decoration-color:var(--cobalt);text-underline-offset:4px}
+.cajetin a:hover{color:var(--cobalt)}
+.estado::before{content:"";display:inline-block;width:7px;height:7px;background:var(--padel);margin-right:8px;vertical-align:1px}
+
+.leyenda{display:grid;gap:var(--g)}
+.nota{position:relative;display:grid;align-content:start;grid-template-columns:var(--mk) 1fr;column-gap:12px;padding:14px 14px 16px 0;border-top:1px solid var(--line-2);outline-offset:2px;transition:background-color .18s ease}
+.nota .n{width:var(--mk);height:var(--mk);display:grid;place-items:center;background:var(--cobalt);color:var(--paper);font-family:var(--f-mono);font-size:13px;line-height:1;transition:background-color .18s ease}
+.nota h3,.nota .t{font-family:var(--f-text);font-size:15px;font-weight:650;line-height:1.3;color:var(--ink);margin-top:2px}
+.nota p{text-wrap:pretty;grid-column:2;font-size:14.5px;line-height:1.45;color:var(--ink-soft);margin-top:4px}
+
+/* Gesto: nota ↔ marcador (CSS puro con :has, sin JS) */
+.lam:has(.nota:hover, .nota:focus-visible, .zona:hover, .marca:hover) .zona{opacity:.35}
+.lam:has(.nota:hover, .nota:focus-visible, .zona:hover, .marca:hover) .marca{background:var(--ink-faint)}
+.lam:has(.n1:is(:hover,:focus-visible)) .z1,.lam:has(.z1:hover,.m1:hover) .z1,
+.lam:has(.n2:is(:hover,:focus-visible)) .z2,.lam:has(.z2:hover,.m2:hover) .z2,
+.lam:has(.n3:is(:hover,:focus-visible)) .z3,.lam:has(.z3:hover,.m3:hover) .z3{opacity:1;border-width:2px;background:rgba(39,67,224,.10)}
+.lam:has(.n1:is(:hover,:focus-visible)) .m1,.lam:has(.z1:hover,.m1:hover) .m1,
+.lam:has(.n2:is(:hover,:focus-visible)) .m2,.lam:has(.z2:hover,.m2:hover) .m2,
+.lam:has(.n3:is(:hover,:focus-visible)) .m3,.lam:has(.z3:hover,.m3:hover) .m3{background:var(--ink);transform:translate(-50%,-50%) scale(1.18)}
+.lam:has(.z1:hover,.m1:hover) .n1,.nota.n1:is(:hover,:focus-visible),
+.lam:has(.z2:hover,.m2:hover) .n2,.nota.n2:is(:hover,:focus-visible),
+.lam:has(.z3:hover,.m3:hover) .n3,.nota.n3:is(:hover,:focus-visible){background:var(--paper-2);box-shadow:inset 0 2px 0 var(--ink)}
+.lam:has(.z1:hover,.m1:hover) .n1 .n,.nota.n1:is(:hover,:focus-visible) .n,
+.lam:has(.z2:hover,.m2:hover) .n2 .n,.nota.n2:is(:hover,:focus-visible) .n,
+.lam:has(.z3:hover,.m3:hover) .n3 .n,.nota.n3:is(:hover,:focus-visible) .n{background:var(--ink)}
+
+/* ── Lámina 01 (hero) ─────────────────────── */
+.lam--01{grid-column:6 / -1;margin-right:calc(var(--bleed) * -1)}
+.lam--01 .lam__stage{--st:36px;--sr:var(--bleed);background:var(--padel);padding:36px 0 28px 28px}
+.lam--01 .frame{--cx:0;--cy:0;--cw:1280;--ch:612;--iw:1280}
+.lam--01 :is(.z1,.m1){--x:22.19%;--y:44.31%;--w:76.25%;--h:17.5%;--mx:22.19%;--my:44.31%}
+.lam--01 :is(.z2,.m2){--x:22.19%;--y:64.03%;--w:76.25%;--h:8.61%;--mx:22.19%;--my:64.03%}
+.lam--01 :is(.z3,.m3){--x:22.19%;--y:74.86%;--w:76.25%;--h:6.39%;--mx:22.19%;--my:74.86%}
+.lam--01 figcaption{display:flex;flex-direction:column}
+.lam--01 .cajetin{order:2;grid-template-columns:auto 1.25fr 1.25fr 1fr .7fr;border-right:0}
+.lam--01 .cajetin > div{min-height:64px}
+.lam--01 .leyenda{order:1;grid-template-columns:repeat(3,minmax(0,1fr));margin:18px 0 22px;padding-right:calc(var(--bleed))}
+
+/* ── Proyectos ────────────────────────────── */
+.proy{border-top:1px solid var(--ink);padding:0 0 96px}
+.sec-head{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--g);align-items:end;padding:28px 0 40px}
+.sec-head .rotulo{grid-column:1 / span 12;margin-bottom:18px}
+.sec-head h2{grid-column:1 / span 5;font-family:var(--f-black);font-weight:400;text-transform:uppercase;font-size:48px;line-height:.95;letter-spacing:-.01em}
+.sec-head p.intro{grid-column:6 / span 6;font-size:19px;line-height:1.5;color:var(--ink-soft);max-width:34em}
+
+.lam--02{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--g)}
+.lam--02 .lam__stage{--st:40px;--sl:var(--bleed);--sr:36px;grid-column:1 / span 9;margin-left:calc(var(--bleed) * -1);background:var(--almacen);padding:40px 36px 36px 0;display:grid;grid-template-columns:minmax(0,1fr) 23%;column-gap:28px;align-items:end}
+.lam--02 .f-mov{--cx:0;--cy:0;--cw:3200;--ch:1800;--iw:3200}
+.lam--02 .f-rf{--cx:0;--cy:0;--cw:960;--ch:1600;--iw:960}
+.lam--02 :is(.z1,.m1){--x:19.3%;--y:41.9%;--w:16.7%;--h:57%;--mx:36%;--my:41.9%}
+.lam--02 :is(.z2,.m2){--x:87.5%;--y:41.9%;--w:8.75%;--h:57%;--mx:96.25%;--my:41.9%}
+.lam--02 :is(.z3,.m3){--x:3%;--y:40.8%;--w:94%;--h:31%;--mx:50%;--my:40.8%}
+.lam--02 .side{grid-column:10 / span 3;display:flex;flex-direction:column}
+.lam--02 .cajetin{grid-template-columns:1fr}
+.lam--02 .cajetin > div{border-left:0;border-top:1px solid var(--line-2)}
+.lam--02 .cajetin > div:first-child{border-top:0}
+.lam--02 .cajetin .tit dd{font-family:var(--f-black);text-transform:uppercase;font-size:22px;line-height:1.05;margin-top:6px}
+.lam--02 .cajetin .txt dd{font-family:var(--f-text);font-size:14.5px;line-height:1.45;color:var(--ink-soft)}
+.lam--02 .leyenda{grid-column:1 / span 9;grid-template-columns:repeat(3,minmax(0,1fr));margin-top:14px}
+.lam__foot{grid-column:1 / -1}
+
+/* ── Otros trabajos y contacto ─────────────── */
+.otros{grid-column:1 / -1;margin-top:72px;border-top:1px solid var(--ink)}
+.otros h3{font-family:var(--f-mono);font-weight:400;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-mute);padding:14px 0}
+.otros li{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--g);padding:16px 0;border-top:1px solid var(--line-2);align-items:baseline}
+.otros li .k{grid-column:1 / span 3;font-weight:650;font-size:17px}
+.otros li .d{grid-column:4 / span 7;color:var(--ink-soft);font-size:16px}
+.otros li .s{grid-column:11 / span 2;font-family:var(--f-mono);font-size:12px;color:var(--ink-mute);text-align:right}
+
+.contacto{background:var(--ink);color:var(--paper);padding:72px 0 80px}
+.contacto__grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--g);row-gap:40px}
+.contacto h2{grid-column:1 / span 5;font-family:var(--f-black);font-weight:400;text-transform:uppercase;font-size:44px;line-height:.96}
+.contacto .rotulo{color:#b9b7ae}
+.contacto .rotulo::before{background:var(--cobalt-bright)}
+.pasos{grid-column:1 / span 5;align-self:start}
+.pasos li{display:grid;grid-template-columns:32px 1fr;gap:4px 14px;padding:14px 0;border-top:1px solid rgba(247,246,242,.18)}
+.pasos .n{font-family:var(--f-mono);font-size:13px;color:var(--cobalt-bright);padding-top:3px}
+.pasos b{font-weight:600}
+.pasos span:not(.n){grid-column:2;font-size:15px;color:#c9c7bf}
+.form{grid-column:7 / span 6;grid-row:1 / span 2;display:grid;gap:18px;align-content:start}
+.form label{display:grid;gap:8px;font-family:var(--f-mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#c9c7bf}
+.form input,.form textarea{font:inherit;font-family:var(--f-text);font-size:17px;letter-spacing:0;text-transform:none;color:var(--paper);background:transparent;border:1px solid rgba(247,246,242,.45);border-radius:0;padding:12px 14px;min-height:48px}
+.form textarea{min-height:128px;resize:vertical}
+.form input:focus-visible,.form textarea:focus-visible{outline:2px solid var(--cobalt-bright);outline-offset:0;border-color:transparent}
+.form .row{display:flex;flex-wrap:wrap;align-items:center;gap:14px 24px}
+.btn--paper{background:var(--paper);color:var(--ink);border:0;font:inherit;font-weight:600;font-size:16px;cursor:pointer}
+.btn--paper:hover{background:var(--cobalt-bright);color:var(--ink)}
+.contacto .alt{color:var(--paper);text-decoration-color:rgba(247,246,242,.4)}
+.contacto .alt:hover{color:var(--cobalt-bright)}
+.mail{font-family:var(--f-mono);font-size:14px;color:#c9c7bf}
+.mail a{color:var(--paper)}
+
+/* ── Intermedio (tablet horizontal) ───────── */
+@media (max-width:1439px){
+  h1{font-size:clamp(40px,4.1vw,58px)}
+}
+@media (max-width:1180px){
+  .hero__text{grid-column:1 / span 12;padding-right:0;max-width:720px}
+  .firma{margin-top:36px}
+  h1{font-size:clamp(40px,5.8vw,58px)}
+  .hero__text .lead{max-width:36em}
+  .lam--01{grid-column:1 / -1;margin-top:48px;margin-left:calc(var(--bleed) * -1)}
+  .lam--01 .lam__stage{--sl:var(--m);--sr:var(--m);padding:36px 0 24px}
+  .lam--01 .cajetin{border-left:0}
+  .lam--01 .leyenda{padding:0 var(--m)}
+  .nav a{padding:0 10px}
+}
+
+/* ── Móvil ────────────────────────────────── */
+@media (max-width:860px){
+  .nav,.top__cta{display:none}
+  .menu{display:block;margin-left:auto;position:relative}
+  .menu summary{list-style:none;display:flex;align-items:center;gap:10px;min-height:44px;padding:0 4px 0 12px;font-family:var(--f-mono);font-size:13px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;color:var(--paper)}
+  .menu summary::-webkit-details-marker{display:none}
+  .menu summary::after{content:"";width:16px;height:10px;border-top:2px solid var(--paper);border-bottom:2px solid var(--paper);background:linear-gradient(var(--paper),var(--paper)) center / 100% 2px no-repeat}
+  .menu[open] summary::after{height:2px;border:0;background:var(--cobalt-bright)}
+  .menu ul{position:absolute;right:calc(var(--m) * -1);top:52px;width:100vw;max-width:420px;background:var(--ink);border-top:1px solid rgba(247,246,242,.2);padding:8px var(--m) 20px}
+  .menu li a{display:flex;align-items:center;min-height:52px;border-bottom:1px solid rgba(247,246,242,.14);text-decoration:none;font-size:18px;font-weight:600;color:var(--paper)}
+  .menu li:last-child a{border:0;color:var(--cobalt-bright)}
+  .top__in{height:56px}
+
+  body{font-size:16px}
+  .hero{padding:28px 0 48px}
+  h1{font-size:clamp(28px,9.6vw,40px);line-height:.98;margin-top:18px}
+  .rotulo--hero{flex-wrap:wrap;white-space:normal;row-gap:2px}
+  .rotulo--hero .sep{display:none}
+  .stage-lab .d{display:none}
+  .rotulo--hero span:last-child{flex-basis:100%;padding-left:19px}
+  .lead{font-size:17px;margin-top:18px}
+  .acts{margin-top:24px;gap:6px}
+  .btn{width:100%;min-height:56px}
+  .alt{width:100%;justify-content:center}
+  .firma{margin-top:22px;height:auto;padding:12px 0;border-bottom:0;border-top:1px solid var(--line-2);font-size:14.5px}
+  .lam--01 .cajetin{order:0}
+  .lam--01 .cajetin > div{min-height:0}
+
+  .lam--01{margin-top:36px;margin-right:calc(var(--bleed) * -1);margin-left:calc(var(--bleed) * -1)}
+  .lam--01 .lam__stage{--st:34px;--sl:var(--m);--sr:var(--m);padding:34px 0 16px}
+  .lam--01 .frame{--cx:266;--cy:140;--cw:724;--ch:500}
+  .lam--01 .marca{--mx:23.6% !important}
+  .lam--01 .cajetin{grid-template-columns:1fr 1fr;border-left:0;border-right:0}
+  .lam--01 .cajetin > div{border-left:1px solid var(--line-2);border-top:1px solid var(--line-2);padding:8px var(--m) 10px}
+  .lam--01 .cajetin > div:nth-child(odd){border-left:0}
+  .lam--01 .cajetin > div.num{grid-column:1 / -1;border-top:0;display:flex;align-items:baseline;justify-content:space-between}
+  .lam--01 .cajetin > div.num + div{border-left:0}
+  .lam--01 .cajetin > div.num ~ div:nth-child(even){border-left:0}
+  .lam--01 .cajetin > div.num ~ div:nth-child(odd){border-left:1px solid var(--line-2)}
+  .lam--01 .leyenda,.lam--02 .leyenda{grid-template-columns:1fr;gap:0;padding:0 var(--m);margin-top:6px}
+  .nota{border-top:1px solid var(--line-2);padding:14px 0}
+  .nota:first-child{border-top:0}
+
+  .sec-head{grid-template-columns:1fr;padding:24px 0 28px}
+  .sec-head .rotulo,.sec-head h2,.sec-head p.intro{grid-column:1}
+  .sec-head h2{font-size:36px}
+  .sec-head p.intro{font-size:16.5px;margin-top:14px}
+  .proy{padding-bottom:64px}
+
+  .lam--02{grid-template-columns:1fr;margin:0 calc(var(--m) * -1)}
+  .lam--02 .lam__stage{--st:38px;--sl:var(--m);--sr:var(--m);grid-column:1;margin:0;padding:38px 0 16px;grid-template-columns:minmax(0,1fr);row-gap:12px}
+  .lam--02 .f-mov{--cx:526;--cy:150;--cw:2674;--ch:1650}
+  .lam--02 .f-rf{--cx:0;--cy:380;--cw:960;--ch:780}
+  .lam--02 .side{grid-column:1;order:-1;padding:0 var(--m) 18px}
+  .lam--02 .leyenda{grid-column:1}
+  .lam--02 .cajetin{grid-template-columns:1fr}
+  .otros{margin:48px 0 0}
+  .otros li{grid-template-columns:1fr;row-gap:4px}
+  .otros li .k,.otros li .d,.otros li .s{grid-column:1;text-align:left}
+
+  .contacto{padding:56px 0 64px}
+  .contacto__grid{grid-template-columns:1fr}
+  .contacto h2,.pasos,.form{grid-column:1;grid-row:auto}
+  .contacto h2{font-size:34px}
+  .form .btn{width:100%}
+}
+@media (max-width:360px){
+  .lam--01 .cajetin{grid-template-columns:1fr}
+  .lam--01 .cajetin > div{border-left:0 !important}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{transition:none !important;animation:none !important}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Saltar al contenido</a>
+
+<header class="top">
+  <div class="wrap top__in">
+    <a class="wm" href="#main" aria-label="BPM Tech, inicio">
+      <span>BPM<b>TECH</b></span>
+      <span class="gl" aria-hidden="true"><i></i><i></i><i></i></span>
+    </a>
+    <nav class="nav" aria-label="Principal">
+      <ul>
+        <li><a href="#proyectos">Proyectos</a></li>
+        <li><a href="#servicios">Servicios</a></li>
+        <li><a href="#metodo">Cómo trabajamos</a></li>
+        <li><a href="#sobre-mi">Sobre mí</a></li>
+      </ul>
+    </nav>
+    <a class="top__cta" href="#contacto">Hablemos ↗</a>
+    <details class="menu">
+      <summary>Menú</summary>
+      <nav aria-label="Principal en móvil">
+        <ul>
+          <li><a href="#proyectos">Proyectos</a></li>
+          <li><a href="#servicios">Servicios</a></li>
+          <li><a href="#metodo">Cómo trabajamos</a></li>
+          <li><a href="#sobre-mi">Sobre mí</a></li>
+          <li><a href="#contacto">Hablemos ↗</a></li>
+        </ul>
+      </nav>
+    </details>
+  </div>
+</header>
+
+<main id="main">
+  <section class="hero" aria-labelledby="titulo">
+    <div class="wrap hero__grid">
+      <div class="hero__text">
+        <p class="rotulo rotulo--hero"><span>Software para pymes</span><span class="sep" aria-hidden="true">·</span><span>Valencia, presencial y en remoto</span></p>
+        <h1 id="titulo"><span class="l">Software</span> <span class="l">a la medida de</span> <span class="l">cómo trabaja</span> <span class="l">tu negocio.</span></h1>
+        <p class="lead">Aplicaciones de gestión, automatizaciones, integraciones y webs para pymes. Lo diseño y lo construyo yo, <strong>Alberto Bort</strong>, desde la primera conversación.</p>
+        <div class="acts">
+          <a class="btn" href="#contacto">Cuéntame qué necesitas ↗</a>
+          <a class="alt" href="https://cal.com/bpmtechstudio/30min">Reservar una llamada de 30 min ↗</a>
+        </div>
+        <p class="firma" id="sobre-mi">
+          <img src="../../../public/sobre/retrato-1x1.jpg" width="48" height="48" alt="Retrato de Alberto Bort">
+          <span><strong>Alberto Bort</strong> · <span class="nw">Consultoría y desarrollo</span></span>
+        </p>
+      </div>
+
+      <figure class="lam lam--01" aria-labelledby="lam01-cap">
+        <div class="lam__stage">
+          <p class="stage-lab" aria-hidden="true"><span>Lámina 01<span class="d"> · Recepción del día</span></span><span>Captura real<span class="d"> · Datos de demo</span></span></p>
+          <div class="frame">
+            <div class="sheet">
+              <img src="../../../public/proyectos/padel/recepcion.png" width="1280" height="720" alt="Pantalla de recepción de Padel Club OS con datos de demo: resumen del día con reservas activas, participantes, cobrado hoy y pendiente, aviso de jornada cerrada y filtros por estado de las reservas.">
+              <span class="zona z1" aria-hidden="true"></span>
+              <span class="zona z2" aria-hidden="true"></span>
+              <span class="zona z3" aria-hidden="true"></span>
+              <span class="marca m1" aria-hidden="true">1</span>
+              <span class="marca m2" aria-hidden="true">2</span>
+              <span class="marca m3" aria-hidden="true">3</span>
+            </div>
+          </div>
+        </div>
+        <figcaption id="lam01-cap">
+          <dl class="cajetin">
+            <div class="num"><dt>Lámina</dt><dd>01</dd></div>
+            <div><dt>Proyecto</dt><dd><a href="https://padelclubos.com">Padel Club OS ↗</a></dd></div>
+            <div><dt>Pantalla</dt><dd>Recepción del día</dd></div>
+            <div><dt>Estado</dt><dd class="estado">En producción</dd></div>
+            <div><dt>Datos</dt><dd>Demo</dd></div>
+          </dl>
+          <ol class="leyenda" aria-label="Notas de la lámina 01">
+            <li class="nota n1" tabindex="0"><span class="n" aria-hidden="true">1</span><span class="t">El día en una pantalla</span><p>Reservas activas, participantes y cobros del día, juntos en recepción.</p></li>
+            <li class="nota n2" tabindex="0"><span class="n" aria-hidden="true">2</span><span class="t">Cierre reversible</span><p>La jornada se cierra aquí y puede reabrirse para corregir cobros o asistencias.</p></li>
+            <li class="nota n3" tabindex="0"><span class="n" aria-hidden="true">3</span><span class="t">Filtros por estado</span><p>Quién ha llegado, quién está en pista y qué falta por cobrar.</p></li>
+          </ol>
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="proy" id="proyectos" aria-labelledby="proy-h">
+    <div class="wrap">
+      <header class="sec-head">
+        <p class="rotulo">Láminas 01 y 02 · Datos de demostración</p>
+        <h2 id="proy-h">Proyectos</h2>
+        <p class="intro">Pantallas reales, con notas sobre las decisiones que las hacen funcionar. Cada lámina cuenta qué necesitaba el negocio y qué se construyó.</p>
+      </header>
+
+      <figure class="lam lam--02" aria-labelledby="lam02-t">
+        <div class="lam__stage">
+          <p class="stage-lab" aria-hidden="true"><span>Lámina 02<span class="d"> · Movimientos y terminal RF</span></span><span>Capturas reales<span class="d"> · Datos de demo</span></span></p>
+          <div class="frame f-mov">
+            <div class="sheet">
+              <img src="../../../public/proyectos/almacen/movimientos.png" width="3200" height="1800" loading="lazy" alt="Pantalla de movimientos de la gestión de almacén con datos de demo: tabla de documentos de entrada, salida y traspaso, con fecha, usuario, motivo, líneas y estado contabilizado.">
+              <span class="zona z1" aria-hidden="true"></span>
+              <span class="zona z2" aria-hidden="true"></span>
+              <span class="marca m1" aria-hidden="true">1</span>
+              <span class="marca m2" aria-hidden="true">2</span>
+            </div>
+          </div>
+          <div class="frame f-rf">
+            <div class="sheet">
+              <img src="../../../public/proyectos/almacen/rf-entrada.png" width="960" height="1600" loading="lazy" alt="Terminal RF en el móvil, pantalla de entrada: destino, producto y cantidad pendientes, y un campo para escanear el producto o escribir el código.">
+              <span class="zona z3" aria-hidden="true"></span>
+              <span class="marca m3" aria-hidden="true">3</span>
+            </div>
+          </div>
+        </div>
+        <figcaption class="side">
+          <dl class="cajetin">
+            <div class="num"><dt>Lámina</dt><dd>02</dd></div>
+            <div class="tit"><dt>Proyecto</dt><dd id="lam02-t">Gestión de almacén</dd></div>
+            <div class="txt"><dt>Necesidad</dt><dd>Controlar inventario y ubicaciones sabiendo quién ha movido cada cosa y por qué.</dd></div>
+            <div class="txt"><dt>Alcance</dt><dd>Inventario, ubicaciones y movimientos con permisos por rol. Terminal RF con escáner o con la cámara del móvil.</dd></div>
+            <div><dt>Datos</dt><dd>Demo · marca difuminada</dd></div>
+          </dl>
+        </figcaption>
+        <ol class="leyenda" aria-label="Notas de la lámina 02">
+          <li class="nota n1" tabindex="0"><span class="n" aria-hidden="true">1</span><span class="t">El stock sale del libro</span><p>No se edita a mano. Es el resultado de un libro de movimientos: entradas, salidas, traspasos y ajustes.</p></li>
+          <li class="nota n2" tabindex="0"><span class="n" aria-hidden="true">2</span><span class="t">Anular no borra</span><p>Un movimiento contabilizado no se reescribe. Anularlo genera un movimiento compensatorio.</p></li>
+          <li class="nota n3" tabindex="0"><span class="n" aria-hidden="true">3</span><span class="t">Terminal RF en el móvil</span><p>Entradas con escáner o con la cámara. La lectura termina con Enter o Tab.</p></li>
+        </ol>
+      </figure>
+
+      <div class="otros">
+        <h3>Otros trabajos, sin lámina todavía</h3>
+        <ul>
+          <li><span class="k">Web de radio</span><span class="d">Directo, archivo de programas y un reproductor que no corta la escucha al navegar. Instalable como app.</span><span class="s">Web</span></li>
+          <li><span class="k">Web de evento</span><span class="d">Confirmación de invitados, dos idiomas y panel privado.</span><span class="s">Web</span></li>
+          <li><span class="k">Asistente de IA para proyectos</span><span class="d">Dos agentes y traza de las fuentes de cada respuesta.</span><span class="s">IA aplicada</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="contacto" id="contacto" aria-labelledby="contacto-h">
+    <div class="wrap contacto__grid">
+      <div style="grid-column:1 / span 5">
+        <p class="rotulo">Contacto · Respondo yo</p>
+        <h2 id="contacto-h" style="margin-top:18px">Cuéntame qué necesitas</h2>
+      </div>
+      <ol class="pasos" id="metodo" aria-label="Cómo trabajamos">
+        <li><span class="n">01</span><b>Hablamos de tu necesidad</b><span>Sales con un siguiente paso claro.</span></li>
+        <li><span class="n">02</span><b>Recibes una propuesta</b><span>Alcance y presupuesto por escrito.</span></li>
+        <li><span class="n">03</span><b>Construimos y revisamos</b><span>Una solución que puedes usar. El mantenimiento se acuerda.</span></li>
+      </ol>
+      <form class="form" action="#contacto" method="post">
+        <label>Nombre<input name="nombre" autocomplete="name" required></label>
+        <label>Email<input name="email" type="email" autocomplete="email" required></label>
+        <label>Qué necesitas<textarea name="mensaje" rows="4" required></textarea></label>
+        <div class="row">
+          <button class="btn btn--paper" type="submit">Enviar ↗</button>
+          <a class="alt" href="https://cal.com/bpmtechstudio/30min">Reservar una llamada de 30 min ↗</a>
+        </div>
+        <p class="mail">O escribe a <a href="mailto:bpmtechstudio@gmail.com">bpmtechstudio@gmail.com</a></p>
+      </form>
+    </div>
+  </section>
+</main>
+</body>
+</html>

@@ -11,7 +11,8 @@ El estado funcional del repositorio se resume en [docs/contexto-actual.md](docs/
 - Archivo Black para titulares, Archivo para texto y Fragment Mono para etiquetas, cargadas con `next/font`.
 - Renderizado del contenido en servidor y navegación mediante enlaces normales. El menú móvil utiliza un diálogo nativo.
 - Scroll nativo y respeto a `prefers-reduced-motion`. No se utilizan Framer Motion ni Lenis. El contenido permanece visible sin JavaScript.
-- La portada usa contenido estático servido desde el servidor, capturas reales y scroll nativo. Antes del contacto hay cinco preguntas frecuentes con desplegables nativos. El asistente de ideas, el canvas y las secciones animadas de la propuesta anterior ya no se montan en la home.
+- Dirección de arte «Planos anotados»: capturas reales con notas numeradas y cajetín, definidas en `src/data/plates.ts` y dibujadas por `src/components/ui/Plate.tsx` y `PlateStage.tsx`. Sin animaciones automáticas ni librerías de animación.
+- Antes del contacto hay cinco preguntas frecuentes con desplegables nativos. El asistente de ideas se conserva sin montarse en la home.
 
 Con Node 24 activo:
 
@@ -35,7 +36,7 @@ Los tests de correo sustituyen al proveedor y no envían mensajes reales. El bui
 
 ## Contenido y estructura
 
-La home presenta una oferta directa, tres proyectos destacados (pádel, almacén y radio), tres servicios, un proceso de tres pasos, una presentación de Alberto, preguntas frecuentes y contacto. Evento y asistente de IA conservan enlaces a sus fichas. El bloque «Lo que conviene tener claro» responde sobre presupuesto, herramientas actuales, empezar por una mejora, mantenimiento y necesidades todavía poco definidas. La primera respuesta aparece abierta y todas funcionan sin JavaScript.
+La home abre con la oferta y una pantalla real de Padel Club OS anotada. Siguen un índice numerado de los cinco proyectos, las láminas del almacén y de la radio, franjas de interfaz del evento y del asistente, tres servicios con el proyecto donde se ve cada uno, el método de tres pasos, la presentación de Alberto, preguntas frecuentes y contacto. El bloque «Lo que conviene tener claro» responde sobre presupuesto, herramientas actuales, empezar por una mejora, mantenimiento y necesidades todavía poco definidas. La primera respuesta aparece abierta y todas funcionan sin JavaScript.
 
 ```text
 src/
@@ -49,12 +50,12 @@ src/
     diagnostico/               formulario del diagnóstico en directo
     layout/                    cabecera fija, pie y wrapper estable de contenido
     sections/                  secciones de la home y formulario
-    ui/                        primitivas visuales, canvas de la portada y esquemas
-  data/                        site, copy, projects, legal y booking
-  lib/                         contacto, diagnóstico, motor del canvas, eventos, tests, fuentes y OG
+    ui/                        primitivas visuales y láminas anotadas
+  data/                        site, copy, projects, plates, legal y booking
+  lib/                         contacto, diagnóstico, eventos, tests, fuentes y OG
 ```
 
-Los datos de servicios, proyectos, fases e identidad se editan en `src/data/`. El copy de las secciones y la estructura visual también viven en sus componentes. `Reveal` conserva un wrapper de contenido visible en servidor; su nombre no implica una animación.
+Los datos de servicios, proyectos, láminas, fases e identidad se editan en `src/data/`. Para anotar una captura nueva: declararla en `projects.ts`, añadir sus recortes y marcadores en píxeles de la imagen original en `plates.ts` y ejecutar `npm test`, que comprueba recortes y marcadores.
 
 ### Proyectos publicados por el código
 
@@ -66,11 +67,11 @@ Los datos de servicios, proyectos, fases e identidad se editan en `src/data/`. E
 | `/proyectos/web-boda` | Web de evento con confirmación de invitados |
 | `/proyectos/web-radio` | Web para un programa de radio con directo |
 
-Los cinco se presentan como proyectos reales. Las fichas explican necesidad, trabajo realizado, alcance y decisiones. Los visuales son capturas reales con datos de demo y las restricciones de marca documentadas en `docs/contexto-actual.md`. No se publican métricas, testimonios, nombres de terceros o resultados comerciales sin evidencia y autorización.
+Los cinco se presentan como proyectos reales. Las fichas explican necesidad, trabajo realizado, alcance y decisiones; pádel, almacén y radio abren con su lámina anotada. Los visuales son capturas reales con datos de demo y las restricciones de marca documentadas en `docs/contexto-actual.md`. No se publican métricas, testimonios, nombres de terceros o resultados comerciales sin evidencia y autorización.
 
 El asistente de IA se acredita como experiencia profesional de la dirección de proyectos y tecnología, desarrollada en un equipo interno y presentada de forma anónima. Es un desarrollo funcional para un piloto interno: dos agentes para conocimiento y gestión de proyectos, documentos, seguimiento, decisiones y estimaciones revisables. Sus conexiones dependen de configuración y permisos; el caso no acredita una implantación generalizada ni resultados de negocio.
 
-Los originales de `public/screenshots/` se han retirado del árbol servido. Una futura captura debe revisarse como archivo completo antes de publicarse; un recorte mediante CSS no protege su original. La actualización local no elimina copias de despliegues anteriores ni contenidos ya compartidos.
+Los originales de `public/screenshots/` y, desde el 23 de septiembre de 2026, las capturas sin anonimizar del asistente, el evento y la radio se han retirado del árbol servido. Una futura captura debe revisarse como archivo completo antes de publicarse; un recorte mediante CSS no protege su original. La actualización local no elimina copias del historial de git, de despliegues anteriores ni de contenidos ya compartidos.
 
 Cada caso tiene su título, canonical e imagen Open Graph. Las OG actuales se generan desde `src/app/opengraph-image.tsx` y `src/app/proyectos/[slug]/opengraph-image.tsx`, con utilidades en `src/lib/og.tsx`. El sitemap no asigna fechas de modificación inventadas.
 
@@ -135,9 +136,9 @@ La medición propia registra eventos en los logs del alojamiento existente. No i
 | `stream: "bpm-diagnostico"` | `event: "result"` o `"error"` con su código y el modelo usado. Nunca el texto del visitante. |
 | `stream: "bpm-contact"` | `event: "provider_accepted"`, identificador técnico de aceptación, necesidad y proyecto permitidos. Contar identificadores de proveedor distintos para evitar duplicar reintentos. |
 
-En los CTA del hero, `destination: "contact"` o `"projects"` distingue la apertura del contacto de la navegación a la galería, aunque ambos compartan `location: "hero"`.
+En el hero, `cta_click` con `destination: "contact"` mide el botón principal y `destination: "booking"` la apertura de la agenda, ambos con `location: "hero"`.
 
-En Contacto y los casos, `cta_click` con `destination: "booking"` registra la apertura de la agenda y conserva únicamente la ubicación y el identificador de caso permitido, cuando existe. **Un clic de reserva no acredita una cita confirmada.** La web no recibe ni registra los campos completados en Cal.com; las reservas efectivas se revisan en la agenda y se siguen por separado en el registro comercial.
+En el hero, Contacto y los casos, `cta_click` con `destination: "booking"` registra la apertura de la agenda y conserva únicamente la ubicación y el identificador de caso permitido, cuando existe. **Un clic de reserva no acredita una cita confirmada.** La web no recibe ni registra los campos completados en Cal.com; las reservas efectivas se revisan en la agenda y se siguen por separado en el registro comercial.
 
 Los mensajes de log propios no incluyen nombre, email, empresa, teléfono, texto de la consulta, URL completa ni IP. El proveedor de alojamiento puede conservar otros registros técnicos de las solicitudes según su configuración. La API de eventos utiliza temporalmente la IP para limitar solicitudes y no la añade al evento escrito.
 
