@@ -23,8 +23,10 @@ export function Hero() {
       <div className="container-editorial pb-14 pt-7 md:pt-10 lg:pb-20 wide:pt-9">
         <p className="label-mono text-[10.5px] leading-relaxed text-ink-mute sm:text-xs">
           <span aria-hidden className="mr-3 inline-block h-2 w-2 bg-cobalt" />
-          {hero.etiqueta}
+          <span className="sm:hidden">{hero.etiqueta_corta}</span>
+          <span className="hidden sm:inline">{hero.etiqueta}</span>
           <span aria-hidden className="mx-3 hidden text-line-2 lg:inline">/</span>
+          <span className="sr-only">. </span>
           <span className="block lg:inline">{hero.lugar}</span>
         </p>
 
@@ -35,20 +37,21 @@ export function Hero() {
 
         <div className="mt-8 grid gap-10 md:mt-10 xl:grid-cols-[minmax(0,4fr)_minmax(0,8fr)] xl:gap-x-10 wide:gap-x-14">
           {/* Entre 768 y 1279 la firma acompaña a la entradilla en su fila para
-              que la lámina suba al primer pantallazo. Desde 1280 va debajo. */}
+              que la lámina suba al primer pantallazo. Desde 1280 va debajo del
+              contacto, dentro del primer pantallazo. */}
           <div className="grid gap-8 md:grid-cols-[minmax(0,7fr)_minmax(0,5fr)] md:items-end md:gap-x-10 xl:flex xl:flex-col xl:items-stretch xl:gap-0">
             <div className="flex flex-col items-start">
               <p className="text-[17px] leading-[1.6] text-ink-soft md:text-lg xl:text-[17px] wide:text-lg">{hero.entradilla}</p>
               <div className="mt-7 flex w-full flex-col items-stretch gap-3 sm:w-auto sm:items-start">
                 <Button href={ctaHref} size="lg" trackLocation="hero" className="w-full sm:w-auto">
-                  {hero.cta_primaria} <span aria-hidden>↗</span>
+                  {hero.cta_primaria} <span aria-hidden>↓</span>
                 </Button>
                 <BookingLink location="hero" tone="paper" />
               </div>
               <p className="mt-3 text-sm text-ink-mute">{hero.nota}</p>
             </div>
 
-            <div className="flex w-full items-center gap-4 border-t border-line pt-5 xl:mt-8">
+            <div className="flex w-full items-center gap-4 border-t border-line-2 pt-4 xl:mt-8">
               <Image
                 src="/sobre/retrato-1x1.jpg"
                 width={716}
@@ -64,22 +67,11 @@ export function Hero() {
             </div>
           </div>
 
-          <figure className="plate m-0 min-w-0 -mx-4 md:mx-0">
-            <figcaption className="sr-only">
-              {hero.lamina}. {hero.lamina_pie}.
-            </figcaption>
-            <PlateStage
-              plate={padelPlate}
-              label={hero.lamina}
-              caption={copyEs.proyectos.captura}
-              layout={padelPlate.layout}
-              eager
-              padClassName="px-4 lg:px-6"
-              phoneClassName="lg:right-6"
-            />
+          <figure aria-labelledby="lamina-01" className="plate m-0 min-w-0 -mx-4 md:mx-0">
+            <PlateStage plate={padelPlate} labelId="lamina-01" labelAs="h2" eager className="border-x-0 md:border-x" />
             <div className="px-4 md:px-0">
-              <PlateNotes notes={padelPlate.notes} className="mt-2 md:grid-cols-3 md:gap-x-6" />
-              <TitleBlock entries={padelPlate.block} className="grid-cols-2 gap-x-6 md:grid-cols-4" />
+              <PlateNotes notes={padelPlate.notes} className="mt-4 hidden md:grid md:grid-cols-3 md:gap-x-6" />
+              <TitleBlock entries={padelPlate.block} className="mt-2 grid-cols-2 md:grid-cols-3" />
             </div>
           </figure>
         </div>

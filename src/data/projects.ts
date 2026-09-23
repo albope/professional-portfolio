@@ -42,8 +42,10 @@ export interface ProjectFigure {
   legendRight?: string;
   captionLabel: string;
   caption: string;
-  /** `ancha` captura de escritorio · `movil` pantalla de teléfono · `recorte` detalle ampliado */
+  /** `ancha` captura de escritorio · `movil` pantalla de teléfono · `recorte` detalle */
   variant: "ancha" | "movil" | "recorte";
+  /** Recorte a escala 1:1, en píxeles de la imagen original. Nunca se amplía. */
+  crop?: { x: number; y: number; w: number; h: number };
 }
 
 export interface Project {
@@ -94,7 +96,7 @@ export const projects: Project[] = [
     intro:
       "Desarrollo de una plataforma para conectar la reserva de pistas con la administración del club: socios, pagos y competiciones desde un mismo sistema. Un panel para quien gestiona y un portal para quien juega.",
     aside:
-      "Diseñamos, desarrollamos y operamos la plataforma, que hoy funciona como servicio por suscripción para clubes.",
+      "Está en producción y hoy funciona como servicio por suscripción para clubes.",
     ficha: [
       { label: "Necesidad", body: "Coordinar disponibilidad, reservas y gestión de socios sin WhatsApp, Excel ni papel." },
       { label: "Trabajo realizado", body: "Desarrollo completo de la aplicación y sus flujos de gestión, pagos y comunicación." },
@@ -122,6 +124,7 @@ export const projects: Project[] = [
         },
         scene: "parrilla",
         legend: "Parrilla de reservas",
+        crop: { x: 300, y: 40, w: 380, h: 430 },
         captionLabel: "Parrilla de reservas",
         caption:
           "Cada franja muestra hora, estado y titular. Las reservas habituales se distinguen con una trama, no solo con color.",
@@ -146,7 +149,7 @@ export const projects: Project[] = [
       body:
         "El portal del jugador y el panel de gestión del club. El trabajo conecta las acciones del jugador con la información que necesita administrar el club.",
       features: [
-        "Reservas online con detección de solapamientos",
+        "Reservas online sin solapes",
         "Socios, con importación desde Excel",
         "Ligas y torneos con clasificación automática",
         "Cobros presenciales y reservas pendientes",
@@ -160,10 +163,10 @@ export const projects: Project[] = [
       body:
         "Dos espacios separados sobre los mismos datos. El panel concentra la operativa del club: reservas, cobros, academia y socios. El portal muestra al jugador solo lo que necesita para reservar y apuntarse. Cada persona ve las funciones propias de su papel, y el club no tiene que explicar la herramienta a nadie.",
       note:
-        "Este proyecto es una base para servicios que dependen de horarios, plazas o cuotas. En un nuevo encargo empezaríamos por las reglas de disponibilidad, cancelación y cobro antes de decidir qué reutilizar y qué desarrollar a medida.",
+        "Este proyecto es una base para servicios que dependen de horarios, plazas o cuotas. En un encargo nuevo empezaría por las reglas de disponibilidad, cancelación y cobro antes de decidir qué reutilizar y qué desarrollar a medida.",
     },
     nextStep:
-      "Cuéntanos cómo gestionas hoy las reservas y qué parte te cuesta más coordinar. No necesitas tener definido el proyecto.",
+      "Cuéntame cómo gestionas hoy las reservas y qué parte te cuesta más coordinar.",
   },
   {
     slug: "wms-almacen",
@@ -234,7 +237,7 @@ export const projects: Project[] = [
       note:
         "Antes de construir una herramienta interna conviene describir un recorrido concreto: qué entra, dónde se coloca, quién lo mueve y cómo se registra. Ese recorrido define una primera versión útil y las integraciones que realmente necesita el negocio.",
     },
-    nextStep: "Cuéntanos qué necesitas localizar, registrar o coordinar en tu operativa.",
+    nextStep: "Cuéntame qué necesitas localizar, registrar o coordinar en tu operativa.",
   },
   {
     slug: "web-boda",
@@ -290,7 +293,7 @@ export const projects: Project[] = [
       note:
         "El mismo planteamiento sirve para inscripciones de jornadas, cursos o encuentros. Cada caso necesita definir los datos imprescindibles, quién puede consultarlos y qué debe ocurrir después de cada respuesta.",
     },
-    nextStep: "Cuéntanos qué evento organizas y qué necesitas que puedan hacer sus participantes.",
+    nextStep: "Cuéntame qué evento organizas y qué necesitas que puedan hacer sus participantes.",
   },
   {
     slug: "web-radio",
@@ -352,11 +355,11 @@ export const projects: Project[] = [
     },
     decision: {
       body:
-        "El reproductor permanece mientras se navega: se puede explorar el archivo sin cortar la escucha. Esa decisión condiciona cómo se cargan las páginas internas y dónde vive el estado del audio.",
+        "El reproductor permanece mientras se navega: se puede explorar el archivo sin cortar la escucha. Esa decisión condiciona cómo se cargan las páginas internas y cómo sigue sonando el audio al cambiar de página.",
       note:
-        "El origen de la emisión, la organización del archivo y el comportamiento del reproductor determinan buena parte del alcance. En un nuevo proyecto revisaríamos esas piezas junto con la experiencia móvil y la forma de publicar nuevos programas.",
+        "El origen de la emisión, la organización del archivo y el comportamiento del reproductor determinan buena parte del alcance. En un proyecto nuevo revisaría esas piezas junto con la experiencia móvil y la forma de publicar nuevos programas.",
     },
-    nextStep: "Cuéntanos qué publicas y cómo quieres que tu audiencia lo encuentre y lo escuche.",
+    nextStep: "Cuéntame qué publicas y cómo quieres que tu audiencia lo encuentre y lo escuche.",
   },
   {
     slug: "asistente-ia-gestion-proyectos",
@@ -413,7 +416,7 @@ export const projects: Project[] = [
         "Una primera versión puede centrarse en una tarea concreta: preparar el estado semanal de un proyecto, responder dudas internas o estructurar una estimación. El alcance define qué fuentes se pueden consultar, qué salida espera la persona y cómo se revisa.",
     },
     nextStep:
-      "Cuéntanos qué información necesita reunir tu equipo y qué respuesta o documento prepara con ella.",
+      "Cuéntame qué información necesita reunir tu equipo y qué respuesta o documento prepara con ella.",
   },
 ];
 

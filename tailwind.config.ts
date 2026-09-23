@@ -1,6 +1,10 @@
 import type { Config } from "tailwindcss";
 
 const config: Config = {
+  /* En táctil, `hover:` no se queda pegado tras un toque. */
+  future: {
+    hoverOnlyWhenSupported: true,
+  },
   content: [
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
@@ -87,6 +91,11 @@ const config: Config = {
         "display-case": [
           "clamp(2.125rem, 5vw, 4.5rem)",
           { lineHeight: "0.98", letterSpacing: "-0.01em" },
+        ],
+        /* Titular de hoja: las secciones entre el hero y el contacto. */
+        "display-sheet": [
+          "clamp(1.75rem, 2.9vw, 2.625rem)",
+          { lineHeight: "1.02", letterSpacing: "-0.01em" },
         ],
         "display-sec": [
           "clamp(1.875rem, 3.9vw, 3.375rem)",

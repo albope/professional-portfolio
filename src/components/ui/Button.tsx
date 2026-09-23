@@ -17,11 +17,11 @@ const sizes: Record<Size, string> = {
 
 const styles: Record<Tone, Record<Variant, string>> = {
   ink: {
-    solid: "bg-ink text-paper hover:bg-cobalt",
+    solid: "border border-transparent bg-ink text-paper hover:bg-cobalt",
     outline: "border border-ink px-[22px] text-ink hover:bg-paper-2",
   },
   paper: {
-    solid: "bg-paper text-ink hover:bg-cobalt-bright",
+    solid: "border border-transparent bg-paper text-ink hover:bg-cobalt-bright",
     outline:
       "border border-paper/45 px-5 text-paper hover:border-cobalt-bright hover:text-cobalt-bright",
   },

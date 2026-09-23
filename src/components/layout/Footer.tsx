@@ -71,7 +71,7 @@ export function Footer() {
               data-track-destination="booking"
               className={columnLink}
             >
-              {reserva.texto} <span aria-hidden>{reserva.flecha}</span>
+              {reserva.texto}&nbsp;<span aria-hidden>{reserva.flecha}</span>
               <span className="sr-only"> (se abre en otra pestaña)</span>
             </a>
           </nav>

@@ -10,31 +10,29 @@
     "enlaces": [
       "Proyectos",
       "Servicios",
-      "Cómo trabajamos",
+      "Cómo trabajo",
       "Sobre mí"
     ],
-    "cta": "Hablemos ↗",
+    "cta": "Hablemos →",
     "menu": "Menú"
   },
   "hero": {
     "etiqueta": "Software a medida · Automatizaciones · Webs",
     "lugar": "Valencia, presencial y en remoto",
     "h1": "Software a medida para lo que hoy haces a mano.",
-    "entradilla": "Aplicaciones de gestión, automatizaciones e integraciones, y webs para negocios. Lo diseño y lo desarrollo yo, desde la primera conversación hasta la puesta en marcha.",
+    "entradilla": "Aplicaciones de gestión, automatizaciones, integraciones y webs para negocios. Me ocupo de cada proyecto, desde la primera conversación hasta la puesta en marcha.",
     "cta_primaria": "Cuéntame qué necesitas",
     "nota": "Primera conversación sin compromiso.",
     "firma": {
       "nombre": "Alberto Bort",
       "rol": "BPM Tech · Consultoría y desarrollo"
     },
-    "lamina": "Proyecto 01 · Padel Club OS",
-    "lamina_pie": "Notas sobre una pantalla real"
+    "etiqueta_corta": "Software · Automatización · Webs"
   },
   "servicios": {
     "kicker": "Servicios",
-    "h2": "¿Qué te está costando más de la cuenta?",
+    "h2": "¿Qué quieres mejorar?",
     "apoyo": "No hace falta que sepas qué tecnología necesitas. Empezamos por lo que quieres conseguir.",
-    "nota": "Primero busco la solución más sencilla. Si una herramienta que ya existe resuelve tu necesidad, te lo diré.",
     "ejemplos_rotulo": "Por ejemplo",
     "prueba_rotulo": "Lo puedes ver en",
     "items": [
@@ -43,8 +41,14 @@
         "que_construimos": "Una aplicación que reúne en un solo sitio lo que hoy está repartido en hojas de cálculo, mensajes y papel.",
         "ejemplos": "Reservas, inventario, clientes y paneles de gestión.",
         "pruebas": [
-          "01",
-          "02"
+          {
+            "num": "01",
+            "que": "reservas, socios y cobros"
+          },
+          {
+            "num": "02",
+            "que": "inventario y ubicaciones"
+          }
         ],
         "cta": "Quiero organizar mi gestión →"
       },
@@ -53,17 +57,38 @@
         "que_construimos": "Conectar las herramientas que ya usas para no copiar datos a mano. La IA entra cuando resuelve una tarea concreta.",
         "ejemplos": "Pedidos que pasan a facturación, documentos clasificados y avisos automáticos.",
         "pruebas": [
-          "05"
+          {
+            "num": "01",
+            "que": "socios importados desde Excel"
+          },
+          {
+            "num": "04",
+            "que": "avisos por email"
+          },
+          {
+            "num": "05",
+            "que": "consulta correo, mensajería y documentos"
+          }
         ],
         "cta": "Quiero ahorrar trabajo manual →"
       },
       {
         "titulo": "Una web o una aplicación nueva",
-        "que_construimos": "Una web que explique bien tu negocio o una aplicación para poner en marcha tu idea. Clara, fácil de usar y preparada para crecer.",
-        "ejemplos": "Webs corporativas, portales de clientes y nuevas aplicaciones.",
+        "que_construimos": "Una web que explique bien tu negocio o una aplicación para poner en marcha tu idea.",
+        "ejemplos": "Webs con reservas, inscripciones o directo, y portales para tus clientes.",
         "pruebas": [
-          "03",
-          "04"
+          {
+            "num": "03",
+            "que": "directo y archivo"
+          },
+          {
+            "num": "04",
+            "que": "confirmaciones en dos idiomas"
+          },
+          {
+            "num": "01",
+            "que": "portal para los jugadores"
+          }
         ],
         "cta": "Quiero crear una web o aplicación →"
       }
@@ -130,7 +155,7 @@
   "proyectos": {
     "kicker": "Proyectos",
     "h2": "Trabajo real, explicado.",
-    "apoyo": "Capturas de los proyectos con datos de demo. Cada nota señala una decisión: qué había que resolver y cómo lo resuelve la pantalla.",
+    "apoyo": "Capturas reales de cada proyecto, con datos de demo o con la marca difuminada cuando toca. Cada nota señala una decisión: qué había que resolver y cómo lo resuelve la pantalla.",
     "indice_rotulo": "Los cinco proyectos",
     "items": [
       {
@@ -138,11 +163,11 @@
         "estado": "En producción"
       },
       {
-        "descriptor": "Inventario, ubicaciones y terminal RF",
+        "descriptor": "Inventario, ubicaciones y lectura de códigos",
         "estado": "Aplicación web"
       },
       {
-        "descriptor": "Directo, archivo y reproductor persistente",
+        "descriptor": "Directo, archivo y un reproductor que no se corta",
         "estado": "Web a medida"
       },
       {
@@ -150,17 +175,15 @@
         "estado": "Web a medida"
       },
       {
-        "descriptor": "Dos agentes con traza de fuentes",
+        "descriptor": "Consulta documentación y enseña sus fuentes",
         "estado": "IA aplicada"
       }
     ],
     "ver": "Ver el proyecto →",
-    "arriba": "Anotado arriba ↑",
-    "captura": "Captura real · Datos de demo",
     "mas_rotulo": "También"
   },
   "metodo": {
-    "kicker": "Cómo trabajamos",
+    "kicker": "Cómo trabajo",
     "h2": "Sabes qué viene después.",
     "apoyo": "Hablas directamente conmigo durante todo el proyecto. Acordamos qué hacer y revisamos juntos cómo avanza.",
     "fases": [
@@ -186,24 +209,24 @@
     "entregable_rotulo": "Te llevas"
   },
   "sobre": {
-    "kicker": "Quién hay detrás",
+    "kicker": "Sobre mí",
     "h2": "Soy Alberto. Hablas con quien lo construye.",
     "nombre": "Alberto Bort",
     "rol": "Consultoría y desarrollo",
     "parrafos": [
-      "Soy Alberto Bort, la persona detrás de BPM Tech. Te acompaño desde la primera conversación hasta la puesta en marcha: entiendo lo que necesitas, diseño la solución y la desarrollo.",
-      "Trabajo desde Valencia, de forma presencial y en remoto. Mi objetivo es que la tecnología te quite trabajo y te ayude a gestionar mejor tu negocio."
+      "Me ocupo de cada proyecto de principio a fin: entender cómo trabajas, diseñar la solución, desarrollarla y ponerla en marcha. Si una herramienta que ya existe te sirve, te lo digo.",
+      "Trabajo desde Valencia, de forma presencial y en remoto."
     ],
     "datos": {
       "Base": "Valencia, España",
-      "Trabajo": "Presencial y en remoto"
+      "Modalidad": "Presencial y en remoto"
     },
-    "cta": "Hablemos de tu proyecto ↗"
+    "cta": "Hablemos de tu proyecto ↓"
   },
   "preguntas": {
     "kicker": "Antes de empezar",
     "h2": "Lo que conviene tener claro.",
-    "apoyo": "Presupuesto, herramientas y continuidad. Respuestas para decidir tu siguiente paso.",
+    "apoyo": "Presupuesto, herramientas, alcance y mantenimiento.",
     "items": [
       {
         "pregunta": "¿Cuánto puede costar mi proyecto?",
@@ -211,7 +234,7 @@
       },
       {
         "pregunta": "¿Tengo que cambiar las herramientas que ya uso?",
-        "respuesta": "No necesariamente. Primero revisamos qué funciona y qué te está haciendo perder tiempo. A veces basta con conectar tus herramientas o automatizar un paso. Desarrollamos algo a medida cuando aporta una mejora que las opciones existentes no cubren."
+        "respuesta": "No necesariamente. Primero revisamos qué funciona y qué te está haciendo perder tiempo. A veces basta con conectar tus herramientas o automatizar un paso. Solo desarrollo algo a medida cuando mejora lo que ya existe."
       },
       {
         "pregunta": "¿Podemos empezar por una sola mejora?",
@@ -219,7 +242,7 @@
       },
       {
         "pregunta": "¿Qué pasa con el mantenimiento y los costes posteriores?",
-        "respuesta": "La propuesta debe dejar claro qué necesitas después de la puesta en marcha: alojamiento, servicios externos y mantenimiento, cuando correspondan. Acordamos qué soporte se incluye y qué mejoras se presupuestarían aparte."
+        "respuesta": "En la propuesta verás también lo que hará falta después de la puesta en marcha: alojamiento, servicios externos y mantenimiento, si los hay, y su coste. Acordamos qué soporte se incluye y qué mejoras se presupuestan aparte."
       },
       {
         "pregunta": "¿Y si todavía no sé exactamente lo que necesito?",
@@ -274,7 +297,7 @@
     "indice": [
       "Proyectos",
       "Servicios",
-      "Cómo trabajamos",
+      "Cómo trabajo",
       "Sobre mí"
     ],
     "contacto": [

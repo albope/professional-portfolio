@@ -100,7 +100,7 @@ export function Header() {
               href={ctaHref}
               data-track="cta_click"
               data-track-location="header"
-              className="ml-2 inline-flex min-h-11 items-center gap-2.5 bg-paper px-4 text-sm font-semibold text-ink transition-colors duration-300 ease-editorial hover:bg-cobalt-bright wide:px-5 wide:text-[15px]"
+              className="ml-2 inline-flex min-h-11 items-center gap-2.5 border border-transparent bg-paper px-4 text-sm font-semibold text-ink transition-colors duration-300 ease-editorial hover:bg-cobalt-bright wide:px-5 wide:text-[15px]"
             >
               {cta.texto}
               <span aria-hidden className="font-mono">{cta.flecha}</span>
@@ -113,21 +113,21 @@ export function Header() {
               href={ctaHref}
               data-track="cta_click"
               data-track-location="header"
-              className="hidden min-h-11 items-center gap-2 bg-paper px-3.5 text-sm font-semibold text-ink transition-colors duration-300 ease-editorial hover:bg-cobalt-bright min-[360px]:inline-flex"
+              className="inline-flex min-h-11 items-center gap-2 border border-transparent bg-paper px-3 text-sm font-semibold text-ink transition-colors duration-300 ease-editorial hover:bg-cobalt-bright min-[360px]:px-3.5"
             >
               {cta.texto}
-              <span aria-hidden className="font-mono">{cta.flecha}</span>
+              <span aria-hidden className="hidden font-mono min-[360px]:inline">{cta.flecha}</span>
             </Link>
             <button
               ref={triggerRef}
               type="button"
-              className="js-menu-trigger -mr-1 flex min-h-11 items-center gap-3 pl-3 pr-1 text-sm font-medium text-paper"
+              className="js-menu-trigger -mr-1 flex min-h-11 min-w-11 items-center justify-end gap-3 pl-2 pr-1 text-sm font-medium text-paper min-[360px]:pl-3"
               aria-expanded={open}
               aria-controls="menu-movil"
               aria-haspopup="dialog"
               onClick={openMenu}
             >
-              {copyEs.nav.menu}
+              <span className="sr-only min-[360px]:not-sr-only">{copyEs.nav.menu}</span>
               <span aria-hidden className="flex w-5 flex-col gap-1.5">
                 <span className="h-px w-full bg-paper" />
                 <span className="h-px w-full bg-paper" />
@@ -187,7 +187,7 @@ export function Header() {
 
             <div className="mt-auto flex flex-col gap-5 pt-10">
               <p className="font-mono text-[11px] leading-relaxed tracking-[0.08em] text-paper/60">
-                Valencia y en remoto
+                Valencia, presencial y en remoto
                 <br />
                 <span className="[overflow-wrap:anywhere]">{site.email}</span>
               </p>

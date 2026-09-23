@@ -1,4 +1,5 @@
 import Image from "next/image";
+import type { CSSProperties } from "react";
 import { cn } from "@/lib/utils";
 import type { ProjectFigure as Figure, SceneTone } from "@/data/projects";
 
@@ -53,6 +54,34 @@ export function ProjectFigure({
 }) {
   const principal = size === "principal";
   const dark = darkScenes.includes(figure.scene);
+
+  // Detalle a escala 1:1 sobre la hoja de BPM: sin ampliar la captura.
+  if (figure.crop) {
+    const { crop } = figure;
+    return (
+      <figure className={cn("m-0", className)}>
+        <div className="border-y border-ink bg-paper-2 px-4 py-8 md:border-x lg:px-10 lg:py-10">
+          <p className="label-mono mb-5 text-[10.5px] text-ink sm:text-xs">{figure.legend}</p>
+          <div
+            className="plate-crop outline outline-1 -outline-offset-1 outline-ink/60"
+            style={{ "--cx": crop.x, "--cy": crop.y, "--cw": crop.w, "--ch": crop.h, "--iw": figure.shot.width, maxWidth: crop.w } as CSSProperties}
+          >
+            <Image
+              {...figure.shot}
+              alt={figure.shot.alt}
+              sizes={`${figure.shot.width}px`}
+            />
+          </div>
+        </div>
+        <figcaption className="mt-3 px-4 text-[13px] leading-[1.55] text-ink-mute md:px-0 lg:mt-3.5 lg:max-w-[600px] lg:text-sm">
+          <span className="font-mono text-[10px] uppercase tracking-[0.1em] text-ink lg:text-[11px]">
+            {figure.captionLabel} ·{" "}
+          </span>
+          {figure.caption}
+        </figcaption>
+      </figure>
+    );
+  }
 
   return (
     <figure className={cn("m-0", className)}>

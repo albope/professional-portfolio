@@ -46,12 +46,21 @@
     text-rendering: optimizeLegibility;
   }
 
+  /* El ancla queda justo bajo la cabecera fija: 60 · 64 desde 768 · 72 desde 1440. */
   html {
-    scroll-padding-top: 88px;
+    scroll-padding-top: 60px;
   }
 
-  section[id] {
-    scroll-margin-top: 16px;
+  @media (min-width: 768px) {
+    html {
+      scroll-padding-top: 64px;
+    }
+  }
+
+  @media (min-width: 1440px) {
+    html {
+      scroll-padding-top: 72px;
+    }
   }
 
   ::selection {
@@ -89,9 +98,9 @@
   }
 
   /* Márgenes del lienzo: 16 móvil · 40 intermedio · 60 a partir de 1440.
-     El ancho máximo lo fija el lienzo de 1440 px en el layout. */
+     El contenido se centra en 1440 px; los fondos de sección van a sangre. */
   .container-editorial {
-    @apply w-full px-4 md:px-10 wide:px-[60px];
+    @apply mx-auto w-full max-w-[1440px] px-4 md:px-10 wide:px-[60px];
   }
 
   /* Rejilla de sección: 536 px y 88 px de calle a partir de 1440. Por debajo
@@ -159,36 +168,114 @@
     top: calc(var(--cy) / var(--ch) * -100%);
   }
 
-  /* El marcador es el cuadrado macizo del glifo con su número. */
+  /* Llamada de plano. `.plate-marker` es el punto de anclaje (sin tamaño) en
+     el borde del elemento señalado. El cuadrado numerado se coloca a un lado
+     (`data-side`) y una línea de 1 px lo une al punto, para no tapar el texto
+     que prueba la nota. El anclaje cambia a 1024 px, como el recorte. */
   .plate-marker {
+    --x: var(--mx);
+    --y: var(--my);
     position: absolute;
     left: calc((var(--x) - var(--cx)) / var(--cw) * 100%);
     top: calc((var(--y) - var(--cy)) / var(--ch) * 100%);
-    transform: translate(-50%, -50%);
+    width: 0;
+    height: 0;
+  }
+
+  @media (min-width: 1024px) {
+    .plate-marker {
+      --x: var(--dx);
+      --y: var(--dy);
+    }
+  }
+
+  /* Punto de anclaje y línea de referencia. */
+  .plate-marker::before,
+  .plate-marker::after {
+    content: "";
+    position: absolute;
+    background: var(--cobalt);
+  }
+
+  .plate-marker::after {
+    width: 6px;
+    height: 6px;
+    left: -3px;
+    top: -3px;
+    box-shadow: 0 0 0 1.5px var(--paper);
+  }
+
+  .plate-marker[data-side="left"]::before {
+    right: 0;
+    top: -0.5px;
+    width: 12px;
+    height: 1px;
+  }
+
+  .plate-marker[data-side="right"]::before {
+    left: 0;
+    top: -0.5px;
+    width: 12px;
+    height: 1px;
+  }
+
+  .plate-marker[data-side="bottom"]::before {
+    left: -0.5px;
+    top: 0;
+    width: 1px;
+    height: 12px;
+  }
+
+  .plate-marker[data-side="center"]::before,
+  .plate-marker[data-side="center"]::after {
+    display: none;
+  }
+
+  /* El cuadrado macizo del glifo con su número. */
+  .plate-marker-num {
+    position: absolute;
     display: grid;
     place-items: center;
-    width: 26px;
-    height: 26px;
+    width: 24px;
+    height: 24px;
+    top: -12px;
     background: var(--cobalt);
     color: var(--paper);
     font-family: var(--font-fragment-mono), ui-monospace, monospace;
-    font-size: 13px;
+    font-size: 12.5px;
     line-height: 1;
     box-shadow: 0 0 0 2px var(--paper);
     transition: background-color 0.2s cubic-bezier(0.16, 1, 0.3, 1),
       transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
+  .plate-marker[data-side="left"] .plate-marker-num {
+    right: 12px;
+  }
+
+  .plate-marker[data-side="right"] .plate-marker-num {
+    left: 12px;
+  }
+
+  .plate-marker[data-side="bottom"] .plate-marker-num {
+    top: 12px;
+    left: -12px;
+  }
+
+  .plate-marker[data-side="center"] .plate-marker-num {
+    left: -12px;
+  }
+
   .plate-note-num {
     display: grid;
     place-items: center;
-    width: 26px;
-    height: 26px;
+    width: 24px;
+    height: 24px;
     flex-shrink: 0;
     background: var(--cobalt);
     color: var(--paper);
     font-family: var(--font-fragment-mono), ui-monospace, monospace;
-    font-size: 13px;
+    font-size: 12.5px;
     line-height: 1;
     transition: background-color 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   }
@@ -196,15 +283,15 @@
   /* Gesto: pasar por una nota señala su marcador y al revés. Solo con
      puntero fino; sin él, todo se ve igual y nada depende de esto. */
   @media (hover: hover) and (pointer: fine) {
-    .plate:has([data-note]:hover, [data-marker]:hover) .plate-marker {
+    .plate:has([data-note]:hover, [data-marker]:hover) .plate-marker-num {
       background: var(--ink-faint);
     }
 
-    .plate:has([data-note="1"]:hover, [data-marker="1"]:hover) [data-marker="1"],
-    .plate:has([data-note="2"]:hover, [data-marker="2"]:hover) [data-marker="2"],
-    .plate:has([data-note="3"]:hover, [data-marker="3"]:hover) [data-marker="3"] {
+    .plate:has([data-note="1"]:hover, [data-marker="1"]:hover) [data-marker="1"] .plate-marker-num,
+    .plate:has([data-note="2"]:hover, [data-marker="2"]:hover) [data-marker="2"] .plate-marker-num,
+    .plate:has([data-note="3"]:hover, [data-marker="3"]:hover) [data-marker="3"] .plate-marker-num {
       background: var(--ink);
-      transform: translate(-50%, -50%) scale(1.15);
+      transform: scale(1.15);
     }
 
     .plate:has([data-marker="1"]:hover) [data-note="1"],

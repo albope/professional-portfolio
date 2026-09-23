@@ -115,9 +115,10 @@ test("the project index and the service proofs point at real projects", () => {
   for (const item of copyEs.proyectos.items) assert.ok(item.descriptor.length > 10, item.descriptor);
   for (const servicio of copyEs.servicios.items) {
     assert.ok(servicio.pruebas.length > 0, servicio.titulo);
-    for (const num of servicio.pruebas) {
-      assert.match(num, /^0[1-5]$/, `${servicio.titulo}: ${num}`);
-      assert.ok(proyectoSlugs[Number(num) - 1], num);
+    for (const prueba of servicio.pruebas) {
+      assert.match(prueba.num, /^0[1-5]$/, `${servicio.titulo}: ${prueba.num}`);
+      assert.ok(proyectoSlugs[Number(prueba.num) - 1], prueba.num);
+      assert.ok(prueba.que.length > 5, `${servicio.titulo}: la prueba dice qué demuestra`);
     }
   }
   assert.equal(partirFlecha(copyEs.proyectos.ver).flecha, "→");

@@ -186,7 +186,7 @@ function ContactFormContent({ context, forceDisabled = false }: { context: Conta
     } catch {
       showError(controller.signal.aborted
         ? "La confirmación está tardando demasiado. Tu mensaje sigue aquí, puedes volver a enviarlo."
-        : "No hemos podido conectar. Revisa tu conexión y vuelve a intentarlo, tu mensaje sigue aquí.",
+        : "No se ha podido conectar. Revisa tu conexión y vuelve a intentarlo, tu mensaje sigue aquí.",
       controller.signal.aborted ? "timeout" : "network");
     } finally {
       clearTimeout(timer);
@@ -196,7 +196,7 @@ function ContactFormContent({ context, forceDisabled = false }: { context: Conta
 
   if (status === "success") {
     return (
-      <div ref={successRef} tabIndex={-1} role="status" className="focus:outline focus:outline-2 focus:outline-offset-4 focus:outline-cobalt-bright lg:pt-2">
+      <div ref={successRef} tabIndex={-1} role="status" className="focus:outline-none lg:pt-2">
         <span className="flex h-11 w-11 items-center justify-center border border-cobalt-bright">
           <Check className="h-5 w-5 text-cobalt-bright" strokeWidth={1.5} strokeLinecap="square" aria-hidden />
         </span>
@@ -207,8 +207,8 @@ function ContactFormContent({ context, forceDisabled = false }: { context: Conta
           Gracias por contarme qué necesitas. El siguiente paso es revisarlo y responderte al
           email que has indicado.
         </p>
-        <Link href="/" className="mt-6 inline-flex min-h-12 items-center border border-paper/45 px-[22px] text-sm font-semibold text-paper transition-colors duration-300 ease-editorial hover:border-cobalt-bright hover:text-cobalt-bright focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cobalt-bright">
-          Volver a la portada
+        <Link href="/#proyectos" className="mt-6 inline-flex min-h-12 items-center gap-2.5 border border-paper/45 px-[22px] text-sm font-semibold text-paper transition-colors duration-300 ease-editorial hover:border-cobalt-bright hover:text-cobalt-bright focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cobalt-bright">
+          Ver los proyectos <span aria-hidden>↑</span>
         </Link>
       </div>
     );
@@ -239,12 +239,12 @@ function ContactFormContent({ context, forceDisabled = false }: { context: Conta
           </select>
         </label>
         {context.proyecto && <p className="text-sm leading-relaxed text-paper/72">Proyecto de referencia: <span className="text-paper">{CONTACT_PROJECTS[context.proyecto]}</span></p>}
-        <label className="flex flex-col gap-2" htmlFor="contact-mensaje">
-          <span className={labelClasses}>{formulario.mensaje.etiqueta}</span>
+        <div className="flex flex-col gap-2">
+          <label className={labelClasses} htmlFor="contact-mensaje">{formulario.mensaje.etiqueta}</label>
           <span id="contact-message-help" className="text-sm leading-[1.5] text-paper/78">{formulario.mensaje.ayuda}</span>
           <textarea {...fieldProps("mensaje")} ref={mensajeRef} required rows={5} className={`${fieldBase} ${errors.mensaje ? fieldBad : fieldOk} min-h-[132px] resize-y lg:min-h-[140px]`} />
           {fieldError("mensaje")}
-        </label>
+        </div>
         <details className="border-y border-paper/28 py-1" open={errors.empresa || errors.telefono ? true : undefined}>
           <summary className="min-h-11 cursor-pointer py-3 text-sm text-paper/78">Empresa y teléfono (opcional)</summary>
           <div className="grid gap-[18px] pb-4 pt-2 lg:grid-cols-2 lg:gap-[22px]">
@@ -274,7 +274,7 @@ function ContactFormContent({ context, forceDisabled = false }: { context: Conta
         )}
         {avisoPartido.despues}
       </p>
-      <button type="submit" disabled={disabled} className="min-h-[52px] w-full bg-paper px-[30px] text-[15px] font-semibold text-ink transition-colors duration-300 ease-editorial hover:bg-cobalt-bright active:translate-y-[1px] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cobalt-bright disabled:pointer-events-none disabled:opacity-60 md:w-auto md:self-start">
+      <button type="submit" disabled={disabled} className="min-h-[52px] w-full border border-transparent bg-paper px-[30px] text-[15px] font-semibold text-ink transition-colors duration-300 ease-editorial hover:bg-cobalt-bright active:translate-y-[1px] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cobalt-bright disabled:pointer-events-none disabled:opacity-60 md:w-auto md:self-start">
         {status === "sending" ? "Enviando…" : formulario.boton}
       </button>
       <p role="status" aria-live="polite" className="sr-only">{status === "sending" ? "Enviando tu consulta. Espera unos segundos." : ""}</p>

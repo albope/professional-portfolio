@@ -16,7 +16,7 @@ interface PageProps {
 }
 
 /** Los escenarios sangran en móvil y recuperan el margen del lienzo arriba. */
-const inset = "w-full md:px-10 wide:px-[60px]";
+const inset = "mx-auto w-full max-w-[1440px] md:px-10 wide:px-[60px]";
 const dtClass = "font-mono text-[10px] uppercase tracking-[0.12em] text-ink-mute lg:text-[11px] lg:tracking-[0.1em]";
 const titleClass = "text-xl font-semibold leading-[1.2] tracking-[-0.015em] lg:text-[26px] lg:leading-[1.15] wide:text-[30px]";
 const pairClass = "rejilla-editorial";
@@ -77,23 +77,26 @@ export default async function ProjectPage({ params }: PageProps) {
         <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between md:gap-6">
           <Link
             href="/#proyectos"
-            className="inline-flex min-h-8 items-center self-start font-mono text-[11px] uppercase tracking-[0.1em] text-ink-mute underline-offset-4 transition-colors duration-300 ease-editorial hover:text-ink hover:underline lg:text-xs"
+            className="inline-flex min-h-11 items-center self-start font-mono text-[11px] uppercase tracking-[0.1em] text-ink-mute underline-offset-4 transition-colors duration-300 ease-editorial hover:text-ink hover:underline lg:text-xs"
           >
             ← Proyectos
           </Link>
           <p className="flex flex-wrap items-center gap-x-3.5 gap-y-2 font-mono text-[10px] uppercase tracking-[0.12em] text-ink-mute md:flex-nowrap md:whitespace-nowrap lg:text-xs lg:tracking-[0.1em]">
             <span className="md:hidden">{project.metaShort}</span>
-            {project.meta.map((item) => (
-              <span key={item} className="hidden md:inline">{item}</span>
+            {project.meta.map((item, index) => (
+              <span key={item} className="hidden md:inline">
+                {index > 0 && <span aria-hidden className="mr-3.5 text-line-2">/</span>}
+                {item}
+              </span>
             ))}
             {project.externalUrl && (
               <a
                 href={project.externalUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex min-h-6 items-center border-b border-ink normal-case tracking-[0.04em] text-ink"
+                className="inline-flex min-h-11 items-center gap-1.5 normal-case tracking-[0.04em] text-ink"
               >
-                {project.externalLabel} <span aria-hidden>↗</span>
+                <span className="border-b border-ink">{project.externalLabel}</span> <span aria-hidden>↗</span>
                 <span className="sr-only"> (se abre en otra pestaña)</span>
               </a>
             )}
@@ -115,19 +118,10 @@ export default async function ProjectPage({ params }: PageProps) {
       </header>
 
       {plate ? (
-        <section aria-label="Notas sobre la pantalla" className="plate mt-6 lg:mt-12">
-          <PlateStage
-            plate={plate}
-            label={`Proyecto ${plate.num} · ${plate.name}`}
-            caption="Captura real · Datos de demo"
-            layout={plate.layout}
-            phoneClassName="lg:right-10 lg:w-[13%] wide:right-[60px]"
-            eager
-          />
-          <div className="container-editorial">
-            <PlateNotes notes={plate.notes} className="md:grid-cols-3 md:gap-x-6 lg:mt-6" />
-          </div>
-        </section>
+        <figure aria-labelledby="lamina-ficha" className="plate container-editorial m-0 mt-6 lg:mt-12">
+          <PlateStage plate={plate} labelId="lamina-ficha" eager className="-mx-4 border-x-0 md:mx-0 md:border-x" />
+          <PlateNotes notes={plate.notes} className="mt-4 hidden md:grid md:grid-cols-3 md:gap-x-6" />
+        </figure>
       ) : (
         <ProjectFigure figure={principal} size="principal" className={`mt-6 lg:mt-12 ${inset}`} />
       )}
@@ -219,24 +213,24 @@ export default async function ProjectPage({ params }: PageProps) {
               id="ficha-cta"
               className="font-display text-[28px] uppercase leading-none tracking-[-0.01em] text-paper lg:text-[40px]"
             >
-              ¿Necesitas resolver algo parecido<span className="font-sans">?</span>
+              ¿Necesitas resolver algo parecido?
             </h2>
             <p className="mt-4 max-w-[560px] text-[15px] leading-[1.6] text-paper/78 lg:mt-6 lg:text-[17px]">
               {project.nextStep}
             </p>
           </div>
-          <div className="mt-6 flex flex-col items-stretch gap-2.5 lg:mt-0 lg:items-start lg:gap-3 lg:pt-2">
+          <div className="mt-6 flex flex-col items-stretch gap-2.5 sm:max-w-[340px] lg:mt-0 lg:gap-3 lg:pt-2">
             <Button
               href={contactHref}
               tone="paper"
               size="lg"
               trackLocation="case"
               trackProject={project.slug}
-              className="lg:px-7"
+              className="w-full lg:px-7"
             >
               Contar mi caso por escrito
             </Button>
-            <BookingLink location="case" project={project.slug} className="min-h-[52px] lg:px-6" />
+            <BookingLink location="case" project={project.slug} className="min-h-[52px] w-full lg:px-6" />
             <Link
               href="/#proyectos"
               className="mt-1.5 inline-flex min-h-11 items-center self-start text-sm text-paper underline underline-offset-4 transition-colors duration-300 ease-editorial hover:text-cobalt-bright lg:mt-3"

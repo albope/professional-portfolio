@@ -6,10 +6,30 @@ import type { PlateNote, PlateView, Rect, TitleEntry } from "@/data/plates";
 const inside = (rect: Rect, [x, y]: [number, number]) =>
   x >= rect.x && x <= rect.x + rect.w && y >= rect.y && y <= rect.y + rect.h;
 
+const factor = (view: PlateView, rect: Rect) => Math.round((view.shot.width / rect.w) * 1000) / 1000;
+
 /**
- * Captura recortada con sus marcadores. El recorte cambia a 1024 px y cada
- * marcador que quede fuera del recorte de una anchura se oculta en ella.
- * Los marcadores son decorativos: la lista de notas lleva la información.
+ * `sizes` del ancho realmente pintado: la imagen se dibuja a (ancho original
+ * / ancho del recorte) veces la caja, así que se multiplica cada tramo por
+ * ese factor. Sin esto el navegador baja una variante pequeña y la captura
+ * se ve blanda.
+ */
+function sizesFor(view: PlateView) {
+  const mobile = factor(view, view.mobile ?? view.desktop);
+  const desktop = factor(view, view.desktop);
+  const { box } = view;
+  return [
+    `(min-width: 1440px) calc(${box.wide} * ${desktop})`,
+    `(min-width: 1024px) calc(${box.desktop} * ${desktop})`,
+    `(min-width: 768px) calc(${box.tablet} * ${mobile})`,
+    `calc(${box.mobile} * ${mobile})`,
+  ].join(", ");
+}
+
+/**
+ * Captura recortada con sus llamadas. El recorte cambia a 1024 px y cada
+ * llamada cuyo anclaje quede fuera del recorte de una anchura se oculta en
+ * ella. Las llamadas son decorativas: la lista de notas lleva la información.
  */
 export function PlateShot({
   view,
@@ -46,28 +66,26 @@ export function PlateShot({
           src={view.shot.src}
           width={view.shot.width}
           height={view.shot.height}
-          alt={view.shot.alt}
-          sizes={view.sizes}
+          alt={view.alt}
+          sizes={sizesFor(view)}
           loading={eager ? "eager" : "lazy"}
           fetchPriority={eager ? "high" : undefined}
         />
       </div>
       {notes.map((note) => {
-        const onMobile = inside(mobile, note.at);
+        const mobileAt = note.mobileAt ?? note.at;
+        const onMobile = inside(mobile, mobileAt);
         const onDesktop = inside(desktop, note.at);
         return (
           <span
             key={note.n}
             aria-hidden
             data-marker={note.n}
-            className={cn(
-              "plate-marker",
-              !onMobile && "hidden lg:grid",
-              !onDesktop && "lg:hidden"
-            )}
-            style={{ "--x": note.at[0], "--y": note.at[1] } as CSSProperties}
+            data-side={note.side}
+            className={cn("plate-marker", !onMobile && "hidden lg:block", !onDesktop && "lg:hidden")}
+            style={{ "--mx": mobileAt[0], "--my": mobileAt[1], "--dx": note.at[0], "--dy": note.at[1] } as CSSProperties}
           >
-            {note.n}
+            <span className="plate-marker-num">{note.n}</span>
           </span>
         );
       })}
@@ -105,33 +123,29 @@ export function PlateNotes({ notes, className }: { notes: PlateNote[]; className
  */
 export function TitleBlock({
   entries,
-  tone = "paper",
   className,
+  children,
 }: {
   entries: TitleEntry[];
-  tone?: "paper" | "ink";
   className?: string;
+  /** Celda final opcional, por ejemplo el enlace a la ficha. */
+  children?: React.ReactNode;
 }) {
-  const dark = tone === "ink";
   return (
-    <dl className={cn("grid", className)}>
+    <dl className={cn("grid gap-x-6", className)}>
       {entries.map((entry) => (
-        <div
-          key={entry.label}
-          className={cn("min-w-0 border-t py-3", dark ? "border-paper/28" : "border-line-2")}
-        >
-          <dt className={cn("label-mono text-[10.5px]", dark ? "text-paper/72" : "text-ink-mute")}>
-            {entry.label}
-          </dt>
-          <dd className={cn("mt-1.5 text-[14px] leading-snug [overflow-wrap:anywhere]", dark ? "text-paper" : "text-ink")}>
+        <div key={entry.label} className={cn("min-w-0 border-t border-line-2 py-3", entry.wide && "col-span-full")}>
+          <dt className="label-mono text-[10.5px] text-ink-mute">{entry.label}</dt>
+          <dd className="mt-1.5 text-[14px] leading-snug text-ink">
             {entry.href?.startsWith("http") ? (
               <a
                 href={entry.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex min-h-11 items-center gap-1.5 underline underline-offset-4 transition-colors duration-300 ease-editorial hover:text-cobalt lg:min-h-0"
+                className="inline-flex min-h-11 items-center gap-1.5 transition-colors duration-300 ease-editorial hover:text-cobalt lg:min-h-0"
               >
-                {entry.value} <span aria-hidden>↗</span>
+                <span className="underline underline-offset-4">{entry.value}</span>
+                <span aria-hidden>↗</span>
                 <span className="sr-only"> (se abre en otra pestaña)</span>
               </a>
             ) : entry.href ? (
@@ -147,6 +161,7 @@ export function TitleBlock({
           </dd>
         </div>
       ))}
+      {children && <div className="min-w-0 border-t border-line-2 py-3">{children}</div>}
     </dl>
   );
 }
