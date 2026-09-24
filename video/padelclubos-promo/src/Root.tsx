@@ -45,10 +45,12 @@ const Promo: React.FC<PromoProps> = ({audio: mode}) => {
   );
 };
 
-const SingleScene: React.FC<{id: string}> = ({id}) => (
+const SingleScene: React.FC<{id: string; d: number}> = ({id, d}) => (
   <FontGate>
     <AbsoluteFill style={{background: color.ink900}}>
-      <SceneById id={id} />
+      <SceneProvider durationInFrames={d}>
+        <SceneById id={id} />
+      </SceneProvider>
     </AbsoluteFill>
   </FontGate>
 );
@@ -62,7 +64,7 @@ const sceneComps = (fmt: "16x9" | "9x16", list: SceneSpec[]) => {
         key={`${fmt}-${s.id}`}
         id={`S${fmt === "16x9" ? "16" : "9"}-${s.id}`}
         component={SingleScene}
-        defaultProps={{id: s.id}}
+        defaultProps={{id: s.id, d: s.durationInFrames}}
         durationInFrames={s.durationInFrames}
         fps={FPS}
         {...SIZE[fmt]}

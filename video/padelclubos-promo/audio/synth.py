@@ -513,3 +513,49 @@ def master(mix: np.ndarray, lufs_target: float = -14.0) -> np.ndarray:
         y = y * 10 ** ((lufs_target - loud) / 20)
         y = limiter(y, ceiling_db=-1.2)
     return y
+
+
+# ---------------------------------------------------------------- instrumentos añadidos (storyboard §6)
+
+def marimba(note: int, dur: float = 0.6) -> np.ndarray:
+    """Marimba modal: fundamental + parciales 3,9× y 9,2× con caídas cortas."""
+    t = t_axis(dur)
+    f = midi(note)
+    y = np.sin(2 * np.pi * f * t) * exp_decay(len(t), 0.22)
+    y += 0.35 * np.sin(2 * np.pi * f * 3.9 * t) * exp_decay(len(t), 0.05)
+    y += 0.12 * np.sin(2 * np.pi * f * 9.2 * t) * exp_decay(len(t), 0.015)
+    y += bandpass(rng.standard_normal(len(t)), 800, 5000) * exp_decay(len(t), 0.002) * 0.15
+    return y * np.minimum(1, t / 0.002) * 0.7
+
+
+def reverse_cymbal(dur: float) -> np.ndarray:
+    """Platillo invertido que culmina al final de `dur`."""
+    t = t_axis(dur)
+    x = highpass(rng.standard_normal(len(t)), 4000, order=2)
+    env = (t / dur) ** 3
+    return x * env * 0.5
+
+
+def crash(dur: float = 2.0) -> np.ndarray:
+    """Crash filtrado (suave, sin brillo excesivo)."""
+    t = t_axis(dur)
+    freqs = [340.0, 489.0, 612.0, 811.0, 1033.0, 1377.0]
+    metal = sum(signal.square(2 * np.pi * f * 2.3 * t) for f in freqs) / len(freqs)
+    x = highpass(metal * 0.5 + rng.standard_normal(len(t)) * 0.6, 3000, order=2)
+    x = lowpass(x, 9000)
+    return x * exp_decay(len(t), 0.55) * np.minimum(1, t / 0.002) * 0.45
+
+
+def snare_ghost() -> np.ndarray:
+    t = t_axis(0.12)
+    body = np.sin(2 * np.pi * 190 * t) * exp_decay(len(t), 0.03)
+    noise = bandpass(rng.standard_normal(len(t)), 1500, 7000) * exp_decay(len(t), 0.04)
+    return (body * 0.5 + noise) * 0.5
+
+
+def snare() -> np.ndarray:
+    t = t_axis(0.25)
+    f = 180 + 60 * np.exp(-t / 0.01)
+    body = np.sin(2 * np.pi * np.cumsum(f) / SR) * exp_decay(len(t), 0.05)
+    noise = bandpass(rng.standard_normal(len(t)), 1200, 8000) * exp_decay(len(t), 0.09)
+    return np.tanh((body * 0.7 + noise) * 1.3) * 0.7
