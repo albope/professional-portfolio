@@ -1,0 +1,6 @@
+node_modules/
+out/
+.remotion/
+# Audio generado por audio/generate.py (reproducible)
+public/audio/
+__pycache__/

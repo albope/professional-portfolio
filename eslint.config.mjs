@@ -25,5 +25,6 @@ export default defineConfig([
     "design_handoff_bpm_tech/**",
     "design_handoff_landing_el_punto/**",
     "templates/**",
+    "video/**",
   ]),
 ]);
