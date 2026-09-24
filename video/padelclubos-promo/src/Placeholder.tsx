@@ -1,10 +1,11 @@
 import React from "react";
-import {AbsoluteFill, useCurrentFrame, useVideoConfig} from "remotion";
+import {AbsoluteFill, useCurrentFrame} from "remotion";
 import {color, displayStyle, monoStyle} from "./brand/tokens";
+import {useScene} from "./lib/scene";
 
 export const Placeholder: React.FC<{id: string}> = ({id}) => {
   const frame = useCurrentFrame();
-  const {durationInFrames} = useVideoConfig();
+  const {durationInFrames} = useScene();
   return (
     <AbsoluteFill style={{background: color.sand200, alignItems: "center", justifyContent: "center", gap: 16}}>
       <div style={{...displayStyle(800), fontSize: 64, color: color.ink900}}>{id}</div>

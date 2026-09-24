@@ -125,12 +125,12 @@ export const Logo: React.FC<LogoProps> = ({
         })}
         {(() => {
           const c = Math.min(1, Math.max(0, chip));
-          const overshoot = c < 1 ? 1 + Math.sin(c * Math.PI) * 0.08 : 1;
-          const s = c * overshoot;
+          // Entrada tipo «press» (0,96 → 1) sin rebote.
+          const s = c <= 0 ? 0 : 0.96 + 0.04 * c;
           const cx = OS_CHIP.x + OS_CHIP.width / 2;
           const cy = OS_CHIP.y + OS_CHIP.height / 2;
           return (
-            <g opacity={c > 0 ? 1 : 0} transform={`translate(${cx} ${cy}) scale(${s}) translate(${-cx} ${-cy})`}>
+            <g opacity={c} transform={`translate(${cx} ${cy}) scale(${s}) translate(${-cx} ${-cy})`}>
               <rect {...OS_CHIP} fill={p.chip} />
               <g transform={`translate(${OS_GLYPHS_OFFSET.x},${OS_GLYPHS_OFFSET.y})`}>
                 {OS_GLYPHS.map((d, i) => (

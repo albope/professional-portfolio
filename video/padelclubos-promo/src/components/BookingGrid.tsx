@@ -148,7 +148,7 @@ export const BookingGrid: React.FC<{
           const free = cellLook("free");
           const span = cell?.span ?? 1;
           const h = span * cellHeight + (span - 1) * gap;
-          const pop = fillP > 0 && fillP < 1 ? 1 + Math.sin(fillP * Math.PI) * 0.045 : 1;
+          const pop = 1;
           return (
             <div
               key={`${ci}-${si}`}

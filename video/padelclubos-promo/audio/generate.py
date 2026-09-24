@@ -24,6 +24,7 @@ from synth import (  # noqa: E402
     BAR, BEAT, SR, Track, bell, clap, hat, keys, kick, make_ir, master, n, pingpong, pluck, reverb,
     sfx_buzz, sfx_click, sfx_flip, sfx_impact, sfx_ping, sfx_pop, sfx_riser, sfx_success, sfx_swipe,
     sfx_tick, sfx_tock, sfx_type, sfx_whoosh, shaker, sidechain_env, sub_bass, supersaw,
+    sfx_vibrate, sfx_clack,
 )
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -201,6 +202,7 @@ def render_sfx(m: Mix, cues: list[dict]):
         kind = c["sfx"]
         pitch = c.get("pitch", 1.0)
         dur = c.get("durS")
+        note = c.get("note")
         if kind == "tock":
             x = sfx_tock(pitch)
             base = 0.8
@@ -214,19 +216,19 @@ def render_sfx(m: Mix, cues: list[dict]):
             x = sfx_swipe()
             base = 0.45
         elif kind == "click":
-            x = sfx_click()
+            x = sfx_click(note)
             base = 0.55
         elif kind == "pop":
-            x = sfx_pop()
+            x = sfx_pop(note)
             base = 0.4
         elif kind == "ping":
-            x = sfx_ping()
+            x = sfx_ping(c.get("tone", "dissonant"))
             base = 0.4
         elif kind == "success":
             x = sfx_success()
             base = 0.5
         elif kind == "tick":
-            x = sfx_tick()
+            x = sfx_tick(note)
             base = 0.4
         elif kind == "flip":
             x = sfx_flip()
@@ -243,6 +245,12 @@ def render_sfx(m: Mix, cues: list[dict]):
         elif kind == "riser":
             x = sfx_riser(dur or 2.0)
             base = 0.45
+        elif kind == "vibrate":
+            x = sfx_vibrate()
+            base = 0.6
+        elif kind == "clack":
+            x = sfx_clack()
+            base = 0.7
         else:
             raise ValueError(f"sfx desconocido: {kind}")
         if x.ndim == 1:

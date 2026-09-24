@@ -264,12 +264,18 @@ def keys(notes: list[int], dur: float) -> np.ndarray:
 
 # ---------------------------------------------------------------- efectos de sonido
 
-def sfx_tock(pitch: float = 1.0) -> np.ndarray:
-    """Golpe de bola de pádel: «toc» hueco (modos amortiguados + transitorio)."""
+def sfx_tock(pitch: float = 1.0, metallic: bool = False) -> np.ndarray:
+    """Golpe de pala: seno de 1,1 kHz que cae a 650 Hz en 25 ms + transitorio de
+    ruido de 3 ms y cuerpo grave. `metallic` = variante «valla» para errores."""
     t = t_axis(0.25)
-    modes = [(1050, 0.035, 1.0), (1580, 0.022, 0.55), (2750, 0.012, 0.3), (420, 0.05, 0.45)]
-    y = sum(a * np.sin(2 * np.pi * f * pitch * t) * exp_decay(len(t), d) for f, d, a in modes)
-    y += bandpass(rng.standard_normal(len(t)), 1500, 6000) * exp_decay(len(t), 0.003) * 0.9
+    f = (650 + 450 * np.exp(-t / 0.009)) * pitch
+    y = np.sin(2 * np.pi * np.cumsum(f) / SR) * exp_decay(len(t), 0.03)
+    y += 0.45 * np.sin(2 * np.pi * 420 * pitch * t) * exp_decay(len(t), 0.045)
+    y += 0.25 * np.sin(2 * np.pi * 2750 * pitch * t) * exp_decay(len(t), 0.01)
+    y += bandpass(rng.standard_normal(len(t)), 1500, 7000) * exp_decay(len(t), 0.0025) * 0.9
+    if metallic:
+        for fm, d in ((1870, 0.12), (2533, 0.09), (3410, 0.07)):
+            y += 0.18 * np.sin(2 * np.pi * fm * t) * exp_decay(len(t), d)
     return np.tanh(y * 1.2) * 0.9
 
 
@@ -286,44 +292,75 @@ def sfx_whoosh(dur: float = 0.6, rising: bool = True, lo: float = 300, hi: float
     return np.stack([L, R], axis=1) * 0.6
 
 
-def sfx_click() -> np.ndarray:
-    t = t_axis(0.04)
-    y = np.sin(2 * np.pi * 2600 * t) * exp_decay(len(t), 0.004)
+def sfx_click(note: str | None = None) -> np.ndarray:
+    """Clic de UI: ruido de 2 ms + blip de 4 kHz (o afinado a `note`)."""
+    t = t_axis(0.06 if note else 0.04)
+    f = midi(n(note)) if note else 4000
+    y = np.sin(2 * np.pi * f * t) * exp_decay(len(t), 0.012 if note else 0.004)
     y += highpass(rng.standard_normal(len(t)), 4000) * exp_decay(len(t), 0.0015) * 0.5
     return y * 0.6
 
 
-def sfx_pop() -> np.ndarray:
+def sfx_pop(note: str | None = None) -> np.ndarray:
     t = t_axis(0.09)
-    f = 520 + 520 * (1 - np.exp(-t / 0.02))
+    base = midi(n(note)) if note else 520
+    f = base * (1 + (1 - np.exp(-t / 0.02)) * (0.0 if note else 1.0))
     y = np.sin(2 * np.pi * np.cumsum(f) / SR) * exp_decay(len(t), 0.025)
     return y * 0.7
 
 
-def sfx_ping(n1: int = n("E6"), n2: int = n("A6")) -> np.ndarray:
-    """Aviso de mensaje (dos notas cortas, genérico)."""
-    a = bell(n1, 0.35, index=0.8)
-    b = bell(n2, 0.5, index=0.8)
-    y = np.zeros(int(0.65 * SR))
-    y[: len(a)] += a
-    off = int(0.09 * SR)
-    y[off: off + len(b)] += b[: len(y) - off]
+def sfx_ping(tone: str = "dissonant") -> np.ndarray:
+    """Aviso de mensaje, 150 ms: disonante (La5+Si♭5) antes del drop,
+    consonante (Do6+Sol6) después. Las dos notas suenan juntas."""
+    notes = (n("A5"), n("Bb5")) if tone == "dissonant" else (n("C6"), n("G6"))
+    y = np.zeros(int(0.5 * SR))
+    for k, note in enumerate(notes):
+        b = bell(note, 0.45, index=0.9)
+        off = int(k * 0.012 * SR)
+        y[off: off + len(b)] += b[: len(y) - off] * 0.7
     return y * 0.8
 
 
 def sfx_success() -> np.ndarray:
-    """Confirmación (reserva/pago): tríada ascendente en campana."""
+    """Confirmación de reserva o pago (celebrate, 400 ms): quinta justa Do6 → Sol6."""
     y = np.zeros(int(1.0 * SR))
-    for k, note in enumerate([n("C6"), n("E6"), n("G6")]):
-        b = bell(note, 0.8, index=1.2)
-        off = int(k * 0.07 * SR)
+    for off_s, note in ((0.0, n("C6")), (0.13, n("G6"))):
+        b = bell(note, 0.85, index=1.2)
+        off = int(off_s * SR)
         y[off: off + len(b)] += b[: len(y) - off]
     return y * 0.6
 
 
-def sfx_tick() -> np.ndarray:
+def sfx_vibrate() -> np.ndarray:
+    """Móvil vibrando: cuadrada de 150 Hz con AM a 25 Hz, dos pulsos."""
+    y = np.zeros(int(0.5 * SR))
+    for off in (0.0, 0.26):
+        t = t_axis(0.2)
+        v = lowpass(signal.square(2 * np.pi * 150 * t), 1200) * (0.6 + 0.4 * np.sin(2 * np.pi * 25 * t))
+        v *= adsr(len(t), 0.01, 0.02, 0.9, 0.03)
+        i = int(off * SR)
+        y[i: i + len(v)] += v[: len(y) - i] * 0.45
+    return y
+
+
+def sfx_clack() -> np.ndarray:
+    """Interruptor mecánico: doble clic con cuerpo."""
+    y = np.zeros(int(0.12 * SR))
+    for off, g, f in ((0.0, 1.0, 1800), (0.032, 0.7, 1300)):
+        t = t_axis(0.05)
+        c = bandpass(rng.standard_normal(len(t)), f * 0.6, f * 2.5) * exp_decay(len(t), 0.004)
+        c += np.sin(2 * np.pi * 220 * t) * exp_decay(len(t), 0.012) * 0.6
+        i = int(off * SR)
+        y[i: i + len(c)] += c[: len(y) - i] * g
+    return y * 0.8
+
+
+def sfx_tick(note: str | None = None) -> np.ndarray:
     t = t_axis(0.03)
-    return bandpass(rng.standard_normal(len(t)), 3000, 9000) * exp_decay(len(t), 0.003) * 0.7
+    y = bandpass(rng.standard_normal(len(t)), 3000, 9000) * exp_decay(len(t), 0.003) * 0.7
+    if note:
+        y += np.sin(2 * np.pi * midi(n(note)) * t) * exp_decay(len(t), 0.008) * 0.4
+    return y
 
 
 def sfx_flip() -> np.ndarray:
@@ -343,14 +380,12 @@ def sfx_type() -> np.ndarray:
 
 
 def sfx_buzz() -> np.ndarray:
-    """Error / doble reserva: zumbido grave corto (doble)."""
-    y = np.zeros(int(0.35 * SR))
-    for off in (0.0, 0.16):
-        t = t_axis(0.12)
-        b = lowpass(signal.square(2 * np.pi * 110 * t), 900) * adsr(len(t), 0.003, 0.02, 0.8, 0.03) * 0.35
-        i = int(off * SR)
-        y[i: i + len(b)] += b
-    return y
+    """Error / conflicto: 70 Hz + clúster de 120 ms."""
+    t = t_axis(0.3)
+    y = np.sin(2 * np.pi * 70 * t) * exp_decay(len(t), 0.12) * 0.7
+    cl = sum(saw(midi(k), t) for k in (n("A3"), n("Bb3"), n("B3")))
+    y += lowpass(cl, 1400) * adsr(len(t), 0.004, 0.03, 0.7, 0.04, hold=0.12) * 0.22
+    return np.tanh(y * 1.3) * 0.8
 
 
 def sfx_impact() -> np.ndarray:

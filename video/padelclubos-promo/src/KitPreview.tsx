@@ -10,6 +10,7 @@ import {
   Button,
   CourtLines,
   Cursor,
+  DayClock,
   KpiCard,
   MarcadorModule,
   PadelBall,
@@ -56,7 +57,7 @@ export const KitPreview: React.FC = () => {
           <Badge tone="success">Cobrado</Badge>
           <Badge tone="warning">Pendiente</Badge>
         </div>
-        <MarcadorModule frame={frame + 60} total={fmt.eur2(24)} width={520} />
+        <MarcadorModule frame={frame} start={20} total={fmt.eur2(24)} width={520} />
         <WordsReveal text="Todas las herramientas para tu club." frame={frame + 60} style={{fontSize: 44, color: color.ink900, width: 620}} />
         <div style={{display: "flex", gap: 30, alignItems: "center"}}>
           <CourtLines length={300} draw={1} stroke={color.green600} />
@@ -68,6 +69,9 @@ export const KitPreview: React.FC = () => {
           <div style={{paddingTop: STATUS_BAR_H + 20, paddingLeft: 20, ...displayStyle(800), fontSize: 30}}>Reservar pista</div>
           <PlayerBottomNav active="reservar" />
         </PhoneFrame>
+      </div>
+      <div style={{position: "absolute", left: 1000, top: 380, width: 600, height: 200, background: color.ink900}}>
+        <DayClock frame={frame} mood="alert" day={[{at: 0, value: "LUN"}, {at: 22, value: "MAR"}]} time={[{at: 0, value: "23:47"}, {at: 20, value: "00:06"}]} />
       </div>
       <div style={{position: "absolute", left: 0, top: 0, width: 1920, height: 1080}}>
         <Cursor frame={frame} keys={[{at: 0, x: 700, y: 700}, {at: 40, x: 400, y: 500, click: true}]} />

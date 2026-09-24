@@ -17,6 +17,7 @@
     "@remotion/bundler": "4.0.528",
     "@remotion/cli": "4.0.528",
     "@remotion/media-utils": "4.0.528",
+    "@remotion/motion-blur": "4.0.528",
     "@remotion/noise": "4.0.528",
     "@remotion/paths": "4.0.528",
     "@remotion/renderer": "4.0.528",

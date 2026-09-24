@@ -19,9 +19,41 @@ export const WordsReveal: React.FC<{
   /** Palabras (por índice) que se pintan con otro color. */
   highlight?: {indices: number[]; color: string};
   align?: "left" | "center" | "right";
-}> = ({text, frame, start = 0, step = 3, duration = 20, exitAt, exitDuration = 10, style, highlight, align = "left"}) => {
+  /** «vista» (fundido + 4 px, gramática de la marca) o «mask» (sube desde su línea). */
+  mode?: "vista" | "mask";
+}> = ({text, frame, start = 0, step = 3, duration, exitAt, exitDuration = 8, style, highlight, align = "left", mode = "vista"}) => {
   const words = text.split(" ");
   const exitP = exitAt === undefined ? 0 : progress(frame, exitAt, exitDuration, ease.in);
+  if (mode === "vista") {
+    const d = duration ?? 6;
+    return (
+      <div
+        style={{
+          ...displayStyle(800),
+          display: "flex",
+          flexWrap: "wrap",
+          justifyContent: align === "center" ? "center" : align === "right" ? "flex-end" : "flex-start",
+          columnGap: "0.26em",
+          ...style,
+          opacity: 1 - exitP,
+          transform: `translateY(${-exitP * 4}px)`,
+        }}
+      >
+        {words.map((w, i) => {
+          const p = progress(frame, start + i * step, d, ease.out);
+          const hl = highlight?.indices.includes(i);
+          return (
+            <span
+              key={i}
+              style={{display: "inline-block", opacity: p, transform: `translateY(${(1 - p) * 4}px)`, color: hl ? highlight?.color : undefined}}
+            >
+              {w}
+            </span>
+          );
+        })}
+      </div>
+    );
+  }
   return (
     <div
       style={{
@@ -34,7 +66,7 @@ export const WordsReveal: React.FC<{
       }}
     >
       {words.map((w, i) => {
-        const p = progress(frame, start + i * step, duration, ease.outExpo);
+        const p = progress(frame, start + i * step, duration ?? 20, ease.outExpo);
         const hl = highlight?.indices.includes(i);
         return (
           <span key={i} style={{display: "inline-block", overflow: "hidden", paddingBottom: "0.08em", marginBottom: "-0.08em"}}>

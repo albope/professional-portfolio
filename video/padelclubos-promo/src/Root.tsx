@@ -6,6 +6,7 @@ import {useFormat} from "./components/backgrounds";
 import {KitPreview} from "./KitPreview";
 import {FPS} from "./lib/anim";
 import {Placeholder} from "./Placeholder";
+import {SceneProvider} from "./lib/scene";
 import {SCENES} from "./scenes";
 import {LANDSCAPE, PORTRAIT, place, totalFrames, type SceneSpec} from "./timeline";
 
@@ -33,7 +34,9 @@ const Promo: React.FC<PromoProps> = ({audio: mode}) => {
       <AbsoluteFill style={{background: color.ink900}}>
         {place(list).map((s) => (
           <Sequence key={s.id + s.from} from={s.from} durationInFrames={s.durationInFrames} name={s.id}>
-            <SceneById id={s.id} />
+            <SceneProvider durationInFrames={s.durationInFrames}>
+              <SceneById id={s.id} />
+            </SceneProvider>
           </Sequence>
         ))}
         {mode !== "none" && hasFile(audio) ? <Audio src={staticFile(audio)} /> : null}

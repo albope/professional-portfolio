@@ -63,12 +63,44 @@ export const fadeOut = (frame: number, start: number, duration = 10, distance = 
   return {opacity: 1 - p, transform: `translateY(${p * distance}px)`};
 };
 
-/** Muelle con presets de la casa. */
+/** Muelles críticamente amortiguados: la marca no usa rebotes ni overshoot. */
 export const springs = {
   snappy: {damping: 200, stiffness: 220, mass: 0.7},
-  soft: {damping: 30, stiffness: 120, mass: 1},
-  pop: {damping: 14, stiffness: 180, mass: 0.8},
+  soft: {damping: 200, stiffness: 90, mass: 1},
 } as const;
+
+/** Tokens de movimiento del producto, en frames a 30 fps. */
+export const motion = {
+  /** press 120 ms ease-out (toques). */
+  press: 4,
+  /** overlay 220 ms cubic-bezier(0.32,0.72,0,1) (hojas y desplazamientos). */
+  overlay: 7,
+  /** vista 180 ms fade + 4 px (entradas). */
+  view: 6,
+  /** celebrate 400 ms (solo confirmación de reserva o pago). */
+  celebrate: 12,
+  /** salida de titulares (vista inversa). */
+  exit: 8,
+} as const;
+
+/** Entrada «vista» del sistema: fundido + 4 px en 6 frames. */
+export const view = (frame: number, start: number, distance = 4): CSSProperties => {
+  const p = progress(frame, start, 6, ease.out);
+  return {opacity: p, transform: `translateY(${(1 - p) * distance}px)`};
+};
+
+/** Salida «vista inversa» (8 frames). */
+export const viewOut = (frame: number, start: number, distance = 4): CSSProperties => {
+  const p = progress(frame, start, 8, ease.in);
+  return {opacity: 1 - p, transform: `translateY(${-p * distance}px)`};
+};
+
+/** Pulsación (press 120 ms): escala 1 → 0,96 → 1 sin rebote. */
+export const pressScale = (frame: number, at: number) => {
+  const d = frame - at;
+  if (d < 0 || d > 8) return 1;
+  return d < 4 ? 1 - 0.04 * (d / 4) : 0.96 + 0.04 * ((d - 4) / 4);
+};
 
 export const springAt = (
   frame: number,
@@ -98,5 +130,5 @@ export const fmt = {
   eur: (v: number) => eur.format(v),
   eur2: (v: number) => eur2.format(v),
   int: (v: number) => int.format(Math.round(v)),
-  pct: (v: number) => `${Math.round(v)}%`,
+  pct: (v: number) => `${Math.round(v)}\u00A0%`,
 };
