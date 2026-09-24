@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { copyEs, partirFlecha, partirUltimaPalabra, proyectoSlugs, servicioNeeds } from "../data/copy";
-import { CONTACT_NEEDS, CONTACT_PROJECTS } from "./contact";
+import { CONTACT_NEEDS, CONTACT_NEEDS_LISTED, CONTACT_PROJECTS } from "./contact";
 import { site } from "../data/site";
 import { booking } from "../data/booking";
 import { projects, homeShots } from "../data/projects";
@@ -97,11 +97,18 @@ test("contact copy keeps the fragments its links are painted over", () => {
   assert.equal(copyEs.contacto.llamada.cta, `${booking.ctaLabel} ↗`);
 });
 
-/** El selector del formulario es el copy, no una lista paralela. */
-test("the form selector matches the shared contact needs", () => {
+/**
+ * El selector del formulario es el copy, no una lista paralela. Segunda
+ * pasada del rediseño: el selector lista solo los temas con el nombre de cada
+ * servicio. «diagnostico» duplicaba «Todavía no lo tengo claro», así que ya no
+ * se ofrece, aunque la API lo sigue aceptando para enlaces antiguos.
+ */
+test("the form selector matches the listed contact needs", () => {
   const [placeholder, ...needs] = copyEs.contacto.formulario.selector.opciones;
   assert.ok(placeholder);
-  assert.deepEqual(needs, Object.values(CONTACT_NEEDS));
+  assert.deepEqual(needs, CONTACT_NEEDS_LISTED.map((need) => CONTACT_NEEDS[need]));
+  assert.deepEqual(needs, copyEs.servicios.items.map((item) => item.titulo));
+  assert.ok(Object.hasOwn(CONTACT_NEEDS, "diagnostico"));
 });
 
 /**

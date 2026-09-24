@@ -113,23 +113,52 @@ test("plate crops stay inside their screenshots", () => {
     for (const view of plate.views) {
       assert.ok(within(view.desktop, view.shot), `${plate.num} ${view.shot.src} escritorio`);
       if (view.mobile) assert.ok(within(view.mobile, view.shot), `${plate.num} ${view.shot.src} móvil`);
+      if (view.tablet) assert.ok(within(view.tablet, view.shot), `${plate.num} ${view.shot.src} tablet`);
     }
   }
 });
 
 /**
- * Cada nota numerada tiene su llamada visible en escritorio y en móvil: una
- * nota sin marcador en la captura rompe la lectura del plano. Las notas se
+ * Cada nota numerada tiene su llamada visible en las dos composiciones: una
+ * nota sin marcador rompe la lectura del plano. En la hoja apilada (por debajo
+ * de 1024 px) la nota puede pasar a otra vista y cambiar de anclaje, y solo
+ * se queda sin marcador si lo declara con `mobileMarker: false`. Las notas se
  * numeran desde 1 sin saltos.
+ *
+ * Segunda pasada del rediseño: el modelo pasó de un solo anclaje por nota a
+ * uno por composición, con vistas propias de cada una (`only`). La prueba
+ * sigue exigiendo lo mismo, un marcador dentro del recorte que se ve.
  */
-test("every plate note has a visible callout at both crops", () => {
+test("every plate note has a visible callout in both compositions", () => {
   for (const plate of allPlates) {
     assert.deepEqual(plate.notes.map((note) => note.n), plate.notes.map((_, index) => index + 1), plate.num);
     for (const note of plate.notes) {
-      const view = plate.views[note.view];
-      assert.ok(view, `${plate.num}.${note.n} sin vista`);
-      assert.ok(contains(view.desktop, note.at), `${plate.num}.${note.n} fuera del recorte de escritorio`);
-      assert.ok(contains(view.mobile ?? view.desktop, note.mobileAt ?? note.at), `${plate.num}.${note.n} fuera del recorte móvil`);
+      const desktop = plate.views[note.view];
+      assert.ok(desktop && desktop.only !== "mobile", `${plate.num}.${note.n} sin vista de escritorio`);
+      assert.ok(contains(desktop.desktop, note.at), `${plate.num}.${note.n} fuera del recorte de escritorio`);
+      if (note.mobileMarker === false) continue;
+      const mobile = plate.views[note.mobileView ?? note.view];
+      assert.ok(mobile && mobile.only !== "desktop", `${plate.num}.${note.n} sin vista apilada`);
+      const at = note.mobileAt ?? note.at;
+      assert.ok(contains(mobile.mobile ?? mobile.desktop, at), `${plate.num}.${note.n} fuera del recorte apilado`);
+      if (mobile.tablet) assert.ok(contains(mobile.tablet, at), `${plate.num}.${note.n} fuera del recorte de tablet`);
+    }
+    // Cada composición enseña al menos una captura.
+    assert.ok(plate.views.some((view) => view.only !== "mobile"), `${plate.num} sin captura de escritorio`);
+    assert.ok(plate.views.some((view) => view.only !== "desktop"), `${plate.num} sin captura apilada`);
+  }
+});
+
+/**
+ * Una captura tomada a 1x no se amplía: el ancho máximo declarado no supera
+ * el del recorte.
+ */
+test("plate width caps never enlarge a crop", () => {
+  for (const plate of allPlates) {
+    for (const view of plate.views) {
+      if (view.max) assert.ok(view.max <= view.desktop.w, `${plate.num} ${view.shot.src} max`);
+      if (view.mobileMax) assert.ok(view.mobileMax <= (view.mobile ?? view.desktop).w, `${plate.num} ${view.shot.src} mobileMax`);
+      if (view.tabletMax) assert.ok(view.tabletMax <= (view.tablet ?? view.mobile ?? view.desktop).w, `${plate.num} ${view.shot.src} tabletMax`);
     }
   }
 });

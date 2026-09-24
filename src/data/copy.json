@@ -17,17 +17,17 @@
     "menu": "Menú"
   },
   "hero": {
-    "etiqueta": "Software a medida · Automatizaciones · Webs",
+    "etiqueta": "Estudio de software para pymes",
     "lugar": "Valencia, presencial y en remoto",
     "h1": "Software a medida para lo que hoy haces a mano.",
-    "entradilla": "Aplicaciones de gestión, automatizaciones, integraciones y webs para negocios. Me ocupo de cada proyecto, desde la primera conversación hasta la puesta en marcha.",
+    "entradilla": "Reservas por WhatsApp, stock en hojas de cálculo que no cuadran, datos copiados de un programa a otro. Lo convierto en una aplicación, una automatización o una web, y me ocupo de cada proyecto de principio a fin.",
     "cta_primaria": "Cuéntame qué necesitas",
     "nota": "Primera conversación sin compromiso.",
     "firma": {
       "nombre": "Alberto Bort",
       "rol": "BPM Tech · Consultoría y desarrollo"
     },
-    "etiqueta_corta": "Software · Automatización · Webs"
+    "etiqueta_corta": "Software para pymes"
   },
   "servicios": {
     "kicker": "Servicios",
@@ -54,20 +54,20 @@
       },
       {
         "titulo": "Quitar trabajo repetido",
-        "que_construimos": "Conectar las herramientas que ya usas para no copiar datos a mano. La IA entra cuando resuelve una tarea concreta.",
-        "ejemplos": "Pedidos que pasan a facturación, documentos clasificados y avisos automáticos.",
+        "que_construimos": "Conectar las herramientas que ya usas para no copiar datos a mano. Uso IA solo cuando ahorra una tarea concreta.",
+        "ejemplos": "Socios que se cargan desde un Excel, avisos por email cuando alguien confirma y un asistente que reúne correo, mensajería y documentos.",
         "pruebas": [
           {
             "num": "01",
-            "que": "socios importados desde Excel"
+            "que": "carga los socios desde el Excel del club"
           },
           {
             "num": "04",
-            "que": "avisos por email"
+            "que": "avisa por email al confirmar"
           },
           {
             "num": "05",
-            "que": "consulta correo, mensajería y documentos"
+            "que": "consulta el correo y la mensajería del equipo"
           }
         ],
         "cta": "Quiero ahorrar trabajo manual →"
@@ -155,7 +155,7 @@
   "proyectos": {
     "kicker": "Proyectos",
     "h2": "Trabajo real, explicado.",
-    "apoyo": "Capturas reales de cada proyecto, con datos de demo o con la marca difuminada cuando toca. Cada nota señala una decisión: qué había que resolver y cómo lo resuelve la pantalla.",
+    "apoyo": "Pantallas reales de cada proyecto, con datos de demo o con nombres y marcas difuminados. Cada nota explica por qué la pantalla funciona así.",
     "indice_rotulo": "Los cinco proyectos",
     "items": [
       {
@@ -201,8 +201,8 @@
       },
       {
         "num": "03",
-        "nombre": "Construimos y revisamos",
-        "texto": "Pruebas los avances, revisamos los detalles y ponemos la solución en marcha. Acordamos también cómo mantenerla.",
+        "nombre": "Lo construyo y lo revisamos",
+        "texto": "Pruebas los avances, revisamos juntos los detalles y pongo la solución en marcha. Acordamos también cómo mantenerla.",
         "entregable": "Una solución que puedes usar"
       }
     ],
@@ -214,12 +214,10 @@
     "nombre": "Alberto Bort",
     "rol": "Consultoría y desarrollo",
     "parrafos": [
-      "Me ocupo de cada proyecto de principio a fin: entender cómo trabajas, diseñar la solución, desarrollarla y ponerla en marcha. Si una herramienta que ya existe te sirve, te lo digo.",
-      "Trabajo desde Valencia, de forma presencial y en remoto."
+      "Me ocupo de cada proyecto de principio a fin: entender cómo trabajas, diseñar la solución, desarrollarla y ponerla en marcha. Si una herramienta que ya existe te sirve, te lo digo."
     ],
     "datos": {
-      "Base": "Valencia, España",
-      "Modalidad": "Presencial y en remoto"
+      "Base": "Valencia, presencial y en remoto"
     },
     "cta": "Hablemos de tu proyecto ↓"
   },
@@ -274,20 +272,19 @@
         "Teléfono (opcional)"
       ],
       "selector": {
-        "etiqueta": "¿En qué puedo ayudarte? (opcional)",
+        "etiqueta": "Tema (opcional)",
         "opciones": [
           "Todavía no lo tengo claro",
-          "Necesito ayuda para definir mi proyecto",
-          "Organizar la gestión de mi negocio",
-          "Automatizar tareas y conectar herramientas",
-          "Crear una web o una aplicación"
+          "Organizar la gestión",
+          "Quitar trabajo repetido",
+          "Una web o una aplicación nueva"
         ]
       },
       "mensaje": {
         "etiqueta": "¿Qué necesitas resolver?",
         "ayuda": "Qué te gustaría mejorar o qué idea tienes. Con unas frases es suficiente."
       },
-      "aviso_datos": "BPM Tech (BORT PEREZ MULTI GESTION SOCIEDAD LIMITADA) utilizará tus datos para responder a tu consulta y, si procede, preparar una propuesta. Cómo ejercer tus derechos y el resto de información, en la política de privacidad.",
+      "aviso_datos": "BPM Tech (BORT PEREZ MULTI GESTION SOCIEDAD LIMITADA) utilizará tus datos para responder a tu consulta y, si procede, preparar una propuesta. Cómo ejercer tus derechos y el resto de la información, en la política de privacidad.",
       "boton": "Enviar consulta"
     }
   },

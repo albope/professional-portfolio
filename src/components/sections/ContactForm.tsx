@@ -6,10 +6,12 @@ import { useSearchParams } from "next/navigation";
 import { Check } from "lucide-react";
 import { SquareWord } from "@/components/ui/SquareWord";
 import { copyEs } from "@/data/copy";
+import { booking } from "@/data/booking";
+import { site } from "@/data/site";
 import { trackEvent, type AnalyticsProperties } from "@/lib/analytics";
 import { DIAGNOSTICO_EVENT } from "@/lib/diagnostico";
 import {
-  CONTACT_LIMITS, CONTACT_NEEDS, CONTACT_PROJECTS, CONTACT_TIMEOUTS,
+  CONTACT_LIMITS, CONTACT_NEEDS, CONTACT_NEEDS_LISTED, CONTACT_PROJECTS, CONTACT_TIMEOUTS,
   getContactContext, isAcceptedContactResponse, validateContactPayload,
   type ContactContext, type ContactField, type ContactFieldErrors, type ContactNeed,
 } from "@/lib/contact";
@@ -23,7 +25,7 @@ const fields: ContactField[] = ["nombre", "empresa", "email", "telefono", "mensa
 
 const formulario = copyEs.contacto.formulario;
 const [rotuloNombre, rotuloEmpresa, rotuloEmail, rotuloTelefono] = formulario.campos;
-/** La primera opcion del selector es el marcador; las tres siguientes son CONTACT_NEEDS. */
+/** La primera opcion del selector es el marcador; las siguientes, CONTACT_NEEDS_LISTED. */
 const [sinDecidir] = formulario.selector.opciones;
 /**
  * El aviso de datos termina enlazando a la politica. Se parte por esa frase
@@ -216,7 +218,13 @@ function ContactFormContent({ context, forceDisabled = false }: { context: Conta
 
   return (
     <form action="/api/contact" method="post" onSubmit={handleSubmit} onFocusCapture={markStarted} aria-busy={status === "sending"} className="flex flex-col gap-[18px] lg:gap-[22px]" noValidate>
-      <noscript><p className="border border-paper/40 p-4 text-sm text-paper">Para enviar este formulario necesitas activar JavaScript. Los campos están deshabilitados y no se enviará ningún dato.</p></noscript>
+      <noscript>
+        <p className="border border-paper/40 p-4 text-sm leading-relaxed text-paper">
+          Para enviar este formulario necesitas activar JavaScript. Los campos están deshabilitados y no se enviará ningún dato.
+          Puedes escribirme a <a href={`mailto:${site.email}`} className="underline underline-offset-4">{site.email}</a> o{" "}
+          <a href={booking.url} className="underline underline-offset-4">reservar una llamada</a>.
+        </p>
+      </noscript>
       <fieldset disabled={disabled} className="flex min-w-0 flex-col gap-[18px] lg:gap-[22px]">
         <legend className="sr-only">Cuéntame qué necesitas resolver</legend>
         <div className="grid gap-[18px] lg:grid-cols-2 lg:gap-[22px]">
@@ -235,7 +243,8 @@ function ContactFormContent({ context, forceDisabled = false }: { context: Conta
           <span className={labelClasses}>{formulario.selector.etiqueta}</span>
           <select id="contact-necesidad" name="necesidad" value={need} onChange={(event) => setSelectedNeed(getContactContext(event.target.value, "").necesidad)} className={`campo-select bg-ink ${fieldBase} ${fieldOk}`}>
             <option value="" className="bg-ink">{sinDecidir}</option>
-            {Object.entries(CONTACT_NEEDS).map(([value, label]) => <option key={value} value={value} className="bg-ink">{label}</option>)}
+            {need === "diagnostico" && <option value="diagnostico" className="bg-ink">{CONTACT_NEEDS.diagnostico}</option>}
+            {CONTACT_NEEDS_LISTED.map((value) => <option key={value} value={value} className="bg-ink">{CONTACT_NEEDS[value]}</option>)}
           </select>
         </label>
         {context.proyecto && <p className="text-sm leading-relaxed text-paper/72">Proyecto de referencia: <span className="text-paper">{CONTACT_PROJECTS[context.proyecto]}</span></p>}
@@ -246,7 +255,13 @@ function ContactFormContent({ context, forceDisabled = false }: { context: Conta
           {fieldError("mensaje")}
         </div>
         <details className="border-y border-paper/28 py-1" open={errors.empresa || errors.telefono ? true : undefined}>
-          <summary className="min-h-11 cursor-pointer py-3 text-sm text-paper/78">Empresa y teléfono (opcional)</summary>
+          <summary className="group/extra flex min-h-11 cursor-pointer list-none items-center justify-between gap-4 py-3 text-sm text-paper/78 marker:content-none [&::-webkit-details-marker]:hidden">
+            Empresa y teléfono (opcional)
+            <span aria-hidden className="font-mono text-base text-cobalt-bright">
+              <span className="[details[open]_&]:hidden">+</span>
+              <span className="hidden [details[open]_&]:inline">−</span>
+            </span>
+          </summary>
           <div className="grid gap-[18px] pb-4 pt-2 lg:grid-cols-2 lg:gap-[22px]">
             <label className="flex flex-col gap-2" htmlFor="contact-empresa">
               <span className={labelClasses}>{rotuloEmpresa}</span>

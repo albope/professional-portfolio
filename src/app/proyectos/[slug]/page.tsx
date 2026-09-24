@@ -103,12 +103,12 @@ export default async function ProjectPage({ params }: PageProps) {
           </p>
         </div>
 
-        <h1 className="display mt-5 max-w-[1000px] text-[34px] leading-[0.98] text-ink lg:mt-10 lg:text-[clamp(2.75rem,3.75vw,3.375rem)] wide:text-[54px]">
+        <h1 className="display mt-5 max-w-[1000px] text-[clamp(28px,9.4vw,34px)] leading-[0.98] text-ink lg:mt-10 lg:text-[clamp(2.75rem,3.75vw,3.375rem)] wide:text-[54px]">
           {project.heroPre} <SquareWord word={project.heroWord} />
         </h1>
 
-        <div className="mt-5 lg:mt-8 lg:grid lg:grid-cols-[696fr_536fr] lg:items-end lg:gap-x-[88px]">
-          <p className="text-base leading-[1.55] text-ink-soft lg:text-[19px]">{project.intro}</p>
+        <div className="mt-5 lg:mt-8 lg:grid lg:grid-cols-[872fr_424fr] lg:items-end lg:gap-x-6">
+          <p className="max-w-[760px] text-base leading-[1.55] text-ink-soft lg:text-[19px]">{project.intro}</p>
           {project.aside && (
             <p className="mt-4 border-l-2 border-cobalt pl-4 text-sm leading-[1.55] text-ink-mute lg:mt-0">
               {project.aside}
@@ -120,7 +120,7 @@ export default async function ProjectPage({ params }: PageProps) {
       {plate ? (
         <figure aria-labelledby="lamina-ficha" className="plate container-editorial m-0 mt-6 lg:mt-12">
           <PlateStage plate={plate} labelId="lamina-ficha" eager className="-mx-4 border-x-0 md:mx-0 md:border-x" />
-          <PlateNotes notes={plate.notes} className="mt-4 hidden md:grid md:grid-cols-3 md:gap-x-6" />
+          <PlateNotes notes={plate.notes} className="mt-4 hidden lg:grid lg:grid-cols-3 lg:gap-x-6" />
         </figure>
       ) : (
         <ProjectFigure figure={principal} size="principal" className={`mt-6 lg:mt-12 ${inset}`} />
@@ -176,7 +176,7 @@ export default async function ProjectPage({ params }: PageProps) {
         <section
           aria-label="Detalles de interfaz"
           className={`grid items-start gap-y-8 pt-12 lg:pt-24 wide:pt-[120px] ${inset} ${
-            detalles.length > 1 ? "min-[900px]:grid-cols-[696fr_536fr] lg:gap-x-[88px]" : ""
+            detalles.length > 1 ? "min-[900px]:grid-cols-[872fr_424fr] min-[900px]:gap-x-6" : ""
           }`}
         >
           {detalles.map((figure) => (
@@ -185,8 +185,10 @@ export default async function ProjectPage({ params }: PageProps) {
         </section>
       )}
 
-      <section aria-label="Una decisión concreta" className={`mt-12 lg:mt-24 wide:mt-[120px] ${inset}`}>
-        <div className={`bg-paper-2 px-4 pb-8 pt-7 lg:px-10 lg:pb-12 lg:pt-11 ${pairClass}`}>
+      {/* Banda a sangre: el título cae en la primera columna y el texto en la
+          segunda, en la misma vertical que el resto de la ficha. */}
+      <section aria-label="Una decisión concreta" className="mt-12 bg-paper-2 lg:mt-24 wide:mt-[120px]">
+        <div className={`container-editorial pb-8 pt-7 lg:pb-12 lg:pt-11 ${pairClass}`}>
           <h2 className={titleClass}>Una decisión concreta</h2>
           <div className="lg:max-w-[720px]">
             <p className="mt-2.5 text-[15px] leading-[1.6] text-ink-soft lg:mt-0 lg:text-[17px] lg:leading-[1.65]">

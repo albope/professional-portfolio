@@ -24,7 +24,7 @@ const files = {
   eventoCuenta: { src: "/proyectos/evento/cuenta-anonima.jpg", width: 1120, height: 512 },
   radioPortada: { src: "/proyectos/radio/portada-anonima.jpg", width: 1296, height: 593 },
   radioMovil: { src: "/proyectos/radio/movil.jpg", width: 514, height: 786 },
-  asistenteTraza: { src: "/proyectos/asistente/traza.png", width: 1343, height: 638 },
+  asistenteTraza: { src: "/proyectos/asistente/traza-sin-marcas.png", width: 1343, height: 638 },
 } as const;
 
 /** Color del propio producto. Solo vive dentro de su escenario. */
@@ -94,7 +94,7 @@ export const projects: Project[] = [
     heroPre: "Reservas y gestión de pádel en una",
     heroWord: "plataforma",
     intro:
-      "Desarrollo de una plataforma para conectar la reserva de pistas con la administración del club: socios, pagos y competiciones desde un mismo sistema. Un panel para quien gestiona y un portal para quien juega.",
+      "Una plataforma que une la reserva de pistas con la administración del club: socios, pagos, academia y competiciones en un mismo sistema. Un panel para quien gestiona y un portal para quien juega.",
     aside:
       "Está en producción y hoy funciona como servicio por suscripción para clubes.",
     ficha: [
@@ -127,7 +127,7 @@ export const projects: Project[] = [
         crop: { x: 300, y: 40, w: 380, h: 430 },
         captionLabel: "Parrilla de reservas",
         caption:
-          "Cada franja muestra hora, estado y titular. Las reservas habituales se distinguen con una trama, no solo con color.",
+          "Cada franja muestra hora y estado. Las reservas habituales llevan trama, no solo color.",
         variant: "recorte",
       },
       {
@@ -154,9 +154,9 @@ export const projects: Project[] = [
         "Ligas y torneos con clasificación automática",
         "Cobros presenciales y reservas pendientes",
         "Portal móvil del jugador, sin instalar app",
-        "Analíticas de ocupación e ingresos",
+        "Estadísticas de ocupación e ingresos",
         "Noticias y blog del club",
-        "Roles y permisos para admins, staff y socios",
+        "Permisos para gerencia, personal y socios",
       ],
     },
     decision: {
@@ -173,19 +173,19 @@ export const projects: Project[] = [
     sceneLabel: "Gestión de almacén",
     title: "Sistema de gestión de almacén",
     summary:
-      "Inventario, ubicaciones y movimientos en una herramienta con permisos por rol, más un terminal RF para operar con escáner o con la cámara del móvil.",
+      "Inventario, ubicaciones y movimientos en una herramienta con permisos según el puesto, y un lector de códigos que funciona con pistola o con la cámara del móvil.",
     summaryShort:
-      "Inventario, ubicaciones y movimientos con permisos por rol, más un terminal RF para operar con escáner o con la cámara del móvil.",
-    meta: ["Software · Inventario y movimientos", "Web + terminal RF"],
-    metaShort: "Software · Web + terminal RF",
+      "Inventario, ubicaciones y movimientos, con lector de códigos por pistola o con la cámara del móvil.",
+    meta: ["Software · Inventario y movimientos", "Web + lector de códigos"],
+    metaShort: "Software · Web + lector de códigos",
     heroPre: "Inventario y movimientos bajo el mismo",
     heroWord: "control",
     intro:
-      "Desarrollo de un sistema de gestión de almacén para organizar referencias, ubicaciones y movimientos, con permisos por rol y un terminal RF para operar a pie de estantería.",
+      "Un sistema de gestión de almacén que ordena referencias, ubicaciones y movimientos, con permisos según el puesto y un lector de códigos para trabajar a pie de estantería.",
     ficha: [
       { label: "Necesidad", body: "Relacionar lo que hay en el almacén con dónde está y cómo se mueve." },
       { label: "Trabajo realizado", body: "Aplicación web completa: productos, ubicaciones, stock, movimientos, recuentos, órdenes e informes." },
-      { label: "Alcance", body: "Inventario, ubicaciones, entradas, movimientos, permisos por rol y terminal RF." },
+      { label: "Alcance", body: "Inventario, ubicaciones, entradas, movimientos, permisos según el puesto y lector de códigos." },
       { label: "Puede encajar en", body: "Operaciones con material, existencias o movimientos internos." },
     ],
     figures: [
@@ -199,27 +199,27 @@ export const projects: Project[] = [
         legendRight: "Captura real · Datos de demo",
         captionLabel: "Movimientos",
         caption:
-          "Entradas, salidas, traspasos y ajustes en un único libro. El stock de cada referencia se lee como el resultado de esos apuntes.",
+          "Entradas, salidas, traspasos y ajustes en un único libro. El stock de cada referencia sale de sumar esos movimientos.",
         variant: "ancha",
       },
       {
         shot: {
           ...files.rfEntrada,
-          alt: "Terminal RF en el móvil: entrada de producto con lectura por escáner y confirmación de ubicación",
+          alt: "Lector de códigos en el móvil: entrada de producto con lectura por escáner y confirmación de ubicación",
         },
         scene: "wms",
-        legend: "Terminal RF",
-        captionLabel: "Terminal RF",
+        legend: "Lector de códigos",
+        captionLabel: "Lector de códigos",
         caption:
           "La misma operativa a pie de estantería, con escáner o con la cámara del móvil. Sin instalar una aplicación aparte.",
         variant: "movil",
       },
     ],
     problem:
-      "Gestionar un almacén requiere conectar las referencias con sus ubicaciones y registrar los cambios de existencias. El proyecto aborda esa relación para que la información de inventario y los movimientos formen parte de una misma herramienta.",
+      "Gestionar un almacén requiere conectar las referencias con sus ubicaciones y registrar los cambios de existencias. Había que unir esa información para que el inventario y los movimientos vivan en una misma herramienta.",
     built: {
       body:
-        "Una aplicación web de gestión con inventario, ubicaciones, entradas y movimientos, más un terminal RF para trabajar en el propio almacén. El acceso se organiza por roles.",
+        "Una aplicación web de gestión con inventario, ubicaciones, entradas y movimientos, y un lector de códigos para trabajar en el propio almacén. Cada persona accede a lo que le toca.",
       features: [
         "Productos y referencias",
         "Ubicaciones del almacén",
@@ -227,13 +227,13 @@ export const projects: Project[] = [
         "Movimientos, traspasos y ajustes",
         "Recuentos de inventario",
         "Órdenes e informes",
-        "Terminal RF con escáner o cámara",
-        "Permisos por rol",
+        "Lector de códigos con pistola o con el móvil",
+        "Permisos según el puesto",
       ],
     },
     decision: {
       body:
-        "El stock no se edita a mano: es la proyección de un libro de movimientos inmutable. Anular una operación genera un movimiento compensatorio en lugar de borrar el apunte original, así que siempre se puede reconstruir cómo se llegó a la cifra actual.",
+        "El stock no se escribe a mano: sale de sumar cada entrada y salida registrada. Si algo se anula, se añade un movimiento que lo corrige y el original se queda, así que siempre se puede ver cómo se llegó a la cifra actual.",
       note:
         "Antes de construir una herramienta interna conviene describir un recorrido concreto: qué entra, dónde se coloca, quién lo mueve y cómo se registra. Ese recorrido define una primera versión útil y las integraciones que realmente necesita el negocio.",
     },
@@ -250,7 +250,7 @@ export const projects: Project[] = [
     heroPre: "Invitados y organización en una",
     heroWord: "web",
     intro:
-      "Desarrollo de una web de evento con la información para los invitados, la confirmación de asistencia con sus preferencias y un espacio privado de gestión. En dos idiomas.",
+      "Una web de evento con la información para los invitados, la confirmación de asistencia con sus preferencias y un espacio privado de gestión. En dos idiomas.",
     ficha: [
       { label: "Necesidad", body: "Reunir la información del evento y las respuestas de los invitados en un mismo sitio." },
       { label: "Trabajo realizado", body: "Desarrollo de la web, los formularios y el panel privado." },
@@ -306,7 +306,7 @@ export const projects: Project[] = [
     heroPre: "Directo y programas en una web",
     heroWord: "propia",
     intro:
-      "Desarrollo de una web para un programa de radio con identidad propia, reproductor en directo y archivo de emisiones que se puede explorar sin cortar la escucha.",
+      "Una web para un programa de radio con identidad propia, reproductor en directo y archivo de emisiones que se puede recorrer sin cortar la escucha.",
     ficha: [
       { label: "Necesidad", body: "Reunir la escucha en directo y el contenido publicado en un sitio propio." },
       { label: "Trabajo realizado", body: "Desarrollo de la web y de la experiencia de reproducción." },
@@ -340,7 +340,7 @@ export const projects: Project[] = [
       },
     ],
     problem:
-      "La necesidad era reunir la identidad del programa, la emisión en directo y los contenidos archivados en una web propia. El audio forma parte central del recorrido por el sitio, no es un añadido.",
+      "Había que reunir la identidad del programa, la emisión en directo y los contenidos archivados en una web propia. El audio forma parte central del recorrido por el sitio, no es un añadido.",
     built: {
       body:
         "La web con reproductor en directo, archivo histórico y soporte para instalarla como app. El reproductor permanece durante la navegación interna.",
@@ -371,14 +371,14 @@ export const projects: Project[] = [
       "Dos agentes para consultar documentación, analizar el estado de un proyecto y preparar decisiones y estimaciones con contexto.",
     meta: ["IA aplicada · Proyectos y conocimiento interno"],
     metaShort: "IA aplicada",
-    heroPre: "El contexto de tus proyectos, a\u00a0mano para",
+    heroPre: "El contexto de tus proyectos, listo para",
     heroWord: "decidir",
     intro:
-      "Desarrollo de una aplicación de IA con un agente de gestión de proyectos y otro de conocimiento de producto. Reúne consultas, documentos y herramientas de trabajo en una interfaz que muestra las fuentes consultadas y los pasos de cada respuesta.",
+      "Una aplicación de IA con un agente de gestión de proyectos y otro de conocimiento de producto. Reúne consultas, documentos y herramientas de trabajo, y cada respuesta enseña sus pasos y sus fuentes.",
     ficha: [
       { label: "Necesidad", body: "Reunir contexto disperso para preparar seguimiento, decisiones y propuestas." },
       { label: "Trabajo realizado", body: "Aplicación, agentes especializados, tratamiento de adjuntos y conexión con fuentes de trabajo." },
-      { label: "Alcance", body: "Dos agentes, adjuntos, traza de fuentes y herramientas, según configuración y permisos." },
+      { label: "Alcance", body: "Dos agentes, adjuntos y los pasos y las fuentes de cada respuesta." },
       { label: "Puede encajar en", body: "Equipos de proyectos, operaciones, soporte y preventa con información repartida." },
     ],
     figures: [
@@ -396,7 +396,7 @@ export const projects: Project[] = [
       },
     ],
     problem:
-      "Preparar una reunión, explicar un retraso o valorar un cambio suele exigir revisar documentos, conversaciones, compromisos y tareas. El proyecto aborda ese trabajo previo: llevar el contexto pertinente a una consulta y estructurar una respuesta que la persona pueda revisar.",
+      "Preparar una reunión, explicar un retraso o valorar un cambio suele exigir revisar documentos, conversaciones, compromisos y tareas. La aplicación se ocupa de ese trabajo previo: llevar a cada consulta el contexto que importa y ordenar una respuesta que la persona pueda revisar.",
     built: {
       body:
         "Una aplicación de conversación con historial, adjuntos, respuesta progresiva, cancelación y reintento, sobre dos agentes con responsabilidades distintas: gestión de proyectos y conocimiento de producto. Cada uno recibe instrucciones, fuentes y herramientas acordes con su función.",
@@ -440,7 +440,7 @@ export const homeShots = {
   },
   almacenRf: {
     ...files.rfEntrada,
-    alt: "Terminal RF en el móvil: entrada de producto por escáner",
+    alt: "Lector de códigos en el móvil: entrada de producto por escáner",
   },
   eventoCuenta: {
     ...files.eventoCuenta,

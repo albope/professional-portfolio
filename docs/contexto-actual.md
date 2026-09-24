@@ -1,14 +1,14 @@
 # Contexto vigente de la web BPM Tech
 
-Actualizado: 23 de septiembre de 2026, con el rediseño «Planos anotados». Este documento describe el árbol local. No acredita despliegue, entrega de correo ni resultados comerciales.
+Actualizado: 24 de septiembre de 2026, con el rediseño «Planos anotados» tras dos pasadas de crítica. El proceso, las direcciones descartadas, la verificación y lo pendiente están en [rediseno/README.md](rediseno/README.md). Este documento describe el árbol local. No acredita despliegue, entrega de correo ni resultados comerciales.
 
 ## Dirección comercial y de arte
 
-BPM Tech presenta software a medida, automatizaciones e integraciones, y webs para negocios. El titular es «Software a medida para lo que hoy haces a mano.» y la acción principal, «Cuéntame qué necesitas». La alternativa discreta es la llamada de 30 minutos. La primera conversación se ofrece sin compromiso. El copy habla en primera persona del singular: detrás está Alberto.
+BPM Tech presenta software a medida, automatizaciones e integraciones, y webs para pymes. El titular es «Software a medida para lo que hoy haces a mano.» y la entradilla nombra problemas reconocibles (reservas por WhatsApp, stock en hojas de cálculo que no cuadran, datos copiados de un programa a otro). La acción principal es «Cuéntame qué necesitas». La alternativa discreta es la llamada de 30 minutos. La primera conversación se ofrece sin compromiso. El copy habla en primera persona del singular: detrás está Alberto.
 
-**Concepto: planos anotados.** La web enseña el trabajo en lugar de describirlo. Las capturas reales llevan notas numeradas sobre las decisiones que las hacen funcionar y un cajetín con los datos del proyecto, como un plano técnico. El marcador numerado es el cuadrado macizo del glifo de la marca. El método usa las tres piezas del glifo (barra, cuadrado hueco y cuadrado macizo) para sus tres pasos. No hay animaciones automáticas: el único gesto es que, con ratón, pasar por una nota señala su marcador y al revés.
+**Concepto: planos anotados.** La web enseña el trabajo en lugar de describirlo. Cada proyecto es una hoja con marco de tinta: capturas reales con notas numeradas sobre las decisiones que las hacen funcionar y un cajetín con los datos del proyecto, como un plano técnico. El marcador numerado es el cuadrado macizo del glifo de la marca y vive en el margen de la hoja, con una línea hasta el punto que señala, para no tapar la captura. El método usa las tres piezas del glifo (barra, cuadrado hueco y cuadrado macizo) para sus tres pasos. No hay animaciones automáticas: el único gesto es que, con ratón, pasar por una nota señala su marcador y al revés.
 
-La home sigue este orden: hero con la lámina de Padel Club OS, Proyectos (índice numerado de los cinco, láminas del almacén y de la radio y franjas de interfaz del evento y del asistente), Servicios (tres filas con el proyecto donde se puede ver cada uno), Método, Sobre mí, Preguntas frecuentes y Contacto.
+La home sigue este orden: hero con la hoja de Padel Club OS (academia en escritorio y portal del móvil), Proyectos (índice numerado de los cinco, hojas del almacén y de la radio y franjas de interfaz del evento y del asistente desde 768 px), Servicios (titular fijo en la primera columna y tres filas con los proyectos donde se ve cada uno), Método, Sobre mí, Preguntas frecuentes y Contacto. Todo se apoya en una sola rejilla de 424 y 872 px con calle de 24 a 1440.
 
 Referencias usadas para decidir y sus principios (contrastadas por búsqueda, sin navegación directa desde el entorno de trabajo): Linear (el producto real como demostración), Basecamp «Before & After» (lenguaje llano), Pentagram (el trabajo manda), índice de obras de Herzog & de Meuron (número e índice como navegación), guías de Teenage Engineering (llamadas numeradas) y sistema de información de SBB de Müller-Brockmann (símbolos funcionales sobre retícula).
 
@@ -24,21 +24,21 @@ Los visuales son capturas reales con datos de demo, servidas desde `public/proye
 - **Gestión de almacén**: nombre del producto difuminado. Publicar las originales requiere autorización del cliente.
 - **Web de evento**: sin nombre ni enlace. `evento/cuenta-anonima.jpg` difumina monograma y fecha. La portada, con nombres, fecha, lugar y fotografía, se retiró del árbol servido el 23 de septiembre de 2026.
 - **Web de radio**: sin nombre ni enlace hasta tener permiso del cliente. `radio/portada-anonima.jpg` difumina marca, titular, subtítulo y fotografía de los presentadores. La portada solo se enseña en vista partida: cabecera y reproductor.
-- **Asistente de IA**: `asistente/traza.png` difumina conversaciones, nombres de personas y empresas, el contenido de la respuesta y el usuario. Revisar cualquier captura nueva antes de publicarla.
+- **Asistente de IA**: `asistente/traza-sin-marcas.png` difumina conversaciones, nombres de personas y empresas, el contenido de la respuesta, el usuario y los nombres de herramientas de terceros (correo, mensajería, suite ofimática y modelo). Revisar cualquier captura nueva antes de publicarla.
 
 Los originales retirados siguen en el historial de git de un repositorio público y en despliegues anteriores. Retirarlos de ahí es una decisión pendiente de Alberto.
 
 La fila de logos de herramientas se retiró con la landing «El punto». Los SVG siguen en `public/logos/` sin uso. Si volviera, recordar que Python, OpenAI y AWS piden autorización para recolorear su marca o reservan su wordmark.
 
-El hero lleva la firma de Alberto Bort con el retrato cuadrado y la sección «Sobre mí» el retrato 4:5 con un cajetín: responsable, base, forma de trabajo y email. No se inventan tamaño de equipo, capacidad, disponibilidad ni resultados.
+El hero lleva la firma de Alberto Bort con el retrato cuadrado (en móvil, detrás de la hoja) y la sección «Sobre mí» el retrato 4:5 con un cajetín: responsable, base y forma de trabajo, y email. No se inventan tamaño de equipo, capacidad, disponibilidad ni resultados.
 
 ## Estado técnico
 
 - Node 24.x, Next.js 16.3.3, React 19.2.8, TypeScript y Tailwind CSS 3. Se mantiene Next.js: sirve la home y las fichas como HTML estático, conserva formulario, API, OG y sitemap, y no había ninguna ventaja que justificara migrar.
 - Identidad conservada: papel, tinta y cobalto; Archivo Black, Archivo y Fragment Mono; esquinas rectas.
-- Láminas: `src/data/plates.ts` define recortes y marcadores en píxeles de la imagen original, con un recorte por debajo de 1024 px y otro por encima. `src/components/ui/Plate.tsx` y `PlateStage.tsx` los convierten a porcentajes con variables CSS (`.plate-shot`, `.plate-crop` y `.plate-marker` en `globals.css`). La caja reserva la proporción del recorte, así que la carga no provoca saltos. Las pruebas comprueban que cada recorte cae dentro de su imagen y que cada nota tiene marcador visible en ambos recortes.
-- Solo la captura del hero se carga con prioridad. Las demás son diferidas y `next/image` sirve el tamaño que pide cada recorte.
-- Lienzo de 1440 px centrado, márgenes 16 / 40 / 60. El hero pone texto y lámina en dos columnas desde 1280 px; por debajo se apilan. Comprobado de 320 a 1920 px.
+- Hojas anotadas: `src/data/plates.ts` define recortes y marcadores en píxeles de la imagen original, con recorte de móvil (por debajo de 768 px), de tablet (hasta 1023) y de escritorio. Por debajo de 1024 la hoja se apila y cada nota puede cambiar de vista, anclaje y lado; una vista puede ser solo de una composición (`only`) y llevar un ancho máximo para no ampliar capturas a 1x. `src/components/ui/Plate.tsx` y `PlateStage.tsx` los convierten a porcentajes con variables CSS (`.plate-shot`, `.plate-crop` y `.plate-marker` en `globals.css`). Línea, punto y cuadrado se dibujan con bordes, visibles en alto contraste. La caja reserva la proporción del recorte, así que la carga no provoca saltos. Las pruebas comprueban recortes, marcadores en cada composición y anchos máximos.
+- Solo la captura del hero se carga con prioridad: en escritorio se precarga con `media="(min-width: 1024px)"` y en móvil no se descarga. Las demás son diferidas y `next/image` sirve el tamaño que pide cada recorte.
+- Lienzo de 1440 px centrado, márgenes 16 / 40 / 60 y rejilla de 424 y 872 px con calle de 24 (la segunda columna empieza en x 508). El hero pone texto y hoja en esas dos columnas desde 1280 px; por debajo se apilan. Comprobado a 320, 360, 390, 768, 1024, 1440 y 1920 px.
 - Cabecera fija sobre tinta. En móvil, «Hablemos» queda visible junto al menú desde 360 px. El brillo en bucle del wordmark se retiró: el encargo de rediseño evita bucles decorativos constantes.
 - La escala de opacidad de Tailwind va de cinco en cinco. Los valores del diseño que no encajan —16, 24, 28, 62, 72, 78 y 82— están declarados en `tailwind.config.ts`. Sin esa declaración la utilidad no genera regla y desaparece en silencio.
 - Retirados del código el canvas «El punto» (`PuntoCanvas`, `punto-engine`), la frase rotatoria, la banda AI-first y el carrusel automático. El asistente de ideas y `POST /api/diagnostico` se conservan, sin montarse en la portada.
@@ -53,7 +53,7 @@ El contacto público autorizado es `bpmtechstudio@gmail.com`, centralizado en `s
 
 El nuevo destinatario está configurado en desarrollo local. No se han añadido credenciales de Resend, actualizado variables remotas ni acreditado entrega real de correo.
 
-El asistente de ideas ya no se monta en la portada. Sus componentes y `POST /api/diagnostico` se conservan como implementación anterior. El formulario mantiene la opción «Necesito ayuda para definir mi proyecto» (`diagnostico`) como necesidad comercial válida, independiente del asistente.
+El asistente de ideas ya no se monta en la portada. Sus componentes y `POST /api/diagnostico` se conservan como implementación anterior. El selector del formulario se titula «Tema (opcional)» y ofrece los tres servicios con su nombre. El valor `diagnostico` («Necesito ayuda para definir mi proyecto») ya no se lista, pero la API lo sigue aceptando para enlaces antiguos.
 
 Cal.com está integrado en el hero, en Contacto y como CTA secundario al final de cada caso. La primera conversación dura **30 minutos**, se realiza por Cal Video y utiliza `https://cal.com/bpmtechstudio/30min`. La configuración pública se centraliza en `src/data/booking.ts`. El diálogo carga la agenda al solicitarla y ofrece acceso directo a Cal.com; la disponibilidad y los campos se administran en la cuenta del proveedor. La integración permanece en revisión local y no acredita un despliegue remoto ni la creación de citas de prueba.
 

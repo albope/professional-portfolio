@@ -39,7 +39,7 @@ function PlateSection({ plate }: { plate: Plate }) {
   return (
     <article aria-labelledby={labelId} className="plate container-editorial mt-14 lg:mt-20">
       <PlateStage plate={plate} labelId={labelId} labelAs="h3" className="-mx-4 border-x-0 md:mx-0 md:border-x" />
-      <PlateNotes notes={plate.notes} className="mt-4 hidden md:grid md:grid-cols-3 md:gap-x-6" />
+      <PlateNotes notes={plate.notes} className="mt-4 hidden lg:grid lg:grid-cols-3 lg:gap-x-6" />
       <TitleBlock entries={plate.block.slice(1)} className="mt-2 md:grid-cols-3">
         <CaseLink slug={plate.slug} />
       </TitleBlock>
@@ -85,15 +85,24 @@ export function Work() {
       <PlateSection plate={almacenPlate} />
       <PlateSection plate={radioPlate} />
 
+      {/* Evento y asistente: una franja de su interfaz desde 768 px. En el
+          móvil queda la hoja con su rótulo, la nota y el enlace. */}
       <div className="container-editorial mt-14 lg:mt-20">
         <p className="label-mono text-[10.5px] text-ink-mute">{proyectos.mas_rotulo}</p>
-        <div className="mt-3 grid gap-y-12 md:grid-cols-2 md:gap-x-10 wide:gap-x-14">
+        <div className="mt-3 grid gap-y-12 lg:grid-cols-2 lg:gap-x-6">
           {strips.map((strip) => {
             const labelId = `franja-${strip.num}`;
             return (
               <article key={strip.slug} aria-labelledby={labelId} className="plate flex flex-col">
-                <PlateStage plate={strip} labelId={labelId} labelAs="h3" className="-mx-4 border-x-0 md:mx-0 md:border-x" />
-                <PlateNotes notes={strip.notes} className="mt-4 hidden md:grid" />
+                <PlateStage
+                  plate={strip}
+                  labelId={labelId}
+                  labelAs="h3"
+                  inlineNotes={false}
+                  shotsFrom="md"
+                  className="-mx-4 border-x-0 md:mx-0 md:border-x"
+                />
+                <PlateNotes notes={strip.notes} className="mt-2 md:mt-4 md:grid-cols-2 md:gap-x-6" />
                 <CaseLink slug={strip.slug} className="mt-1" />
               </article>
             );

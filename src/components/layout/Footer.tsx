@@ -16,7 +16,7 @@ export function Footer() {
   return (
     <footer className="relative z-[2] border-t border-line bg-paper">
       <div className="container-editorial pb-5 pt-9 md:pb-7 md:pt-12">
-        <div className="grid gap-x-6 gap-y-8 md:grid-cols-3 wide:grid-cols-[424px_1fr_1fr_1fr]">
+        <div className="grid gap-x-6 gap-y-8 md:grid-cols-3 wide:grid-cols-[424fr_200fr_200fr_424fr]">
           <div className="md:col-span-3 wide:col-span-1">
             <Link href="/" aria-label="BPM Tech, inicio" className="inline-flex min-h-11 items-center">
               <Wordmark size={16} className="wide:hidden" />

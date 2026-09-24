@@ -94,7 +94,7 @@ const config: Config = {
         ],
         /* Titular de hoja: las secciones entre el hero y el contacto. */
         "display-sheet": [
-          "clamp(1.75rem, 2.9vw, 2.625rem)",
+          "clamp(1.625rem, 2.9vw, 2.625rem)",
           { lineHeight: "1.02", letterSpacing: "-0.01em" },
         ],
         "display-sec": [

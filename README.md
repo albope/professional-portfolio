@@ -2,7 +2,7 @@
 
 Web en español de BPM Tech para presentar servicios de software y desarrollo web a medida y recibir consultas comerciales. El foco está en pymes, con espacio para startups y proyectos particulares.
 
-El estado funcional del repositorio se resume en [docs/contexto-actual.md](docs/contexto-actual.md). Los cambios locales y las pruebas no acreditan por sí solos que una versión esté publicada o que un correo haya llegado a su destinatario.
+El estado funcional del repositorio se resume en [docs/contexto-actual.md](docs/contexto-actual.md) y el proceso del rediseño, con capturas antes y después, en [docs/rediseno/README.md](docs/rediseno/README.md). Los cambios locales y las pruebas no acreditan por sí solos que una versión esté publicada o que un correo haya llegado a su destinatario.
 
 ## Stack y desarrollo
 
@@ -11,7 +11,7 @@ El estado funcional del repositorio se resume en [docs/contexto-actual.md](docs/
 - Archivo Black para titulares, Archivo para texto y Fragment Mono para etiquetas, cargadas con `next/font`.
 - Renderizado del contenido en servidor y navegación mediante enlaces normales. El menú móvil utiliza un diálogo nativo.
 - Scroll nativo y respeto a `prefers-reduced-motion`. No se utilizan Framer Motion ni Lenis. El contenido permanece visible sin JavaScript.
-- Dirección de arte «Planos anotados»: capturas reales con notas numeradas y cajetín, definidas en `src/data/plates.ts` y dibujadas por `src/components/ui/Plate.tsx` y `PlateStage.tsx`. Sin animaciones automáticas ni librerías de animación.
+- Dirección de arte «Planos anotados»: capturas reales en hojas con notas numeradas en el margen y cajetín, definidas en `src/data/plates.ts` y dibujadas por `src/components/ui/Plate.tsx` y `PlateStage.tsx`. Sin animaciones automáticas ni librerías de animación.
 - Antes del contacto hay cinco preguntas frecuentes con desplegables nativos. El asistente de ideas se conserva sin montarse en la home.
 
 Con Node 24 activo:
@@ -55,7 +55,7 @@ src/
   lib/                         contacto, diagnóstico, eventos, tests, fuentes y OG
 ```
 
-Los datos de servicios, proyectos, láminas, fases e identidad se editan en `src/data/`. Para anotar una captura nueva: declararla en `projects.ts`, añadir sus recortes y marcadores en píxeles de la imagen original en `plates.ts` y ejecutar `npm test`, que comprueba recortes y marcadores.
+Los datos de servicios, proyectos, láminas, fases e identidad se editan en `src/data/`. Para anotar una captura nueva: declararla en `projects.ts`, añadir sus recortes (móvil, tablet y escritorio) y marcadores en píxeles de la imagen original en `plates.ts` y ejecutar `npm test`, que comprueba recortes, marcadores de cada composición y anchos máximos.
 
 ### Proyectos publicados por el código
 
@@ -67,7 +67,7 @@ Los datos de servicios, proyectos, láminas, fases e identidad se editan en `src
 | `/proyectos/web-boda` | Web de evento con confirmación de invitados |
 | `/proyectos/web-radio` | Web para un programa de radio con directo |
 
-Los cinco se presentan como proyectos reales. Las fichas explican necesidad, trabajo realizado, alcance y decisiones; pádel, almacén y radio abren con su lámina anotada. Los visuales son capturas reales con datos de demo y las restricciones de marca documentadas en `docs/contexto-actual.md`. No se publican métricas, testimonios, nombres de terceros o resultados comerciales sin evidencia y autorización.
+Los cinco se presentan como proyectos reales. Las fichas explican necesidad, trabajo realizado, alcance y decisiones; las cinco abren con su hoja anotada. Los visuales son capturas reales con datos de demo y las restricciones de marca documentadas en `docs/contexto-actual.md`. No se publican métricas, testimonios, nombres de terceros o resultados comerciales sin evidencia y autorización.
 
 El asistente de IA se acredita como experiencia profesional de la dirección de proyectos y tecnología, desarrollada en un equipo interno y presentada de forma anónima. Es un desarrollo funcional para un piloto interno: dos agentes para conocimiento y gestión de proyectos, documentos, seguimiento, decisiones y estimaciones revisables. Sus conexiones dependen de configuración y permisos; el caso no acredita una implantación generalizada ni resultados de negocio.
 

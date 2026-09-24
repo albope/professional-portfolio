@@ -6,18 +6,18 @@ export default function NotFound() {
     <div className="pagina-interior container-editorial flex min-h-[70vh] flex-col items-start justify-center py-16">
       <p className="label-mono text-ink-mute">Error 404</p>
       <h1 className="display mt-7 max-w-3xl text-display-case text-ink">
-        No encontramos esta <SquareWord word="página" />
+        Esta página no <SquareWord word="existe" />
       </h1>
       <p className="mt-6 max-w-md text-base leading-relaxed text-ink-mute">
         La dirección no existe o ha cambiado. Puedes volver a la portada o
-        conocer el trabajo del estudio.
+        ver mis proyectos.
       </p>
       <div className="mt-9 flex flex-wrap gap-3.5">
         <Button href="/" className="px-6 py-3.5 text-sm">
           Ir a la portada
         </Button>
         <Button href="/#proyectos" variant="outline" className="px-6 py-3.5 text-sm">
-          Ver proyectos
+          Ver mis proyectos
         </Button>
       </div>
     </div>

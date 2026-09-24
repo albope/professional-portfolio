@@ -103,16 +103,18 @@
     @apply mx-auto w-full max-w-[1440px] px-4 md:px-10 wide:px-[60px];
   }
 
-  /* Rejilla de sección: 536 px y 88 px de calle a partir de 1440. Por debajo
-     las dos columnas se reparten en la misma proporción en lugar de fijar los
-     536 px, que dejarían la columna derecha en 320 px a 1024. */
+  /* Rejilla única: 12 columnas de 88 px con calles de 24 a 1440 (verticales
+     en 60 + k·112). La primera columna ocupa 4 (424 px) y la segunda 8
+     (872 px, empieza en 508): hero, secciones, fichas y pie comparten esa
+     vertical. Por debajo de 1440 se reparten en la misma proporción. */
   .rejilla-editorial {
-    @apply lg:grid lg:grid-cols-[536fr_696fr] lg:items-start lg:gap-x-[88px];
+    @apply lg:grid lg:grid-cols-[424fr_872fr] lg:items-start lg:gap-x-6;
   }
 
-  /* Aire de sección: 64 en móvil · 96 en el tramo intermedio · 120 desde 1440. */
+  /* Aire de sección: 64 en móvil · 80 en el tramo intermedio · 96 desde 1440.
+     Entre bandas de distinto color el propio cambio de fondo ya separa. */
   .seccion {
-    @apply py-16 lg:py-24 wide:py-[120px];
+    @apply py-16 lg:py-20 wide:py-24;
   }
 
   /* La cabecera fija necesita espacio tanto en la portada como en las
@@ -133,15 +135,28 @@
   }
 
   /* Planos anotados. El recorte y los marcadores llegan en píxeles de la
-     imagen original como variables (--m-* por debajo de 1024 px, --d-* por
-     encima) y aquí se convierten en porcentajes del recorte. La caja reserva
-     su proporción, así que la captura no provoca saltos al cargar. */
+     imagen original como variables (--m-* por debajo de 768 px, --t-* hasta
+     1024 y --d-* desde ahí) y aquí se convierten en porcentajes del recorte.
+     La caja reserva su proporción, así que la captura no provoca saltos al
+     cargar. `--max`, `--max-t` y `--max-m` limitan el ancho para no ampliar
+     capturas tomadas a 1x. */
   .plate-shot {
     --cx: var(--m-cx);
     --cy: var(--m-cy);
     --cw: var(--m-cw);
     --ch: var(--m-ch);
     position: relative;
+    max-width: var(--max-m, var(--max, none));
+  }
+
+  @media (min-width: 768px) {
+    .plate-shot {
+      --cx: var(--t-cx);
+      --cy: var(--t-cy);
+      --cw: var(--t-cw);
+      --ch: var(--t-ch);
+      max-width: var(--max-t, var(--max, none));
+    }
   }
 
   @media (min-width: 1024px) {
@@ -150,6 +165,7 @@
       --cy: var(--d-cy);
       --cw: var(--d-cw);
       --ch: var(--d-ch);
+      max-width: var(--max, none);
     }
   }
 
@@ -168,102 +184,122 @@
     top: calc(var(--cy) / var(--ch) * -100%);
   }
 
-  /* Llamada de plano. `.plate-marker` es el punto de anclaje (sin tamaño) en
-     el borde del elemento señalado. El cuadrado numerado se coloca a un lado
-     (`data-side`) y una línea de 1 px lo une al punto, para no tapar el texto
-     que prueba la nota. El anclaje cambia a 1024 px, como el recorte. */
+  /* Llamada de plano. El cuadrado numerado vive siempre fuera de la captura,
+     en el margen de la hoja (`data-side`: izquierda, derecha, arriba o
+     abajo), alineado con los demás, y una línea de 1 px viaja hasta el punto
+     de anclaje. Así la llamada no tapa lo que prueba. `.plate-marker` cubre
+     la captura entera para que los porcentajes se midan sobre ella; solo el
+     cuadrado recibe el puntero. Línea, punto y cuadrado se dibujan con
+     bordes, que siguen visibles en modo de alto contraste. */
   .plate-marker {
-    --x: var(--mx);
-    --y: var(--my);
+    --px: calc((var(--x) - var(--cx)) / var(--cw) * 100%);
+    --py: calc((var(--y) - var(--cy)) / var(--ch) * 100%);
     position: absolute;
-    left: calc((var(--x) - var(--cx)) / var(--cw) * 100%);
-    top: calc((var(--y) - var(--cy)) / var(--ch) * 100%);
-    width: 0;
-    height: 0;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
   }
 
-  @media (min-width: 1024px) {
-    .plate-marker {
-      --x: var(--dx);
-      --y: var(--dy);
-    }
-  }
-
-  /* Punto de anclaje y línea de referencia. */
   .plate-marker::before,
   .plate-marker::after {
     content: "";
     position: absolute;
-    background: var(--cobalt);
+    width: 0;
+    height: 0;
   }
 
+  /* Punto de anclaje con su anillo de papel. */
   .plate-marker::after {
-    width: 6px;
-    height: 6px;
-    left: -3px;
-    top: -3px;
+    left: calc(var(--px) - 3px);
+    top: calc(var(--py) - 3px);
+    border: 3px solid var(--cobalt);
     box-shadow: 0 0 0 1.5px var(--paper);
   }
 
+  .plate-marker[data-side="left"]::before,
+  .plate-marker[data-side="right"]::before {
+    top: calc(var(--py) - 0.5px);
+    border-top: 1px solid var(--cobalt);
+  }
+
   .plate-marker[data-side="left"]::before {
-    right: 0;
-    top: -0.5px;
-    width: 12px;
-    height: 1px;
+    left: -4px;
+    width: calc(var(--px) + 4px);
   }
 
   .plate-marker[data-side="right"]::before {
-    left: 0;
-    top: -0.5px;
-    width: 12px;
-    height: 1px;
+    left: var(--px);
+    right: -4px;
+    width: auto;
+  }
+
+  .plate-marker[data-side="top"]::before,
+  .plate-marker[data-side="bottom"]::before {
+    left: calc(var(--px) - 0.5px);
+    border-left: 1px solid var(--cobalt);
+  }
+
+  .plate-marker[data-side="top"]::before {
+    top: -4px;
+    height: calc(var(--py) + 4px);
   }
 
   .plate-marker[data-side="bottom"]::before {
-    left: -0.5px;
-    top: 0;
-    width: 1px;
-    height: 12px;
+    top: var(--py);
+    bottom: -4px;
+    height: auto;
   }
 
-  .plate-marker[data-side="center"]::before,
-  .plate-marker[data-side="center"]::after {
-    display: none;
-  }
-
-  /* El cuadrado macizo del glifo con su número. */
+  /* El cuadrado macizo del glifo con su número, a 4 px de la captura. */
   .plate-marker-num {
     position: absolute;
     display: grid;
     place-items: center;
     width: 24px;
     height: 24px;
-    top: -12px;
-    background: var(--cobalt);
+    border: 12px solid var(--cobalt);
     color: var(--paper);
     font-family: var(--font-fragment-mono), ui-monospace, monospace;
     font-size: 12.5px;
     line-height: 1;
-    box-shadow: 0 0 0 2px var(--paper);
-    transition: background-color 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+    pointer-events: auto;
+    box-shadow: 0 0 0 2px var(--paper-2);
+    transition: border-color 0.2s cubic-bezier(0.16, 1, 0.3, 1),
       transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
+  /* El número se pinta sobre el borde, que rellena el cuadrado. */
+  .plate-marker-num > span {
+    position: absolute;
+    inset: -12px;
+    display: grid;
+    place-items: center;
+  }
+
+  .plate-marker[data-side="left"] .plate-marker-num,
+  .plate-marker[data-side="right"] .plate-marker-num {
+    top: calc(var(--py) - 12px);
+  }
+
   .plate-marker[data-side="left"] .plate-marker-num {
-    right: 12px;
+    left: -28px;
   }
 
   .plate-marker[data-side="right"] .plate-marker-num {
-    left: 12px;
+    left: calc(100% + 4px);
+  }
+
+  .plate-marker[data-side="top"] .plate-marker-num,
+  .plate-marker[data-side="bottom"] .plate-marker-num {
+    left: calc(var(--px) - 12px);
+  }
+
+  .plate-marker[data-side="top"] .plate-marker-num {
+    top: -28px;
   }
 
   .plate-marker[data-side="bottom"] .plate-marker-num {
-    top: 12px;
-    left: -12px;
-  }
-
-  .plate-marker[data-side="center"] .plate-marker-num {
-    left: -12px;
+    top: calc(100% + 4px);
   }
 
   .plate-note-num {
@@ -284,13 +320,13 @@
      puntero fino; sin él, todo se ve igual y nada depende de esto. */
   @media (hover: hover) and (pointer: fine) {
     .plate:has([data-note]:hover, [data-marker]:hover) .plate-marker-num {
-      background: var(--ink-faint);
+      border-color: var(--ink-faint);
     }
 
     .plate:has([data-note="1"]:hover, [data-marker="1"]:hover) [data-marker="1"] .plate-marker-num,
     .plate:has([data-note="2"]:hover, [data-marker="2"]:hover) [data-marker="2"] .plate-marker-num,
     .plate:has([data-note="3"]:hover, [data-marker="3"]:hover) [data-marker="3"] .plate-marker-num {
-      background: var(--ink);
+      border-color: var(--ink);
       transform: scale(1.15);
     }
 

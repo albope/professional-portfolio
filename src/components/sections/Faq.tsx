@@ -1,18 +1,20 @@
-import { SheetHeader } from "@/components/ui/SheetHeader";
+import { SheetSide } from "@/components/ui/SheetHeader";
 import { copyEs } from "@/data/copy";
 
 const { preguntas } = copyEs;
 
-/** Preguntas nativas: legibles y desplegables también sin JavaScript. */
+/**
+ * Preguntas nativas: legibles y desplegables también sin JavaScript. El
+ * titular ocupa la primera columna y las preguntas arrancan en el filete de
+ * la segunda.
+ */
 export function Faq() {
   return (
     <section id="preguntas" aria-labelledby="faq-title" className="bg-paper-2">
       <div className="container-editorial seccion">
-        <SheetHeader id="faq-title" label={preguntas.kicker} title={preguntas.h2} intro={preguntas.apoyo} />
-
-        <div className="rejilla-editorial mt-8 lg:mt-12">
-          <span aria-hidden className="hidden lg:block" />
-          <div className="min-w-0 border-t border-ink">
+        <div className="rejilla-editorial border-t-2 border-ink pt-5 lg:pt-0">
+          <SheetSide id="faq-title" label={preguntas.kicker} title={preguntas.h2} intro={preguntas.apoyo} className="lg:pt-6" />
+          <div className="mt-8 min-w-0 border-t border-ink lg:mt-0 lg:border-t-0">
             {preguntas.items.map((item, index) => (
               <details key={item.pregunta} open={index === 0} className="group border-b border-line-2">
                 <summary className="flex min-h-16 cursor-pointer list-none items-center justify-between gap-5 py-5 marker:content-none [&::-webkit-details-marker]:hidden">

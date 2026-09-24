@@ -129,8 +129,8 @@ export function Header() {
             >
               <span className="sr-only min-[360px]:not-sr-only">{copyEs.nav.menu}</span>
               <span aria-hidden className="flex w-5 flex-col gap-1.5">
-                <span className="h-px w-full bg-paper" />
-                <span className="h-px w-full bg-paper" />
+                <span className="w-full border-t border-paper" />
+                <span className="w-full border-t border-paper" />
               </span>
             </button>
           </div>
@@ -196,7 +196,7 @@ export function Header() {
                 onClick={closeMenu}
                 data-track="cta_click"
                 data-track-location="header"
-                className="flex min-h-[52px] items-center justify-center bg-paper px-5 text-center text-[15px] font-semibold text-ink transition-colors duration-300 ease-editorial hover:bg-cobalt-bright"
+                className="flex min-h-[52px] items-center justify-center border border-transparent bg-paper px-5 text-center text-[15px] font-semibold text-ink transition-colors duration-300 ease-editorial hover:bg-cobalt-bright"
               >
                 {ctaLabel}
               </Link>

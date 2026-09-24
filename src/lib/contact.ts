@@ -9,12 +9,18 @@ export const CONTACT_LIMITS = {
 } as const;
 
 export const CONTACT_TIMEOUTS = { body: 5_000, provider: 10_000, client: 20_000 } as const;
+/**
+ * Temas del formulario, con el nombre de cada servicio. `diagnostico` ya no
+ * se lista en el selector, pero se sigue aceptando para enlaces antiguos.
+ */
 export const CONTACT_NEEDS = {
   diagnostico: "Necesito ayuda para definir mi proyecto",
-  operativa: "Organizar la gestión de mi negocio",
-  automatizacion: "Automatizar tareas y conectar herramientas",
-  web: "Crear una web o una aplicación",
+  operativa: "Organizar la gestión",
+  automatizacion: "Quitar trabajo repetido",
+  web: "Una web o una aplicación nueva",
 } as const;
+/** Temas que el selector ofrece, en el orden de los servicios. */
+export const CONTACT_NEEDS_LISTED = ["operativa", "automatizacion", "web"] as const;
 export const CONTACT_PROJECTS = {
   "asistente-ia-gestion-proyectos": "Asistente de IA para gestión de proyectos",
   "plataforma-clubes-padel": "Plataforma de gestión para clubes de pádel",

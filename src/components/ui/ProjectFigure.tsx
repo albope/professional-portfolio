@@ -60,14 +60,16 @@ export function ProjectFigure({
     const { crop } = figure;
     return (
       <figure className={cn("m-0", className)}>
-        <div className="grid items-end gap-6 border-y border-ink bg-paper-2 px-4 py-8 md:border-x lg:grid-cols-[auto_minmax(0,1fr)] lg:gap-12 lg:px-10 lg:py-10">
+        {/* Imagen y pie apilados: el detalle vive en la columna estrecha de la
+            rejilla (424 px a 1440) y ahí no caben lado a lado. */}
+        <div className="grid gap-6 border-y border-ink bg-paper-2 px-4 py-8 md:border-x lg:px-10 lg:py-10">
           <div
-            className="plate-crop w-full outline outline-1 -outline-offset-1 outline-ink/60 lg:w-[380px]"
+            className="plate-crop w-full outline outline-1 -outline-offset-1 outline-ink/60"
             style={{ "--cx": crop.x, "--cy": crop.y, "--cw": crop.w, "--ch": crop.h, "--iw": figure.shot.width, maxWidth: crop.w } as CSSProperties}
           >
             <Image {...figure.shot} alt={figure.shot.alt} sizes={`${figure.shot.width}px`} />
           </div>
-          <figcaption className="max-w-[460px] lg:pb-2">
+          <figcaption className="max-w-[460px]">
             <span className="label-mono block text-[10.5px] text-ink sm:text-xs">{figure.captionLabel}</span>
             <span className="mt-3 block text-base leading-relaxed text-ink-soft lg:text-[17px]">{figure.caption}</span>
           </figcaption>
