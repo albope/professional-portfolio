@@ -59,8 +59,13 @@ const Page: React.FC<{frame: number}> = ({frame}) => (
   </AbsoluteFill>
 );
 
-/** Titular en dos líneas fijas, palabra a palabra con escalonado continuo. */
-const Headline: React.FC<{frame: number}> = ({frame}) => {
+/**
+ * Titular en dos líneas fijas, palabra a palabra con escalonado continuo.
+ * Con la noche, la segunda línea se oscurece (ink500 → ink700) para no perder
+ * contraste sobre el fondo que se apaga.
+ */
+const Headline: React.FC<{frame: number; dusk: number}> = ({frame, dusk}) => {
+  const second = interpolateColors(dusk, [0, 1], [color.ink500, color.ink700]);
   const lines = ["Todo lo que tu club necesita.", "Nada que no necesite."];
   let idx = 0;
   return (
@@ -81,7 +86,7 @@ const Headline: React.FC<{frame: number}> = ({frame}) => {
               fontSize: HEAD.size,
               fontWeight: 760,
               lineHeight: HEAD.leading,
-              color: li === 0 ? color.ink900 : color.ink500,
+              color: li === 0 ? color.ink900 : second,
               whiteSpace: "nowrap",
             }}
           />
@@ -197,8 +202,9 @@ const cursorKeys = (): CursorKey[] => {
   const a = switchAt(0);
   const b = switchAt(1);
   const m = switchAt(2);
-  // La punta de la flecha cae sobre el interruptor, algo a la izquierda del centro (el pomo apagado).
-  const tip = (p: {x: number; y: number}) => ({x: p.x - 6, y: p.y});
+  // La punta cae en la parte baja izquierda de la pista: la flecha queda por
+  // debajo del recorrido del pomo y se ve cómo pasa a la derecha.
+  const tip = (p: {x: number; y: number}) => ({x: p.x - 16, y: p.y + 8});
   return [
     // Llega un par de frames antes de cada clic y se queda quieto durante la pulsación.
     {at: T16.cursorIn, x: a.x + 120, y: 1100},
@@ -343,10 +349,11 @@ const Landscape: React.FC = () => {
   // Zoom-out: el tablero parte algo más cerca y se asienta a 1 con la tarjeta.
   const cam = Math.pow(CAM0, 1 - progress(frame, T.zoom, T.zoomDur, ease.overlay));
 
-  // Noche de 0 a 60 % entre f90 y f119, en curva cúbica de entrada: apenas
-  // oscurece mientras la HUD se lee (≤ 26 % en f112) y cae del todo con su
-  // salida, hacia el negro de «tu-descansas».
-  const night = 0.6 * Math.pow(progress(frame, T.night, T.nightDur - 1, ease.linear), 3);
+  // Noche de 0 a 60 % entre f90 y f119, en curva cuadrática: se nota desde
+  // c2.t3 (7 % en f100), deja la HUD legible (35 % en f112) y cae del todo
+  // con su salida, hacia el negro de «tu-descansas».
+  const nightP = progress(frame, T.night, T.nightDur - 1, ease.linear);
+  const night = 0.6 * nightP * nightP;
 
   // Hover sobre Multisede: entra con el cursor y se apaga cuando se va.
   const hover = progress(frame, T.multisede - 3, 4, ease.out) * (1 - progress(frame, T.hoverEnd, 6, ease.out));
@@ -391,7 +398,7 @@ const Landscape: React.FC = () => {
       <AbsoluteFill style={{background: color.darkBg, opacity: night}} />
 
       {/* HUD fija */}
-      <Headline frame={frame} />
+      <Headline frame={frame} dusk={nightP} />
       <MonoLine frame={frame} />
       <DayChip frame={frame} />
     </AbsoluteFill>

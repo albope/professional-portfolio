@@ -93,19 +93,22 @@ const Silhouette: React.FC = () => (
 const ModuleB: React.FC<{frame: number}> = ({frame}) => {
   if (frame < T.enter) return null;
   const y = bY(frame);
+  // Borrador tinta → warning al chocar; al confirmarse, el discontinuo warning
+  // cede al continuo tinta (fundido entre dos trazos, sin tonos intermedios).
   const warnIn = interpolateColors(frame, [T.stop - 1, T.stop + 3], [color.ink900, color.warning]);
-  const ink = frame < T.resolve ? warnIn : interpolateColors(frame, [T.resolve, T.resolve + 4], [color.warning, color.ink900]);
-  const solid = progress(frame, T.resolve, 4, ease.out);
+  const solid = progress(frame, T.resolve, 3, ease.out);
   const settled = progress(frame, T.resolve, motion.overlay, ease.overlay);
   const focus = progress(frame, T.tap, motion.press, ease.out) * (1 - solid);
   return (
-    <DirBlur id="sin-b9" vy={velocity(bY, frame)} style={{position: "absolute", left: X, top: y}}>
+    // El frame del golpe (f15) sale nítido: la estela solo acompaña la subida.
+    <DirBlur id="sin-b9" vy={frame === T.stop ? 0 : velocity(bY, frame)} style={{position: "absolute", left: X, top: y}}>
       <div style={{position: "absolute", inset: 0, borderRadius: radius.module, boxShadow: shadow.float, opacity: 1 - settled}} />
       <div style={{position: "absolute", inset: 0, borderRadius: radius.module, boxShadow: shadow.card, opacity: settled}} />
       <SlotCard
         frame={frame}
         g={G}
-        ink={ink}
+        ink={color.ink900}
+        dashInk={warnIn}
         dashed={1 - solid}
         strip={settled}
         check={{circle: progress(frame, T.resolve, motion.press, ease.out), draw: progress(frame, T.resolve + 2, 8, ease.out)}}
@@ -122,14 +125,16 @@ const ModuleB: React.FC<{frame: number}> = ({frame}) => {
       />
       <CelebrateRing frame={frame} at={T.resolve} w={G.w} h={H} spread={16} />
       <StatusChip frame={frame} />
-      {/* Toque en la celda PISTA: viaja con B cuando se asienta */}
-      <TapRipple frame={frame} at={T.tap} x={144} y={136} />
+      {/* Toque en la celda PISTA: se apaga antes del digit-roll */}
+      <div style={{position: "absolute", inset: 0, opacity: 1 - progress(frame, T.resolve - 4, 4, ease.out)}}>
+        <TapRipple frame={frame} at={T.tap} x={144} y={136} />
+      </div>
     </DirBlur>
   );
 };
 
 // Anchos medidos de «Ocupada» y «Confirmada» (Instrument Sans 600, 44 px) + punto y márgenes.
-const CHIP = {h: 88, font: 44, dot: 16, padL: 32, padR: 36, gap: 18};
+const CHIP = {h: 88, font: 44, dot: 16, padL: 32, padR: 36, gap: 18, border: 2};
 const measure = (() => {
   const cache = new Map<string, number>();
   return (text: string) => {
@@ -154,8 +159,9 @@ const StatusChip: React.FC<{frame: number}> = ({frame}) => {
   const wOcc = measure("Ocupada");
   const wConf = measure("Confirmada");
   // El chip se ensancha antes de que llegue la palabra nueva: nunca la recorta.
-  const textW = lerp(wOcc, wConf, progress(frame, T.resolve, 3, ease.out));
-  const width = CHIP.padL + CHIP.dot + CHIP.gap + textW + CHIP.padR;
+  const textW = lerp(wOcc, wConf, progress(frame, T.resolve, 2, ease.out));
+  // + bordes de 2 px (border-box) y 4 px de holgura: la «a» final nunca se recorta.
+  const width = CHIP.padL + CHIP.dot + CHIP.gap + Math.ceil(textW) + 4 + CHIP.padR + 2 * CHIP.border;
   const bg = interpolateColors(tone, [0, 1], [color.warningBg, color.successBg]);
   const border = interpolateColors(tone, [0, 1], [color.warningBorder, color.successBorder]);
   const dot = interpolateColors(tone, [0, 1], [color.warning, color.success]);
@@ -175,7 +181,7 @@ const StatusChip: React.FC<{frame: number}> = ({frame}) => {
         padding: `0 ${CHIP.padR}px 0 ${CHIP.padL}px`,
         borderRadius: radius.pill,
         background: bg,
-        border: `2px solid ${border}`,
+        border: `${CHIP.border}px solid ${border}`,
         ...textStyle(600),
         fontSize: CHIP.font,
         ...view(frame, T.warn),
@@ -214,15 +220,17 @@ const HEADLINE: React.CSSProperties = {
 export const Portrait: React.FC = () => {
   const frame = useCurrentFrame();
   const {durationInFrames} = useScene();
-  const exit = Math.min(T.exit, durationInFrames - 8);
+  // Push en los últimos 8 f; la HUD sale 1 f antes para que el último frame quede limpio.
+  const exit = Math.min(T.exit, durationInFrames - motion.exit);
+  const hudOut = exit - 1;
   return (
     <AbsoluteFill style={{background: color.sand100}}>
       <Content exit={exit} />
       {/* HUD fija: titulares en dos líneas controladas */}
       <WordsReveal text="Sin dobles" frame={frame} start={T.title} step={3} exitAt={T.titleOut} style={{...HEADLINE, top: 272}} />
       <WordsReveal text="reservas." frame={frame} start={T.title + 6} step={3} exitAt={T.titleOut} style={{...HEADLINE, top: 364}} />
-      <WordsReveal text="Dos partidos." frame={frame} start={T.resolve} step={3} exitAt={exit} style={{...HEADLINE, top: 272}} />
-      <WordsReveal text="Dos pistas." frame={frame} start={T.resolve + 6} step={3} exitAt={exit} style={{...HEADLINE, top: 364}} />
+      <WordsReveal text="Dos partidos." frame={frame} start={T.resolve} step={3} exitAt={hudOut} style={{...HEADLINE, top: 272}} />
+      <WordsReveal text="Dos pistas." frame={frame} start={T.resolve + 6} step={3} exitAt={hudOut} style={{...HEADLINE, top: 364}} />
     </AbsoluteFill>
   );
 };

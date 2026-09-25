@@ -28,7 +28,10 @@ const L9: Layout = {cx: 540, cy: 850, heap: 1.1, iso: 8, title: {top: 300, size:
 
 // ---------------------------------------------------------------- tiempo
 
-/** Ease-in con algo de velocidad inicial: el montón llega comprimiéndose del plano anterior. */
+/**
+ * Ease-in con una pizca de velocidad inicial: «gestion-fragmentada» posa el
+ * montón casi en reposo y así no se queda congelado en el downbeat del c.7.
+ */
 const ALPHA = 0.25;
 const inQuad = (t: number) => ALPHA * t + (1 - ALPHA) * t * t;
 const IN_END = 2 - ALPHA; // pendiente de inQuad en 1
@@ -234,8 +237,9 @@ const Heap: React.FC<{frame: number; Lx: Layout}> = ({frame, Lx}) => {
   // Foco al titular: el montón se desenfoca y se apaga; al caer recupera el foco.
   const toTitle = progress(frame, T16.focus, 10, ease.out);
   const back = progress(frame, T16.suck + 3, 6, ease.inOut);
-  const blur = 3.5 * toTitle * (1 - back);
-  const dim = 1 - 0.42 * toTitle + 0.22 * back;
+  // Lo justo para que el titular mande sin que el caos rojo deje de leerse detrás.
+  const blur = 2.5 * toTitle * (1 - back);
+  const dim = 1 - 0.34 * toTitle + 0.14 * back;
   return (
     <AbsoluteFill style={{opacity: dim, filter: blur > 0.05 ? `blur(${blur.toFixed(2)}px)` : undefined}}>
       {PILE_ITEMS.map((it) => {
@@ -278,7 +282,9 @@ const Y1 = ISO.y + ISO.h;
 const HALF_R = `M24 ${Y1} H${X1 - R} A${R} ${R} 0 0 0 ${X1} ${Y1 - R} V${Y0 + R} A${R} ${R} 0 0 0 ${X1 - R} ${Y0} H24`;
 const HALF_L = `M24 ${Y1} H${X0 + R} A${R} ${R} 0 0 1 ${X0} ${Y1 - R} V${Y0 + R} A${R} ${R} 0 0 1 ${X0 + R} ${Y0} H24`;
 
-const outlineAt = (frame: number) => progress(frame, T16.outline, T16.outlineDur, ease.in);
+// Ease-in cúbico: en f37 el trazo aún no ha pasado de la curva de abajo (el
+// titular sigue a medio salir) y en el último frame no salta medio contorno de golpe.
+const outlineAt = (frame: number) => progress(frame, T16.outline, T16.outlineDur, (u) => u * u * u);
 
 /** Interior del contorno en pantalla (línea media del trazo): lo que cae dentro, se lo traga. */
 const insideClip = (Lx: Layout, width: number, height: number) => {
@@ -311,7 +317,17 @@ const Outline: React.FC<{frame: number; Lx: Layout; width: number; height: numbe
           <rect x={X0} y={Y0} width={ISO.w} height={ISO.h} rx={R} fill="none" stroke={color.darkText} strokeWidth={ISO.stroke} />
         ) : (
           [HALF_R, HALF_L].map((d) => (
-            <path key={d} d={d} fill="none" stroke={color.darkText} strokeWidth={ISO.stroke} pathLength={1} strokeDasharray={`${p} 1`} />
+            // Extremos redondos mientras se dibuja (como el Isotipo del kit): punto → píldora → contorno.
+            <path
+              key={d}
+              d={d}
+              fill="none"
+              stroke={color.darkText}
+              strokeWidth={ISO.stroke}
+              strokeLinecap="round"
+              pathLength={1}
+              strokeDasharray={`${p} 1`}
+            />
           ))
         )}
       </g>

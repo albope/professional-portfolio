@@ -22,8 +22,12 @@ const cellX = (ci: number) => X + ci * (CELL_W + GRID.gap);
 const cellY = (si: number) => GRID.y + si * (GRID.h + GRID.gap);
 
 const SHEET_TOP = 944;
-/** Arranque del velo: 8 px bajo la caja del titular (y272–448 con dos líneas). */
+/**
+ * Velo: nace transparente 8 px bajo el titular (y272–448) y llega al 40 %
+ * sobre la rejilla. Un degradado largo, no un borde: no parte el cuadro en dos.
+ */
 const VEIL_Y = 456;
+const VEIL_FULL = GRID.y;
 const MOD = {v: 96, l: 28, cols: [0.22, 0.34, 0.44] as [number, number, number]};
 const MOD_H = marcadorSize(MOD.v, MOD.l, 0, 3).height;
 const MOD_Y = 64;
@@ -153,8 +157,7 @@ const Sheet: React.FC<{frame: number}> = ({frame}) => {
   const check = progress(frame, T9.done + 1, 10, ease.out);
   return (
     <>
-      {/* Velo tinta al 40 % sobre todo el portal: el borde suave cae en el hueco
-          entre el titular y la cabecera, que queda velada como la rejilla */}
+      {/* Velo tinta al 40 % sobre la rejilla; la cabecera queda en la penumbra */}
       <div
         style={{
           position: "absolute",
@@ -162,7 +165,7 @@ const Sheet: React.FC<{frame: number}> = ({frame}) => {
           top: VEIL_Y,
           width: 1080,
           height: 1920 - VEIL_Y,
-          background: `linear-gradient(to bottom, rgba(28,26,23,0) 0px, rgba(28,26,23,0.4) ${HEAD.y - VEIL_Y}px, rgba(28,26,23,0.4) 100%)`,
+          background: `linear-gradient(to bottom, rgba(28,26,23,0) 0px, rgba(28,26,23,0.14) ${(VEIL_FULL - VEIL_Y) * 0.4}px, rgba(28,26,23,0.4) ${VEIL_FULL - VEIL_Y}px, rgba(28,26,23,0.4) 100%)`,
           opacity: sp,
         }}
       />

@@ -340,14 +340,17 @@ export const ConfirmButton: React.FC<{
   );
 };
 
-/** Avatar del club: cuadrado verde con una pista dibujada en arena. */
+/**
+ * Avatar del club: cuadrado tinta con una pista dibujada en arena. En tinta y
+ * no en verde: el verde solo significa reservado, confirmado o activo.
+ */
 export const ClubAvatar: React.FC<{size: number; r?: number}> = ({size, r = Math.round(size * 0.24)}) => (
   <div
     style={{
       width: size,
       height: size,
       borderRadius: r,
-      background: color.green700,
+      background: color.ink900,
       display: "flex",
       alignItems: "center",
       justifyContent: "center",

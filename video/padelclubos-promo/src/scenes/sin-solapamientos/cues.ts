@@ -20,8 +20,10 @@ export const T16 = {
   open: 45,
   /** Clic en «Pista 3 · Libre». */
   pick: 52,
-  /** El aviso se cierra (15 → 57 = 42 f, el mínimo para sus 4 palabras). */
-  noticeOut: 57,
+  /** El selector se cierra (vista inversa) y cede el foco al digit-roll. */
+  selectOut: 56,
+  /** El aviso se cierra con la confirmación (15 → 60 = 45 f, tabla de legibilidad). */
+  noticeOut: 60,
   /** PISTA rueda 1 → 3, B se coloca junto a A, check y subtítulo. */
   resolve: 60,
   /** Tres tics de trinquete durante el digit-roll 1 → 3 (6 f). */

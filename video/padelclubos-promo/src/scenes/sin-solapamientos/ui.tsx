@@ -147,8 +147,10 @@ export const SlotCard: React.FC<{
   frame: number;
   g: CardGeo;
   values: [CellValue, CellValue, CellValue];
-  /** Color del borde (tinta, warning…). */
+  /** Color del borde continuo (tinta, warning…). */
   ink: string;
+  /** Color del borde discontinuo (por defecto, el mismo): se funden sin mezclar tonos. */
+  dashInk?: string;
   /** 0 = borde continuo, 1 = discontinuo (borrador). */
   dashed?: number;
   /** 0→1: tira verde de reserva hecha (crece desde el centro). */
@@ -172,6 +174,7 @@ export const SlotCard: React.FC<{
   g,
   values,
   ink,
+  dashInk,
   dashed = 0,
   strip = 0,
   check,
@@ -330,7 +333,7 @@ export const SlotCard: React.FC<{
       ) : null}
       {/* Borde: continuo y discontinuo se funden */}
       <Frame g={g} h={h} ink={ink} opacity={1 - dashed} />
-      <Frame g={g} h={h} ink={ink} dash="12 8" opacity={dashed} />
+      <Frame g={g} h={h} ink={dashInk ?? ink} dash="12 8" opacity={dashed} />
     </div>
   );
 };
@@ -378,8 +381,9 @@ export const ClickCursor: React.FC<{frame: number; keys: CursorKey[]; size?: num
     if (!k.click) return;
     const d = frame - k.at;
     if (d >= 0 && d < 8) press = Math.max(press, d < 3 ? d / 3 : 1 - (d - 3) / 5);
-    if (d >= 0 && d < 14) {
-      const p = ease.out(d / 14);
+    // Anillo corto (10 f): no sobrevive a lo que se pulsó (p. ej. el menú que se cierra).
+    if (d >= 0 && d < 10) {
+      const p = ease.out(d / 10);
       const r = 10 + 26 * p;
       rings.push(
         <div

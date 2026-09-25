@@ -12,10 +12,13 @@ import {T} from "./cues";
 
 const MOD = {x: 304, y: 384, w: 1312, h: 360, row: 96} as const;
 const HUD = {x: MOD.x, bottom: 312, size: 80, lead: 88} as const;
-const BUBBLE = {w: 440, top: 800} as const;
+/** Margen interior común: el contenido de celdas y fila de total queda a 40 px del borde exterior. */
+const INSET = 40;
 /** Columnas en píxeles enteros (435 + 2 + 435 + 2 + 434 = 1308): líneas de 2 px nítidas. */
 const COLS = [435, 435, 434] as const;
 const colLeft = (k: number) => 2 + COLS.slice(0, k).reduce((a, c) => a + c + 2, 0);
+/** La burbuja ocupa justo la columna 03: del separador 02|03 al borde derecho del módulo. */
+const BUBBLE = {x: MOD.x + colLeft(2) - 2, w: MOD.w - (colLeft(2) - 2), top: 800} as const;
 
 const STEPS = [
   // Verbo / complemento: ninguna línea acaba en «tu» ni en «a».
@@ -153,12 +156,13 @@ const DrawBorder: React.FC<{w: number; top: number; p: number}> = ({w, top, p}) 
 const Stopwatch: React.FC<{frame: number; size: number}> = ({frame, size}) => {
   const secsAt = (f: number) => Math.floor(tween(f, [T.timerStart, T.timerStop], [0, T.timerSeconds], ease.linear) + 1e-6);
   const s = secsAt(frame);
-  // El digit-roll de los minutos se centra en el paso por :00 (empieza 3 f antes),
-  // para que nunca se lea «00:01» mientras la cifra aún no ha rodado.
+  // El minuto rueda 1 f antes del paso por :00: en ese frame aún se ve entero
+  // el minuto viejo con sus segundos (…:5x) y en el del paso ya va a media
+  // rueda (curva overlay ≈ 0,5). Nunca se lee «0m:5x» ni «0(m-1):00».
   const keys = [1, 2, 3, 4].map((m) => {
     let f = T.timerStart;
     while (secsAt(f) < m * 60) f++;
-    return {at: f - 3, value: String(m)};
+    return {at: f - 1, value: String(m)};
   });
   return (
     <span style={{...monoStyle(500), fontSize: size, lineHeight: 1, color: color.darkText, whiteSpace: "pre"}}>
@@ -185,7 +189,7 @@ const TotalRow: React.FC<{frame: number}> = ({frame}) => {
         display: "flex",
         alignItems: "center",
         gap: 24,
-        padding: "0 40px 0 32px",
+        padding: `0 ${INSET}px`,
       }}
     >
       <CheckTile frame={frame} appear={-6} at={T.totalCheck} size={40} tone="dark" />
@@ -259,7 +263,8 @@ const SetupModule: React.FC<{frame: number}> = ({frame}) => {
               width: COLS[k],
               height: cellsH,
               boxSizing: "border-box",
-              padding: "32px 32px 32px 40px",
+              // Las celdas empiezan tras el borde de 2 px: 38 + 2 = INSET desde el borde exterior.
+              padding: `32px ${INSET - 2}px`,
               display: "flex",
               flexDirection: "column",
               justifyContent: "space-between",
@@ -318,7 +323,7 @@ const ShareBubble: React.FC<{frame: number}> = ({frame}) => {
   if (frame < start) return null;
   return (
     // Ventana bajo el módulo: la burbuja sale de debajo de la celda 03.
-    <div style={{position: "absolute", left: MOD.x + MOD.w - BUBBLE.w - 40, top: slot, width: BUBBLE.w + 80, height: 300, overflow: "hidden"}}>
+    <div style={{position: "absolute", left: BUBBLE.x - 40, top: slot, width: BUBBLE.w + 80, height: 300, overflow: "hidden"}}>
       <div
         style={{
           position: "absolute",

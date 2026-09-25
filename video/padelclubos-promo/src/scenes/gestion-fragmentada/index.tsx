@@ -96,7 +96,7 @@ const LIGA: SheetSpec = {
 
 // ---------------------------------------------------------------- montón
 
-interface Item {
+export interface Item {
   id: string;
   /** Esquina superior izquierda y tamaño en su pose final. */
   x: number;
@@ -117,7 +117,7 @@ const L = sheetSize(LIGA);
 // Mesa de caos en la columna derecha (x860–1824).
 // Los módulos de «dobles-reservas» ya están en el f0: han caído en el centro
 // del montón y cada ventana que cae los tapa un poco más.
-const ITEMS: Item[] = [
+export const ITEMS: Item[] = [
   {id: "modA", x: 1000, y: 470, w: MODULE_S.w, h: MODULE_S.h, r: -5, kind: "rest"},
   {id: "modB", x: 1196, y: 560, w: MODULE_S.w, h: MODULE_S.h, r: 4, kind: "rest"},
   {id: "socios", x: 904, y: 128, w: S.w, h: S.h, r: -3, at: T.drops[0] - T.lead, kind: "drop"},
@@ -128,18 +128,18 @@ const ITEMS: Item[] = [
 ];
 
 /** Centro del montón: hacia él se comprime y es él el que viaja al centro del cuadro. */
-const PILE = {x: 1364, y: 564} as const;
+export const PILE = {x: 1364, y: 564} as const;
 const FRAME_C = {x: 960, y: 540} as const;
 
 // Compresión: arranca en ease-in sobre el tiempo y se posa suave (la succión de
 // «suena-familiar» parte casi en reposo). El viaje, algo detrás, igual.
 const SQUEEZE = Easing.bezier(0.3, 0, 0.2, 1);
 const GLIDE = Easing.bezier(0.4, 0, 0.4, 1);
-const squeezeAt = (f: number) => tween(f, [T.compress, T.compressEnd], [0, 1], SQUEEZE);
+export const squeezeAt = (f: number) => tween(f, [T.compress, T.compressEnd], [0, 1], SQUEEZE);
 const travelAt = (f: number) => tween(f, [T.travel, T.travelEnd], [0, 1], GLIDE);
 
 /** Cámara del montón: leve acercamiento durante el caos, compresión y viaje al centro. */
-const pileXform = (f: number) => {
+export const pileXform = (f: number) => {
   const push = tween(f, [0, T.compress], [1, 1.02], ease.inOut);
   const tr = travelAt(f);
   return {scale: push * lerp(1, 0.6, squeezeAt(f)), tx: (FRAME_C.x - PILE.x) * tr, ty: (FRAME_C.y - PILE.y) * tr};
@@ -177,7 +177,7 @@ const entryBlur = (it: Item, frame: number) => {
   return bx > 0.3 || by > 0.3 ? {bx, by} : null;
 };
 
-const itemPose = (it: Item, frame: number, cp: number) => {
+export const itemPose = (it: Item, frame: number, cp: number) => {
   const cx = it.x + it.w / 2;
   const cy = it.y + it.h / 2;
   let dx = 0;

@@ -197,7 +197,7 @@ const PanelTopbar: React.FC = () => (
       <Globe size={19} strokeWidth={2} />
       <Sun size={19} strokeWidth={2} />
       <Bell size={19} strokeWidth={2} />
-      <Avatar initials="LM" size={42} bg={color.green700} />
+      <Avatar initials="LM" size={42} bg={color.ink700} />
     </div>
   </div>
 );
@@ -307,15 +307,33 @@ const PanelCell: React.FC<{frame: number; ci: number; si: number}> = ({frame, ci
   const hl = tgt ? progress(frame, T16.land - 6, 6, ease.out) : 0;
   const fill = tgt ? progress(frame, T16.land, 6, ease.out) : 0;
   const glow = tgt ? progress(frame, T16.land, 20, ease.out) : 0;
+  // El hueco se vacía mientras llega el módulo: se posa en una franja limpia
+  // y el relleno verde lo cubre de izquierda a derecha (sin textos cruzados).
+  const docked = tgt && frame >= T16.land && fill < 1;
   return (
     <div style={base}>
       <DashedRect w={CELL_W} h={CELL_H} r={8} opacity={1 - hl} />
       {hl > 0 ? <div style={{position: "absolute", inset: 0, borderRadius: 8, border: `2px solid ${color.ink900}`, opacity: hl}} /> : null}
-      <div style={{...body, flexDirection: "row", alignItems: "center", justifyContent: "flex-start", gap: 8, color: color.ink400}}>
+      <div style={{...body, flexDirection: "row", alignItems: "center", justifyContent: "flex-start", gap: 8, color: color.ink400, opacity: 1 - hl}}>
         <Clock size={16} strokeWidth={2} />
         <span style={{...monoStyle(500), fontSize: 16, color: color.ink500}}>{SLOTS[si]}</span>
         <CirclePlus size={18} strokeWidth={2} style={{marginLeft: "auto"}} />
       </div>
+      {docked ? (
+        <div
+          style={{
+            position: "absolute",
+            left: (CELL_W - MOD.w * FLY_SCALE) / 2,
+            top: (CELL_H - MOD_H * FLY_SCALE) / 2,
+            width: MOD.w,
+            height: MOD_H,
+            transform: `scale(${FLY_SCALE})`,
+            transformOrigin: "0 0",
+          }}
+        >
+          <ModuleCard frame={frame} strip={1} />
+        </div>
+      ) : null}
       {fill > 0 ? (
         <>
           <div
@@ -747,9 +765,9 @@ const Phone: React.FC<{frame: number}> = ({frame}) => {
 
 /** Copia del módulo confirmado que vuela del móvil al panel en arco. */
 const FlyingModule: React.FC<{frame: number}> = ({frame}) => {
-  if (frame < T16.fly || frame > T16.land + 6) return null;
+  // En f87 se posa: desde ahí lo pinta la propia celda, bajo el relleno verde.
+  if (frame < T16.fly || frame >= T16.land) return null;
   const {x, y, s, lift} = flightAt(frame);
-  const out = progress(frame, T16.land, 3, ease.out);
   // Estela en px de pantalla: el filtro va en la caja escalada y la escala, en el hijo.
   // Obturador corto (~70°): el módulo se reconoce en vuelo sin saltos de 30 fps.
   const vx = velocity((f) => flightAt(f).x, frame);
@@ -766,7 +784,6 @@ const FlyingModule: React.FC<{frame: number}> = ({frame}) => {
         top: y - (MOD_H * s) / 2,
         width: MOD.w * s,
         height: MOD_H * s,
-        opacity: 1 - out,
         zIndex: 40,
       }}
     >

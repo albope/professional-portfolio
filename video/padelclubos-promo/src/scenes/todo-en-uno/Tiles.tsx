@@ -224,10 +224,12 @@ export const tileFrame: React.CSSProperties = {
 /** Interruptor estándar del producto: apagado arena con el pomo a la izquierda; encendido verde con el pomo a la derecha. */
 export const SWITCH = {w: 56, h: 32, knob: 24, inset: 4} as const;
 
-const Switch: React.FC<{on: number; hover: number; press: number}> = ({on, hover, press}) => {
+const Switch: React.FC<{on: number; hover: number; press: number; ring: number}> = ({on, hover, press, ring}) => {
   const off = interpolateColors(hover, [0, 1], [color.sand300, color.sand400]);
   const track = interpolateColors(on, [0, 1], [off, color.green600]);
   const travel = SWITCH.w - SWITCH.knob - SWITCH.inset * 2;
+  // Anillo de foco del clic: píldora de 2 px alrededor del interruptor (no sobre el pomo).
+  const gap = 4 + 8 * ring;
   return (
     <div
       style={{
@@ -239,6 +241,17 @@ const Switch: React.FC<{on: number; hover: number; press: number}> = ({on, hover
         transform: `scale(${press})`,
       }}
     >
+      {ring > 0 && ring < 1 ? (
+        <div
+          style={{
+            position: "absolute",
+            inset: -gap,
+            borderRadius: radius.pill,
+            border: `2px solid ${color.green400}`,
+            opacity: 0.9 * (1 - ring),
+          }}
+        />
+      ) : null}
       <div
         style={{
           position: "absolute",
@@ -364,7 +377,7 @@ export const ExtraTileView: React.FC<{
       )}
       {tile.toggle ? (
         <div style={{position: "absolute", right: TILE.padX, top: (TILE.extraH - TILE.border * 2 - SWITCH.h) / 2}}>
-          <Switch on={on} hover={hover} press={press} />
+          <Switch on={on} hover={hover} press={press} ring={onAt === undefined ? 0 : progress(frame, onAt, 14, ease.out)} />
         </div>
       ) : null}
     </div>

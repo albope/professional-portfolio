@@ -1,6 +1,6 @@
 import React from "react";
 import {AbsoluteFill, Easing, interpolateColors, useCurrentFrame} from "remotion";
-import {CalendarPlus, Lock, TriangleAlert} from "lucide-react";
+import {CalendarPlus, Check, Lock, TriangleAlert} from "lucide-react";
 import {color, monoStyle, radius, shadow, textStyle} from "../../brand/tokens";
 import {WordsReveal} from "../../components";
 import {ease, motion, pressScale, progress, tween} from "../../lib/anim";
@@ -54,7 +54,8 @@ const pushX = (f: number, exit: number) =>
 
 // Cursor: entra, clic en PISTA de B, clic en «Pista 3 · Libre» y se aparta.
 const PISTA_TIP = {x: B_STOP + 120, y: Y0 + 140};
-const OPTION_TIP = {x: B_STOP + SEL.dx + 176, y: SEL.y + SEL.pad + SEL.row * 1.5 + 6};
+// El clic cae en el aire de la fila, entre «Libre» y el check: la flecha no tapa texto.
+const OPTION_TIP = {x: B_STOP + SEL.dx + 264, y: SEL.y + SEL.pad + SEL.row * 1.5 + 6};
 const CURSOR_KEYS = [
   {at: T.cursorIn, x: 1480, y: 1010},
   {at: T.open, x: PISTA_TIP.x, y: PISTA_TIP.y, click: true},
@@ -89,13 +90,15 @@ const ModuleA: React.FC<{frame: number}> = ({frame}) => (
 const ModuleB: React.FC<{frame: number}> = ({frame}) => {
   if (frame < T.enter) return null;
   const x = bX(frame);
+  // Borrador tinta → warning al chocar; al confirmarse, el discontinuo warning
+  // cede al continuo tinta (fundido entre dos trazos, sin tonos intermedios).
   const warnIn = interpolateColors(frame, [T.stop - 1, T.stop + 3], [color.ink900, color.warning]);
-  const ink = frame < T.resolve ? warnIn : interpolateColors(frame, [T.resolve, T.resolve + 4], [color.warning, color.ink900]);
-  const solid = progress(frame, T.resolve, 4, ease.out);
+  const solid = progress(frame, T.resolve, 3, ease.out);
   const settled = progress(frame, T.resolve, motion.overlay, ease.overlay);
   const focus = progress(frame, T.open, motion.press, ease.out) * (1 - progress(frame, T.resolve, 4, ease.out));
   return (
-    <DirBlur id="sin-b16" vx={velocity(bX, frame)} style={{position: "absolute", left: x, top: Y0}}>
+    // El frame del golpe (f15) sale nítido: la estela solo acompaña la llegada.
+    <DirBlur id="sin-b16" vx={frame === T.stop ? 0 : velocity(bX, frame)} style={{position: "absolute", left: x, top: Y0}}>
       {/* Pestaña de borrador «Nueva Reserva» */}
       <div
         style={{
@@ -123,7 +126,8 @@ const ModuleB: React.FC<{frame: number}> = ({frame}) => {
       <SlotCard
         frame={frame}
         g={G}
-        ink={ink}
+        ink={color.ink900}
+        dashInk={warnIn}
         dashed={1 - solid}
         strip={settled}
         check={{circle: progress(frame, T.resolve, motion.press, ease.out), draw: progress(frame, T.resolve + 2, 8, ease.out)}}
@@ -183,9 +187,12 @@ const Notice: React.FC<{frame: number}> = ({frame}) => {
 /** Selector de pista que se despliega desde la celda PISTA de B. */
 const CourtSelect: React.FC<{frame: number}> = ({frame}) => {
   const open = progress(frame, T.open, motion.overlay, ease.overlay);
-  const close = progress(frame, T.pick + 1, 4, ease.out);
+  // Se cierra justo cuando empieza el digit-roll: el foco pasa del menú a la celda.
+  // Se recoge hacia la celda como se abrió (recorte, curva overlay): sin textos fantasma.
+  const close = progress(frame, T.selectOut, T.resolve - T.selectOut, ease.overlay);
   if (open <= 0 || close >= 1) return null;
   const hover = progress(frame, T.pick - 3, 3, ease.out);
+  const picked = progress(frame, T.pick, motion.press, ease.out);
   const rowStyle: React.CSSProperties = {
     height: SEL.row,
     display: "flex",
@@ -211,9 +218,9 @@ const CourtSelect: React.FC<{frame: number}> = ({frame}) => {
         background: color.surfaceRaised,
         border: `2px solid ${color.sand300}`,
         boxShadow: shadow.float,
-        opacity: Math.min(1, open * 2.5) * (1 - close),
-        transform: `translateY(${(1 - open) * -8 - close * 4}px)`,
-        clipPath: `inset(0 -40px ${(1 - open) * 100}% -40px)`,
+        opacity: Math.min(1, open * 2.5) * Math.min(1, (1 - close) * 2.5),
+        transform: `translateY(${(1 - open) * -8 - close * 8}px)`,
+        clipPath: `inset(0 -40px ${Math.max(1 - open, close) * 100}% -40px)`,
       }}
     >
       <div style={{...rowStyle, color: color.ink400}}>
@@ -233,6 +240,13 @@ const CourtSelect: React.FC<{frame: number}> = ({frame}) => {
         </span>
         <span style={{...textStyle(600)}}>Pista 3</span>
         <span style={{color: color.ink500, marginLeft: -6}}>· Libre</span>
+        {/* Opción elegida: check tinta (el verde queda para la confirmación) */}
+        <Check
+          size={22}
+          strokeWidth={2.6}
+          color={color.ink900}
+          style={{marginLeft: "auto", opacity: picked, transform: `scale(${0.96 + 0.04 * picked})`}}
+        />
       </div>
     </div>
   );
@@ -293,11 +307,13 @@ const Content: React.FC<{exit: number}> = ({exit}) => {
 export const Landscape: React.FC = () => {
   const frame = useCurrentFrame();
   const {durationInFrames} = useScene();
-  // Salida en los últimos 8 f de la escena (T.exit = 112 en 2 compases).
-  const hudOut = Math.min(T.exit, durationInFrames - 8);
+  // Push en los últimos 8 f (T.exit = 112 en 2 compases); la vista inversa de
+  // la HUD empieza 1 f antes para que el último frame quede limpio.
+  const pushOut = Math.min(T.exit, durationInFrames - motion.exit);
+  const hudOut = pushOut - 1;
   return (
     <AbsoluteFill style={{background: color.sand100}}>
-      <Content exit={hudOut} />
+      <Content exit={pushOut} />
       {/* HUD fija: reloj, titular y subtítulo */}
       <LightClock frame={frame} rollAt={T.clock} />
       <WordsReveal
