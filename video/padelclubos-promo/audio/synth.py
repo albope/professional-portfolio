@@ -511,7 +511,8 @@ def master(mix: np.ndarray, lufs_target: float = -14.0) -> np.ndarray:
         if not np.isfinite(loud):
             break
         y = y * 10 ** ((lufs_target - loud) / 20)
-        y = limiter(y, ceiling_db=-1.2)
+        # -2 dB en el WAV: tras codificar en AAC el pico queda en torno a -1 dBTP.
+        y = limiter(y, ceiling_db=-2.0)
     return y
 
 
