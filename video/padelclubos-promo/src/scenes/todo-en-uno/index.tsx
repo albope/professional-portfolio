@@ -39,14 +39,17 @@ const R = Math.log(KH / PREV.k) / Math.log(KW / PREV.k);
 const W0 = RECEPCION.w * PREV.k;
 
 /**
- * Curva del zoom (14 f): arranca a la velocidad con la que llega el panel de
- * «control-de-cobros» (≈10 px/f en el borde izquierdo), acelera hasta ≈200 px/f
- * hacia f5 y se posa largo, sin overshoot. Sin frame repetido ni caída de
- * velocidad en el corte.
+ * Curva del zoom (12 f, como pide el storyboard): arranca a la velocidad con la
+ * que llega el panel de «control-de-cobros» (≈11 px/f en el borde izquierdo),
+ * acelera hasta ≈290 px/f hacia f4–f5 y se posa sin overshoot. Sin frame
+ * repetido ni caída de velocidad en el corte. La cola es corta a propósito: en
+ * f9, cuando la casilla 03 (entra en f8) ya se ve, el borde izquierdo de la
+ * tarjeta ha pasado su texto e icono, y en f10 deja libre también su borde.
  */
 const ENTRY_SPEED = (RECEPCION.w * (1 - PREV.k) * PREV.power) / PREV.frames;
-const ZOOM_X1 = 0.4;
-const ZOOM_EASE = Easing.bezier(ZOOM_X1, ZOOM_X1 * ((ENTRY_SPEED * T16.zoomDur) / (W0 - TILE.w)), 0.3, 1);
+const ZOOM_X1 = 0.5;
+const ZOOM_X2 = 0.2;
+const ZOOM_EASE = Easing.bezier(ZOOM_X1, ZOOM_X1 * ((ENTRY_SPEED * T16.zoomDur) / (W0 - TILE.w)), ZOOM_X2, 1);
 const zoomP = (f: number) => ZOOM_EASE(clamp01((f - T16.zoom) / T16.zoomDur));
 
 // El tablero parte algo más cerca y se asienta a 1 con la tarjeta (misma curva).

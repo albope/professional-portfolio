@@ -49,8 +49,9 @@ export const DirBlur: React.FC<{
   style?: React.CSSProperties;
   children: React.ReactNode;
 }> = ({id, vx = 0, vy = 0, style, children}) => {
-  const sx = Math.abs(vx) * 0.15;
-  const sy = Math.abs(vy) * 0.15;
+  // Tope común del acto de producto: estela legible, sin barrido en bloque.
+  const sx = Math.min(18, Math.abs(vx) * 0.15);
+  const sy = Math.min(18, Math.abs(vy) * 0.15);
   const on = sx > 0.3 || sy > 0.3;
   return (
     <>

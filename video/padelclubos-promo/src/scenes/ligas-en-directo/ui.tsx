@@ -41,7 +41,8 @@ export const LightClock: React.FC<{frame: number; rollAt: number}> = ({frame, ro
  * reposo y sin el tinte rosado que deja CameraMotionBlur sobre la arena.
  */
 export const DirBlur: React.FC<{id: string; vx: number; style?: React.CSSProperties; children: React.ReactNode}> = ({id, vx, style, children}) => {
-  const sx = Math.abs(vx) * 0.15;
+  // Tope común del acto de producto: estela legible, sin barrido en bloque.
+  const sx = Math.min(18, Math.abs(vx) * 0.15);
   const on = sx > 0.3;
   return (
     <>

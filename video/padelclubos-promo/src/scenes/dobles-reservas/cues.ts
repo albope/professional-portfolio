@@ -57,7 +57,7 @@ export const cues: SceneCues = {
     ...rollTicks(T16, 0.55),
     {frame: T16.second, sfx: "whoosh", dur: 12, gain: 0.8},
     {frame: T16.impact, sfx: "buzz"},
-    {frame: T16.impact, sfx: "tock", pitch: 0.8},
+    {frame: T16.impact, sfx: "tock", pitch: 0.9, metallic: true},
     {frame: T16.fall, sfx: "whooshDown", dur: 15},
   ],
   portrait: [
@@ -65,7 +65,7 @@ export const cues: SceneCues = {
     ...rollTicks(T9, 0.45),
     {frame: T9.second, sfx: "swipe", gain: 0.9},
     {frame: T9.impact, sfx: "buzz"},
-    {frame: T9.impact, sfx: "tock", pitch: 0.8},
+    {frame: T9.impact, sfx: "tock", pitch: 0.9, metallic: true},
     {frame: T9.fall, sfx: "whooshDown", dur: 15},
   ],
 };

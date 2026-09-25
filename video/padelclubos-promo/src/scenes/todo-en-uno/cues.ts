@@ -8,12 +8,12 @@ import {bars, beats} from "../../lib/anim";
  */
 export const T16 = {
   /**
-   * f0–f14: la Recepción se encoge hasta ser la casilla 04. Continúa el
+   * f0–f12: la Recepción se encoge hasta ser la casilla 04. Continúa el
    * pre-encogido de «control-de-cobros» a su misma velocidad, acelera y se
-   * posa largo (sin rebote).
+   * posa (sin rebote) antes de que la casilla 03 se vea.
    */
   zoom: 0,
-  zoomDur: 14,
+  zoomDur: 12,
   /** El contenido de la Recepción se funde antes del tramo rápido del zoom (f0–f4). */
   recFade: 4,
   /** El reloj rueda 20:25 → 22:00. */

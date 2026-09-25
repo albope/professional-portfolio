@@ -31,7 +31,8 @@ export const PushIn: React.FC<{
   const frame = useCurrentFrame();
   const {width} = useScene();
   const x = (f: number) => tween(f, [0, inFrames], [distance * width, 0], ease.overlay);
-  const sigma = (Math.abs(x(frame + 1) - x(frame - 1)) / 2) * SIGMA_PER_PX;
+  // Tope común del acto de producto: estela legible, sin barrido en bloque.
+  const sigma = Math.min(18, (Math.abs(x(frame + 1) - x(frame - 1)) / 2) * SIGMA_PER_PX);
   const on = sigma > 0.3;
   return (
     <>
