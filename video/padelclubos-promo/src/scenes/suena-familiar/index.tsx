@@ -326,7 +326,7 @@ const Outline: React.FC<{frame: number; Lx: Layout; width: number; height: numbe
               strokeWidth={ISO.stroke}
               strokeLinecap="round"
               pathLength={1}
-              strokeDasharray={`${p} 1`}
+              strokeDasharray={`${p} 2`}
             />
           ))
         )}

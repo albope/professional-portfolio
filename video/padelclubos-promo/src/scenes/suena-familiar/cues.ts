@@ -25,13 +25,10 @@ export const T16 = {
   still: beats(3), // f45
 } as const;
 
-// El riser y el platillo invertido que culminan en t.3 los pone la música
-// (build_short), y t.4 va en silencio: aquí solo suena lo que se ve.
+// El riser, el platillo invertido y el redoble que acompañan la succión los
+// pone la música (build_short, que culmina al entrar el t.4), y el t.4 va en
+// silencio: el único cue es el «toc» seco sobre el plano quieto.
 export const cues: SceneCues = {
-  landscape: [
-    // La succión: barrido descendente cuyo pico cae en la corchea (f37).
-    {frame: T16.suck, sfx: "whooshDown", dur: 14, gain: 0.5},
-    {frame: T16.still, sfx: "tock", gain: 1},
-  ],
+  landscape: [{frame: T16.still, sfx: "tock", gain: 1}],
   portrait: [],
 };

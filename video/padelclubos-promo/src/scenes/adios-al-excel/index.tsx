@@ -28,7 +28,7 @@ const sheetPose = (f: number) => {
   const fix = progress(f, T.straighten, 6, ease.overlay);
   const lift = 1 - drop;
   return {
-    o: progress(f, T.drop, 3, ease.out),
+    o: progress(f, T.drop, 2, ease.out),
     x: lerp(-12, 0, fix),
     y: lift * -72 + lerp(8, 0, fix),
     s: 1 + lift * 0.06,

@@ -7,8 +7,8 @@ import {Avatar, Cursor, DigitRoll, NAV_GROUPS, WordsReveal, type CursorKey} from
 import {clamp01, ease, motion, pressScale, progress, tween, view} from "../../lib/anim";
 import {useScene} from "../../lib/scene";
 import {T16 as T} from "./cues";
-import {LIGA, RESULT, STANDINGS, rollSteps, type Standing} from "./data";
-import {CheckStroke, DirBlur, LightClock, LiveDot, PersonAvatar, flip, liftShadow, pulseAt, settle, riseTint, velocity} from "./ui";
+import {LIGA, RESULT, STANDINGS, rollTo, type Standing} from "./data";
+import {CheckStroke, DirBlur, FocusRing, LightClock, LiveDot, PersonAvatar, UpMark, flip, liftShadow, pulseAt, settle, riseTint, velocity, type Rect} from "./ui";
 
 // ─── Geometría 16:9 (rejilla de 8 px) ───────────────────────────────────────
 // Panel del club (x96–1424) y portal del jugador en el móvil (x1472–1824).
@@ -202,14 +202,9 @@ const cell = (w: number, align: "left" | "center" | "right" = "center"): React.C
   alignItems: "center",
 });
 
-const Num: React.FC<{frame: number; from: number; to: number; at: number; steps?: readonly number[]; style: React.CSSProperties}> = ({
-  frame,
-  from,
-  to,
-  at,
-  steps = [],
-  style,
-}) => <DigitRoll frame={frame} keys={rollSteps(from, to, at, steps)} initial={String(from)} style={style} />;
+const Num: React.FC<{frame: number; from: number; to: number; at: number; style: React.CSSProperties}> = ({frame, from, to, at, style}) => (
+  <DigitRoll frame={frame} keys={rollTo(from, to, at)} initial={String(from)} style={style} />
+);
 
 const PAIR_TONES: Record<Standing["id"], [string, string]> = {
   ns: [color.ink500, color.ink400],
@@ -226,7 +221,6 @@ const TableRow: React.FC<{frame: number; s: Standing}> = ({frame, s}) => {
   const moving = s.from !== s.to ? Math.sin(Math.PI * progress(frame, T.reorder, 7, ease.overlay)) : 0;
   const enter = view(frame, T.rows[s.from]);
   const gf = s.id === "gf";
-  const mm = s.id === "mm";
   const num: React.CSSProperties = {...displayStyle(600), fontSize: 22, lineHeight: 1, color: color.ink700};
   const rowBg = interpolateColors(tint, [0, 1], [color.sand50, color.greenTint]);
   return (
@@ -257,9 +251,7 @@ const TableRow: React.FC<{frame: number; s: Standing}> = ({frame, s}) => {
           <PersonAvatar size={32} bg={PAIR_TONES[s.id][1]} ring={rowBg} ringW={2} style={{marginLeft: -8}} />
         </div>
         <span style={{...textStyle(600), fontSize: 20, color: color.ink900, whiteSpace: "nowrap"}}>{s.name}</span>
-        {gf ? (
-          <span style={{...monoStyle(700), fontSize: 16, color: color.green600, ...view(frame, T.reorder + 4)}}>▲</span>
-        ) : null}
+        {gf ? <UpMark size={16} style={view(frame, T.points)} /> : null}
       </div>
       <div style={cell(COLS.pj)}>
         <Num frame={frame} from={s.before.pj} to={s.after.pj} at={gf ? T.reorder : T.reorder + 2} style={num} />
@@ -268,14 +260,7 @@ const TableRow: React.FC<{frame: number; s: Standing}> = ({frame, s}) => {
         <Num frame={frame} from={s.before.pg} to={s.after.pg} at={T.reorder + 2} style={num} />
       </div>
       <div style={cell(COLS.pts, "right")}>
-        <Num
-          frame={frame}
-          from={s.before.pts}
-          to={s.after.pts}
-          at={mm ? T.reorder + 4 : T.points[0]}
-          steps={T.points}
-          style={{...displayStyle(800), fontSize: 24, lineHeight: 1, color: color.ink900}}
-        />
+        <Num frame={frame} from={s.before.pts} to={s.after.pts} at={T.points} style={{...displayStyle(800), fontSize: 24, lineHeight: 1, color: color.ink900}} />
       </div>
     </div>
   );
@@ -378,22 +363,11 @@ const Legend: React.FC<{frame: number}> = ({frame}) => (
 
 // ─── Resultado (módulo marcador) ────────────────────────────────────────────
 
-/** Celda de set: marcador vacío con guion y foco verde mientras se escribe. */
-const SetCell: React.FC<{frame: number; value: string; at: number; next: number}> = ({frame, value, at, next}) => {
-  const focus = progress(frame, Math.max(at - 3, T.result), 3, ease.out) * (1 - progress(frame, next - 2, 3, ease.out));
+/** Celda de set: marcador vacío con guion hasta que se escribe su juego. */
+const SetCell: React.FC<{frame: number; value: string; at: number}> = ({frame, value, at}) => {
   const dash = 1 - progress(frame, at, 3, ease.out);
   return (
-    <div style={{position: "relative", width: CARD.set, height: CARD.row, display: "flex", alignItems: "center", justifyContent: "center"}}>
-      <div
-        style={{
-          position: "absolute",
-          inset: 8,
-          borderRadius: 8,
-          boxShadow: `inset 0 0 0 2px ${color.green400}`,
-          background: `rgba(47,160,117,${(0.08 * focus).toFixed(3)})`,
-          opacity: focus,
-        }}
-      />
+    <div style={{position: "relative", width: CARD.set, height: CARD.row - 2, display: "flex", alignItems: "center", justifyContent: "center"}}>
       <span style={{position: "absolute", ...displayStyle(700), fontSize: 56, color: color.sand400, opacity: dash}}>–</span>
       <span style={{...displayStyle(800), fontSize: 72, lineHeight: 1, color: color.ink900, position: "relative"}}>
         <DigitRoll frame={frame} keys={[{at, value}]} alignRight={false} />
@@ -402,17 +376,21 @@ const SetCell: React.FC<{frame: number; value: string; at: number; next: number}
   );
 };
 
+/** Celdas de juego en orden de escritura, dentro del borde de la tarjeta (anillo con 8 px de aire). */
+const FOCUS_CELLS: Rect[] = RESULT.order.map(([p, s]) => ({
+  x: PAIR_COL + s * (CARD.set + 2) + 2 + 8,
+  y: CARD.label + p * CARD.row + 8,
+  w: CARD.set - 16,
+  h: CARD.row - 2 - 16,
+}));
+
 const ResultCard: React.FC<{frame: number}> = ({frame}) => {
   // Ciclo de la tarjeta: en reposo con el panel → se eleva al editar (f15) → se asienta al guardar.
   const lift = progress(frame, T.result, motion.overlay, ease.overlay) * settle(frame, T.save + 2);
+  const enter = progress(frame, 0, motion.view, ease.out);
   const typedAt = (pair: number, set: number): number => T.games[RESULT.order.findIndex(([p, s]) => p === pair && s === set)];
-  const order: number[] = RESULT.order.map(([p, s]) => typedAt(p, s));
-  const nextOf = (at: number) => {
-    const i = order.indexOf(at);
-    return i < order.length - 1 ? order[i + 1] : T.save - 3;
-  };
   const saved = progress(frame, T.save + 2, 6, ease.out);
-  // «Guardar resultado» se habilita cuando se ha escrito el último juego.
+  // «Guardar resultado» se habilita cuando se ha escrito el último juego; el foco pasa al botón.
   const enabled = progress(frame, T.games[3] + 3, 4, ease.out);
   const btnBg = interpolateColors(saved, [0, 1], [interpolateColors(enabled, [0, 1], [color.sand200, color.primary]), color.surfaceRaised]);
   const btnBorder = interpolateColors(saved, [0, 1], [interpolateColors(enabled, [0, 1], [color.sand300, color.primary]), color.green600]);
@@ -443,10 +421,11 @@ const ResultCard: React.FC<{frame: number}> = ({frame}) => {
         boxShadow: liftShadow(lift),
         display: "flex",
         flexDirection: "column",
-        transform: `translateY(${-8 * lift}px)`,
-        ...view(frame, 0),
+        opacity: enter,
+        transform: `translateY(${(1 - enter) * 4 - 8 * lift}px)`,
       }}
     >
+      <FocusRing frame={frame} cells={FOCUS_CELLS} at={T.games} inAt={T.result} outAt={T.games[3] + 3} line={2} r={8} />
       {/* Etiquetas */}
       <div style={{display: "flex", height: CARD.label, flexShrink: 0, borderBottom: LINE, background: color.sand50}}>
         <div style={{...label, width: PAIR_COL, boxSizing: "border-box", padding: "0 24px"}}>Pareja</div>
@@ -465,7 +444,7 @@ const ResultCard: React.FC<{frame: number}> = ({frame}) => {
             const at = typedAt(p, s);
             return (
               <div key={s} style={setCol}>
-                <SetCell frame={frame} value={RESULT.games[p][s]} at={at} next={nextOf(at)} />
+                <SetCell frame={frame} value={RESULT.games[p][s]} at={at} />
               </div>
             );
           })}
@@ -582,8 +561,7 @@ const PhoneRow: React.FC<{frame: number; s: Standing}> = ({frame, s}) => {
           frame={frame}
           from={s.before.pts}
           to={s.after.pts}
-          at={s.id === "mm" ? at + 4 : T.points[0] + T.phoneLag}
-          steps={T.points.map((f) => f + T.phoneLag)}
+          at={T.points + T.phoneLag}
           style={{...displayStyle(800), fontSize: 19, lineHeight: 1, color: color.ink900}}
         />
       </div>

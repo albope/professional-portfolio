@@ -199,9 +199,9 @@ const DropZone: React.FC<{frame: number}> = ({frame}) => {
           IMPORTACIÓN MASIVA
         </span>
         <span style={{...displayStyle(760), fontSize: 32, lineHeight: 1.15, color: color.ink900, marginTop: 12}}>
-          Importar desde
+          Importar
           <br />
-          Excel
+          desde Excel
         </span>
       </div>
     </>

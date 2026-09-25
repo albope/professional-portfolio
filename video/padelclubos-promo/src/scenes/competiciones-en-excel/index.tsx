@@ -22,17 +22,19 @@ const OUT = {cx: 540, cy: 850, s: 8} as const;
 
 // ---------------------------------------------------------------- tiempo
 
-// Ease-in exponencial de la succión.
+// Ease-in exponencial de la succión, con una pizca de velocidad inicial: la
+// hoja responde ya en t.3 en lugar de quedarse congelada cuatro frames.
 const K = 5;
-const expo = (u: number) => (Math.pow(2, K * u) - 1) / (Math.pow(2, K) - 1);
+const A = 0.2;
+const expo = (u: number) => A * u + (1 - A) * ((Math.pow(2, K * u) - 1) / (Math.pow(2, K) - 1));
 
 /** Caída de la hoja sobre la mesa (overlay 7 f). */
 const landAt = (f: number) => progress(f, T9.drop, motion.overlay, ease.overlay);
 /** 0 → 1 durante la succión. */
 const suckAt = (f: number) => expo(clamp01((f - T9.suck) / T9.suckDur));
-// Los dos brazos del contorno salen rápido (ningún frame muestra un trazo suelto) y cierran arriba despacio,
-// justo cuando la hoja termina de hundirse.
-const outlineAt = (f: number) => progress(f, T9.outline, T9.outlineDur, ease.out);
+// Como en «suena-familiar»: ease-in cúbico (punto → píldora → contorno), que
+// acelera con la hoja y se cierra justo cuando esta ya cabe dentro.
+const outlineAt = (f: number) => progress(f, T9.outline, T9.outlineDur, (u) => u * u * u);
 
 // ---------------------------------------------------------------- hoja
 
@@ -105,7 +107,7 @@ const SheetLayer: React.FC<{frame: number}> = ({frame}) => {
             boxShadow: `0 ${Math.round(40 + 48 * lift)}px ${Math.round(88 + 64 * lift)}px -24px rgba(0, 0, 0, ${(0.8 - 0.25 * lift).toFixed(2)})`,
           }}
         >
-          <LigaSheet frame={frame} errors={T9.errors} rangeAt={T9.range} />
+          <LigaSheet frame={frame} errors={T9.errors} rangeAt={T9.range} rangeDur={T9.rangeDur} />
         </div>
       </AbsoluteFill>
     </AbsoluteFill>
@@ -153,7 +155,17 @@ const Outline: React.FC<{frame: number}> = ({frame}) => {
           <rect x={X0} y={Y0} width={ISO.w} height={ISO.h} rx={R} fill="none" stroke={color.darkText} strokeWidth={ISO.stroke} />
         ) : (
           [HALF_R, HALF_L].map((d) => (
-            <path key={d} d={d} fill="none" stroke={color.darkText} strokeWidth={ISO.stroke} pathLength={1} strokeDasharray={`${p} 1`} />
+            // Extremos redondos mientras se dibuja, como el contorno de «suena-familiar».
+            <path
+              key={d}
+              d={d}
+              fill="none"
+              stroke={color.darkText}
+              strokeWidth={ISO.stroke}
+              strokeLinecap="round"
+              pathLength={1}
+              strokeDasharray={`${p} 2`}
+            />
           ))
         )}
       </g>

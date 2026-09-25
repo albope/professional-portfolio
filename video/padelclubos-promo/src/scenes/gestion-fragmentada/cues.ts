@@ -27,14 +27,15 @@ export const T = {
   ptsBreak: bars(1) + beats(1),
   ptsStagger: 2,
   /**
-   * Todo se comprime (c2.t3, arranque ease-in) y viaja al centro del cuadro.
-   * La compresión va por delante del viaje: el montón se encoge antes de
-   * cruzar la columna del titular, y los dos se posan a velocidad casi nula
-   * en el último frame, que es el primero de «suena-familiar».
+   * Todo se comprime (c2.t3, arranque ease-in) sobre su propio centro y
+   * después viaja al centro del cuadro. El viaje empieza tarde: el montón no
+   * entra en la columna del titular mientras este se lee (hasta f110) y ocupa
+   * el hueco que deja al salir. Se posa a velocidad casi nula en el último
+   * frame, que es el primero de «suena-familiar».
    */
   compress: bars(1) + beats(2),
-  compressEnd: bars(2) - 6,
-  travel: bars(1) + beats(2) + 6,
+  compressEnd: bars(2) - 12,
+  travel: bars(1) + beats(2) + 12,
   travelEnd: bars(2) - 1,
   /** Salida de la HUD: titular y reloj (vista inversa 8 f). */
   hudOut: 110,
@@ -44,9 +45,10 @@ export const T = {
 const ERR_NOTES = ["A5", "C6", "E6", "B5", "C6"];
 
 const landscape: Cue[] = [
-  // Cada ventana: whoosh de caída + golpe seco de papel al posarse.
+  // Cada ventana: whoosh desde que empieza a caer (su pico, ~4 f después, coincide
+  // con el aterrizaje) + golpe seco de papel al posarse, en el tiempo.
   ...T.drops.flatMap((frame, i): Cue[] => [
-    {frame, sfx: "swipe", gain: 0.75, pan: 0.35 + i * 0.1},
+    {frame: Math.max(0, frame - T.lead), sfx: "swipe", gain: 0.75, pan: 0.35 + i * 0.1},
     // Golpe seco muy suave: el bombo half-time ya cae en estos mismos tiempos.
     {frame, sfx: "impact", gain: 0.22, pan: 0.3},
   ]),

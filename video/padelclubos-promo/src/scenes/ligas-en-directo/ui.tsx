@@ -158,6 +158,63 @@ export const PersonAvatar: React.FC<{size: number; bg: string; fg?: string; ring
   </div>
 );
 
+export interface Rect {
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+}
+
+/**
+ * Foco de la tarjeta de resultado: un único anillo verde que salta de celda en
+ * celda como el foco real de un formulario (sale en 2 f y entra en la
+ * siguiente en 2 f, 0,94 → 1 sin rebote) y llega justo cuando se escribe su
+ * juego. Un foco a la vez: nunca hay dos anillos ni cruza las líneas del módulo.
+ */
+export const FocusRing: React.FC<{frame: number; cells: Rect[]; at: readonly number[]; inAt: number; outAt: number; line: number; r: number}> = ({
+  frame,
+  cells,
+  at,
+  inAt,
+  outAt,
+  line,
+  r,
+}) => {
+  // Celda activa: cambia 2 f antes de cada juego.
+  let i = 0;
+  for (let k = 1; k < cells.length; k++) if (frame >= at[k] - 2) i = k;
+  const landAt = i === 0 ? inAt : at[i] - 2;
+  const land = progress(frame, landAt, 2, ease.out);
+  const leave = i < cells.length - 1 ? progress(frame, at[i + 1] - 4, 2, ease.out) : progress(frame, outAt, 3, ease.out);
+  const o = land * (1 - leave);
+  if (o <= 0) return null;
+  const {x, y, w, h} = cells[i];
+  return (
+    <div
+      style={{
+        position: "absolute",
+        left: x,
+        top: y,
+        width: w,
+        height: h,
+        borderRadius: r,
+        boxShadow: `inset 0 0 0 ${line}px ${color.green400}`,
+        background: "rgba(47,160,117,0.08)",
+        opacity: o,
+        transform: `scale(${0.94 + 0.06 * land})`,
+        pointerEvents: "none",
+      }}
+    />
+  );
+};
+
+/** ▲ de «sube» en vector: el glifo no existe en JetBrains Mono y caería en una fuente del sistema. */
+export const UpMark: React.FC<{size: number; style?: React.CSSProperties}> = ({size, style}) => (
+  <svg width={size} height={size * 0.86} viewBox="0 0 14 12" style={{display: "block", flexShrink: 0, ...style}}>
+    <path d="M7 0.8 L13.2 11.2 L0.8 11.2 Z" fill={color.green600} stroke={color.green600} strokeWidth={1.2} strokeLinejoin="round" />
+  </svg>
+);
+
 /** Posición interpolada de una fila de la clasificación (FLIP con curva overlay). */
 export const flip = (frame: number, at: number, from: number, to: number) => from + (to - from) * progress(frame, at, 7, ease.overlay);
 

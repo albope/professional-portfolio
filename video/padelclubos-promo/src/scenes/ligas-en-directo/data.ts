@@ -44,10 +44,5 @@ export const RESULT = {
   ] as const,
 };
 
-/** Pasos del digit-roll de un valor: PTS 7 → 8 → 9 sube de uno en uno. */
-export const rollSteps = (from: number, to: number, at: number, points: readonly number[]) => {
-  if (from === to) return [];
-  const n = to - from;
-  if (n === 1) return [{at, value: String(to)}];
-  return points.slice(0, n).map((f, i) => ({at: f, value: String(from + i + 1)}));
-};
+/** Digit-roll de un valor: un solo paso (una victoria suma 2 de golpe, 7 → 9). */
+export const rollTo = (from: number, to: number, at: number) => (from === to ? [] : [{at, value: String(to)}]);

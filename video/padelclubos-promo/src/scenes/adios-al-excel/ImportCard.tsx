@@ -196,7 +196,8 @@ const ListChrome: React.FC = () => (
         padding: "0 18px 0 24px",
       }}
     >
-      <FileSpreadsheet size={22} color={color.green600} strokeWidth={2} />
+      {/* Icono en tinta: nada de verdes de Excel */}
+      <FileSpreadsheet size={22} color={color.ink500} strokeWidth={2} />
       <span style={{...monoStyle(500), fontSize: 18, color: color.ink700, marginLeft: 12}}>{FILE}</span>
     </div>
     <div
@@ -284,7 +285,8 @@ const MemberRow: React.FC<{m: Member; last: boolean}> = ({m, last}) => (
 
 /**
  * La fila de la hoja se retira con un barrido de izquierda a derecha (sin
- * mezclar las dos capas) y la fila de socio entra con vista (fundido + 4 px).
+ * mezclar las dos capas: un borde suave dejaría los nombres en doble
+ * exposición) y la fila de socio entra con vista (fundido + 4 px).
  */
 const Morph: React.FC<{frame: number; at: number; top: number; h: number; sheet: React.ReactNode; list: React.ReactNode}> = ({
   frame,

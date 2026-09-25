@@ -67,6 +67,16 @@ export const sheetSize = (s: SheetSpec) => ({
 /** Frame en que la celda se vuelve roja (rotura o marca), o undefined. */
 const redFrame = (c: SheetCell) => c.errAt ?? c.redAt;
 
+/**
+ * Valor de partida del digit-roll. En una celda centrada se rellena por los dos
+ * lados hasta el ancho del error: así el valor no salta de sitio al empezar a rodar.
+ */
+const rollFrom = (text: string, err: string, align: SheetCol["align"]) => {
+  if (align !== "center" || text.length >= err.length) return text;
+  const left = Math.floor((err.length - text.length) / 2);
+  return " ".repeat(left) + text + " ".repeat(err.length - text.length - left);
+};
+
 const justify = (a: SheetCol["align"]) => (a === "right" ? "flex-end" : a === "center" ? "center" : "flex-start");
 
 const Cell: React.FC<{frame: number; cell: SheetCell; col: SheetCol; font: number; h: number; last: boolean; active: boolean}> = ({
@@ -107,7 +117,7 @@ const Cell: React.FC<{frame: number; cell: SheetCell; col: SheetCol; font: numbe
       {cell.skel ? (
         <div style={{width: cell.skel, height: 12, borderRadius: 6, background: GRID}} />
       ) : cell.err !== undefined && cell.errAt !== undefined ? (
-        <DigitRoll frame={frame} keys={[{at: cell.errAt, value: cell.err}]} initial={cell.text ?? ""} duration={5} stagger={0.5} />
+        <DigitRoll frame={frame} keys={[{at: cell.errAt, value: cell.err}]} initial={rollFrom(cell.text ?? "", cell.err, col.align)} duration={5} stagger={0.5} />
       ) : (
         cell.text
       )}

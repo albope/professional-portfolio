@@ -4,8 +4,8 @@ import {color, displayStyle, monoStyle, radius, shadow, textStyle} from "../../b
 import {DigitRoll, WordsReveal} from "../../components";
 import {ease, motion, pressScale, progress, tween, view} from "../../lib/anim";
 import {T9 as T} from "./cues";
-import {RESULT, STANDINGS, rollSteps, type Standing} from "./data";
-import {CheckStroke, DirBlur, LiveDot, PersonAvatar, TapRing, flip, liftShadow, settle, riseTint, velocity} from "./ui";
+import {RESULT, STANDINGS, rollTo, type Standing} from "./data";
+import {CheckStroke, DirBlur, FocusRing, LiveDot, PersonAvatar, TapRing, UpMark, flip, liftShadow, settle, riseTint, velocity, type Rect} from "./ui";
 
 // ─── Geometría 9:16 ─────────────────────────────────────────────────────────
 // Todo entre y250 e y1520; el texto, con x ≤ 960.
@@ -15,10 +15,18 @@ const W = 936;
 const LW = 3;
 const LINE = `${LW}px solid ${color.ink900}`;
 
-/** Módulo de resultado: pareja (avatares) | set 1 | set 2 | guardar. */
+/** Módulo de resultado: pareja (avatares) | set 1 | set 2 | guardar. Remotion usa border-box: las alturas incluyen el borde. */
 const MOD = {y: 504, row: 124, set: 200, save: 168};
 const MOD_H = LW + MOD.row + LW + MOD.row + LW;
 const PAIR_COL = W - 2 * LW - (MOD.save + LW) - 2 * (MOD.set + LW);
+
+/** Celdas de juego en orden de escritura, dentro del borde del módulo (anillo con 10 px de aire). */
+const FOCUS_CELLS: Rect[] = RESULT.order.map(([p, s]) => ({
+  x: PAIR_COL + s * (MOD.set + LW) + LW + 10,
+  y: p * (MOD.row + LW) + 10,
+  w: MOD.set - 20,
+  h: MOD.row - 20,
+}));
 
 /** Clasificación: tres filas altas. */
 const TAB = {y: 824, row: 196};
@@ -44,21 +52,10 @@ const Pair: React.FC<{size: number; tones: readonly [string, string]; ring: stri
 
 // ─── Módulo de resultado ────────────────────────────────────────────────────
 
-const SetCell: React.FC<{frame: number; value: string; at: number; next: number}> = ({frame, value, at, next}) => {
-  const focus = progress(frame, Math.max(at - 3, T.result), 3, ease.out) * (1 - progress(frame, next - 2, 3, ease.out));
+const SetCell: React.FC<{frame: number; value: string; at: number}> = ({frame, value, at}) => {
   const dash = 1 - progress(frame, at, 3, ease.out);
   return (
     <div style={{position: "relative", width: MOD.set, height: MOD.row, display: "flex", alignItems: "center", justifyContent: "center"}}>
-      <div
-        style={{
-          position: "absolute",
-          inset: 10,
-          borderRadius: 10,
-          boxShadow: `inset 0 0 0 3px ${color.green400}`,
-          background: `rgba(47,160,117,${(0.08 * focus).toFixed(3)})`,
-          opacity: focus,
-        }}
-      />
       <span style={{position: "absolute", width: 44, height: 6, borderRadius: 3, background: color.sand300, opacity: dash}} />
       <span style={{...displayStyle(800), fontSize: 96, lineHeight: 1, color: color.ink900, position: "relative"}}>
         <DigitRoll frame={frame} keys={[{at, value}]} alignRight={false} />
@@ -72,11 +69,6 @@ const ResultModule: React.FC<{frame: number}> = ({frame}) => {
   const op = progress(frame, T.result, 3, ease.out);
   if (op <= 0) return null;
   const typedAt = (pair: number, set: number): number => T.games[RESULT.order.findIndex(([p, s]) => p === pair && s === set)];
-  const order: number[] = RESULT.order.map(([p, s]) => typedAt(p, s));
-  const nextOf = (at: number) => {
-    const i = order.indexOf(at);
-    return i < order.length - 1 ? order[i + 1] : T.save - 3;
-  };
   const saved = progress(frame, T.save + 2, 6, ease.out);
   const enabled = progress(frame, T.games[3] + 3, 4, ease.out);
   const setCol: React.CSSProperties = {width: MOD.set + LW, boxSizing: "border-box", borderLeft: LINE, flexShrink: 0};
@@ -99,9 +91,10 @@ const ResultModule: React.FC<{frame: number}> = ({frame}) => {
         transform: `translateY(${(1 - inP) * 40}px)`,
       }}
     >
+      <FocusRing frame={frame} cells={FOCUS_CELLS} at={T.games} inAt={T.result} outAt={T.games[3] + 3} line={LW} r={10} />
       <div style={{display: "flex", flexDirection: "column", width: W - 2 * LW - MOD.save - LW}}>
         {[0, 1].map((p) => (
-          <div key={p} style={{display: "flex", height: MOD.row, borderBottom: p === 0 ? LINE : "none"}}>
+          <div key={p} style={{display: "flex", flexShrink: 0, height: p === 0 ? MOD.row + LW : MOD.row, borderBottom: p === 0 ? LINE : "none"}}>
             <div style={{width: PAIR_COL, display: "flex", alignItems: "center", justifyContent: "center"}}>
               <Pair size={84} tones={p === 0 ? TONES.gf : TONES.mm} ring={color.surfaceRaised} overlap={18} />
             </div>
@@ -109,7 +102,7 @@ const ResultModule: React.FC<{frame: number}> = ({frame}) => {
               const at = typedAt(p, s);
               return (
                 <div key={s} style={setCol}>
-                  <SetCell frame={frame} value={RESULT.games[p][s]} at={at} next={nextOf(at)} />
+                  <SetCell frame={frame} value={RESULT.games[p][s]} at={at} />
                 </div>
               );
             })}
@@ -178,9 +171,9 @@ const Row: React.FC<{frame: number; s: Standing}> = ({frame, s}) => {
         <>
           <span style={{...textStyle(600), fontSize: 44, lineHeight: 1, color: color.ink900, whiteSpace: "nowrap"}}>{s.name}</span>
           <span style={{marginLeft: "auto", display: "flex", alignItems: "center", gap: 16}}>
-            <span style={{...monoStyle(700), fontSize: 28, color: color.green600, ...view(frame, T.reorder + 4)}}>▲</span>
+            <UpMark size={30} style={view(frame, T.points)} />
             <span style={{...displayStyle(800), fontSize: 72, lineHeight: 1, color: color.ink900, minWidth: "1.2ch", textAlign: "right"}}>
-              <DigitRoll frame={frame} keys={rollSteps(s.before.pts, s.after.pts, T.points[0], T.points)} initial={String(s.before.pts)} />
+              <DigitRoll frame={frame} keys={rollTo(s.before.pts, s.after.pts, T.points)} initial={String(s.before.pts)} />
             </span>
           </span>
         </>

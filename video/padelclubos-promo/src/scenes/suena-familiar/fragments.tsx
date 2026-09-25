@@ -414,7 +414,7 @@ export const SmallPhone: React.FC = () => (
       />
       <div style={{position: "absolute", right: 8, bottom: 16, width: 26, height: 26, borderRadius: 13, background: color.darkRaised}} />
       {/* Isla e indicador de inicio */}
-      <div style={{position: "absolute", top: 7, left: "50%", width: 58, height: 17, marginLeft: -29, borderRadius: 9, background: "#0B0A09"}} />
+      <div style={{position: "absolute", top: 7, left: "50%", width: 58, height: 17, marginLeft: -29, borderRadius: 9, background: color.darkBg}} />
       <div
         style={{
           position: "absolute",

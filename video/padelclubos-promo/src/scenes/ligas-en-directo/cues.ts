@@ -19,10 +19,10 @@ export const T16 = {
   cursorIn: 36,
   /** c1.t4: toque en «Guardar resultado» (press 120 ms). */
   save: 45,
-  /** c2.t1: la tabla se reordena (FLIP, overlay 7 f); PJ y PG ruedan. */
+  /** c2.t1: la tabla se reordena (FLIP, overlay 7 f); PJ (f60) y PG (f62) ruedan. */
   reorder: 60,
-  /** PTS de Gómez / Ferrer rueda en dos pasos (7 → 8 → 9), un tic por paso. */
-  points: [62, 66] as const,
+  /** PTS de Gómez / Ferrer rueda 7 → 9 de un paso, tras PJ y PG (stagger 2 f), con su tic y el ▲. */
+  points: 64,
   /** El móvil repite la reordenación 3 f después. */
   phoneLag: 3,
   /** c2.t2 → t4: el punto «EN DIRECTO» late en cada tiempo. */
@@ -41,7 +41,7 @@ export const T9 = {
   /** Toque en guardar (press). */
   save: 45,
   reorder: 60,
-  points: [62, 66] as const,
+  points: 64,
   pulses: [75, 90, 105] as const,
 } as const;
 
@@ -49,9 +49,8 @@ export const T9 = {
 const rally = (games: readonly number[], pan: number): Cue[] =>
   games.map((frame, i) => ({frame, sfx: "tock", gain: 0.7, pitch: i % 2 === 0 ? 1 : 0.94, pan: i % 2 === 0 ? pan : -pan}));
 
-// Tics de los puntos afinados en Do mayor (Mi–Sol), antes del ping en quinta.
-const pointTicks = (steps: readonly number[]): Cue[] =>
-  steps.map((frame, i) => ({frame, sfx: "tick", note: ["E6", "G6"][i], gain: 0.35}));
+// Un tic afinado (Sol6) cuando los puntos ruedan 7 → 9: con el whoosh y el ping, tres sonidos en la reordenación.
+const pointTick = (frame: number, pan = 0): Cue => ({frame, sfx: "tick", note: "G6", gain: 0.35, pan});
 
 export const cues: SceneCues = {
   landscape: [
@@ -60,7 +59,7 @@ export const cues: SceneCues = {
     {frame: T16.save, sfx: "click", note: "C6", gain: 0.6, pan: 0.2},
     {frame: T16.reorder, sfx: "swipe", gain: 0.45, pan: -0.2},
     {frame: T16.reorder, sfx: "ping", tone: "consonant", gain: 0.55, pan: 0.5},
-    ...pointTicks(T16.points),
+    pointTick(T16.points, -0.1),
     {frame: T16.exit, sfx: "whoosh", gain: 0.55, dur: 8},
   ],
   portrait: [
@@ -68,6 +67,6 @@ export const cues: SceneCues = {
     {frame: T9.save, sfx: "click", note: "C6", gain: 0.6},
     {frame: T9.reorder, sfx: "swipe", gain: 0.45},
     {frame: T9.reorder, sfx: "ping", tone: "consonant", gain: 0.55},
-    ...pointTicks(T9.points),
+    pointTick(T9.points),
   ],
 };

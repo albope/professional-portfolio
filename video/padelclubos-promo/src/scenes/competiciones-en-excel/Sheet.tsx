@@ -2,7 +2,7 @@ import React from "react";
 import {interpolateColors} from "remotion";
 import {ChevronLeft, ChevronRight, FileSpreadsheet, Plus} from "lucide-react";
 import {color, monoStyle, radius} from "../../brand/tokens";
-import {ease, motion, progress} from "../../lib/anim";
+import {clamp01, ease, progress} from "../../lib/anim";
 
 /**
  * «liga_otoño_BUENO (2).xlsx» a toda la anchura del vertical: la misma
@@ -29,26 +29,26 @@ export const ROW_H = 72;
 export const FOOT_H = 56;
 export const GUT_W = 64;
 
-/** Columnas A–E; la E sigue más allá del borde de la ventana. */
+/** Columnas de la liga de «gestion-fragmentada» (Pos. · Pareja · PJ · PTS); la E sigue más allá del borde. */
 const COLS = [
-  {letter: "A", w: 384},
-  {letter: "B", w: 112},
+  {letter: "A", w: 104},
+  {letter: "B", w: 376},
   {letter: "C", w: 112},
   {letter: "D", w: 184},
-  {letter: "E", w: 144},
+  {letter: "E", w: 96},
 ] as const;
 const PTS = 3;
 
 export const SHEET_W = 936;
 export const SHEET_H = TITLE_H + FX_H + LET_H + HEAD_H + 5 * ROW_H + FOOT_H;
 
-/** Parejas de la Liga de Otoño (clasificación «antes»): apellidos → anchos de esqueleto; PJ, PG y PTS en cifras. */
+/** Parejas de la Liga de Otoño (clasificación «antes»): apellidos → anchos de esqueleto; PJ y PTS en cifras. */
 const ROWS = [
-  {a: 7, b: 4, pj: 1, pg: 1, pts: 2},
-  {a: 4, b: 8, pj: 1, pg: 1, pts: 1},
-  {a: 5, b: 6, pj: 1, pg: 1, pts: 1},
-  {a: 6, b: 8, pj: 1, pg: 1, pts: 1},
-  {a: 4, b: 6, pj: 1, pg: 1, pts: 1},
+  {a: 7, b: 4, pj: 1, pts: 2},
+  {a: 4, b: 8, pj: 1, pts: 1},
+  {a: 5, b: 6, pj: 1, pts: 1},
+  {a: 6, b: 8, pj: 1, pts: 1},
+  {a: 4, b: 6, pj: 1, pts: 1},
 ] as const;
 const CH = 17;
 const DIGIT = 22;
@@ -88,26 +88,27 @@ const PtsCell: React.FC<{frame: number; at: number; skel: number}> = ({frame, at
 /** Frames que tarda la selección en bajar a la celda siguiente (llega justo cuando esta se rompe). */
 const STEP = 3;
 
-export const LigaSheet: React.FC<{frame: number; errors: readonly number[]; rangeAt: number}> = ({frame, errors, rangeAt}) => {
+export const LigaSheet: React.FC<{frame: number; errors: readonly number[]; rangeAt: number; rangeDur: number}> = ({
+  frame,
+  errors,
+  rangeAt,
+  rangeDur,
+}) => {
   // Celda activa: D2 desde el principio; baja por la columna y cada celda se rompe al llegar.
-  let active = 0;
-  errors.forEach((at, r) => {
-    if (frame >= at) active = r;
-  });
   let row = 0;
   errors.forEach((at, r) => {
     if (r > 0) row += progress(frame, at - STEP, STEP, ease.overlay);
   });
   const hot = progress(frame, errors[0], 4, ease.out);
   // Al final se selecciona la columna rota entera: la selección crece hacia arriba hasta D2.
-  const grow = progress(frame, rangeAt, motion.overlay, ease.overlay);
+  const grow = progress(frame, rangeAt, rangeDur, ease.overlay);
   const selTop = GRID_Y + row * ROW_H * (1 - grow);
   const selBottom = GRID_Y + (row + 1) * ROW_H;
   const fxErr = frame >= errors[0];
   const letterRed = grow;
   /** Resalte del encabezado de la fila r: sigue a la selección y, al final, cubre la columna rota. */
   const rowHl = (r: number) =>
-    frame < rangeAt ? Math.max(0, 1 - Math.abs(row - r)) : GRID_Y + r * ROW_H >= selTop - 0.5 ? 1 : 0;
+    frame < rangeAt ? Math.max(0, 1 - Math.abs(row - r)) : clamp01((GRID_Y + (r + 1) * ROW_H - selTop) / ROW_H);
   return (
     <div
       style={{
@@ -158,7 +159,8 @@ export const LigaSheet: React.FC<{frame: number; errors: readonly number[]; rang
             color: color.sand400,
           }}
         >
-          {`D${active + 2}`}
+          {/* El cuadro de nombres sigue a la selección */}
+          {`D${Math.round(row) + 2}`}
         </div>
         <span style={{...monoStyle(500), fontSize: 22, margin: "0 20px 0 24px", color: color.ink500, fontStyle: "italic"}}>fx</span>
         <div style={{display: "flex", alignItems: "center", gap: 10}}>
@@ -198,11 +200,11 @@ export const LigaSheet: React.FC<{frame: number; errors: readonly number[]; rang
       </div>
       {/* Fila 1: cabeceras (esqueleto más claro) */}
       <Row index={1} h={HEAD_H}>
-        <Cell w={COLS[0].w}>
-          <Skel w={104} tone={SKEL_HEAD} />
+        <Cell w={COLS[0].w} center>
+          <Skel w={48} tone={SKEL_HEAD} />
         </Cell>
-        <Cell w={COLS[1].w} right>
-          <Skel w={40} tone={SKEL_HEAD} />
+        <Cell w={COLS[1].w}>
+          <Skel w={104} tone={SKEL_HEAD} />
         </Cell>
         <Cell w={COLS[2].w} right>
           <Skel w={40} tone={SKEL_HEAD} />
@@ -219,18 +221,18 @@ export const LigaSheet: React.FC<{frame: number; errors: readonly number[]; rang
         const red = 0.24 * progress(frame, at, 3, ease.out) - 0.11 * progress(frame, at + 3, 8, ease.out);
         return (
           <Row key={r} index={r + 2} h={ROW_H} hl={rowHl(r)}>
-            <Cell w={COLS[0].w}>
+            <Cell w={COLS[0].w} center>
+              <Skel w={DIGIT} />
+            </Cell>
+            <Cell w={COLS[1].w}>
               <div style={{display: "flex", alignItems: "center", gap: 12}}>
                 <Skel w={row.a * CH} />
                 <span style={{...monoStyle(500), fontSize: 22, color: color.ink500}}>/</span>
                 <Skel w={row.b * CH} />
               </div>
             </Cell>
-            <Cell w={COLS[1].w} right>
-              <Skel w={row.pj * DIGIT} />
-            </Cell>
             <Cell w={COLS[2].w} right>
-              <Skel w={row.pg * DIGIT} />
+              <Skel w={row.pj * DIGIT} />
             </Cell>
             <Cell w={COLS[3].w} right tint={red}>
               <PtsCell frame={frame} at={at} skel={row.pts * DIGIT + (row.pts - 1) * 4} />
@@ -330,7 +332,13 @@ const Row: React.FC<{index: number; h: number; hl?: number; children: React.Reac
   </div>
 );
 
-const Cell: React.FC<{w: number; right?: boolean; /** Opacidad del tinte de error. */ tint?: number; children?: React.ReactNode}> = ({w, right, tint = 0, children}) => (
+const Cell: React.FC<{w: number; right?: boolean; center?: boolean; /** Opacidad del tinte de error. */ tint?: number; children?: React.ReactNode}> = ({
+  w,
+  right,
+  center,
+  tint = 0,
+  children,
+}) => (
   <div
     style={{
       width: w,
@@ -341,7 +349,7 @@ const Cell: React.FC<{w: number; right?: boolean; /** Opacidad del tinte de erro
       background: tint > 0 ? `rgba(224, 138, 122, ${tint.toFixed(3)})` : undefined,
       display: "flex",
       alignItems: "center",
-      justifyContent: right ? "flex-end" : "flex-start",
+      justifyContent: right ? "flex-end" : center ? "center" : "flex-start",
       padding: "0 24px",
     }}
   >
