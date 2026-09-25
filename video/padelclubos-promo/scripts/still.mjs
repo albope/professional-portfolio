@@ -66,8 +66,13 @@ const frames =
   framesArg === "auto"
     ? Array.from({length: 8}, (_, i) => Math.round((i * (composition.durationInFrames - 1)) / 7))
     : framesArg.split(",").map(Number);
-for (const frame of frames) {
-  const output = path.join(outDir, `${id}-f${String(frame).padStart(4, "0")}.png`);
-  await renderStill({composition, serveUrl, output, frame, scale, browserExecutable: exe, imageFormat: "png", logLevel: "error"});
-  console.log(output);
+try {
+  for (const frame of frames) {
+    const output = path.join(outDir, `${id}-f${String(frame).padStart(4, "0")}.png`);
+    await renderStill({composition, serveUrl, output, frame, scale, browserExecutable: exe, imageFormat: "png", logLevel: "error"});
+    console.log(output);
+  }
+} finally {
+  // Cada empaquetado ocupa ~100 MB en el directorio temporal: se borra al terminar.
+  fs.rmSync(serveUrl, {recursive: true, force: true});
 }

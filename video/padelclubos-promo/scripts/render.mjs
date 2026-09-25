@@ -50,3 +50,5 @@ for (const fmt of targets) {
   });
   console.log(output);
 }
+
+fs.rmSync(serveUrl, {recursive: true, force: true});

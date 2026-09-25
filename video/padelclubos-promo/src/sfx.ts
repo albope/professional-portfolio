@@ -38,6 +38,8 @@ export interface Cue {
   tone?: "dissonant" | "consonant";
   /** Afinación para click/pop/tick/tock (p. ej. "C6", "E6"): clics afinados en la tonalidad. */
   note?: string;
+  /** tock: variante metálica «valla» para errores. */
+  metallic?: boolean;
 }
 
 export interface SceneCues {

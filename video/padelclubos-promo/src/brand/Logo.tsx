@@ -64,7 +64,7 @@ export interface LogoProps {
   tone?: Tone;
   /** 0→1: progreso de revelado de las letras (escalonado de izquierda a derecha). */
   reveal?: number;
-  /** 0→1: el chip «OS» aparece con un pequeño rebote. */
+  /** 0→1: el chip «OS» aparece con una pulsación (0,96 → 1), sin rebote. */
   chip?: number;
   /** Controles del isotipo. */
   isoOutline?: number;

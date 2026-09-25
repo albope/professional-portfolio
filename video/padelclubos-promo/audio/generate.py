@@ -241,6 +241,16 @@ SECTIONS = {
 
 # ------------------------------------------------------------ efectos de sonido
 
+def repitch(x: np.ndarray, factor: float) -> np.ndarray:
+    """Cambio de tono tipo cinta (también cambia la duración): basta para efectos cortos."""
+    n_in = x.shape[0]
+    n_out = max(1, int(round(n_in / factor)))
+    src = np.linspace(0, n_in - 1, n_out)
+    if x.ndim == 1:
+        return np.interp(src, np.arange(n_in), x)
+    return np.stack([np.interp(src, np.arange(n_in), x[:, ch]) for ch in range(x.shape[1])], axis=1)
+
+
 def render_sfx(m: Mix, cues: list[dict]):
     for c in cues:
         t = c["t"]
@@ -251,7 +261,7 @@ def render_sfx(m: Mix, cues: list[dict]):
         dur = c.get("durS")
         note = c.get("note")
         table = {
-            "tock": (lambda: sfx_tock(pitch), 0.8),
+            "tock": (lambda: sfx_tock(pitch, metallic=bool(c.get("metallic"))), 0.8),
             "whoosh": (lambda: sfx_whoosh(dur or 0.5, True), 0.5),
             "whooshDown": (lambda: sfx_whoosh(dur or 0.5, False), 0.45),
             "swipe": (sfx_swipe, 0.4),
@@ -272,6 +282,8 @@ def render_sfx(m: Mix, cues: list[dict]):
             raise ValueError(f"sfx desconocido: {kind}")
         make, base = table[kind]
         x = make()
+        if kind != "tock" and abs(pitch - 1.0) > 1e-3:
+            x = repitch(x, pitch)
         if x.ndim == 1:
             ang = (pan + 1) * np.pi / 4
             x = np.stack([x * np.cos(ang), x * np.sin(ang)], axis=1) * np.sqrt(2)
