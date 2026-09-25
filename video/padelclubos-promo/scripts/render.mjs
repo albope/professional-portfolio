@@ -37,6 +37,7 @@ for (const fmt of targets) {
     jpegQuality: 95,
     crf: 16,
     pixelFormat: "yuv420p",
+    colorSpace: "bt709",
     audioCodec: "aac",
     audioBitrate: "320k",
     x264Preset: "slow",
