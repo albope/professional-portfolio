@@ -40,7 +40,7 @@ import {LANDSCAPE, PORTRAIT, place} from "../../../src/timeline";
 const dur = (list: typeof LANDSCAPE) => place(list).find((s) => s.id === "${sceneId}")?.durationInFrames;
 const Comp: React.FC<{d: number}> = ({d}) => (
   <FontGate>
-    <AbsoluteFill style={{background: color.ink900}}>
+    <AbsoluteFill style={{background: color.ink900, willChange: "transform"}}>
       <SceneProvider durationInFrames={d}>
         <Scene />
       </SceneProvider>

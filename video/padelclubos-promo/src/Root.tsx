@@ -22,6 +22,10 @@ const SceneById: React.FC<{id: string}> = ({id}) => {
 
 const hasFile = (name: string) => getStaticFiles().some((f) => f.name === name);
 
+// La capa compuesta (will-change) obliga a Chromium a suavizar el texto en
+// escala de grises: sin ella, el texto estático sale con subpíxeles de color.
+const ROOT_STYLE: React.CSSProperties = {background: color.ink900, willChange: "transform"};
+
 /** full = música + efectos · sfx = solo efectos · none = sin audio */
 type PromoProps = {audio: "full" | "sfx" | "none"};
 
@@ -31,7 +35,7 @@ const Promo: React.FC<PromoProps> = ({audio: mode}) => {
   const audio = `audio/${mode === "sfx" ? "sfx" : "soundtrack"}-${format}.wav`;
   return (
     <FontGate>
-      <AbsoluteFill style={{background: color.ink900}}>
+      <AbsoluteFill style={ROOT_STYLE}>
         {place(list).map((s) => (
           <Sequence key={s.id + s.from} from={s.from} durationInFrames={s.durationInFrames} name={s.id}>
             <SceneProvider durationInFrames={s.durationInFrames}>
@@ -47,7 +51,7 @@ const Promo: React.FC<PromoProps> = ({audio: mode}) => {
 
 const SingleScene: React.FC<{id: string; d: number}> = ({id, d}) => (
   <FontGate>
-    <AbsoluteFill style={{background: color.ink900}}>
+    <AbsoluteFill style={ROOT_STYLE}>
       <SceneProvider durationInFrames={d}>
         <SceneById id={id} />
       </SceneProvider>
