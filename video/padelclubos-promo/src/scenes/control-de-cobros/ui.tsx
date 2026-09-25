@@ -27,9 +27,11 @@ import {T16} from "./cues";
 import {COBRADO_INICIAL, COBRADO_KEYS, JUGADORES, PENDIENTE_INICIAL, PENDIENTE_KEYS, PRECIO, type Metodo} from "./data";
 
 // ─── Geometría 16:9 (rejilla de 8 px) ───────────────────────────────────────
-// Panel en coordenadas de pantalla; todo lo interior, relativo al panel.
-const PANEL = {x: 96, y: 240, w: 1728, h: 688};
-const SIDE = 224;
+// Panel en coordenadas de pantalla; todo lo interior, relativo al panel. Mismo
+// marco que «adios-al-excel» (titular de una línea: panel en y256) y la misma
+// carcasa que todo el acto de producto: sidebar de 264 px a 0,7×.
+const PANEL = {x: 96, y: 256, w: 1728, h: 688};
+const SIDE = 184;
 const TOPBAR = 56;
 const CX = SIDE + 32;
 const CW = PANEL.w - SIDE - 64;
@@ -52,11 +54,25 @@ export const cobrarCenter = (i: number) => ({
   y: PANEL.y + CARD.y + 2 + i * CARD.row + CARD.row / 2,
 });
 
-/** Centro de la tarjeta KPI i (origen del zoom-out: «Cobrado hoy» → casilla 04). */
-export const kpiCenter = (i: number) => ({
-  x: PANEL.x + CX + i * (KPI_W + KPI.gap) + KPI_W / 2,
-  y: PANEL.y + KPI.y + KPI.h / 2,
-});
+/**
+ * Zoom-out hacia «todo-en-uno»: la Recepción entera se convierte en su casilla
+ * 04 (x1416 y360, 408×192). El pre-encogido de esta escena (1 → 0,95, justo
+ * lo que deja el texto de UI de 16 px a ≥ 15 px efectivos) usa como origen el
+ * punto fijo de la semejanza panel → casilla (borde derecho, y ≈ 400): así este
+ * gesto y el zoom de «todo-en-uno» son un único movimiento, sin cambios de
+ * dirección en ningún borde. «todo-en-uno» repite estos números (PREV).
+ */
+const TILE04 = {x: 1416, y: 360, w: 408, h: 192};
+export const ZOOM = {
+  /** Escala a la que llega el panel en el corte (f120 = f0 de «todo-en-uno»). */
+  to: 0.95,
+  /** Exponente del ease-in (t⁴): a f119 va a 10 px/f y «todo-en-uno» sigue acelerando. */
+  power: 4,
+  origin: {
+    x: (TILE04.x - PANEL.x * (TILE04.w / PANEL.w)) / (1 - TILE04.w / PANEL.w),
+    y: (TILE04.y - PANEL.y * (TILE04.h / PANEL.h)) / (1 - TILE04.h / PANEL.h),
+  },
+} as const;
 
 // ─── Reloj del día (versión clara del acto de producto) ─────────────────────
 
@@ -151,6 +167,7 @@ export const Roll: React.FC<{
 
 // ─── Chrome del panel ───────────────────────────────────────────────────────
 
+/** Sidebar tinta a 0,7× (184 px, texto de 16 px), idéntica a la de «adios-al-excel» y «ligas-en-directo». */
 const Sidebar: React.FC = () => (
   <div style={{position: "absolute", left: 0, top: 0, width: SIDE, height: PANEL.h, background: color.ink900, overflow: "hidden"}}>
     <div
@@ -159,15 +176,15 @@ const Sidebar: React.FC = () => (
         boxSizing: "border-box",
         display: "flex",
         alignItems: "center",
-        gap: 10,
-        padding: "0 16px",
+        gap: 8,
+        padding: "0 14px",
         borderBottom: `2px solid ${color.darkBorder}`,
       }}
     >
-      <Isotipo size={32} tone="dark" />
-      <span style={{...displayStyle(750), fontSize: 18, color: color.darkText, whiteSpace: "nowrap"}}>PadelClub OS</span>
+      <Isotipo size={30} tone="dark" />
+      <span style={{...displayStyle(750), fontSize: 16, color: color.darkText, whiteSpace: "nowrap"}}>PadelClub OS</span>
     </div>
-    <div style={{padding: "12px 10px", display: "flex", flexDirection: "column", gap: 6}}>
+    <div style={{padding: "12px 8px", display: "flex", flexDirection: "column", gap: 8}}>
       {NAV_GROUPS.map((g) => (
         <div key={g.title} style={{display: "flex", flexDirection: "column"}}>
           <div
@@ -178,7 +195,7 @@ const Sidebar: React.FC = () => (
               letterSpacing: "0.06em",
               textTransform: "uppercase",
               color: color.ink400,
-              padding: "0 12px",
+              padding: "0 10px",
             }}
           >
             {g.title}
@@ -190,11 +207,11 @@ const Sidebar: React.FC = () => (
               <div
                 key={item.id}
                 style={{
-                  height: 30,
+                  height: 31,
                   display: "flex",
                   alignItems: "center",
-                  gap: 12,
-                  padding: "0 12px",
+                  gap: 10,
+                  padding: "0 10px",
                   borderRadius: 6,
                   background: on ? "#1F3A2C" : "transparent",
                   boxShadow: on ? `inset 3px 0 0 ${color.green400}` : "none",
@@ -242,7 +259,7 @@ const Topbar: React.FC = () => (
       <Globe size={20} strokeWidth={2} />
       <Sun size={20} strokeWidth={2} />
       <Bell size={20} strokeWidth={2} />
-      <Avatar initials="LM" size={34} bg={color.green700} />
+      <Avatar initials="LM" size={40} bg={color.green700} />
     </div>
   </div>
 );
@@ -328,7 +345,7 @@ const KpiTile: React.FC<{
     <div style={{marginTop: 8, ...displayStyle(700), fontSize: 38, lineHeight: "44px", color: color.ink900, whiteSpace: "nowrap"}}>
       {children}
     </div>
-    {sub ? <div style={{marginTop: 6, ...textStyle(400), fontSize: 16, lineHeight: "20px", color: color.ink400}}>{sub}</div> : null}
+    {sub ? <div style={{marginTop: 6, ...textStyle(400), fontSize: 16, lineHeight: "20px", color: color.ink500}}>{sub}</div> : null}
     <div
       style={{
         position: "absolute",

@@ -22,7 +22,7 @@ import {
 import {Isotipo} from "../../brand/Logo";
 import {color, displayStyle, monoStyle, shadow, textStyle} from "../../brand/tokens";
 import {Avatar, Button, NAV_GROUPS, WordsReveal} from "../../components";
-import {clamp01, ease, lerp, progress, view, viewOut} from "../../lib/anim";
+import {clamp01, ease, lerp, progress, view} from "../../lib/anim";
 import {T16} from "./cues";
 import {COURTS, SLOT_END, SLOTS, TARGET, bookingAt, isTarget} from "./data";
 import {DirBlur, usePushOut, velocity} from "./blur";
@@ -81,7 +81,7 @@ const courtEnd = (i: number) => ({x: colX(i), y: GRID_Y, w: COL_W, h: GRID_B - G
 /** Progreso del aplanado de cada pista (escalonado de 1 f; termina en f12). */
 const morphP = (frame: number, i: number) => progress(frame, T16.morph + i, 9, ease.overlay);
 
-const range = (si: number) => `${SLOTS[si]} – ${SLOT_END[si]}`;
+const range = (si: number) => `${SLOTS[si]}–${SLOT_END[si]}`;
 /**
  * Curva del vuelo: despega acelerando, cruza a velocidad casi constante y se
  * posa largo (sin overshoot). Pico de ~125 px/f sobre el arco: el módulo se
@@ -197,7 +197,7 @@ const PanelTopbar: React.FC = () => (
       <Globe size={19} strokeWidth={2} />
       <Sun size={19} strokeWidth={2} />
       <Bell size={19} strokeWidth={2} />
-      <Avatar initials="LM" size={42} bg={color.ink700} />
+      <Avatar initials="LM" size={42} bg={color.green700} />
     </div>
   </div>
 );
@@ -511,7 +511,7 @@ const PortalCell: React.FC<{frame: number; ci: number; si: number}> = ({frame, c
           gap: 4,
         }}
       >
-        <span style={{...monoStyle(sel > 0.5 ? 600 : 500), fontSize: 16, color: sel > 0.5 ? color.ink900 : color.ink400}}>{SLOTS[si]}</span>
+        <span style={{...monoStyle(sel > 0.5 ? 600 : 500), fontSize: 16, color: sel > 0.5 ? color.ink900 : color.ink500}}>{SLOTS[si]}</span>
         {tgt ? (
           <span
             style={{
@@ -750,7 +750,7 @@ const Phone: React.FC<{frame: number}> = ({frame}) => {
             color: color.ink900,
           }}
         >
-          <span>8:15</span>
+          <span>08:15</span>
           <StatusIcons fg={color.ink900} scale={0.9} />
         </div>
         <Portal frame={frame} />
@@ -854,8 +854,12 @@ const Content: React.FC = () => {
 
 const SUB = ["Sin llamadas,", "sin errores,", "sin dramas."];
 
+/** Salida de la HUD en 7 f (f112–f119): el último frame de la escena ya queda limpio. */
+const HUD_EXIT = 7;
+
 export const Landscape: React.FC = () => {
   const frame = useCurrentFrame();
+  const out = progress(frame, T16.exit, HUD_EXIT, ease.in);
   return (
     <AbsoluteFill style={{background: color.sand50}}>
       {/* Capa de contenido: desenfoque direccional solo mientras se mueve (vuelo y push) */}
@@ -868,6 +872,7 @@ export const Landscape: React.FC = () => {
         start={T16.title}
         step={3}
         exitAt={T16.exit}
+        exitDuration={HUD_EXIT}
         style={{position: "absolute", left: 96, top: 128, fontSize: 80, fontWeight: 760, lineHeight: 1, color: color.ink900}}
       />
       <div
@@ -881,7 +886,8 @@ export const Landscape: React.FC = () => {
           fontSize: 40,
           lineHeight: 1.2,
           color: color.ink700,
-          ...viewOut(frame, T16.exit),
+          opacity: 1 - out,
+          transform: `translateY(${-out * 4}px)`,
         }}
       >
         {SUB.map((g, i) => (

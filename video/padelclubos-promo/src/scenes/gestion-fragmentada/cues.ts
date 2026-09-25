@@ -19,7 +19,7 @@ export const T = {
   /** Pulsos de vibración del móvil (los dos del sonido «vibrate», 0 y 0,26 s), relativos a `phone`. */
   vibePulses: [0, 8] as const,
   vibeLen: 6,
-  /** Errores celda a celda en corcheas: socios C4, C5 · pagos C4, C5, D5. */
+  /** Errores celda a celda en corcheas: socios C3, C4 · pagos C3, C4, D4. */
   errors: [beats(1), beats(1) + 7, beats(2) + 7, beats(3), beats(3) + 7] as const,
   /** Las dos posiciones «1» de la liga se marcan en rojo. */
   duplicate: bars(1) + 7,

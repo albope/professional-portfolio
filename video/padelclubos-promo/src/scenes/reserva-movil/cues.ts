@@ -9,8 +9,12 @@ export const T16 = {
   morph: 0,
   /** El reloj rueda 01:12 → 08:15 (dos dígitos, escalonado de 2 f). */
   clockRoll: 6,
-  /** El resto del panel aparece (vista) alrededor de las columnas. */
-  panel: 4,
+  /**
+   * El resto del panel aparece (vista f8–f14) alrededor de las columnas cuando
+   * la cuarta ya está dentro de su caja (borde derecho x1087 en f9, x1100 del
+   * panel): ninguna columna cuelga fuera sobre la arena.
+   */
+  panel: 8,
   /** El móvil sube desde y+140 (overlay 7 f). */
   phone: 5,
   title: 6,
@@ -27,7 +31,7 @@ export const T16 = {
   fly: 75,
   /** Aterriza: la celda se rellena de izquierda a derecha. */
   land: 87,
-  /** Push de salida y titulares fuera (últimos 8 f). */
+  /** Push de salida (últimos 8 f); los titulares salen en 7 f y el último frame queda limpio. */
   exit: 112,
 } as const;
 

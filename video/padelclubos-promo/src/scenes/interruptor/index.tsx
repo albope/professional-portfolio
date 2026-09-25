@@ -1,5 +1,5 @@
 import React from "react";
-import {AbsoluteFill, Freeze, useCurrentFrame} from "remotion";
+import {AbsoluteFill, useCurrentFrame} from "remotion";
 import {OS_CHIP, OS_GLYPHS, OS_GLYPHS_OFFSET, WORDMARK_GLYPHS} from "../../brand/logoPaths";
 import {color, displayStyle} from "../../brand/tokens";
 import {ease, lerp, pressScale, progress} from "../../lib/anim";
@@ -20,7 +20,8 @@ interface Layout {
   lock: {cx: number; cy: number; u: number};
 }
 
-// 16:9: contorno 400×280 (10×) en el centro, como lo deja «suena-familiar»; lockup de 128 px de alto en y≈300.
+// 16:9: contorno 400×280 (10×) en el centro, como lo deja «suena-familiar»; lockup de 128 px de alto en y≈300
+// (su sitio desde el c2; en el c1 va desplazado GROUP_DY, ver groupDy).
 const L16: Layout = {
   dark: color.darkSurface,
   iso0: {x: 960, y: 540, s: 10},
@@ -38,10 +39,18 @@ const L9: Layout = {
 // 32 px (x112–1808, y630–830): el primer frame de «reserva-movil», que las aplana en columnas.
 const COURT = {k0: 34, k1: 20, y: 730, pitch: 400 + 32} as const;
 
+// 16:9, c1: el grupo lockup + H1 (tinta en y254–495 en su sitio) baja 165 px para quedar centrado
+// en el cuadro (y419–660, centro ≈ 540) mientras la mitad inferior está vacía.
+const GROUP_DY = 165;
+
 const useSetup = () => {
   const {portrait, width, height} = useScene();
   return {portrait, width, height, Lx: portrait ? L9 : L16, T: portrait ? T9 : T16};
 };
+
+/** Desplazamiento vertical del grupo lockup + H1 (16:9): centrado en el c1, sube en f60–f72. */
+const groupDy = (frame: number, portrait: boolean) =>
+  portrait ? 0 : GROUP_DY * (1 - progress(frame, T16.rise, 12, ease.inOut));
 
 /** Barrido arena del drop (0→1). */
 const sweepAt = (frame: number, T: typeof T16 | typeof T9) => progress(frame, T.drop, 7, ease.overlay);
@@ -57,30 +66,6 @@ const lockExit = (frame: number, portrait: boolean, Lx: Layout) => {
   return {opacity: 1 - p, transform: `translate(0 ${-72 * p})`};
 };
 
-/**
- * Desenfoque de movimiento con muestras hacia atrás en el tiempo (el de
- * @remotion/motion-blur muestrea hacia delante y adelantaría la animación).
- * Solo se activa en los frames de movimiento rápido.
- */
-const TrailBlur: React.FC<{active: boolean; samples?: number; shutter?: number; children: React.ReactNode}> = ({
-  active,
-  samples = 8,
-  shutter = 0.5,
-  children,
-}) => {
-  const frame = useCurrentFrame();
-  if (!active) return <>{children}</>;
-  return (
-    <AbsoluteFill style={{isolation: "isolate"}}>
-      {Array.from({length: samples}, (_, i) => (
-        <AbsoluteFill key={i} style={{mixBlendMode: "plus-lighter", filter: `opacity(${1 / samples})`}}>
-          <Freeze frame={frame - (shutter * i) / (samples - 1)}>{children}</Freeze>
-        </AbsoluteFill>
-      ))}
-    </AbsoluteFill>
-  );
-};
-
 /** Marco del isotipo en coordenadas de su viewBox. */
 const IsoFrame: React.FC<{stroke: string}> = ({stroke}) => (
   <rect x={ISO.x} y={ISO.y} width={ISO.w} height={ISO.h} rx={ISO.rx} fill="none" stroke={stroke} strokeWidth={ISO.stroke} />
@@ -89,7 +74,8 @@ const IsoFrame: React.FC<{stroke: string}> = ({stroke}) => (
 /**
  * El isotipo: el bloque verde entra desde debajo del trazo como la palanca de
  * un interruptor; el barrido arena recolorea el marco a tinta a su paso; luego
- * baja a su sitio en el lockup con un zoom de punto fijo (escala geométrica).
+ * baja a su sitio en el lockup con un zoom de punto fijo (escala geométrica,
+ * ease.inOut). Sin desenfoque: el trazo se mantiene nítido en todos los frames.
  */
 const IsoLayer: React.FC = () => {
   const frame = useCurrentFrame();
@@ -101,10 +87,10 @@ const IsoLayer: React.FC = () => {
 
   const {u} = Lx.lock;
   const lockX = Lx.lock.cx - (LOCKUP.w * u) / 2;
-  const lockY = Lx.lock.cy - (LOCKUP.h * u) / 2;
+  const lockY = Lx.lock.cy - (LOCKUP.h * u) / 2 + groupDy(frame, portrait);
   const s0 = Lx.iso0.s;
   const s1 = LOCKUP.isoScale * u;
-  const m = progress(frame, T.lockup, 14, ease.overlay);
+  const m = progress(frame, T.zoom, T.zoomDur, ease.inOut);
   const s = Math.exp(lerp(Math.log(s0), Math.log(s1), m));
   const q = (s0 - s) / (s0 - s1);
   const x = lerp(Lx.iso0.x, lockX + 24 * LOCKUP.isoScale * u, q);
@@ -159,7 +145,7 @@ const WordmarkLayer: React.FC = () => {
   if (frame < T.word) return null;
   const {u} = Lx.lock;
   const lockX = Lx.lock.cx - (LOCKUP.w * u) / 2;
-  const lockY = Lx.lock.cy - (LOCKUP.h * u) / 2;
+  const lockY = Lx.lock.cy - (LOCKUP.h * u) / 2 + groupDy(frame, portrait);
   const n = WORDMARK_GLYPHS.length;
   const glyphDur = 5;
   const glyphStep = (10 - glyphDur) / (n - 1);
@@ -202,8 +188,9 @@ const WordmarkLayer: React.FC = () => {
 /**
  * Pista de pádel desde arriba (20 × 10 m) en px, centrada en el origen. Cada
  * grupo se dibuja por separado y de forma simétrica: perímetro desde la red
- * hacia los fondos, red de arriba abajo, líneas de saque a la vez y línea
- * central desde la red hacia fuera. La geometría va en px (no se escala el
+ * hacia los fondos (empieza por la banda inferior y cierra por la superior, que
+ * así no cruza el H1 mientras sube), red de arriba abajo, líneas de saque a la
+ * vez y línea central desde la red hacia fuera. La geometría va en px (no se escala el
  * trazo): líneas de 3 px y red de 4 px a cualquier tamaño.
  */
 const Court: React.FC<{
@@ -240,8 +227,8 @@ const Court: React.FC<{
     );
   const lines = (
     <g transform={`translate(${x} ${y})`}>
-      {line(`M0 ${-hh} H${-hw} V${hh} H0`, per)}
-      {line(`M0 ${-hh} H${hw} V${hh} H0`, per)}
+      {line(`M0 ${hh} H${-hw} V${-hh} H0`, per)}
+      {line(`M0 ${hh} H${hw} V${-hh} H0`, per)}
       {line(`M${-sv} ${-bh} V${bh}`, svc)}
       {line(`M${sv} ${-bh} V${bh}`, svc)}
       {line(`M0 0 H${-sv}`, ctr)}
@@ -329,6 +316,7 @@ const Headline: React.FC<{frame: number}> = ({frame}) => {
   const at = (i: number) => T16.h1 + i * 3;
   const line = progress(frame, T16.underline, 10, ease.out);
   const exitP = progress(frame, T16.exit, 7, ease.overlay);
+  const dy = groupDy(frame, false) - 72 * exitP;
   return (
     <div
       style={{
@@ -339,7 +327,7 @@ const Headline: React.FC<{frame: number}> = ({frame}) => {
         display: "flex",
         justifyContent: "center",
         opacity: 1 - exitP,
-        transform: `translateY(${-72 * exitP}px)`,
+        transform: `translateY(${dy}px)`,
       }}
     >
       <div
@@ -396,15 +384,11 @@ export const Scene: React.FC = () => {
   const frame = useCurrentFrame();
   const {portrait, Lx, T} = useSetup();
   const sweep = sweepAt(frame, T);
-  // Desenfoque solo en los 4 frames más rápidos del zoom del isotipo.
-  const zooming = frame > T.lockup && frame <= T.lockup + 4;
   return (
     <AbsoluteFill style={{background: Lx.dark, overflow: "hidden"}}>
       {/* Arena lisa #F6F3ED: la misma de «reserva-movil», para que el corte no cambie de tono */}
       {sweep > 0 ? <AbsoluteFill style={{background: color.sand50, clipPath: `inset(0 ${(1 - sweep) * 100}% 0 0)`}} /> : null}
-      <TrailBlur active={zooming} samples={40} shutter={0.4}>
-        <IsoLayer />
-      </TrailBlur>
+      <IsoLayer />
       <WordmarkLayer />
       {!portrait ? <Headline frame={frame} /> : null}
       {!portrait ? <CourtLayer /> : null}

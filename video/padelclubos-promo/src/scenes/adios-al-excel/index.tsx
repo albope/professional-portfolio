@@ -66,7 +66,7 @@ const Landscape: React.FC = () => {
   const hudOut = Math.min(T.exit, durationInFrames - motion.exit) - 1;
   const px = (f: number) => pushX(f, durationInFrames);
   return (
-    <AbsoluteFill style={{background: color.sand100}}>
+    <AbsoluteFill style={{background: color.sand50}}>
       {/* Capa de contenido: push con desenfoque direccional */}
       <DirBlur id="adios-push" vx={velocity(px, frame)} style={{position: "absolute", inset: 0, transform: `translateX(${px(frame)}px)`}}>
         <Panel frame={frame} />
@@ -86,7 +86,7 @@ export const Scene: React.FC = () => {
   // Fuera del corte vertical: si alguien la renderiza, el 16:9 centrado.
   const k = width / 1920;
   return (
-    <AbsoluteFill style={{background: color.sand100}}>
+    <AbsoluteFill style={{background: color.sand50}}>
       <div style={{position: "absolute", left: 0, top: "50%", width: 1920, height: 1080, transform: `translateY(-50%) scale(${k})`, transformOrigin: "0 50%"}}>
         <Landscape />
       </div>

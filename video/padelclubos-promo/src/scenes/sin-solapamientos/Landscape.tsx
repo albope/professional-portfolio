@@ -178,11 +178,29 @@ const Notice: React.FC<{frame: number}> = ({frame}) => {
       <TriangleAlert size={30} strokeWidth={2.2} color={color.warning} style={{flexShrink: 0}} />
       {/* Resumen del mensaje real: «Este horario ya está ocupado en la pista seleccionada.» */}
       <span style={{...textStyle(700), fontSize: 30, lineHeight: 1, color: color.ink900, fontVariantNumeric: "tabular-nums", whiteSpace: "nowrap"}}>
-        Pista 1 ocupada · 19:00–20:30
+        {/* Punto medio con aire propio (el espacio de Instrument Sans lo pegaba): como en el selector. */}
+        Pista 1 ocupada<span style={{margin: "0 10px"}}>·</span>19:00–20:30
       </span>
     </div>
   );
 };
+
+/**
+ * «Pista N · Estado»: punto medio con 8 px a cada lado, igual en las dos
+ * filas (el espacio de Instrument Sans lo pegaba a una u otra palabra).
+ */
+const OptionLabel: React.FC<{court: string; status: string; courtStyle?: React.CSSProperties; statusColor?: string}> = ({
+  court,
+  status,
+  courtStyle,
+  statusColor,
+}) => (
+  <span style={{display: "inline-flex", alignItems: "baseline"}}>
+    <span style={courtStyle}>{court}</span>
+    <span style={{margin: "0 8px", color: statusColor}}>·</span>
+    <span style={{color: statusColor}}>{status}</span>
+  </span>
+);
 
 /** Selector de pista que se despliega desde la celda PISTA de B. */
 const CourtSelect: React.FC<{frame: number}> = ({frame}) => {
@@ -225,7 +243,7 @@ const CourtSelect: React.FC<{frame: number}> = ({frame}) => {
     >
       <div style={{...rowStyle, color: color.ink400}}>
         <Lock size={20} strokeWidth={2} color={color.ink300} />
-        <span>Pista 1 · Ocupada</span>
+        <OptionLabel court="Pista 1" status="Ocupada" />
       </div>
       <div
         style={{
@@ -238,8 +256,7 @@ const CourtSelect: React.FC<{frame: number}> = ({frame}) => {
         <span style={{width: 20, display: "flex", justifyContent: "center"}}>
           <span style={{width: 12, height: 12, borderRadius: 6, background: color.green600}} />
         </span>
-        <span style={{...textStyle(600)}}>Pista 3</span>
-        <span style={{color: color.ink500, marginLeft: -6}}>· Libre</span>
+        <OptionLabel court="Pista 3" status="Libre" courtStyle={{...textStyle(600)}} statusColor={color.ink500} />
         {/* Opción elegida: check tinta (el verde queda para la confirmación) */}
         <Check
           size={22}
@@ -312,7 +329,8 @@ export const Landscape: React.FC = () => {
   const pushOut = Math.min(T.exit, durationInFrames - motion.exit);
   const hudOut = pushOut - 1;
   return (
-    <AbsoluteFill style={{background: color.sand100}}>
+    // Página sand-50, como todo el acto de producto: el push desde «reserva-movil» no salta de tono.
+    <AbsoluteFill style={{background: color.sand50}}>
       <Content exit={pushOut} />
       {/* HUD fija: reloj, titular y subtítulo */}
       <LightClock frame={frame} rollAt={T.clock} />
@@ -330,15 +348,16 @@ export const Landscape: React.FC = () => {
         start={T.resolve}
         step={3}
         exitAt={hudOut}
+        // Subtítulo del acto (el mismo de «reserva-movil»): Instrument Sans 500, 40 px, ink-700, x96 y218.
         style={{
           position: "absolute",
           left: 96,
-          top: 222,
+          top: 218,
           ...textStyle(500),
           fontStretch: "100%",
           letterSpacing: 0,
-          columnGap: "0.27em",
-          fontSize: 44,
+          columnGap: "0.28em",
+          fontSize: 40,
           lineHeight: 1.2,
           color: color.ink700,
         }}

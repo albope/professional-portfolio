@@ -4,6 +4,8 @@ import {ChevronLeft, Users} from "lucide-react";
 import {color, displayStyle, monoStyle} from "../../brand/tokens";
 import {DigitRoll, type RollKey} from "../../components";
 import {BEAT, ease, progress} from "../../lib/anim";
+import {useScene} from "../../lib/scene";
+import {NEXT_BG} from "./bg";
 import {BADGE, P} from "./cues";
 import {BubbleLines, Initials, JAVI_9, SkelBubble, bubbleRadius, outline} from "./Chat";
 
@@ -76,11 +78,16 @@ const vibrationAt = (frame: number) => {
 
 export const Portrait: React.FC = () => {
   const frame = useCurrentFrame();
+  const {durationInFrames} = useScene();
   const scroll = scrollAt(frame);
   const vib = vibrationAt(frame);
   const hot = progress(frame, P.detach, 4, ease.out);
   const lift = progress(frame, P.detach, 7, ease.overlay);
   const colonOn = frame % BEAT < 8;
+  // Salida: reloj, chat y titular se funden y el titular sube 4 px (vista
+  // inversa) entre f53 y el último frame; la burbuja de Javi sigue opaca y
+  // queda sola en f59 para el match cut con «dobles-reservas».
+  const out = progress(frame, P.out, durationInFrames - 1 - P.out, ease.in);
   const badgeKeys: RollKey[] = P.pushes.map((at, i) => ({at, value: String(BADGE[i + 1])}));
 
   // Burbuja de Javi: de su sitio en el chat hacia el centro (match cut).
@@ -116,6 +123,8 @@ export const Portrait: React.FC = () => {
 
   return (
     <AbsoluteFill style={{background: `radial-gradient(100% 70% at 50% 42%, ${color.darkSurface} 0%, ${color.darkBg} 70%)`}}>
+      {/* El fondo pasa al de «dobles-reservas» mientras la burbuja se desprende. */}
+      <AbsoluteFill style={{background: NEXT_BG, opacity: progress(frame, P.detach, 14, ease.inOut)}} />
       {/* Reloj gigante */}
       <div
         style={{
@@ -133,6 +142,7 @@ export const Portrait: React.FC = () => {
           letterSpacing: "-0.04em",
           color: color.darkText,
           whiteSpace: "pre",
+          opacity: 1 - out,
         }}
       >
         23<span style={{opacity: colonOn ? 1 : 0.16}}>:</span>47
@@ -150,7 +160,7 @@ export const Portrait: React.FC = () => {
           background: color.darkSurface,
           boxShadow: `inset 0 0 0 2px ${color.darkBorder}, 0 50px 100px -40px rgba(0,0,0,0.7)`,
           transform: `translateX(${vib}px)`,
-          opacity: 1 - 0.6 * hot,
+          opacity: (1 - 0.6 * hot) * (1 - out),
           overflow: "hidden",
         }}
       >
@@ -245,7 +255,8 @@ export const Portrait: React.FC = () => {
           transform: `translateX(${vib * (1 - lift)}px) scale(${k})`,
           borderRadius: bubbleRadius(28, 8),
           background: color.darkRaised,
-          boxShadow: [outline(hot), lift > 0 ? `0 40px 80px -30px rgba(0,0,0,${(0.75 * lift).toFixed(3)})` : undefined]
+          // Misma sombra que el módulo de «dobles-reservas» (0,7), aquí escalada con la burbuja.
+          boxShadow: [outline(hot), lift > 0 ? `0 40px 80px -30px rgba(0,0,0,${(0.7 * lift).toFixed(3)})` : undefined]
             .filter(Boolean)
             .join(", ") || undefined,
           display: "flex",
@@ -268,6 +279,8 @@ export const Portrait: React.FC = () => {
           fontSize: 84,
           lineHeight: 1.06,
           color: color.darkText,
+          opacity: 1 - out,
+          transform: `translateY(${-4 * out}px)`,
         }}
       >
         ¿Otra reserva

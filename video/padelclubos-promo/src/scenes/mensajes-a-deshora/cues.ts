@@ -37,6 +37,8 @@ export const P = {
   vibrate: [0, 30],
   /** La burbuja de Javi se contornea y se desprende hacia el centro. */
   detach: 45,
+  /** Reloj, chat y titular se funden (f53–f59): en f59 solo queda la burbuja de Javi. */
+  out: 53,
 } as const;
 
 /** Badge del chat vertical: de 12 a 38 con cada empuje. */

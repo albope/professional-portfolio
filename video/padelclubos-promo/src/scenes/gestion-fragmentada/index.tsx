@@ -11,7 +11,11 @@ import {SheetWindow, sheetSize, type SheetSpec} from "./Sheet";
 // ---------------------------------------------------------------- datos
 
 const eur = (v: number) => fmt.eur2(v);
-const [E_SOC_4, E_SOC_5, E_PAG_4, E_PAG_5, E_PAG_D5] = T.errors;
+const [E_SOC_3, E_SOC_4, E_PAG_3, E_PAG_4, E_PAG_D4] = T.errors;
+
+// «socios_v3_FINAL.xlsx» es la misma hoja que cae en «adios-al-excel»: sus
+// cinco primeras filas (data.ts de esa escena), con los mismos errores
+// (#¡VALOR! en Javi, #¡REF! en Pedro) y la misma columna Pagado.
 
 const SOCIOS: SheetSpec = {
   title: "socios_v3_FINAL.xlsx",
@@ -22,18 +26,18 @@ const SOCIOS: SheetSpec = {
     {label: "Pagado", w: 112, align: "center", mono: true},
   ],
   rows: [
-    [{text: "Carlos Navarro"}, {skel: 112}, {text: eur(35)}, {text: "Sí"}],
-    [{text: "Laura Gómez"}, {skel: 128}, {text: eur(35)}, {text: "Sí"}],
-    [{text: "Nuria Castillo"}, {skel: 104}, {text: eur(35), err: "#¡VALOR!", errAt: E_SOC_4}, {text: "No"}],
-    [{text: "Javi Martínez"}, {skel: 120}, {text: eur(35), err: "#¡VALOR!", errAt: E_SOC_5}, {text: "Sí"}],
-    [{text: "Pedro Sanz"}, {skel: 96}, {text: eur(35)}, {text: "No"}],
+    [{text: "Laura Gómez"}, {skel: 96}, {text: eur(35)}, {text: "Sí"}],
+    [{text: "Javi Martínez"}, {skel: 112}, {text: eur(35), err: "#¡VALOR!", errAt: E_SOC_3}, {text: "Sí"}],
+    [{text: "Pedro Sanz"}, {skel: 128}, {text: eur(35), err: "#¡REF!", errAt: E_SOC_4}, {text: "Sí"}],
+    [{text: "Marta Ruiz"}, {skel: 104}, {text: eur(35)}, {text: "Sí"}],
+    [{text: "Carlos Navarro"}, {skel: 120}, {text: eur(35)}, {text: "Sí"}],
   ],
   rowH: 48,
   headH: 48,
   font: 20,
   formula: [
-    {at: -1, ref: "C4", text: "=B4*12"},
-    {at: E_SOC_5, ref: "C5", text: "=B5*12"},
+    {at: -1, ref: "C3", text: "=B3*12"},
+    {at: E_SOC_4, ref: "C4", text: "=#¡REF!*12"},
   ],
 };
 
@@ -45,20 +49,22 @@ const PAGOS: SheetSpec = {
     {label: "Importe", w: 136, align: "right", mono: true},
     {label: "¿Pagado?", w: 128, align: "center", mono: true},
   ],
+  // Mismas filas que la de socios: sus importes C3 y C4 se leen de ella y
+  // heredan sus errores; el #¡REF! de C4 arrastra también a D4.
   rows: [
-    [{text: "Carlos Navarro"}, {skel: 56}, {text: eur(28)}, {text: "No"}],
-    [{text: "Laura Gómez"}, {skel: 64}, {text: eur(7)}, {text: "Sí"}],
-    [{text: "Nuria Castillo"}, {skel: 48}, {text: eur(35), err: "#¡VALOR!", errAt: E_PAG_4}, {text: "Sí"}],
-    [{text: "Javi Martínez"}, {skel: 60}, {text: eur(35), err: "#¡VALOR!", errAt: E_PAG_5}, {text: "No", err: "#¡VALOR!", errAt: E_PAG_D5}],
-    [{text: "Pedro Sanz"}, {skel: 52}, {text: eur(7)}, {text: "No"}],
+    [{text: "Laura Gómez"}, {skel: 56}, {text: eur(7)}, {text: "Sí"}],
+    [{text: "Javi Martínez"}, {skel: 64}, {text: eur(35), err: "#¡VALOR!", errAt: E_PAG_3}, {text: "Sí"}],
+    [{text: "Pedro Sanz"}, {skel: 48}, {text: eur(35), err: "#¡REF!", errAt: E_PAG_4}, {text: "Sí", err: "#¡REF!", errAt: E_PAG_D4}],
+    [{text: "Marta Ruiz"}, {skel: 60}, {text: eur(7)}, {text: "Sí"}],
+    [{text: "Carlos Navarro"}, {skel: 52}, {text: eur(28)}, {text: "No"}],
   ],
   rowH: 48,
   headH: 48,
   font: 20,
   formula: [
-    {at: -1, ref: "C4", text: "='[socios_v3_FINAL.xlsx]Hoja1'!C4"},
-    {at: E_PAG_5, ref: "C5", text: "='[socios_v3_FINAL.xlsx]Hoja1'!C5"},
-    {at: E_PAG_D5, ref: "D5", text: '=SI(C5>0;"Sí";"No")'},
+    {at: -1, ref: "C3", text: "='[socios_v3_FINAL.xlsx]Hoja1'!C3"},
+    {at: E_PAG_4, ref: "C4", text: "='[socios_v3_FINAL.xlsx]Hoja1'!C4"},
+    {at: E_PAG_D4, ref: "D4", text: '=SI(C4>0;"Sí";"No")'},
   ],
 };
 

@@ -12,7 +12,9 @@ import {CheckStroke, DirBlur, FocusRing, LightClock, LiveDot, PersonAvatar, UpMa
 
 // ─── Geometría 16:9 (rejilla de 8 px) ───────────────────────────────────────
 // Panel del club (x96–1424) y portal del jugador en el móvil (x1472–1824).
-const PANEL = {x: 96, y: 312, w: 1328, h: 712};
+// Bajo el titular de dos líneas a 80 px (y128–288): ≥ 24 px de aire bajo los
+// descendentes; panel y móvil acaban en y1024, como el resto del acto.
+const PANEL = {x: 96, y: 336, w: 1328, h: 688};
 const SIDE = 184; // sidebar de 264 px a 0,7×
 const TOPBAR = 56;
 const CX = SIDE + 32;
@@ -32,10 +34,11 @@ const CARD_FOOT = TABLE_H - 4 - 3 * 2 - CARD.label - 2 * CARD.row;
 const PAIR_COL = CARD.w - 4 - 2 * (CARD.set + 2);
 const LINE = `2px solid ${color.ink900}`;
 
-const PHONE = {x: 1472, y: 352, w: 352, h: 672, bezel: 10};
+const PHONE = {x: 1472, y: 376, w: 352, h: 648, bezel: 10};
 const SCR = {w: PHONE.w - 2 * PHONE.bezel, h: PHONE.h - 2 * PHONE.bezel};
 const NAV_H = 80;
-const PT = {x: 16, y: 232, w: SCR.w - 32, head: 36, row: 54};
+// Filas de 50 px: la tabla (y232–522) deja 26 px hasta la barra de pestañas.
+const PT = {x: 16, y: 232, w: SCR.w - 32, head: 36, row: 50};
 
 /** Push del acto: entra desde +960 px en 7 f y sale a −960 px en los últimos 8 f. */
 const PUSH = 960;
@@ -400,7 +403,7 @@ const ResultCard: React.FC<{frame: number}> = ({frame}) => {
     fontSize: 16,
     letterSpacing: "0.14em",
     textTransform: "uppercase",
-    color: color.ink400,
+    color: color.ink500,
     display: "flex",
     alignItems: "center",
   };
@@ -807,11 +810,11 @@ const Panel: React.FC<{frame: number}> = ({frame}) => (
   </div>
 );
 
-/** Titular en dos líneas fijas, palabra a palabra con escalonado continuo. */
+/** Titular en dos líneas fijas (y128 e y208), palabra a palabra con escalonado continuo. */
 const HEADLINE = ["Ligas automáticas", "con clasificación en tiempo real."];
 
 const Headline: React.FC<{frame: number; exitAt: number}> = ({frame, exitAt}) => (
-  <div style={{position: "absolute", left: 96, top: 128, display: "flex", flexDirection: "column", gap: 4}}>
+  <div style={{position: "absolute", left: 96, top: 128, display: "flex", flexDirection: "column"}}>
     {HEADLINE.map((line, i) => (
       <WordsReveal
         key={line}
@@ -820,8 +823,7 @@ const Headline: React.FC<{frame: number; exitAt: number}> = ({frame, exitAt}) =>
         start={T.title + i * HEADLINE[0].split(" ").length * 3}
         step={3}
         exitAt={exitAt}
-        exitDuration={7}
-        style={{fontSize: 72, fontWeight: 760, lineHeight: 1, color: color.ink900, whiteSpace: "nowrap"}}
+        style={{fontSize: 80, fontWeight: 760, lineHeight: 1, color: color.ink900, whiteSpace: "nowrap"}}
       />
     ))}
   </div>
@@ -830,11 +832,12 @@ const Headline: React.FC<{frame: number; exitAt: number}> = ({frame, exitAt}) =>
 export const Landscape: React.FC = () => {
   const frame = useCurrentFrame();
   const {durationInFrames} = useScene();
-  const exit = Math.min(T.exit, durationInFrames - 7);
+  // Vista inversa de 8 f que termina justo en el último frame.
+  const exit = Math.min(T.exit, durationInFrames - motion.exit) - 1;
   const px = (f: number) => pushX(f, durationInFrames);
   const cursorOut = progress(frame, T.reorder - 4, 6, ease.in);
   return (
-    <AbsoluteFill style={{background: color.sand100}}>
+    <AbsoluteFill style={{background: color.sand50}}>
       {/* Capa de contenido: push con desenfoque direccional */}
       <DirBlur id="ligas-push16" vx={velocity(px, frame)} style={{position: "absolute", inset: 0, transform: `translateX(${px(frame)}px)`}}>
         <Panel frame={frame} />

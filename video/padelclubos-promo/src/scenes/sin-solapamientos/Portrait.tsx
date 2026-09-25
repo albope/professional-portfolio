@@ -224,7 +224,7 @@ export const Portrait: React.FC = () => {
   const exit = Math.min(T.exit, durationInFrames - motion.exit);
   const hudOut = exit - 1;
   return (
-    <AbsoluteFill style={{background: color.sand100}}>
+    <AbsoluteFill style={{background: color.sand50}}>
       <Content exit={exit} />
       {/* HUD fija: titulares en dos líneas controladas */}
       <WordsReveal text="Sin dobles" frame={frame} start={T.title} step={3} exitAt={T.titleOut} style={{...HEADLINE, top: 272}} />

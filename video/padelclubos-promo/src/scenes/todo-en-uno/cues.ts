@@ -7,9 +7,15 @@ import {bars, beats} from "../../lib/anim";
  * que lo acompaña comparten el mismo número.
  */
 export const T16 = {
-  /** f0–f12: la Recepción se encoge hasta ser la casilla 04 (overlay, sin rebote). */
+  /**
+   * f0–f14: la Recepción se encoge hasta ser la casilla 04. Continúa el
+   * pre-encogido de «control-de-cobros» a su misma velocidad, acelera y se
+   * posa largo (sin rebote).
+   */
   zoom: 0,
-  zoomDur: 12,
+  zoomDur: 14,
+  /** El contenido de la Recepción se funde antes del tramo rápido del zoom (f0–f4). */
+  recFade: 4,
   /** El reloj rueda 20:25 → 22:00. */
   clockRoll: 0,
   /** Titular por palabras (stagger 3 f). */
@@ -17,8 +23,8 @@ export const T16 = {
   headlineStep: 3,
   /** Casillas 01–08 en semicorcheas (cada 4 f); la 04 llega con la Recepción. */
   tiles: {"01": 0, "02": 4, "03": 8, "05": 12, "06": 16, "07": 20, "08": 24} as Record<string, number>,
-  /** Contenido de la casilla 04 dentro de la tarjeta que se encoge. */
-  tile04: 5,
+  /** Contenido de la casilla 04 dentro de la tarjeta que se encoge (releva al de la Recepción). */
+  tile04: 3,
   /** c1.t3: fila de extras y línea mono. */
   extras: beats(2),
   extrasStep: 3,
@@ -59,7 +65,7 @@ const entryTicks: Cue[] = [
  */
 export const cues: SceneCues = {
   landscape: [
-    {frame: T16.zoom, sfx: "whooshDown", dur: 12, gain: 0.8},
+    {frame: T16.zoom, sfx: "whooshDown", dur: T16.zoomDur, gain: 0.8},
     ...entryTicks,
     {frame: T16.academia, sfx: "click", note: "C6"},
     {frame: T16.bar, sfx: "click", note: "E6"},

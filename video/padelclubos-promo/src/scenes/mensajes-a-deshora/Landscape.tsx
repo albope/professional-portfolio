@@ -6,6 +6,7 @@ import {DayClock, DigitRoll, WordsReveal, type RollKey} from "../../components";
 import {bars, ease, lerp, progress, tween} from "../../lib/anim";
 import {CHIP_TIMES, L, UNREAD} from "./cues";
 import {BubbleHead, BubbleLines, Initials, JAVI_16, PEDRO_16, SkelBubble, bubbleRadius, outline, type Seg} from "./Chat";
+import {NEXT_BG} from "./bg";
 import {LockScreen, NightPhone, PHONE, SCREEN, STATUS_H, StatusBar} from "./NightPhone";
 
 // ---------------------------------------------------------------- reloj
@@ -352,12 +353,24 @@ const bubbleOnScreen = (idx: number, frame: number): Rect => {
   return {x: PHONE_C.x + (x - PHONE_C.x) * s, y: PHONE_C.y + (y - PHONE_C.y) * s, w: MSG_W * s, h: MSG_H * s};
 };
 
-// Módulo A de «dobles-reservas» (1040×300) al 64 %; con B detrás (+24/+24) el
-// conjunto queda centrado en x≈1000 y no pisa el titular mientras sale.
+// Módulo A de «dobles-reservas» tal como lo dibuja su f0: 1040 px de ancho al
+// 64 %, celdas de 214 y fila de total de 82 (con su separador), y un borde
+// que mide 2 px en pantalla. Con B detrás (+24/+24). Se forma a la derecha
+// del titular: su borde izquierdo queda en x767 y «deshora.» acaba en x≈680,
+// así que no se tocan mientras la HUD sale. «dobles-reservas» (FROM16)
+// arranca exactamente de este rectángulo.
 const MOD_K = 0.64;
-const MOD = centered(990, 580, 1040 * MOD_K, 300 * MOD_K);
-/** Fila de total del módulo (fracción de la altura desde arriba). */
-const TOTAL_Y = 0.72;
+const MOD_B = 2;
+const MOD_W = 1040 * MOD_K;
+const MOD_H = (214 + 82) * MOD_K + 2 * MOD_B;
+const MOD = centered(1100, 640, MOD_W, MOD_H);
+// Trazos de 2 px en el mismo sitio que los de ese módulo (columnas de 342 y
+// 347 al aterrizar): centro del trazo, en fracción de la caja.
+/** Separadores de PISTA | FECHA | HORA. */
+const SEP_X = [(MOD_B + 342 * MOD_K + 1) / MOD_W, (MOD_B + (342 + 347) * MOD_K + 1) / MOD_W] as const;
+/** Separador de la fila de total y arranque de su relleno. */
+const TOTAL_LINE = (MOD_B + 214 * MOD_K + 1) / MOD_H;
+const TOTAL_FILL = (MOD_B + 214 * MOD_K + 2) / MOD_H;
 const LIFT = 1.5;
 
 const FlyingBubble: React.FC<{frame: number; who: "javi" | "pedro"}> = ({frame, who}) => {
@@ -399,7 +412,7 @@ const FlyingBubble: React.FC<{frame: number; who: "javi" | "pedro"}> = ({frame, 
     >
       {front && totalP > 0 ? (
         // La fila de total conserva el color de la burbuja (#282420).
-        <div style={{position: "absolute", left: 0, right: 0, top: r.h * TOTAL_Y, bottom: 0, background: color.darkRaised, opacity: totalP}} />
+        <div style={{position: "absolute", left: 0, right: 0, top: r.h * TOTAL_FILL, bottom: 0, background: color.darkRaised, opacity: totalP}} />
       ) : null}
       {textO > 0 ? (
         <div style={{position: "absolute", left: 0, top: 0, width: MSG_W, transformOrigin: "0 0", transform: `scale(${k})`, opacity: textO}}>
@@ -408,10 +421,10 @@ const FlyingBubble: React.FC<{frame: number; who: "javi" | "pedro"}> = ({frame, 
       ) : null}
       {front && lineP > 0 ? (
         <svg width={r.w} height={r.h} style={{position: "absolute", left: 0, top: 0}}>
-          {[1 / 3, 2 / 3].map((fx) => (
-            <line key={fx} x1={r.w * fx} x2={r.w * fx} y1={0} y2={r.h * TOTAL_Y * lineP} stroke={border} strokeWidth={2} />
+          {SEP_X.map((fx) => (
+            <line key={fx} x1={r.w * fx} x2={r.w * fx} y1={0} y2={r.h * TOTAL_LINE * lineP} stroke={border} strokeWidth={2} />
           ))}
-          <line x1={0} x2={r.w * lineP} y1={r.h * TOTAL_Y} y2={r.h * TOTAL_Y} stroke={border} strokeWidth={2} />
+          <line x1={0} x2={r.w * lineP} y1={r.h * TOTAL_LINE} y2={r.h * TOTAL_LINE} stroke={border} strokeWidth={2} />
         </svg>
       ) : null}
       {/* Borde de 2 px encima de todo */}
@@ -428,10 +441,6 @@ const FlyingBubble: React.FC<{frame: number; who: "javi" | "pedro"}> = ({frame, 
 };
 
 // ---------------------------------------------------------------- escena
-
-// Fondo con el que arranca «dobles-reservas» (#1B1814 → #14120F), hecho con
-// #1E1B17 al 70 % sobre #14120F para no salir de los tokens.
-const NEXT_BG = `radial-gradient(ellipse 70% 60% at 50% 56%, rgba(30,27,23,0.7) 0%, rgba(30,27,23,0) 100%), ${color.darkBg}`;
 
 // La HUD termina de salir en f119: el último frame queda limpio para el corte.
 const HUD_OUT = 7;

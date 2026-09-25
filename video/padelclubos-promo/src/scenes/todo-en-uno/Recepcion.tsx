@@ -3,7 +3,6 @@ import {
   Banknote,
   Bell,
   CalendarDays,
-  Check,
   ChevronRight,
   CircleHelp,
   CreditCard,
@@ -27,11 +26,12 @@ import {DATA} from "./data";
  * Vista «Recepción» tal como la deja «control-de-cobros» en su último frame:
  * la reserva de Carlos Navarro ya cobrada (4 × 7,00 €) y los KPI en
  * 560,00 € / 84,00 €. Misma geometría que aquel panel (1728×688, rejilla de
- * 8 px) para que el corte sea invisible; aquí solo se pinta el estado final.
+ * 8 px, sidebar de 264 px a 0,7×) para que el corte sea invisible; aquí solo
+ * se pinta el estado final.
  */
 export const RECEPCION = {w: 1728, h: 688, radius: 16} as const;
 
-const SIDE = 224;
+const SIDE = 184;
 const TOPBAR = 56;
 const CX = SIDE + 32;
 const CW = RECEPCION.w - SIDE - 64;
@@ -54,6 +54,7 @@ const JUGADORES: {nombre: string; iniciales: string; metodo: "tarjeta" | "efecti
   {nombre: "Raúl Prats", iniciales: "RP", metodo: "tarjeta"},
 ];
 
+/** Sidebar tinta a 0,7× (184 px, texto de 16 px), la de todo el acto de producto. */
 const Sidebar: React.FC = () => (
   <div style={{position: "absolute", left: 0, top: 0, width: SIDE, height: RECEPCION.h, background: color.ink900, overflow: "hidden"}}>
     <div
@@ -62,15 +63,15 @@ const Sidebar: React.FC = () => (
         boxSizing: "border-box",
         display: "flex",
         alignItems: "center",
-        gap: 10,
-        padding: "0 16px",
+        gap: 8,
+        padding: "0 14px",
         borderBottom: `2px solid ${color.darkBorder}`,
       }}
     >
-      <Isotipo size={32} tone="dark" />
-      <span style={{...displayStyle(750), fontSize: 18, color: color.darkText, whiteSpace: "nowrap"}}>PadelClub OS</span>
+      <Isotipo size={30} tone="dark" />
+      <span style={{...displayStyle(750), fontSize: 16, color: color.darkText, whiteSpace: "nowrap"}}>PadelClub OS</span>
     </div>
-    <div style={{padding: "12px 10px", display: "flex", flexDirection: "column", gap: 6}}>
+    <div style={{padding: "12px 8px", display: "flex", flexDirection: "column", gap: 8}}>
       {NAV_GROUPS.map((g) => (
         <div key={g.title} style={{display: "flex", flexDirection: "column"}}>
           <div
@@ -81,7 +82,7 @@ const Sidebar: React.FC = () => (
               letterSpacing: "0.06em",
               textTransform: "uppercase",
               color: color.ink400,
-              padding: "0 12px",
+              padding: "0 10px",
             }}
           >
             {g.title}
@@ -93,11 +94,11 @@ const Sidebar: React.FC = () => (
               <div
                 key={item.id}
                 style={{
-                  height: 30,
+                  height: 31,
                   display: "flex",
                   alignItems: "center",
-                  gap: 12,
-                  padding: "0 12px",
+                  gap: 10,
+                  padding: "0 10px",
                   borderRadius: 6,
                   background: on ? "#1F3A2C" : "transparent",
                   boxShadow: on ? `inset 3px 0 0 ${color.green400}` : "none",
@@ -145,7 +146,7 @@ const Topbar: React.FC = () => (
       <Globe size={20} strokeWidth={2} />
       <Sun size={20} strokeWidth={2} />
       <Bell size={20} strokeWidth={2} />
-      <Avatar initials="LM" size={34} bg={color.green700} />
+      <Avatar initials="LM" size={40} bg={color.green700} />
     </div>
   </div>
 );
@@ -186,7 +187,7 @@ const Kpi: React.FC<{i: number; label: string; icon: LucideIcon; sub?: string; v
   >
     <div style={{...textStyle(500), fontSize: 18, lineHeight: "24px", color: color.ink500}}>{label}</div>
     <div style={{marginTop: 8, ...displayStyle(700), fontSize: 38, lineHeight: "44px", color: color.ink900, whiteSpace: "nowrap"}}>{value}</div>
-    {sub ? <div style={{marginTop: 6, ...textStyle(400), fontSize: 16, lineHeight: "20px", color: color.ink400}}>{sub}</div> : null}
+    {sub ? <div style={{marginTop: 6, ...textStyle(400), fontSize: 16, lineHeight: "20px", color: color.ink500}}>{sub}</div> : null}
     <div
       style={{
         position: "absolute",
@@ -303,7 +304,14 @@ const Method: React.FC<{metodo: "tarjeta" | "efectivo"}> = ({metodo}) => (
   </div>
 );
 
-const Paid: React.FC<{size?: number; fontSize?: number; style?: React.CSSProperties}> = ({size = 18, fontSize = 16, style}) => (
+/** El check dibujado de «control-de-cobros» (ya completo): mismo trazo a los dos lados del corte. */
+const CheckMark: React.FC<{size: number; width: number}> = ({size, width}) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" style={{flexShrink: 0}}>
+    <path d="M4.5 12.5 L9.5 17.5 L19.5 6.5" fill="none" stroke="currentColor" strokeWidth={width} strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+);
+
+const Paid: React.FC<{size?: number; fontSize?: number; stroke?: number; style?: React.CSSProperties}> = ({size = 18, fontSize = 16, stroke = 2.6, style}) => (
   <div
     style={{
       display: "flex",
@@ -318,7 +326,7 @@ const Paid: React.FC<{size?: number; fontSize?: number; style?: React.CSSPropert
       ...style,
     }}
   >
-    <Check size={size} strokeWidth={2.6} />
+    <CheckMark size={size} width={stroke} />
     Cobrado
   </div>
 );
@@ -365,6 +373,7 @@ const ReservationCard: React.FC = () => (
         <Paid
           size={20}
           fontSize={18}
+          stroke={2.8}
           style={{
             height: 40,
             padding: "0 16px 0 12px",

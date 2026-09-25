@@ -4,7 +4,14 @@ import type {SceneCues} from "../../sfx";
 export const T16 = {
   /** Downbeat del drop: el bloque verde entra y barre la arena (7 f). */
   drop: 0,
-  /** El isotipo baja de 10× a su sitio en el lockup (14 f). */
+  /**
+   * El isotipo baja de 10× a su sitio en el lockup: zoom geométrico con ease.inOut
+   * en f5–f21 (ningún frame encoge más de ~23 %, sin desenfoque). Los primeros
+   * frames apenas se mueven: el movimiento visible arranca con el whoosh (lockup).
+   */
+  zoom: 5,
+  zoomDur: 16,
+  /** Whoosh del zoom. */
   lockup: 8,
   /** «PadelClub» letra a letra con máscara (10 f), en el tiempo 2. */
   word: 15,
@@ -14,6 +21,11 @@ export const T16 = {
   h1: 30,
   /** Subrayado verde de «tu club» (10 f). */
   underline: 45,
+  /**
+   * Lockup + H1 centrados ópticamente (centro ≈ y540) hasta el c2; en su downbeat
+   * suben a su sitio (ease.inOut, 12 f) mientras la pista empieza a dibujarse.
+   */
+  rise: 60,
   /** La pista se dibuja por grupos, uno por tiempo. */
   perimeter: 60,
   net: 75,
@@ -30,6 +42,8 @@ export const T16 = {
 /** Tiempos del 9:16 (1 compás, 60 f): solo el lockup. */
 export const T9 = {
   drop: 0,
+  zoom: 5,
+  zoomDur: 16,
   lockup: 8,
   word: 15,
   chip: 23,

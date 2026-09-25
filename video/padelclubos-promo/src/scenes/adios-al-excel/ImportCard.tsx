@@ -210,7 +210,7 @@ const ListChrome: React.FC = () => (
         ...monoStyle(500),
         fontSize: 16,
         letterSpacing: "0.1em",
-        color: color.ink400,
+        color: color.ink500,
       }}
     >
       {[

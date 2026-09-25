@@ -64,6 +64,7 @@ const heapAngle = (t: number) => {
 // la posición 1 duplicada y la columna PTS rota.
 const eur = fmt.eur2;
 const ERR_V = {red: true, text: "#¡VALOR!"};
+const ERR_R = {red: true, text: "#¡REF!"};
 
 const SOCIOS: SheetSpec = {
   title: "socios_v3_FINAL.xlsx",
@@ -73,17 +74,18 @@ const SOCIOS: SheetSpec = {
     {label: "Cuota", w: 152, align: "right", mono: true},
     {label: "Pagado", w: 112, align: "center", mono: true},
   ],
+  // Las cinco primeras filas de la hoja que cae en «adios-al-excel».
   rows: [
-    [{text: "Carlos Navarro"}, {skel: 112}, {text: eur(35)}, {text: "Sí"}],
-    [{text: "Laura Gómez"}, {skel: 128}, {text: eur(35)}, {text: "Sí"}],
-    [{text: "Nuria Castillo"}, {skel: 104}, ERR_V, {text: "No"}],
-    [{text: "Javi Martínez"}, {skel: 120}, {...ERR_V, active: true}, {text: "Sí"}],
-    [{text: "Pedro Sanz"}, {skel: 96}, {text: eur(35)}, {text: "No"}],
+    [{text: "Laura Gómez"}, {skel: 96}, {text: eur(35)}, {text: "Sí"}],
+    [{text: "Javi Martínez"}, {skel: 112}, ERR_V, {text: "Sí"}],
+    [{text: "Pedro Sanz"}, {skel: 128}, {...ERR_R, active: true}, {text: "Sí"}],
+    [{text: "Marta Ruiz"}, {skel: 104}, {text: eur(35)}, {text: "Sí"}],
+    [{text: "Carlos Navarro"}, {skel: 120}, {text: eur(35)}, {text: "Sí"}],
   ],
   rowH: 48,
   headH: 48,
   font: 20,
-  formula: {ref: "C5", text: "=B5*12"},
+  formula: {ref: "C4", text: "=#¡REF!*12"},
 };
 
 const PAGOS: SheetSpec = {
@@ -95,16 +97,16 @@ const PAGOS: SheetSpec = {
     {label: "¿Pagado?", w: 128, align: "center", mono: true},
   ],
   rows: [
-    [{text: "Carlos Navarro"}, {skel: 56}, {text: eur(28)}, {text: "No"}],
-    [{text: "Laura Gómez"}, {skel: 64}, {text: eur(7)}, {text: "Sí"}],
-    [{text: "Nuria Castillo"}, {skel: 48}, ERR_V, {text: "Sí"}],
-    [{text: "Javi Martínez"}, {skel: 60}, ERR_V, {...ERR_V, active: true}],
-    [{text: "Pedro Sanz"}, {skel: 52}, {text: eur(7)}, {text: "No"}],
+    [{text: "Laura Gómez"}, {skel: 56}, {text: eur(7)}, {text: "Sí"}],
+    [{text: "Javi Martínez"}, {skel: 64}, ERR_V, {text: "Sí"}],
+    [{text: "Pedro Sanz"}, {skel: 48}, ERR_R, {...ERR_R, active: true}],
+    [{text: "Marta Ruiz"}, {skel: 60}, {text: eur(7)}, {text: "Sí"}],
+    [{text: "Carlos Navarro"}, {skel: 52}, {text: eur(28)}, {text: "No"}],
   ],
   rowH: 48,
   headH: 48,
   font: 20,
-  formula: {ref: "D5", text: '=SI(C5>0;"Sí";"No")'},
+  formula: {ref: "D4", text: '=SI(C4>0;"Sí";"No")'},
 };
 
 const LIGA: SheetSpec = {

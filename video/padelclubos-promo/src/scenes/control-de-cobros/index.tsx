@@ -2,11 +2,11 @@ import React from "react";
 import {AbsoluteFill, useCurrentFrame} from "remotion";
 import {color} from "../../brand/tokens";
 import {Cursor, WordsReveal, type CursorKey} from "../../components";
-import {ease, progress, tween, view} from "../../lib/anim";
+import {clamp01, ease, progress, view} from "../../lib/anim";
 import {useScene} from "../../lib/scene";
 import {T16} from "./cues";
 import {PushIn} from "./push";
-import {LightClock, Panel, VerifactuChip, cobrarCenter, kpiCenter} from "./ui";
+import {LightClock, Panel, VerifactuChip, ZOOM, cobrarCenter} from "./ui";
 
 export {cues} from "./cues";
 
@@ -40,17 +40,25 @@ const exitStyle = (frame: number): React.CSSProperties => {
   return {opacity: 1 - p, transform: `translateY(${-p * 4}px)`};
 };
 
-// Origen del zoom-out: la tarjeta «Cobrado hoy», que en «todo-en-uno» es la casilla 04.
-const ORIGIN = kpiCenter(2);
+/**
+ * Pre-encogido (c2.t3): 1 → 0,95 en ease-in t⁴ hacia el punto fijo del zoom a
+ * la casilla 04. Llega a 0,95 en f120, que es el f0 de «todo-en-uno»: a f119
+ * aún le falta un paso (≈10 px en el borde izquierdo), así el corte no repite
+ * posición y el zoom sigue acelerando al otro lado.
+ */
+const shrinkAt = (frame: number, duration: number) => {
+  const t = clamp01((frame - T16.shrink) / (duration - T16.shrink));
+  return 1 - (1 - ZOOM.to) * Math.pow(t, ZOOM.power);
+};
 
 /** Capa de contenido: se desplaza con el push y se encoge al final (cámara). */
 const Content: React.FC = () => {
   const frame = useCurrentFrame();
   const {durationInFrames} = useScene();
-  const scale = tween(frame, [T16.shrink, durationInFrames - 1], [1, 0.9], ease.in);
+  const scale = shrinkAt(frame, durationInFrames);
   const cursorOut = progress(frame, T16.paid + 6, 8, ease.in);
   return (
-    <AbsoluteFill style={{transform: `scale(${scale})`, transformOrigin: `${ORIGIN.x}px ${ORIGIN.y}px`}}>
+    <AbsoluteFill style={{transform: `scale(${scale})`, transformOrigin: `${ZOOM.origin.x}px ${ZOOM.origin.y}px`}}>
       <Panel frame={frame} />
       <VerifactuChip style={{...view(frame, T16.verifactu), ...(frame >= T16.exit ? exitStyle(frame) : {})}} />
       <div style={{position: "absolute", inset: 0, opacity: 1 - cursorOut}}>

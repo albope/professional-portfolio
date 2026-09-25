@@ -79,7 +79,8 @@ const Cell: React.FC<{cell: SheetCell; col: SheetCol; font: number; h: number; l
       }}
     >
       {cell.skel ? <div style={{width: cell.skel, height: 12, borderRadius: 6, background: GRID}} /> : cell.text}
-      {cell.active ? <div style={{position: "absolute", left: -LINE, top: -LINE, right: 0, bottom: 0, border: `${LINE}px solid ${RED}`}} /> : null}
+      {/* Como en «gestion-fragmentada»: en la última columna el contorno se queda dentro del borde de la ventana. */}
+      {cell.active ? <div style={{position: "absolute", left: -LINE, top: -LINE, right: last ? LINE : 0, bottom: 0, border: `${LINE}px solid ${RED}`}} /> : null}
     </div>
   );
 };

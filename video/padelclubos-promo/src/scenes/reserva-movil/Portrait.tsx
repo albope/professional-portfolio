@@ -10,9 +10,10 @@ import {DirBlur, usePushOut, velocity} from "./blur";
 import {ClubAvatar, ConfirmButton, DashedRect, Marcador, TapRing, marcadorSize, press} from "./ui";
 
 // ─── Geometría 9:16 ────────────────────────────────────────────────────────
-// Portal a pantalla completa y sin marco (y480–1520), titulares en y272–448.
-const X = 90;
-const W = 900;
+// Portal a pantalla completa y sin marco (y480–1520), titulares en y272–452.
+// Márgenes laterales de 72 px (x72–1008), como el resto de escenas verticales.
+const X = 72;
+const W = 936;
 const HEAD = {y: 496, h: 88};
 const NUM_Y = 608;
 const GRID = {y: 664, gap: 16, h: 168};
@@ -23,7 +24,7 @@ const cellY = (si: number) => GRID.y + si * (GRID.h + GRID.gap);
 
 const SHEET_TOP = 944;
 /**
- * Velo: nace transparente 8 px bajo el titular (y272–448) y llega al 40 %
+ * Velo: nace transparente bajo el titular A (y272–452) y llega al 40 %
  * sobre la rejilla. Un degradado largo, no un borde: no parte el cuadro en dos.
  */
 const VEIL_Y = 456;
@@ -234,21 +235,33 @@ const HEADLINE: React.CSSProperties = {
   position: "absolute",
   left: X,
   top: 272,
-  width: W,
   fontSize: 88,
   fontWeight: 760,
   lineHeight: 1,
   color: color.ink900,
+  whiteSpace: "nowrap",
 };
+
+/** Salida del titular B en 7 f (f112–f119): el último frame de la escena ya queda limpio. */
+const HUD_EXIT = 7;
 
 export const Portrait: React.FC = () => {
   const frame = useCurrentFrame();
   return (
     <AbsoluteFill style={{background: color.sand50}}>
       <Content />
-      {/* HUD fija */}
-      <WordsReveal text="Reservas 24/7 desde el móvil." frame={frame} start={-3} step={3} exitAt={T9.titleOut} style={HEADLINE} />
-      <WordsReveal text="Sin descargar nada." frame={frame} start={T9.sheet} step={3} exitAt={T9.exit} style={HEADLINE} />
+      {/* HUD fija. A en dos líneas controladas (272 / 364, como «sin-solapamientos»); B en una sola línea a 80 px (≈855 px, cabe en x72–1008). */}
+      <WordsReveal text="Reservas 24/7" frame={frame} start={-3} step={3} exitAt={T9.titleOut} style={HEADLINE} />
+      <WordsReveal text="desde el móvil." frame={frame} start={3} step={3} exitAt={T9.titleOut} style={{...HEADLINE, top: 364}} />
+      <WordsReveal
+        text="Sin descargar nada."
+        frame={frame}
+        start={T9.sheet}
+        step={3}
+        exitAt={T9.exit}
+        exitDuration={HUD_EXIT}
+        style={{...HEADLINE, fontSize: 80}}
+      />
     </AbsoluteFill>
   );
 };

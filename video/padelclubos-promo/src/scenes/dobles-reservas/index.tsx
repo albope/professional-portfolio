@@ -35,7 +35,10 @@ interface Pose {
   my?: number;
 }
 
-const poseTransform = (p: Pose) => `translate(${p.x}px, ${p.y}px) scale(${p.s}) rotate(${p.r}deg)`;
+/** Sigma máxima del desenfoque de movimiento (px): una estela ligera, nunca una losa. */
+const MAX_BLUR = 6;
+
+const poseTransform = (p: Pose) =>`translate(${p.x}px, ${p.y}px) scale(${p.s}) rotate(${p.r}deg)`;
 
 /**
  * Capa con desenfoque de movimiento direccional: la velocidad del frame
@@ -51,9 +54,11 @@ const Moving: React.FC<{id: string; pose: (f: number) => Pose; frame: number; st
 }) => {
   const a = pose(frame);
   const b = pose(frame - 1);
-  // Obturador de 180°: estela de Δ/2 px; su sigma gaussiana equivalente ≈ 0,15·Δ.
-  const bx = Math.abs((a.mx ?? a.x) - (b.mx ?? b.x)) * 0.15;
-  const by = Math.abs((a.my ?? a.y) - (b.my ?? b.y)) * 0.15;
+  // Obturador de 180°: estela de Δ/2 px; su sigma gaussiana equivalente ≈ 0,15·Δ,
+  // con tope de MAX_BLUR: en los saltos grandes (B entra ~640 px en un frame)
+  // la estela entera convertiría el módulo en una losa.
+  const bx = Math.min(MAX_BLUR, Math.abs((a.mx ?? a.x) - (b.mx ?? b.x)) * 0.15);
+  const by = Math.min(MAX_BLUR, Math.abs((a.my ?? a.y) - (b.my ?? b.y)) * 0.15);
   const on = bx > 0.3 || by > 0.3;
   return (
     <>
@@ -354,17 +359,27 @@ const GEO16: SlotGeo = {
   rowH: 80,
   rowFont: 36,
 };
+/** Desfase de la burbuja de Pedro detrás de A en el match cut. */
 const OFF = 24;
 const W16 = GEO16.cols[0] + GEO16.cols[1] + GEO16.cols[2] + 4;
 const H16 = GEO16.cellH + GEO16.rowH + 6;
-// El conjunto A+B queda centrado en x; en y deja aire bajo el subtítulo.
-const A16 = {x: Math.round((1920 - W16 - OFF) / 2), y: 504};
+// B se monta sobre A 24 px a la derecha y 82 px más arriba: su borde inferior
+// cae justo sobre el separador de la fila de total de A, así que «Javi
+// Martínez + 3» sigue a la vista bajo «Pedro Sanz + 3» (dos grupos, un hueco)
+// y A asoma por la izquierda como la tarjeta de debajo.
+const B_OFF = {x: 24, y: GEO16.cellH + 4 - H16};
+// El conjunto A+B (con el chip encima de B) queda centrado en x; en y deja
+// aire bajo el subtítulo.
+const A16 = {x: Math.round((1920 - W16 - B_OFF.x) / 2), y: 552};
+const B16 = {x: A16.x + B_OFF.x, y: A16.y + B_OFF.y};
+/** Centro del conjunto: origen de la cámara. */
+const SET16 = {x: A16.x + (W16 + B_OFF.x) / 2, y: (B16.y + A16.y + H16) / 2};
 
 // Match cut con «mensajes-a-deshora»: su último frame deja el módulo A
-// (1040×300 al 64 %) centrado en (990, 580), con tercios iguales, y la burbuja
-// de Pedro detrás (+24/+24). A crece desde ahí hasta su sitio y B se esconde
-// detrás de él.
-const FROM16 = {cx: 990, cy: 580, s: (1040 * 0.64) / W16};
+// (1040×300 al 64 %) centrado en (1100, 640), con los separadores donde caen
+// los de THIRDS, y la burbuja de Pedro detrás (+24/+24). A crece desde ahí
+// hasta su sitio y B se esconde detrás de él.
+const FROM16 = {cx: 1100, cy: 640, s: (1040 * 0.64) / W16};
 // Separadores de sus tercios (x = w/3 y 2w/3, trazo centrado) en coordenadas del módulo.
 const THIRDS: [number, number, number] = [342, 347, 347];
 const landA16 = (f: number) => progress(f, T16.land, motion.overlay, ease.overlay);
@@ -373,18 +388,23 @@ const landA16 = (f: number) => progress(f, T16.land, motion.overlay, ease.overla
 const poseA16 = (f: number): Pose => {
   const land = landA16(f);
   const fall = drop(f, T16.fall + 3);
+  const s = lerpN(FROM16.s, 1, land);
   const cx = A16.x + W16 / 2;
   const cy = A16.y + H16 / 2;
+  // Mientras aterriza, el borde mide 2/s px sin escalar: la caja es 296 + 4/s
+  // de alto y su centro baja 2/s − 2 px. Se compensa para que el centro visible
+  // salga de FROM16 exacto (y en s = 1 no cambia nada).
+  const grow = 2 / s - 2;
   return {
     x: (FROM16.cx - cx) * (1 - land),
-    y: (FROM16.cy - cy) * (1 - land) + fall * 720,
-    s: lerpN(FROM16.s, 1, land),
+    y: (FROM16.cy - cy) * (1 - land) - grow + fall * 720,
+    s,
     r: -4 * fall,
   };
 };
 
 // B: entra desde la derecha, fuera de cuadro en el propio f30 (así su primer
-// frame visible ya va en movimiento), y se monta sobre A con 24/24 px de desfase.
+// frame visible ya va en movimiento), y se monta sobre A (B_OFF).
 const B_FROM = 1500;
 const poseB16 = (f: number): Pose => {
   const bIn = progress(f, T16.second, motion.overlay, ease.overlay);
@@ -403,7 +423,8 @@ const TuckedShell: React.FC<{land: number; scale: number}> = ({land, scale}) => 
         left: off,
         top: off,
         width: W16,
-        height: H16,
+        // Mismo alto que A con su borde de 2/scale px.
+        height: H16 - 4 + 4 / scale,
         boxSizing: "border-box",
         border: `${2 / scale}px solid ${CREAM80}`,
         borderRadius: radius.module / scale,
@@ -423,12 +444,9 @@ const Stage16: React.FC = () => {
   const sx = shake(frame, t.impact, 6);
   const module = {frame, geo: GEO16, conflictAt: t.impact};
   return (
-    <AbsoluteFill
-      style={{transform: `translateX(${sx}px) scale(${cam})`, transformOrigin: `${A16.x + (W16 + OFF) / 2}px ${A16.y + (H16 + OFF) / 2}px`}}
-    >
+    <AbsoluteFill style={{transform: `translateX(${sx}px) scale(${cam})`, transformOrigin: `${SET16.x}px ${SET16.y}px`}}>
       <Moving id="dobles-a" pose={poseA16} frame={frame} style={{left: A16.x, top: A16.y}}>
         <TuckedShell land={land} scale={scale} />
-        <NowChip frame={frame} at={t.impact} />
         <SlotModule
           {...module}
           roll={t.roll}
@@ -441,12 +459,9 @@ const Stage16: React.FC = () => {
         />
       </Moving>
       {frame >= t.second ? (
-        <Moving
-          id="dobles-b"
-          pose={poseB16}
-          frame={frame}
-          style={{left: A16.x + OFF, top: A16.y + OFF}}
-        >
+        <Moving id="dobles-b" pose={poseB16} frame={frame} style={{left: B16.x, top: B16.y}}>
+          {/* «Ahora» en la esquina superior izquierda del conjunto, que ahora es B. */}
+          <NowChip frame={frame} at={t.impact} />
           <SlotModule {...module} rows={[{text: "Pedro Sanz + 3", initials: "PS"}]} hatch="cells" shadow={lift()} />
         </Moving>
       ) : null}
@@ -509,12 +524,12 @@ const GEO9: SlotGeo = {
 // Centrado en la franja y640–1180 con las dos filas ya dentro.
 const M9 = {x: 72, y: 664};
 
-// Match cut con «mensajes-a-deshora» (9:16): la burbuja de Javi termina
-// centrada en (540, 900), de 658×125 (588×112 a 1,12), radio 31 con la
-// esquina del pico a 9 y contorno rojo suave.
-const BUBBLE9 = {cx: 540, cy: 900, w: 658, h: 125, r: 31, tail: 9};
-/** Escala con la que V01 deja la burbuja (588×112 → 658×125). */
+/** Escala con la que V01 deja la burbuja (588×112 → 658,56×125,44). */
 const BUBBLE9_K = 1.12;
+// Match cut con «mensajes-a-deshora» (9:16): la burbuja de Javi termina
+// centrada en (540, 900), de 588×112 a 1,12, radio 28 con la esquina del pico
+// a 8 (también a 1,12) y contorno rojo suave.
+const BUBBLE9 = {cx: 540, cy: 900, w: 588 * BUBBLE9_K, h: 112 * BUBBLE9_K, r: 28 * BUBBLE9_K, tail: 8 * BUBBLE9_K};
 
 /**
  * Texto de la burbuja de Javi tal como lo deja V01 («Pista 1» y «19:00» en
@@ -593,7 +608,8 @@ const Stage9: React.FC = () => {
           }}
           labelsAt={t.land + 2}
           rowTextAt={t.rowText}
-          shadow={lift()}
+          // La sombra de la burbuja venía escalada con ella (×1,12): se recoge al aterrizar.
+          shadow={lift(lerpN(1 / BUBBLE9_K, 1, land))}
         />
         <BubbleText o={1 - progress(frame, t.land, 3, ease.out)} />
       </Moving>

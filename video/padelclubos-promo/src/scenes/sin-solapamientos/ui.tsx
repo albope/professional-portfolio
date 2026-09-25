@@ -137,8 +137,9 @@ const Frame: React.FC<{g: CardGeo; h: number; ink: string; dash?: string; opacit
 };
 
 /**
- * Módulo marcador en versión clara (tarjeta #F6F3ED, borde 2 px, radio 10,
- * etiquetas mono y cifras en Archivo 112 % con digit-roll), con estados de
+ * Módulo marcador en versión clara (tarjeta blanca sobre la página #F6F3ED,
+ * como el marcador de «reserva-movil»; borde 2 px, radio 10, etiquetas mono
+ * ink-500 y cifras en Archivo 112 % con digit-roll), con estados de
  * borrador (borde discontinuo), conflicto (warning) y reserva hecha (tira
  * verde y check). El MarcadorModule del kit reparte las celdas a partes
  * iguales y no admite estos estados.
@@ -183,8 +184,8 @@ export const SlotCard: React.FC<{
   pistaScale = 1,
   focus = 0,
   footer,
-  surface = color.sand50,
-  footerBg = color.sand100,
+  surface = color.surfaceRaised,
+  footerBg = color.sand50,
   style,
 }) => {
   const h = cardHeight(g);
@@ -233,7 +234,7 @@ export const SlotCard: React.FC<{
                 }}
               >
                 <div style={{display: "flex", alignItems: "center", justifyContent: "space-between", height: checkSize, marginTop: -(checkSize - g.labelSize) / 2}}>
-                  <span style={{...monoStyle(600), fontSize: g.labelSize, lineHeight: 1, letterSpacing: "0.14em", color: color.ink400}}>
+                  <span style={{...monoStyle(600), fontSize: g.labelSize, lineHeight: 1, letterSpacing: "0.14em", color: color.ink500}}>
                     {LABELS[i]}
                   </span>
                   {i === 2 && check && check.circle > 0 ? <CheckDot size={checkSize} circle={check.circle} draw={check.draw} /> : null}
@@ -314,7 +315,7 @@ export const SlotCard: React.FC<{
             </div>
             <span style={{...textStyle(600), fontSize: g.footerFont, lineHeight: 1, color: color.ink900, whiteSpace: "nowrap"}}>{footer.name}</span>
           </div>
-          {footer.meta ? <span style={{...monoStyle(500), fontSize: 18, letterSpacing: "0.1em", color: color.ink400}}>{footer.meta}</span> : null}
+          {footer.meta ? <span style={{...monoStyle(500), fontSize: 18, letterSpacing: "0.1em", color: color.ink500}}>{footer.meta}</span> : null}
         </div>
       ) : null}
       {/* Tira verde de reserva hecha */}

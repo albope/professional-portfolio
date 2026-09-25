@@ -27,7 +27,7 @@ export interface Timing {
 export const T16: Timing = {
   land: 0,
   roll: [2, 4, 6],
-  // Javi se lee antes de que B lo tape (entra por la derecha y lo cubre en f32).
+  // Javi se lee desde el aterrizaje; B se monta encima sin taparle la fila de total.
   rowText: 2,
   title: 0,
   second: beats(2), // c1.t3 · f30

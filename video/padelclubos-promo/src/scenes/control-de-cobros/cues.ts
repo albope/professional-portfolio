@@ -24,7 +24,7 @@ export const T16 = {
   paid: 60,
   /** c2.t2: sube el chip «INTEGRADOS CON VERIFACTU». */
   verifactu: 75,
-  /** c2.t3: la vista empieza a reducirse (1 → 0,9, ease-in). */
+  /** c2.t3: la vista empieza a reducirse (1 → 0,95, ease-in; llega en el corte). */
   shrink: 90,
   /** Whoosh del zoom-out hacia el tablero de «todo-en-uno». */
   whoosh: 105,

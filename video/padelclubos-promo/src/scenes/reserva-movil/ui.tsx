@@ -123,7 +123,7 @@ export const Marcador: React.FC<{
                 height: Math.round(labelSize * 1.25),
                 letterSpacing: "0.14em",
                 textTransform: "uppercase",
-                color: color.ink400,
+                color: color.ink500,
               }}
             >
               {c.label}

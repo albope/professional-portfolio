@@ -158,7 +158,7 @@ const Row: React.FC<{frame: number; s: Standing}> = ({frame, s}) => {
         display: "flex",
         alignItems: "center",
         gap: 28,
-        background: interpolateColors(tint, [0, 1], [color.sand50, color.greenTint]),
+        background: interpolateColors(tint, [0, 1], [color.surface, color.greenTint]),
         borderTop: slot < 0.5 ? "none" : `2px solid ${color.sand200}`,
         boxShadow: moving > 0.01 && rising ? `0 ${Math.round(14 * moving)}px ${Math.round(32 * moving)}px -16px rgba(28,26,23,${(0.3 * moving).toFixed(3)})` : "none",
         zIndex: rising ? 3 : 1,
@@ -166,7 +166,7 @@ const Row: React.FC<{frame: number; s: Standing}> = ({frame, s}) => {
       }}
     >
       <div style={{position: "absolute", left: 0, top: 0, bottom: 0, width: 6, background: color.green600, opacity: tint}} />
-      <Pair size={88} tones={hero ? TONES.gf : TONES.ghost} ring={color.sand50} overlap={20} />
+      <Pair size={88} tones={hero ? TONES.gf : TONES.ghost} ring={color.surface} overlap={20} />
       {hero ? (
         <>
           <span style={{...textStyle(600), fontSize: 44, lineHeight: 1, color: color.ink900, whiteSpace: "nowrap"}}>{s.name}</span>
@@ -198,7 +198,8 @@ const Standings: React.FC<{frame: number}> = ({frame}) => (
       boxSizing: "border-box",
       border: `2px solid ${color.sand300}`,
       borderRadius: radius.surface,
-      background: color.sand50,
+      // #FAF8F5 sobre la arena #F6F3ED: la tarjeta se separa del fondo.
+      background: color.surface,
       overflow: "hidden",
       boxShadow: shadow.card,
     }}
@@ -240,16 +241,16 @@ export const Portrait: React.FC = () => {
   const tapX = X + W - LW - MOD.save / 2;
   const tapY = MOD.y + MOD_H / 2;
   return (
-    <AbsoluteFill style={{background: color.sand100}}>
+    <AbsoluteFill style={{background: color.sand50}}>
       <DirBlur id="ligas-push9" vx={velocity(pushX, frame)} style={{position: "absolute", inset: 0, transform: `translateX(${pushX(frame)}px)`}}>
         <Standings frame={frame} />
         <ResultModule frame={frame} />
         <TapRing frame={frame} at={T.save} x={tapX} y={tapY} size={112} />
       </DirBlur>
-      {/* HUD fija: titular en dos líneas; el punto verde late tras «real.» */}
-      <WordsReveal text="Ligas en" frame={frame} start={T.title} step={3} style={{...HEADLINE, position: "absolute", left: X, top: 272}} />
+      {/* HUD fija: titular en dos líneas («en tiempo real» no se parte); el punto verde late tras «real.» */}
+      <WordsReveal text="Ligas" frame={frame} start={T.title} step={3} style={{...HEADLINE, position: "absolute", left: X, top: 272}} />
       <div style={{position: "absolute", left: X, top: 364, display: "flex", alignItems: "center", gap: 28}}>
-        <WordsReveal text="tiempo real." frame={frame} start={T.title + 6} step={3} style={HEADLINE} />
+        <WordsReveal text="en tiempo real." frame={frame} start={T.title + 3} step={3} style={HEADLINE} />
         <div style={{...view(frame, T.title + 12), marginTop: 12}}>
           <LiveDot frame={frame} pulses={T.pulses} size={24} ring={3} />
         </div>
