@@ -50,14 +50,6 @@ function sizes(escenario: readonly Tramo[], parte: number) {
 }
 
 /**
- * Detalle ampliado del evento: la imagen entera a 504,5 % dentro de un marco
- * del 72 % de la tarjeta, o sea, unas 3,63 veces el escenario. La franja usa
- * el mismo `sizes` a propósito: las dos piden la misma URL y la captura, de
- * 27 KB, se descarga una sola vez.
- */
-const SIZES_EVENTO = sizes(ESCENARIO_TARJETA, 0.72 * 5.045);
-
-/**
  * Marco de una captura dentro de su escenario: posición absoluta, radio de
  * 8 px, sombra de captura y fondo blanco mientras carga. Los móviles cambian
  * radio y sombra (marco de tinta de 4 o 5 px) por `className`.
@@ -80,9 +72,8 @@ const IMG = "block h-auto w-full";
  *   códigos del móvil asoma por abajo.
  * - Radio: la web de escritorio al fondo, para que se vean el menú y el
  *   reproductor fijo, y el móvil delante tapando la zona difuminada.
- * - Evento: solo la franja clara de la web (sin el bloque granate) y un
- *   detalle ampliado del selector «ES / FR» y de «Confirmar asistencia». El
- *   detalle repite lo que ya dice el `alt` de la franja: va `aria-hidden`.
+ * - Evento: la portada en el móvil, centrada y asomando desde el borde
+ *   inferior, con los nombres, la fecha y «Confirmar asistencia» a la vista.
  */
 const reencuadres: ReadonlyArray<(tarjeta: ProyectoTarjeta) => ReactNode> = [
   (tarjeta) => (
@@ -135,34 +126,16 @@ const reencuadres: ReadonlyArray<(tarjeta: ProyectoTarjeta) => ReactNode> = [
   ),
   (tarjeta) => (
     <>
-      {/* 1120/276: la franja clara de arriba, sin el bloque granate. */}
-      <Shot className="left-[7%] top-[11%] aspect-[1120/276] w-[128%]">
+      <Shot className="left-1/2 top-[10%] w-[44%] -translate-x-1/2 rounded-card shadow-phone">
         <Image
-          src="/proyectos/evento/cuenta-anonima.jpg"
-          width={1120}
-          height={512}
+          src="/proyectos/evento/portada-movil.jpg"
+          width={1080}
+          height={2010}
           alt={tarjeta.alt_principal}
-          sizes={SIZES_EVENTO}
+          sizes={sizes(ESCENARIO_TARJETA, 0.44)}
           className={IMG}
         />
       </Shot>
-      {/* Recorta la zona x 897..1120, y 2..40 del original. El fondo es el de la
-          propia web, para que el recorte no parpadee en blanco mientras carga.
-          Nunca pasa de 266 px (1,2 veces los 222 del recorte): la captura es
-          de 1120 px y, más ampliada, el selector y el botón se ven borrosos. */}
-      <div
-        className="absolute right-[6%] top-[60%] aspect-[222/38] w-[72%] max-w-[266px] overflow-hidden rounded-[6px] bg-[#E9E9E1] shadow-[0_0_0_1px_rgba(16,16,19,.08),0_24px_40px_-18px_rgba(16,16,19,.45)]"
-        aria-hidden="true"
-      >
-        <Image
-          src="/proyectos/evento/cuenta-anonima.jpg"
-          width={1120}
-          height={512}
-          alt={tarjeta.alt_secundaria}
-          sizes={SIZES_EVENTO}
-          className="-ml-[404%] -mt-[0.9%] block h-auto w-[504.5%] max-w-none"
-        />
-      </div>
     </>
   ),
 ];

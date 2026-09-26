@@ -78,20 +78,11 @@ test("every screenshot describes the screen it shows", () => {
 const within = (rect: Rect, shot: Shot) =>
   rect.x >= 0 && rect.y >= 0 && rect.w > 0 && rect.h > 0 && rect.x + rect.w <= shot.width && rect.y + rect.h <= shot.height;
 
-/**
- * Un recorte fuera de la imagen deja el marco con un hueco vacío. Vale para
- * los detalles de interfaz, para la franja del evento y para su detalle
- * ampliado.
- */
-test("detail crops, the event strip and its zoom stay inside their screenshots", () => {
+/** Un recorte fuera de la imagen deja el marco con un hueco vacío. */
+test("detail crops stay inside their screenshots", () => {
   for (const project of projects) {
     for (const detail of project.details) {
       if (detail.variant === "recorte") assert.ok(within(detail.crop, detail.shot), `${project.slug} ${detail.label}`);
-    }
-    const { figure } = project;
-    if (figure.layout === "franja") {
-      assert.ok(within({ x: 0, y: 0, w: figure.shot.width, h: figure.strip }, figure.shot), `${project.slug} franja`);
-      assert.ok(within(figure.zoom, figure.shot), `${project.slug} detalle ampliado`);
     }
   }
 });

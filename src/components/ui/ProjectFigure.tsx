@@ -40,15 +40,15 @@ const IMG = "block h-auto w-full";
 /**
  * Proporción del escenario por composición: 4:3 en móvil, como las tarjetas
  * de la portada, y más apaisado desde 768 px, donde el escenario ya mide lo
- * que el contenedor. La franja del evento es baja y pide un escenario más
- * ancho que alto.
+ * que el contenedor. El móvil solo del evento cabe entero en 16:9 desde
+ * 768 px.
  */
 const stageAspect: Record<MainFigure["layout"], string> = {
   "con-movil": "aspect-[4/3] 768:aspect-[16/10]",
   // La web del ordenador es más apaisada que la del almacén: a 16:10 dejaba
   // un tercio del escenario vacío bajo el móvil.
   "movil-delante": "aspect-[4/3] 768:aspect-[16/9]",
-  franja: "aspect-[4/3] 768:aspect-[12/5]",
+  "movil-solo": "aspect-[4/3] 768:aspect-[16/9]",
   sola: "aspect-[4/3] 768:aspect-[16/9]",
 };
 
@@ -73,49 +73,14 @@ export function ProjectMainFigure({ figure, className }: { figure: MainFigure; c
 function MainLayers({ figure }: { figure: MainFigure }) {
   const { shot } = figure;
 
-  if (figure.layout === "franja") {
-    const { strip, zoom } = figure;
-    // Las dos capas piden la misma URL (el mismo `sizes`), así que la captura
-    // se descarga una sola vez: el detalle es la imagen entera a unas 3,6
-    // veces el escenario en móvil y 1,6 veces desde 768 px.
-    const scale = shot.width / zoom.w;
-    const sizes = stageSizes(0.32 * scale, 0.72 * scale);
+  if (figure.layout === "movil-solo") {
+    // Centrado con su marco de tinta. Desde 768 px mide un 26 % del
+    // escenario y cabe entero (unos 580 px de alto en 675). Por debajo mide
+    // un 44 % y asoma desde el borde inferior, con la portada a la vista.
     return (
-      <>
-        {/* Solo la franja clara de arriba, sin el bloque inferior. */}
-        <Shot
-          className="left-[7%] top-[11%] w-[128%] 768:left-[6%] 768:top-[8%] 768:w-[88%]"
-          style={{ aspectRatio: `${shot.width} / ${strip}` }}
-        >
-          <Image {...shot} alt={shot.alt} sizes={sizes} fetchPriority="high" loading="eager" className={IMG} />
-        </Shot>
-        {/* Detalle ampliado del selector de idioma y del botón de confirmar.
-            El fondo es el de la propia web, para que no parpadee en blanco
-            mientras carga. Repite lo que dice el `alt` de la franja. Desde
-            768 px la franja ya se lee casi a tamaño real y el detalle se
-            queda en un 32 %. En ningún ancho pasa de 266 px, 1,2 veces el
-            recorte: la captura es de 1120 px y más ampliada se ve borrosa. */}
-        <div
-          aria-hidden="true"
-          className="absolute right-[6%] top-[60%] w-[72%] max-w-[266px] overflow-hidden rounded-[6px] bg-[#E9E9E1] shadow-[0_0_0_1px_rgba(16,16,19,.08),0_24px_40px_-18px_rgba(16,16,19,.45)] 768:top-[64%] 768:w-[32%]"
-          style={{ aspectRatio: `${zoom.w} / ${zoom.h}` }}
-        >
-          <Image
-            src={shot.src}
-            width={shot.width}
-            height={shot.height}
-            alt=""
-            sizes={sizes}
-            className="block h-auto max-w-none"
-            style={{
-              width: `${scale * 100}%`,
-              // Los márgenes en porcentaje se miden sobre el ancho del marco.
-              marginLeft: `${(-zoom.x / zoom.w) * 100}%`,
-              marginTop: `${(-zoom.y / zoom.w) * 100}%`,
-            }}
-          />
-        </div>
-      </>
+      <Shot className="left-1/2 top-[9%] w-[44%] -translate-x-1/2 rounded-card shadow-phone 768:top-[8%] 768:w-[26%] 768:rounded-[18px] 768:shadow-phone-lg">
+        <Image {...shot} alt={shot.alt} sizes={stageSizes(0.26, 0.44)} fetchPriority="high" loading="eager" className={IMG} />
+      </Shot>
     );
   }
 

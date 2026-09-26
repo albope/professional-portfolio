@@ -365,7 +365,7 @@
         "etiqueta": "Web con automatización",
         "titulo": "Web para un evento",
         "descripcion": "Los invitados confirman su asistencia en dos idiomas y cada confirmación llega por email. Nadie tiene que revisar una lista a mano.",
-        "alt_principal": "Web de un evento con menú, cuenta atrás, selector de idioma y botón para confirmar asistencia",
+        "alt_principal": "Web del evento en el móvil: portada con los nombres de los novios, la fecha, el lugar y el botón para confirmar asistencia",
         "alt_secundaria": "",
         "caso": "Ver el caso"
       }

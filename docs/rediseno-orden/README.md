@@ -167,7 +167,7 @@ Lo que quedó parcial o sin tocar:
 
 - **Métrica de la fuente.** En Chromium Linux, Schibsted servida por `next/font` mide un 2 o 3 % más ancha que en el prototipo, porque su archivo no trae la tabla `prep`. De ahí salen cortes de línea que el prototipo no tenía, como «Te enviamos una propuesta» en dos líneas a 1440. No se tocó: hay que mirar antes en macOS o Windows.
 - **Portátiles bajos.** A 1366 × 657 faltan 48 px para ver la franja de compromisos entera y a 1180 × 700 faltan 17. Ver los ajustes del coordinador.
-- **Detalle del evento.** Sin una captura de mayor resolución se limita a 266 px. Las capturas principales de las fichas no se reexportaron a más resolución.
+- **Detalle del evento.** Sin una captura de mayor resolución se limitó a 266 px. Después, el 26 de septiembre, Alberto aportó una captura nítida del móvil y el evento pasó a enseñar solo el móvil, sin difuminar. Las capturas principales de las otras fichas no se reexportaron a más resolución.
 - **Sin JavaScript,** el menú sigue abierto después de elegir un enlace. Se acepta.
 - **Medición.** El enlace «Abrir en Cal.com» del diálogo de reserva no se mide para no contar dos veces la misma intención.
 - **Alineación por debajo de 1024 px.** Con los compromisos en dos columnas, sus textos no comparten línea.
@@ -232,7 +232,6 @@ Todo en local, contra `next start` en el puerto 3100 con Chromium de Playwright,
 
 - **Capturas:**
   - Recapturar Padel Club OS con un día de demo con actividad y a más resolución. Las actuales son de 1280 px.
-  - Recapturar la web del evento a 2x. Hoy su detalle ampliado se limita a 266 px.
   - Opcional: una captura de escritorio de la radio sin marca que se pueda publicar, y una de Reservas con un día lleno para recuperar las pestañas de Padel Club OS.
 - **Revisión en real:**
   - Navegador real y móvil real, con atención a los cortes de línea.

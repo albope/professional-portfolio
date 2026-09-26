@@ -224,54 +224,26 @@ async function Stage({ project }: { project: Project }) {
   const src = await dataUri(figure.shot);
   const layers: ReactNode[] = [];
 
-  if (figure.layout === "franja") {
-    // Solo la franja clara de arriba y el detalle ampliado del botón.
-    const width = 620;
-    const scale = width / figure.shot.width;
-    const zoomWidth = 380;
-    const zoomScale = zoomWidth / figure.zoom.w;
-    const stripHeight = Math.round(figure.strip * scale);
+  if (figure.layout === "movil-solo") {
+    // Solo el móvil, centrado en el escenario con su marco de tinta.
+    const width = 230;
     layers.push(
       <div
-        key="franja"
+        key="movil"
         style={{
           position: "absolute",
-          left: 44,
-          top: 64,
-          width,
-          height: stripHeight,
+          left: 175,
+          top: 60,
           display: "flex",
           overflow: "hidden",
-          borderRadius: 8,
-          boxShadow: SHADOW_CAPTURE,
+          borderRadius: 20,
+          border: `5px solid ${C.ink}`,
+          background: C.surface,
+          boxShadow: SHADOW_PHONE,
         }}
       >
         {/* eslint-disable-next-line @next/next/no-img-element -- Satori pinta `<img>`, no `next/image`. */}
-        <img src={src} width={width} height={Math.round(figure.shot.height * scale)} alt="" />
-      </div>,
-      <div
-        key="zoom"
-        style={{
-          position: "absolute",
-          left: 150,
-          top: 64 + stripHeight + 44,
-          width: zoomWidth,
-          height: Math.round(figure.zoom.h * zoomScale),
-          display: "flex",
-          overflow: "hidden",
-          borderRadius: 6,
-          background: "#E9E9E1",
-          boxShadow: "0 0 0 1px rgba(16,16,19,.08), 0 24px 40px -18px rgba(16,16,19,.45)",
-        }}
-      >
-        {/* eslint-disable-next-line @next/next/no-img-element -- Satori pinta `<img>`, no `next/image`. */}
-        <img
-          src={src}
-          width={Math.round(figure.shot.width * zoomScale)}
-          height={Math.round(figure.shot.height * zoomScale)}
-          alt=""
-          style={{ position: "absolute", left: -Math.round(figure.zoom.x * zoomScale), top: -Math.round(figure.zoom.y * zoomScale) }}
-        />
+        <img src={src} width={width} height={Math.round((width * figure.shot.height) / figure.shot.width)} alt="" />
       </div>,
     );
   } else {

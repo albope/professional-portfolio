@@ -70,11 +70,11 @@ export const capturas = {
     height: 1600,
     alt: "Pantalla del lector de códigos en el móvil para registrar la entrada de un producto escaneando su código",
   },
-  eventoCuenta: {
-    src: "/proyectos/evento/cuenta-anonima.jpg",
-    width: 1120,
-    height: 512,
-    alt: "Web de un evento con menú, cuenta atrás, selector de idioma y botón para confirmar asistencia. El monograma y la fecha aparecen difuminados",
+  eventoMovil: {
+    src: "/proyectos/evento/portada-movil.jpg",
+    width: 1080,
+    height: 2010,
+    alt: "Web del evento en el móvil: portada con los nombres de los novios, la fecha, el lugar y el botón para confirmar asistencia, y debajo la cuenta atrás",
   },
   radioPortada: {
     src: "/proyectos/radio/portada-anonima.jpg",
@@ -104,22 +104,13 @@ export const capturas = {
  *   (Padel Club OS y almacén).
  * - `movil-delante`: escritorio al fondo y el móvil delante, tapando la
  *   portada difuminada (radio).
- * - `franja`: solo la franja clara de la web y, superpuesto, un detalle
- *   ampliado del selector de idioma y del botón de confirmar (evento). El
- *   detalle repite lo que ya dice el `alt` de la franja: va `aria-hidden`.
+ * - `movil-solo`: solo el móvil, centrado y entero desde 768 px (evento).
+ *   Por debajo asoma desde el borde inferior del escenario.
  * - `sola`: una sola pantalla (asistente).
  */
 export type MainFigure =
   | { layout: "con-movil" | "movil-delante"; shot: Shot; phone: Shot; caption: string }
-  | {
-      layout: "franja";
-      shot: Shot;
-      /** Alto de la franja en píxeles del original, desde arriba. */
-      strip: number;
-      /** Zona ampliada, en píxeles del original. */
-      zoom: Rect;
-      caption: string;
-    }
+  | { layout: "movil-solo"; shot: Shot; caption: string }
   | { layout: "sola"; shot: Shot; caption: string };
 
 /**
@@ -304,21 +295,21 @@ export const projects: Project[] = [
     intro:
       "La información del evento, la confirmación de asistencia con las preferencias de cada invitado y un espacio privado para gestionarlo todo. En dos idiomas, y cada confirmación llega por email.",
     figure: {
-      layout: "franja",
-      shot: capturas.eventoCuenta,
-      strip: 276,
-      zoom: { x: 897, y: 2, w: 222, h: 38 },
+      layout: "movil-solo",
+      shot: capturas.eventoMovil,
       caption:
-        "La cabecera con el selector de idioma y el botón de confirmar, sobre la cuenta atrás.",
+        "La portada en el móvil, con el botón para confirmar asistencia y, debajo, la cuenta atrás.",
     },
     details: [
       {
         variant: "recorte",
         shot: {
-          ...capturas.eventoCuenta,
-          alt: "Detalle de la cuenta atrás de la web: días, horas, minutos y segundos que faltan para el evento",
+          ...capturas.eventoMovil,
+          alt: "Detalle de la cuenta atrás de la web: los días y las horas que faltan para el evento",
         },
-        crop: { x: 330, y: 50, w: 460, h: 180 },
+        crop: { x: 0, y: 1460, w: 1080, h: 540 },
+        // Captura de un móvil a unos 2,75x: a más de 400 px se vería ampliada.
+        maxWidth: 400,
         soloMovil: true,
         label: "Cuenta atrás.",
         caption:
