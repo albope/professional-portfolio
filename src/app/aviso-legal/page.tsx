@@ -32,10 +32,10 @@ export default function AvisoLegalPage() {
 
       <h2>Objeto</h2>
       <p>
-        Este sitio web informa sobre los servicios de BPM Tech (software a
-        medida, aplicaciones y webs, automatización de procesos, inteligencia
-        artificial aplicada, integraciones y consultoría tecnológica) y
-        permite solicitar contacto para nuevos proyectos.
+        Este sitio web informa sobre los servicios de BPM Tech (software de
+        gestión a medida, automatizaciones e integraciones, y webs y
+        aplicaciones nuevas) y permite solicitar contacto para nuevos
+        proyectos.
       </p>
 
       <h2>Acceso y uso</h2>

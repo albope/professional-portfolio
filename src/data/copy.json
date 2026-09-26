@@ -327,7 +327,7 @@
       "ficha": [
         {
           "termino": "Para el club",
-          "definicion": "Reservas, socios, cobros, competiciones y academia en un mismo panel. Los socios se pueden cargar desde un Excel."
+          "definicion": "Reservas, socios, cobros, competiciones y academia en un mismo panel. Los socios se cargan desde el Excel que ya tenía el club."
         },
         {
           "termino": "Para el jugador",
@@ -347,7 +347,7 @@
       {
         "etiqueta": "Aplicación de gestión",
         "titulo": "Gestión de almacén",
-        "descripcion": "Inventario, ubicaciones y movimientos en una sola aplicación. Las entradas se registran leyendo el código de barras con una pistola lectora o con el móvil, sin teclear referencias.",
+        "descripcion": "Inventario, ubicaciones y movimientos en una sola aplicación. Las entradas se registran leyendo el código de barras con una pistola lectora o con el móvil, para que el stock del sistema sea el mismo que el de la estantería.",
         "alt_principal": "Aplicación de almacén: listado de movimientos de entrada, salida y traspaso",
         "alt_secundaria": "Pantalla del lector de códigos en el móvil para registrar la entrada de un producto",
         "caso": "Ver el caso"
@@ -363,7 +363,7 @@
       {
         "etiqueta": "Web con automatización",
         "titulo": "Web para un evento",
-        "descripcion": "Los invitados confirman su asistencia en dos idiomas y cada confirmación llega por email.",
+        "descripcion": "Los invitados confirman su asistencia en dos idiomas y cada confirmación llega por email. Nadie tiene que revisar una lista a mano.",
         "alt_principal": "Web de un evento con menú, cuenta atrás, selector de idioma y botón para confirmar asistencia",
         "alt_secundaria": "",
         "caso": "Ver el caso"

@@ -110,7 +110,7 @@ El prototipo de referencia se comprobó en 14 anchos, de 310 a 1920 px, sin desb
 - «gratuita» en el botón del hero.
 - Padel Club OS contado como «Para el club / Para el jugador / Hoy».
 - La respuesta sobre el precio («por eso no publicamos tarifas») y la pregunta «No sé exactamente qué necesito. ¿Puedo escribiros igualmente?».
-- Dos frases de beneficio en las tarjetas del almacén y del evento. La revisión crítica las suavizó después, junto con la de los socios cargados desde el Excel del club, porque Alberto aún no las había validado.
+- Dos frases de beneficio en las tarjetas del almacén y del evento. La revisión crítica las suavizó después, junto con la de los socios cargados desde el Excel del club, porque Alberto aún no las había validado. Alberto las confirmó el 26 de septiembre y se publican completas.
 - En móvil, el texto de «Quiénes somos» antes que el retrato, con la foto recortada a 4:3.
 - Escape y clic fuera cierran el menú, el foco pasa al mensaje de enviado y el anillo de foco mide 3 px.
 
@@ -179,7 +179,7 @@ Lo que quedó parcial o sin tocar:
 
 Después de la revisión se deshicieron o matizaron dos cambios:
 
-- **Objeto del aviso legal.** La revisión lo había cambiado para enumerar los tres servicios de la portada. Se deshizo porque el texto legal lo decide Alberto. El apartado sigue enumerando software a medida, aplicaciones y webs, automatización de procesos, inteligencia artificial aplicada, integraciones y consultoría tecnológica. Desde `2375ced` habla de «BPM Tech» en lugar de «el estudio», sin más cambios.
+- **Objeto del aviso legal.** La revisión lo había cambiado para enumerar los tres servicios de la portada. Se deshizo porque el texto legal lo decide Alberto. El apartado sigue enumerando software a medida, aplicaciones y webs, automatización de procesos, inteligencia artificial aplicada, integraciones y consultoría tecnológica. Desde `2375ced` habla de «BPM Tech» en lugar de «el estudio». Después Alberto pidió adaptarlo y ahora enumera los tres servicios de la portada.
 - **Ilustración del hero en portátiles bajos.** La fórmula que la ajusta al alto disponible la dejaba en unos 385 px a 1366 × 657 y el texto de sus filas no se leía. Ahora nunca baja de 500 px. A esa altura la franja de compromisos queda bajo el pliegue. Los mismos compromisos se repiten en «Cómo trabajamos».
 
 ## Verificación
@@ -222,7 +222,7 @@ Todo en local, contra `next start` en el puerto 3100 con Chromium de Playwright,
 
 - Safari, Firefox y dispositivos reales. Solo Chromium con emulación.
 - Lector de pantalla real (NVDA o VoiceOver).
-- La web publicada. Nada de esto se ha desplegado.
+- La web publicada. El rediseño se fusionó en `main` el 26 de septiembre, pero no se ha comprobado el despliegue.
 - Un envío real de correo y una reserva real en Cal.com.
 - Los cortes de línea en macOS o Windows. Las capturas salen de Chromium Linux, donde el texto mide un 2 o 3 % más ancho.
 - Las comprobaciones con Node 24, la versión que declara el proyecto.
@@ -230,9 +230,6 @@ Todo en local, contra `next start` en el puerto 3100 con Chromium de Playwright,
 
 ## Pendiente
 
-- **Revisión de Alberto:**
-  - Validar las ocho frases del apartado 6.4 de la especificación: tres se publican suavizadas y cinco tal cual. La lista está al principio de [contexto-actual.md](../contexto-actual.md).
-  - Decidir si el «Objeto» del aviso legal se alinea con los tres servicios de la portada.
 - **Capturas:**
   - Recapturar Padel Club OS con un día de demo con actividad y a más resolución. Las actuales son de 1280 px.
   - Recapturar la web del evento a 2x. Hoy su detalle ampliado se limita a 266 px.

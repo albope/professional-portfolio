@@ -2,27 +2,20 @@
 
 Actualizado: 26 de septiembre de 2026, con el rediseño «Orden» tras su revisión crítica (commits `2375ced` y `4e83a8f` de la rama `claude/bpmtech-landing-redesign-3f0fb0`). El proceso, las direcciones descartadas, la verificación y lo pendiente están en [rediseno-orden/README.md](rediseno-orden/README.md). El rediseño anterior, «Planos anotados», queda como histórico en [rediseno/README.md](rediseno/README.md). Este documento describe el árbol local. No acredita despliegue, entrega de correo ni resultados comerciales.
 
-## Pendiente de validar por Alberto
+## Frases validadas por Alberto
 
-La especificación del rediseño «Orden» (apartado 6.4) pedía validar varias frases antes de publicarlas. No hay constancia de esa validación. Tres frases de resultado se publican suavizadas, con solo los hechos del brief:
+El 26 de septiembre de 2026 Alberto confirmó las frases que la especificación del rediseño «Orden» (apartado 6.4) dejaba pendientes. Se publican así:
 
-| Dónde | Frase original, pendiente | Texto publicado mientras tanto |
-|---|---|---|
-| Portada, Padel Club OS | «Los socios se cargan desde el Excel que ya tenía el club.» | «Los socios se pueden cargar desde un Excel.» |
-| Portada, almacén | «… leyendo el código con un terminal, para que el stock del sistema sea el mismo que el de la estantería.» | «… leyendo el código de barras con una pistola lectora o con el móvil, sin teclear referencias.» |
-| Portada, evento | «… cada confirmación llega por email. Nadie tiene que revisar una lista a mano.» | «… cada confirmación llega por email.» |
-
-Si Alberto las confirma, se pueden recuperar en `src/data/copy.json`.
-
-Estas otras frases del mismo apartado ya están publicadas y siguen pendientes de su visto bueno:
-
+- Padel Club OS: «Los socios se cargan desde el Excel que ya tenía el club.»
+- Almacén: «Las entradas se registran leyendo el código de barras con una pistola lectora o con el móvil, para que el stock del sistema sea el mismo que el de la estantería.»
+- Evento: «… cada confirmación llega por email. Nadie tiene que revisar una lista a mano.»
 - «Te enseñamos los avances durante el desarrollo para que los revises y podamos ajustar a tiempo.» (Cómo trabajamos, tercer paso)
 - «Con empresas de otras ciudades trabajamos en remoto, por videollamada.» (Preguntas)
 - «Si prefieres una inversión menor, definimos juntos una primera versión más pequeña.» (Preguntas, respuesta sobre el precio)
 - «Su fundador, Alberto Bort, es el responsable de cada proyecto.» (Quiénes somos)
 - La reserva presentada como videollamada de 30 min «gratuita y sin compromiso» (Contacto y diálogo de reserva)
 
-**Aviso legal.** El apartado «Objeto» de `src/app/aviso-legal/page.tsx` no se ha cambiado en su contenido. Sigue enumerando software a medida, aplicaciones y webs, automatización de procesos, inteligencia artificial aplicada, integraciones y consultoría tecnológica. Solo dice «BPM Tech» donde antes decía «el estudio». No coincide con los tres servicios de la portada ni con la presencia discreta de la IA. Alinearlo es decisión de Alberto.
+**Aviso legal.** A petición de Alberto, el apartado «Objeto» de `src/app/aviso-legal/page.tsx` enumera ahora los tres servicios de la portada: software de gestión a medida, automatizaciones e integraciones, y webs y aplicaciones nuevas.
 
 ## Dirección comercial y de arte
 
@@ -121,7 +114,6 @@ Comprobar especialmente móvil, teclado, menú, anclas, formularios con errores,
 
 Siguientes pasos, pendientes de Alberto:
 
-- Validar las frases del principio (la tabla y la lista) y decidir si el «Objeto» del aviso legal se alinea con los tres servicios.
 - Recapturar Padel Club OS con un día con actividad y a más resolución, y la web del evento a 2x.
 - Revisar la web en un navegador real y en un móvil real.
 - Desplegar y verificar en la versión publicada un envío real y una reserva real, con autorización. Revisar antes en Vercel `CONTACT_EMAIL` y el remitente verificado, sin cambiarlos por conveniencia.
