@@ -267,7 +267,7 @@ test("the page copy is complete", () => {
   assert.equal(copyEs.metodo.propuesta.lineas.length, 4);
   assert.equal(copyEs.preguntas.items.length, 7);
   assert.equal(copyEs.contacto.lateral.pasos.length, 3);
-  assert.equal(copyEs.sobre.ficha.length, 4);
+  assert.equal(copyEs.sobre.ficha.length, 1);
   assert.equal(copyEs.proyectos.destacado.ficha.length, 3);
 });
 

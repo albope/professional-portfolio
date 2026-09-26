@@ -84,7 +84,6 @@ export function Footer() {
                   {pie.reserva}
                 </BaseLink>
               </li>
-              <li className="flex min-h-10 items-center text-small text-on-dark-2">{pie.ubicacion}</li>
             </ul>
           </div>
 
@@ -102,9 +101,8 @@ export function Footer() {
           </nav>
         </div>
 
-        <div className="mt-14 flex flex-wrap justify-between gap-x-6 gap-y-2.5 border-t border-[#2a2a30] pt-[22px] text-micro text-on-dark-3">
+        <div className="mt-14 border-t border-[#2a2a30] pt-[22px] text-micro text-on-dark-3">
           <p>{rellenar(pie.copyright, { anio: year })}</p>
-          <p>{pie.ubicacion}</p>
         </div>
       </div>
     </footer>

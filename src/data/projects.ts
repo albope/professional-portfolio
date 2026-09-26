@@ -190,7 +190,7 @@ export const projects: Project[] = [
       shot: capturas.academia,
       phone: capturas.portalMovil,
       caption:
-        "El panel del club, en el módulo de academia, y el portal del jugador en el móvil. Capturas reales con datos de demostración.",
+        "El panel del club, en el módulo de academia, y el portal del jugador en el móvil.",
     },
     details: [
       {
@@ -248,7 +248,7 @@ export const projects: Project[] = [
       shot: capturas.movimientos,
       phone: capturas.rfEntrada,
       caption:
-        "El libro de movimientos y el lector de códigos en el móvil. Capturas reales con datos de demostración y la marca difuminada.",
+        "El libro de movimientos y el lector de códigos en el móvil.",
     },
     details: [
       {
@@ -309,7 +309,7 @@ export const projects: Project[] = [
       strip: 276,
       zoom: { x: 897, y: 2, w: 222, h: 38 },
       caption:
-        "La cabecera con el selector de idioma y el botón de confirmar, sobre la cuenta atrás. Captura real con el monograma y la fecha difuminados.",
+        "La cabecera con el selector de idioma y el botón de confirmar, sobre la cuenta atrás.",
     },
     details: [
       {
@@ -361,7 +361,7 @@ export const projects: Project[] = [
       shot: capturas.radioPortada,
       phone: capturas.radioMovil,
       caption:
-        "La web en el ordenador, con el reproductor fijo abajo, y en el móvil. Capturas reales con la marca y la portada difuminadas.",
+        "La web en el ordenador, con el reproductor fijo abajo, y en el móvil.",
     },
     details: [
       {
@@ -405,7 +405,7 @@ export const projects: Project[] = [
       layout: "sola",
       shot: capturas.asistenteTraza,
       caption:
-        "El asistente de gestión de proyectos con el recorrido de una respuesta: pasos, memoria, correo, mensajería y base de conocimiento. Captura real con el contenido difuminado.",
+        "El asistente de gestión de proyectos con el recorrido de una respuesta: pasos, memoria, correo, mensajería y base de conocimiento.",
     },
     details: [],
     problem:

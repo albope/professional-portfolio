@@ -109,7 +109,7 @@ function Canvas({ children, footerWidth = W - 128 }: { children: ReactNode; foot
         }}
       >
         <span>{domain}</span>
-        <span>{copyEs.pie.ubicacion}</span>
+        <span>{copyEs.meta.ubicacion}</span>
       </div>
     </div>
   );

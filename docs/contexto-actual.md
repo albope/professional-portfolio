@@ -34,11 +34,11 @@ La portada sigue este orden:
 2. **Qué hacemos.** Tres servicios, cada uno con su ilustración animada, «Para cuando…», qué hacemos, un ejemplo, «Consultar sobre…» con el tema del formulario preseleccionado (`/?necesidad=<clave>#contacto`) y un enlace al proyecto de la portada que lo demuestra. Cierra con «Hacer una consulta» y el tema «Todavía no lo tengo claro».
 3. **Proyectos que hemos desarrollado.** Padel Club OS destacado («Para el club», «Para el jugador» y «Hoy», enlace a su ficha y a padelclubos.com), tres tarjetas (almacén, radio y evento) y la mención «También:» del asistente.
 4. **Cómo trabajamos.** Banda de tinta con «Antes de empezar sabrás qué haremos, cuánto costará y cuándo estará listo», la hoja «Propuesta» y los cuatro pasos (Hablamos, Te enviamos una propuesta, Lo desarrollamos contigo y Lo ponemos en marcha), cada uno con su compromiso. Cierra con consulta y reserva.
-5. **Quiénes somos.** «Siempre sabrás quién responde de tu proyecto»: sociedad con sede en Valencia, Alberto como fundador y responsable, retrato, ficha y reserva.
+5. **Quiénes somos.** «Siempre sabrás quién responde de tu proyecto»: sociedad con sede en Valencia, Alberto como fundador y responsable, retrato sin pie, la forma de trabajo y reserva.
 6. **Preguntas.** Siete desplegables nativos con la del precio abierta: precio, herramientas actuales, empezar por una mejora, qué pasa tras la entrega, no saber qué se necesita, trabajo fuera de Valencia e IA.
 7. **Contacto.** «Cuéntanos qué te gustaría mejorar», formulario corto, «Qué pasa después de escribirnos» en tres pasos, reserva de llamada y email.
 
-El pie lleva la descripción, «Hacer una consulta» (oculto en las fichas, que ya cierran con esa acción), las columnas «La web», «Contacto» y «Legal», y la razón social.
+El pie lleva la descripción, «Hacer una consulta» (oculto en las fichas, que ya cierran con esa acción), las columnas «La web», «Contacto» (email y reserva) y «Legal», y la razón social. A petición de Alberto, ni el pie ni el contacto repiten «Valencia, España». Esa ubicación sigue en `copyEs.meta.ubicacion` para `site.location` y la imagen OG.
 
 ## Evidencia y persona responsable
 
@@ -46,7 +46,7 @@ La web enseña cinco proyectos reales: plataforma de pádel, gestión de almacé
 
 **La web pública no indica el tipo de relación con cada proyecto** (producto propio, encargo, proyecto personal o piloto interno). Pruebas de `src/lib/copy.test.ts` y `src/lib/projects.test.ts` vigilan que esos rótulos no vuelvan al copy ni a las fichas.
 
-Los visuales son capturas reales con datos de demo, servidas desde `public/proyectos/` y declaradas con su tamaño real en `capturas` (`src/data/projects.ts`). Una prueba exige que todo archivo de esa carpeta esté declarado, para que ningún original quede descargable por olvido. Las ilustraciones SVG son esquemas propios y no se presentan como capturas de ningún proyecto. Condiciones de publicación:
+Los visuales son capturas reales con datos de demo, servidas desde `public/proyectos/` y declaradas con su tamaño real en `capturas` (`src/data/projects.ts`). Una prueba exige que todo archivo de esa carpeta esté declarado, para que ningún original quede descargable por olvido. Las ilustraciones SVG son esquemas propios y no se presentan como capturas de ningún proyecto. La web ya no explica en el texto visible qué se ha difuminado o qué datos son de demostración: Alberto lo da por sobreentendido (26 de septiembre de 2026). Los textos alternativos sí describen lo que se ve. Condiciones de publicación:
 
 - **Padel Club OS**: se puede mostrar con marca y enlace a `padelclubos.com`. Es el único proyecto con nombre, enlace externo y estado publicado («En producción. Funciona como servicio por suscripción para clubes.»). Se enseña la academia con el portal del móvil delante y, en la ficha, un recorte de la parrilla de reservas a tamaño real. `recepcion.png` sigue declarada pero no sale en ninguna página porque enseña los contadores a cero. Pendiente recapturar con un día con actividad y a más resolución: las actuales son de 1280 px.
 - **Gestión de almacén**: nombre del producto difuminado. Publicar las originales requiere autorización del cliente.
@@ -58,7 +58,7 @@ Los originales retirados siguen en el historial de git de un repositorio públic
 
 La fila de logos de herramientas se retiró con la landing «El punto». Los SVG siguen en `public/logos/` sin uso. Si volviera, recordar que Python, OpenAI y AWS piden autorización para recolorear su marca o reservan su wordmark.
 
-«Quiénes somos» lleva el retrato 4:5 de Alberto (recortado a 4:3 y después del texto en móvil) y una ficha con responsable de los proyectos, sede, forma de trabajo y razón social. La razón social también aparece en el aviso del formulario y en el pie. El hero ya no lleva firma ni retrato, así que `public/sobre/retrato-1x1.jpg` queda sin uso.
+«Quiénes somos» lleva el retrato 4:5 de Alberto (recortado a 4:3 y después del texto en móvil), sin pie de foto, y una sola fila de ficha con la forma de trabajo. La sede y el fundador ya están en la entradilla. La razón social aparece en el aviso del formulario y en el pie. El hero ya no lleva firma ni retrato, así que `public/sobre/retrato-1x1.jpg` queda sin uso.
 
 ## Estado técnico
 

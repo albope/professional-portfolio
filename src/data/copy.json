@@ -8,7 +8,8 @@
     "titulo_plantilla": "%s · BPM Tech",
     "descripcion": "Software de gestión a medida, automatizaciones y webs para pymes. Presupuesto cerrado por escrito, plazo comprometido y soporte tras la entrega. Desde Valencia, en persona y en remoto.",
     "compartir": "Software a medida, automatizaciones y webs para pymes. Presupuesto cerrado por escrito, plazo comprometido y soporte tras la entrega.",
-    "og_alt": "BPM Tech. Software a medida para ordenar la gestión de tu pyme."
+    "og_alt": "BPM Tech. Software a medida para ordenar la gestión de tu pyme.",
+    "ubicacion": "Valencia, España"
   },
   "comun": {
     "saltar": "Saltar al contenido",
@@ -320,7 +321,7 @@
   },
   "proyectos": {
     "h2": "Proyectos que hemos desarrollado",
-    "entradilla": "Son capturas reales de nuestro trabajo, con datos de demostración o con nombres y marcas difuminados.",
+    "entradilla": "Son capturas reales de nuestro trabajo.",
     "destacado": {
       "antetitulo": "Plataforma de gestión para clubes de pádel",
       "nombre": "Padel Club OS",
@@ -424,26 +425,13 @@
     "parrafo": "Empezamos por lo que quieres conseguir, no por la tecnología. Si una herramienta que ya existe te sirve, te lo decimos.",
     "ficha": [
       {
-        "termino": "Responsable de los proyectos",
-        "definicion": "Alberto Bort, fundador"
-      },
-      {
-        "termino": "Sede",
-        "definicion": "Valencia, España"
-      },
-      {
         "termino": "Forma de trabajo",
         "definicion": "En persona en Valencia y en remoto"
-      },
-      {
-        "termino": "Razón social",
-        "definicion": "BORT PEREZ MULTI GESTION SOCIEDAD LIMITADA"
       }
     ],
     "reserva": "Reservar una llamada de 30 min",
     "retrato": {
-      "alt": "Retrato de Alberto Bort, fundador de BPM Tech, con camisa de lino verde ante una pared clara",
-      "pie": "Alberto Bort, fundador de BPM Tech"
+      "alt": "Retrato de Alberto Bort, fundador de BPM Tech, con camisa de lino verde ante una pared clara"
     }
   },
   "preguntas": {
@@ -586,7 +574,6 @@
       "legal": "Legal"
     },
     "reserva": "Reservar una llamada",
-    "ubicacion": "Valencia, España",
     "legal": [
       "Aviso legal",
       "Privacidad"

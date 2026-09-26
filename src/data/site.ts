@@ -11,7 +11,7 @@ export const site = {
   // Dirección pública autorizada para el contacto comercial y legal.
   email: "bpmtechstudio@gmail.com",
   // El destino del formulario se configura en el servidor mediante CONTACT_EMAIL.
-  location: copyEs.pie.ubicacion,
+  location: copyEs.meta.ubicacion,
 } as const;
 
 /**

@@ -39,9 +39,9 @@ export function About() {
           {/* Ficha: término a la izquierda (14em) y dato a la derecha, de 600
               a 799 px (una columna) y desde 1180. Por debajo de 600 y de 800 a
               1179, donde el texto va en la columna estrecha de 6fr, el término
-              va encima: con los 14em el dato se quedaba en unos 140 px y la
-              razón social partía en cuatro líneas. `overflow-wrap` evita que
-              la razón social desborde a 320 px. */}
+              va encima para que el dato no se quede en unos 140 px. Solo lleva
+              la forma de trabajo: la sede y el fundador ya están en la
+              entradilla y la razón social, en el pie. */}
           <dl className="mt-2.5 border-t border-line">
             {sobre.ficha.map(({ termino, definicion }) => (
               <div
@@ -72,7 +72,6 @@ export function About() {
             sizes={RETRATO_SIZES}
             className="aspect-[4/3] w-full rounded-portrait bg-sand object-cover object-[50%_22%] 800:aspect-[4/5] 800:object-center"
           />
-          <figcaption className="text-caption text-ink-2">{sobre.retrato.pie}</figcaption>
         </figure>
       </div>
     </section>
