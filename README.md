@@ -68,7 +68,7 @@ El texto visible se edita en `src/data/copy.json` y el de cada ficha en `src/dat
 | `/proyectos/plataforma-clubes-padel` | Padel Club OS |
 | `/proyectos/wms-almacen` | Gestión de almacén |
 | `/proyectos/web-boda` | Web para un evento |
-| `/proyectos/web-radio` | Web para un programa de radio |
+| `/proyectos/web-radio` | Web y app para un programa de radio |
 
 Los cinco se presentan como proyectos reales. Las fichas cuentan qué había que resolver, qué desarrollamos, lo que se ve «De cerca» y por qué lo hicimos así, y abren con la misma composición de capturas que su tarjeta en la home. Los visuales son capturas reales con datos de demo y las restricciones de marca documentadas en `docs/contexto-actual.md`. No se publican métricas, testimonios, nombres de terceros o resultados comerciales sin evidencia y autorización.
 

@@ -194,7 +194,9 @@ function OrderedWindow() {
 export async function homeImage() {
   return new ImageResponse(
     <Canvas>
-      <div style={{ position: "absolute", left: 64, top: 150, width: 560, display: "flex", fontSize: 66, ...headline }}>
+      {/* 56 px en 590 de ancho: «gestión de tu negocio» cabe en una línea y el
+          titular queda en tres, sin «negocio» sola al final. */}
+      <div style={{ position: "absolute", left: 64, top: 168, width: 590, display: "flex", fontSize: 56, ...headline }}>
         {copyEs.hero.h1}
       </div>
       <div style={{ position: "absolute", right: 64, top: 70, display: "flex" }}>
@@ -215,6 +217,28 @@ function Capture({ src, width, shot, style }: { src: string; width: number; shot
   );
 }
 
+/** Móvil con su marco de tinta de 5 px, radio 20 y sombra de teléfono. */
+function Phone({ src, width, shot, left, top }: { src: string; width: number; shot: Shot; left: number; top: number }) {
+  return (
+    <div
+      style={{
+        position: "absolute",
+        left,
+        top,
+        display: "flex",
+        overflow: "hidden",
+        borderRadius: 20,
+        border: `5px solid ${C.ink}`,
+        background: C.surface,
+        boxShadow: SHADOW_PHONE,
+      }}
+    >
+      {/* eslint-disable-next-line @next/next/no-img-element -- Satori pinta `<img>`, no `next/image`. */}
+      <img src={src} width={width} height={Math.round((width * shot.height) / shot.width)} alt="" />
+    </div>
+  );
+}
+
 /**
  * Escenario arena de la ficha, a sangre por la derecha y por abajo, con la
  * misma composición que su figura principal.
@@ -225,54 +249,22 @@ async function Stage({ project }: { project: Project }) {
   const layers: ReactNode[] = [];
 
   if (figure.layout === "movil-solo") {
-    // Solo el móvil, centrado en el escenario con su marco de tinta.
-    const width = 230;
+    // Solo el móvil, centrado en el escenario.
+    layers.push(<Phone key="movil" src={src} width={230} shot={figure.shot} left={175} top={60} />);
+  } else if (figure.layout === "dos-moviles") {
+    // Dos pantallas lado a lado, la segunda un poco más abajo.
+    const phone = await dataUri(figure.phone);
     layers.push(
-      <div
-        key="movil"
-        style={{
-          position: "absolute",
-          left: 175,
-          top: 60,
-          display: "flex",
-          overflow: "hidden",
-          borderRadius: 20,
-          border: `5px solid ${C.ink}`,
-          background: C.surface,
-          boxShadow: SHADOW_PHONE,
-        }}
-      >
-        {/* eslint-disable-next-line @next/next/no-img-element -- Satori pinta `<img>`, no `next/image`. */}
-        <img src={src} width={width} height={Math.round((width * figure.shot.height) / figure.shot.width)} alt="" />
-      </div>,
+      <Phone key="movil" src={src} width={180} shot={figure.shot} left={90} top={56} />,
+      <Phone key="phone" src={phone} width={180} shot={figure.phone} left={310} top={100} />,
     );
   } else {
     layers.push(<Capture key="shot" src={src} width={660} shot={figure.shot} style={{ left: 44, top: 60 }} />);
-  }
-
-  if ("phone" in figure) {
-    const phone = await dataUri(figure.phone);
-    const front = figure.layout === "movil-delante";
-    const width = front ? 170 : 150;
-    layers.push(
-      <div
-        key="phone"
-        style={{
-          position: "absolute",
-          left: front ? 250 : 396,
-          top: front ? 110 : 190,
-          display: "flex",
-          overflow: "hidden",
-          borderRadius: 20,
-          border: `5px solid ${C.ink}`,
-          background: C.surface,
-          boxShadow: SHADOW_PHONE,
-        }}
-      >
-        {/* eslint-disable-next-line @next/next/no-img-element -- Satori pinta `<img>`, no `next/image`. */}
-        <img src={phone} width={width} height={Math.round((width * figure.phone.height) / figure.phone.width)} alt="" />
-      </div>,
-    );
+    if (figure.layout === "con-movil") {
+      // El móvil asoma abajo a la derecha, sobre la captura del escritorio.
+      const phone = await dataUri(figure.phone);
+      layers.push(<Phone key="phone" src={phone} width={150} shot={figure.phone} left={396} top={190} />);
+    }
   }
 
   return (

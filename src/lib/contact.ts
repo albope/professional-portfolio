@@ -36,7 +36,7 @@ export const CONTACT_PROJECTS = {
   "plataforma-clubes-padel": "Padel Club OS",
   "wms-almacen": "Gestión de almacén",
   "web-boda": "Web para un evento",
-  "web-radio": "Web para un programa de radio",
+  "web-radio": "Web y app para un programa de radio",
 } as const;
 export type ContactNeed = keyof typeof CONTACT_NEEDS;
 export type ContactProject = keyof typeof CONTACT_PROJECTS;

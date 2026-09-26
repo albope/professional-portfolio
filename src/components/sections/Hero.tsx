@@ -13,8 +13,8 @@ const { hero } = copyEs;
  *
  * - Hasta 1179 px, una columna: la ilustración móvil (hasta 767 px, 440 px
  *   como máximo) o la de escritorio centrada a 600 px.
- * - Desde 1180 px, dos columnas `11fr / 12fr` (`10fr / 13fr` y H1 a 48 px
- *   hasta 1279) con áreas `"title art" / "body art"`: H1 abajo en su celda,
+ * - Desde 1180 px, dos columnas `11fr / 12fr` (`10fr / 13fr` hasta 1279)
+ *   con áreas `"title art" / "body art"`: H1 abajo en su celda,
  *   cuerpo arriba e ilustración centrada y desbordando a la derecha. El hero
  *   ocupa `min(100svh - cabecera, 900px)` con los compromisos abajo.
  * - En portátiles bajos (hasta 880 px de alto: un MacBook Air con Chrome
@@ -23,6 +23,12 @@ const { hero } = copyEs;
  *   compromisos quepan en el primer pantallazo. El H1 no cambia: es el LCP.
  *   La variante va anidada en `1180:` (`1180:[@media(max-height:880px)]:`)
  *   para que Tailwind la escriba después de las de `1180:` y les gane.
+ *
+ * El H1 va a 45 px de 1180 a 1279 y a 54 px desde 1280, por debajo de los
+ * 60 del token: «gestión de tu negocio» no cabe a 60 en la columna de texto
+ * (unos 540 px) y el titular se partía en cuatro líneas con «Software a» sola
+ * arriba. Así quedan tres: «Software a medida / para ordenar la / gestión de
+ * tu negocio».
  *
  * El H1 y la entradilla no se animan: son el LCP. La ilustración es la única
  * parte cliente (`HeroIllustration`) y el SVG lo pinta el servidor.
@@ -37,7 +43,7 @@ export function Hero() {
       <div className="wrap grid gap-y-[22px] 1180:grid-cols-[minmax(0,11fr)_minmax(0,12fr)] 1180:gap-x-[clamp(40px,4.5vw,72px)] 1180:gap-y-[30px] 1180:[grid-template-areas:'title_art'_'body_art'] 1180:max-[1279px]:grid-cols-[minmax(0,10fr)_minmax(0,13fr)] 1180:[@media(max-height:880px)]:gap-y-[18px]">
         <h1
           id="hero-titulo"
-          className="max-w-[12em] text-h1 1180:self-end 1180:[grid-area:title] 1180:max-[1279px]:text-[3rem]"
+          className="max-w-[12em] text-h1 1180:self-end 1180:[grid-area:title] 1180:max-[1279px]:text-[2.8125rem] 1280:text-[3.375rem]"
         >
           {hero.h1}
         </h1>

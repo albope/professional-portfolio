@@ -8,7 +8,7 @@
     "titulo_plantilla": "%s · BPM Tech",
     "descripcion": "Software de gestión a medida, automatizaciones y webs para pymes. Presupuesto cerrado por escrito, plazo comprometido y soporte tras la entrega. Desde Valencia, en persona y en remoto.",
     "compartir": "Software a medida, automatizaciones y webs para pymes. Presupuesto cerrado por escrito, plazo comprometido y soporte tras la entrega.",
-    "og_alt": "BPM Tech. Software a medida para ordenar la gestión de tu pyme.",
+    "og_alt": "BPM Tech. Software a medida para ordenar la gestión de tu negocio.",
     "ubicacion": "Valencia, España"
   },
   "comun": {
@@ -32,7 +32,7 @@
     "menu_reserva": "Reservar una llamada de 30 min"
   },
   "hero": {
-    "h1": "Software a medida para ordenar la gestión de tu pyme",
+    "h1": "Software a medida para ordenar la gestión de tu negocio",
     "entradilla": "Reservas por WhatsApp, cobros en una hoja de cálculo, pedidos apuntados en papel. Lo reunimos en una aplicación hecha para tu forma de trabajar y conectamos las herramientas que ya usas.",
     "cta": "Hacer una consulta gratuita",
     "reserva": "o reserva una llamada de 30 min",
@@ -250,7 +250,7 @@
         "descripcion": "Una web que explique bien tu negocio o una aplicación para poner en marcha una idea.",
         "ejemplo": "Por ejemplo: reservas e inscripciones online, emisión en directo o un portal para tus clientes.",
         "consulta": "Consultar sobre una web",
-        "caso": "Ver la web de radio",
+        "caso": "Ver la web y la app de radio",
         "ilustracion": {
           "aria": "Una web y su versión para móvil que se construyen pieza a pieza"
         }
@@ -354,11 +354,11 @@
         "caso": "Ver el caso"
       },
       {
-        "etiqueta": "Web a medida",
-        "titulo": "Web para un programa de radio",
-        "descripcion": "Emisión en directo, archivo de programas y un reproductor que sigue sonando mientras navegas por la web.",
-        "alt_principal": "Web de un programa de radio en el ordenador, con el reproductor fijo en la parte inferior. Marca difuminada",
-        "alt_secundaria": "La misma web en el móvil, con el reproductor del directo",
+        "etiqueta": "Web y app a medida",
+        "titulo": "Web y app para un programa de radio",
+        "descripcion": "La web y la app del programa: emisión en directo, archivo de programas y un reproductor que sigue sonando mientras navegas.",
+        "alt_principal": "Portada de la web del programa de radio en el móvil, con el botón para escuchar en directo y el reproductor fijo abajo",
+        "alt_secundaria": "Pantalla del directo en el móvil, con el reproductor y el control de volumen",
         "caso": "Ver el caso"
       },
       {

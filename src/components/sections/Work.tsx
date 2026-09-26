@@ -70,8 +70,8 @@ const IMG = "block h-auto w-full";
  * orden de `copy.proyectos.tarjetas`. Las posiciones son las del prototipo.
  * - Almacén: el listado de movimientos desborda a la derecha y el lector de
  *   códigos del móvil asoma por abajo.
- * - Radio: la web de escritorio al fondo, para que se vean el menú y el
- *   reproductor fijo, y el móvil delante tapando la zona difuminada.
+ * - Radio: la portada y el directo en el móvil, lado a lado y enteros, con
+ *   el reproductor fijo de abajo a la vista en los dos.
  * - Evento: la portada en el móvil, centrada y asomando desde el borde
  *   inferior, con los nombres, la fecha y «Confirmar asistencia» a la vista.
  */
@@ -102,23 +102,23 @@ const reencuadres: ReadonlyArray<(tarjeta: ProyectoTarjeta) => ReactNode> = [
   ),
   (tarjeta) => (
     <>
-      <Shot className="left-[6%] top-[11%] w-[104%]">
+      <Shot className="left-[12%] top-[5%] w-[34%] rounded-card shadow-phone">
         <Image
-          src="/proyectos/radio/portada-anonima.jpg"
-          width={1296}
-          height={593}
+          src="/proyectos/radio/portada-movil.jpg"
+          width={1080}
+          height={2138}
           alt={tarjeta.alt_principal}
-          sizes={sizes(ESCENARIO_TARJETA, 1.04)}
+          sizes={sizes(ESCENARIO_TARJETA, 0.34)}
           className={IMG}
         />
       </Shot>
-      <Shot className="left-[34%] top-[18%] w-[36%] rounded-card shadow-phone">
+      <Shot className="right-[12%] top-[10%] w-[34%] rounded-card shadow-phone">
         <Image
-          src="/proyectos/radio/movil.jpg"
-          width={514}
-          height={786}
+          src="/proyectos/radio/directo-movil.jpg"
+          width={1080}
+          height={2138}
           alt={tarjeta.alt_secundaria}
-          sizes={sizes(ESCENARIO_TARJETA, 0.36)}
+          sizes={sizes(ESCENARIO_TARJETA, 0.34)}
           className={IMG}
         />
       </Shot>

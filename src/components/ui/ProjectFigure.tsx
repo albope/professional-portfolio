@@ -40,14 +40,12 @@ const IMG = "block h-auto w-full";
 /**
  * Proporción del escenario por composición: 4:3 en móvil, como las tarjetas
  * de la portada, y más apaisado desde 768 px, donde el escenario ya mide lo
- * que el contenedor. El móvil solo del evento cabe entero en 16:9 desde
- * 768 px.
+ * que el contenedor. Los móviles solos (evento y radio) caben enteros en
+ * 16:9 desde 768 px.
  */
 const stageAspect: Record<MainFigure["layout"], string> = {
   "con-movil": "aspect-[4/3] 768:aspect-[16/10]",
-  // La web del ordenador es más apaisada que la del almacén: a 16:10 dejaba
-  // un tercio del escenario vacío bajo el móvil.
-  "movil-delante": "aspect-[4/3] 768:aspect-[16/9]",
+  "dos-moviles": "aspect-[4/3] 768:aspect-[16/9]",
   "movil-solo": "aspect-[4/3] 768:aspect-[16/9]",
   sola: "aspect-[4/3] 768:aspect-[16/9]",
 };
@@ -93,35 +91,33 @@ function MainLayers({ figure }: { figure: MainFigure }) {
   }
 
   const { phone } = figure;
-  const front = figure.layout === "movil-delante";
+
+  if (figure.layout === "dos-moviles") {
+    // Dos pantallas del móvil lado a lado, enteras en los dos tramos: la
+    // segunda baja un poco para que no se lean como un solo bloque. Con un
+    // 34 % (22 % desde 768 px) de ancho, las dos caben con su reproductor
+    // fijo de abajo a la vista.
+    const movil = "rounded-card shadow-phone 768:rounded-[18px] 768:shadow-phone-lg";
+    return (
+      <>
+        <Shot className={cn("left-[12%] top-[5%] w-[34%] 768:left-[26%] 768:top-[8%] 768:w-[22%]", movil)}>
+          <Image {...shot} alt={shot.alt} sizes={stageSizes(0.22, 0.34)} fetchPriority="high" loading="eager" className={IMG} />
+        </Shot>
+        <Shot className={cn("right-[12%] top-[10%] w-[34%] 768:right-[26%] 768:top-[14%] 768:w-[22%]", movil)}>
+          <Image {...phone} alt={phone.alt} sizes={stageSizes(0.22, 0.34)} className={IMG} />
+        </Shot>
+      </>
+    );
+  }
+
   return (
     <>
-      <Shot
-        className={
-          front
-            ? "left-[6%] top-[11%] w-[104%] 768:top-[8%] 768:w-[88%]"
-            : "left-[6%] top-[10%] w-[104%] 768:top-[8%] 768:w-[84%]"
-        }
-      >
-        <Image
-          {...shot}
-          alt={shot.alt}
-          sizes={stageSizes(front ? 0.88 : 0.84, 1.04)}
-          fetchPriority="high"
-          loading="eager"
-          className={IMG}
-        />
+      <Shot className="left-[6%] top-[10%] w-[104%] 768:top-[8%] 768:w-[84%]">
+        <Image {...shot} alt={shot.alt} sizes={stageSizes(0.84, 1.04)} fetchPriority="high" loading="eager" className={IMG} />
       </Shot>
-      <Shot
-        className={
-          front
-            ? // Delante y en el centro, tapando la portada difuminada.
-              "left-[34%] top-[18%] w-[36%] rounded-card shadow-phone 768:left-[40%] 768:top-[14%] 768:w-[25%] 768:rounded-[18px] 768:shadow-phone-lg"
-            : // Abajo a la derecha, asomando por el borde del escenario.
-              "-bottom-[24%] right-[5%] w-[30%] rounded-card shadow-phone 600:-bottom-[18%] 600:w-[22%] 600:rounded-[18px] 600:shadow-phone-lg"
-        }
-      >
-        <Image {...phone} alt={phone.alt} sizes={stageSizes(front ? 0.25 : 0.22, front ? 0.36 : 0.3)} className={IMG} />
+      {/* Abajo a la derecha, asomando por el borde del escenario. */}
+      <Shot className="-bottom-[24%] right-[5%] w-[30%] rounded-card shadow-phone 600:-bottom-[18%] 600:w-[22%] 600:rounded-[18px] 600:shadow-phone-lg">
+        <Image {...phone} alt={phone.alt} sizes={stageSizes(0.22, 0.3)} className={IMG} />
       </Shot>
     </>
   );

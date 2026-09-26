@@ -77,16 +77,16 @@ export const capturas = {
     alt: "Web del evento en el móvil: portada con los nombres de los novios, la fecha, el lugar y el botón para confirmar asistencia, y debajo la cuenta atrás",
   },
   radioPortada: {
-    src: "/proyectos/radio/portada-anonima.jpg",
-    width: 1296,
-    height: 593,
-    alt: "Web de un programa de radio en el ordenador, con el botón En directo en el menú y el reproductor fijo en la parte inferior. Marca, titular y fotografía difuminados",
+    src: "/proyectos/radio/portada-movil.jpg",
+    width: 1080,
+    height: 2138,
+    alt: "Portada de la web del programa de radio en el móvil, con el botón para escuchar en directo y el reproductor fijo abajo",
   },
-  radioMovil: {
-    src: "/proyectos/radio/movil.jpg",
-    width: 514,
-    height: 786,
-    alt: "La misma web en el móvil, con la tarjeta del reproductor del directo. La marca aparece difuminada",
+  radioDirecto: {
+    src: "/proyectos/radio/directo-movil.jpg",
+    width: 1080,
+    height: 2138,
+    alt: "Pantalla del directo en el móvil, con el reproductor, el control de volumen y el reproductor fijo abajo",
   },
   asistenteTraza: {
     src: "/proyectos/asistente/traza-sin-marcas.png",
@@ -102,14 +102,14 @@ export const capturas = {
  * reconozca al entrar.
  * - `con-movil`: escritorio y, delante, el móvil asomando abajo a la derecha
  *   (Padel Club OS y almacén).
- * - `movil-delante`: escritorio al fondo y el móvil delante, tapando la
- *   portada difuminada (radio).
+ * - `dos-moviles`: dos pantallas del móvil lado a lado, la segunda un poco
+ *   más abajo (radio: portada y directo).
  * - `movil-solo`: solo el móvil, centrado y entero desde 768 px (evento).
  *   Por debajo asoma desde el borde inferior del escenario.
  * - `sola`: una sola pantalla (asistente).
  */
 export type MainFigure =
-  | { layout: "con-movil" | "movil-delante"; shot: Shot; phone: Shot; caption: string }
+  | { layout: "con-movil" | "dos-moviles"; shot: Shot; phone: Shot; caption: string }
   | { layout: "movil-solo"; shot: Shot; caption: string }
   | { layout: "sola"; shot: Shot; caption: string };
 
@@ -342,38 +342,37 @@ export const projects: Project[] = [
   },
   {
     slug: "web-radio",
-    kicker: "Web a medida",
-    name: "Web para un programa de radio",
-    title: "Web para un programa de radio con directo",
+    kicker: "Web y app a medida",
+    name: "Web y app para un programa de radio",
+    title: "Web y app para un programa de radio con directo",
     intro:
-      "Emisión en directo, archivo de programas y un reproductor que sigue sonando mientras navegas por la web. Con identidad propia y instalable como app en el móvil.",
+      "La web y la app del programa: emisión en directo, archivo de programas y un reproductor que sigue sonando mientras navegas. Con identidad propia.",
     figure: {
-      layout: "movil-delante",
+      layout: "dos-moviles",
       shot: capturas.radioPortada,
-      phone: capturas.radioMovil,
-      caption:
-        "La web en el ordenador, con el reproductor fijo abajo, y en el móvil.",
+      phone: capturas.radioDirecto,
+      caption: "La portada y el directo en el móvil, con el reproductor fijo abajo en las dos pantallas.",
     },
     details: [
       {
         variant: "movil",
-        shot: capturas.radioMovil,
+        shot: capturas.radioDirecto,
         soloMovil: true,
-        label: "En el móvil.",
-        caption: "La misma escucha en el teléfono, instalable como app desde el propio navegador.",
+        label: "El directo.",
+        caption: "La emisión se escucha desde el móvil y el reproductor de abajo sigue sonando al cambiar de pantalla.",
       },
     ],
     problem:
       "Había que reunir la identidad del programa, la emisión en directo y los contenidos archivados en una web propia. El audio forma parte central del recorrido por el sitio, no es un añadido.",
     built: {
       body:
-        "La web con reproductor en directo, archivo histórico y la opción de instalarla como app en el móvil. El reproductor sigue sonando mientras cambias de página.",
+        "La web y la app del programa, con reproductor en directo y archivo histórico. El reproductor sigue sonando mientras cambias de página.",
       features: [
         "Emisión en directo",
         "Archivo de programas",
         "Galería histórica",
         "Reproductor que no se corta al cambiar de página",
-        "Instalación como app en el móvil",
+        "App para el móvil",
         "Identidad propia del programa",
       ],
     },
