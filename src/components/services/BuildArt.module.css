@@ -1,0 +1,83 @@
+/*
+ * Una interfaz que se construye (especificación 4.6). `data-state` lo
+ * escribe `ArtStage` en el escenario que envuelve al SVG. Sin él, la
+ * interfaz completa.
+ */
+
+/* Con `pathLength="1"`, un guion de 1 cubre el trazo entero: desplazado 1
+   no se ve, desplazado 0 se ve completo. */
+.frame {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+}
+
+.bk {
+  transform-box: fill-box;
+  transform-origin: 0 50%;
+}
+
+.press {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  :global(.js) [data-state="idle"] .frame {
+    stroke-dashoffset: 1;
+  }
+
+  :global(.js) [data-state="idle"] .bk {
+    opacity: 0;
+  }
+
+  /* El `from` va escrito en el keyframe porque `play` sustituye a `idle`:
+     la animación no puede heredar el desplazamiento 1 del estado anterior. */
+  :global(.js) [data-state="play"] .frame {
+    animation: draw 1.1s var(--ease) both;
+  }
+
+  :global(.js) [data-state="play"] .bk {
+    animation: bkIn 0.5s var(--ease) both;
+    animation-delay: calc(0.75s + var(--i) * 70ms);
+  }
+
+  :global(.js) [data-state="play"] .press {
+    animation: press 0.5s var(--ease) 2.2s both;
+  }
+}
+
+@keyframes draw {
+  from {
+    stroke-dashoffset: 1;
+  }
+
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes bkIn {
+  from {
+    opacity: 0;
+    transform: scaleX(0.15);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes press {
+  0% {
+    transform: none;
+  }
+
+  40% {
+    transform: scale(0.9);
+  }
+
+  100% {
+    transform: none;
+  }
+}

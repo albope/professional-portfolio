@@ -10,22 +10,32 @@ export const CONTACT_LIMITS = {
 
 export const CONTACT_TIMEOUTS = { body: 5_000, provider: 10_000, client: 20_000 } as const;
 /**
- * Temas del formulario, con el nombre de cada servicio. `diagnostico` ya no
- * se lista en el selector, pero se sigue aceptando para enlaces antiguos.
+ * Temas del formulario: las cuatro píldoras de elección única de la landing
+ * (especificación 3.8). El rótulo es el mismo que se ve en la píldora y el
+ * que llega en el email de aviso («Necesidad: ...»), así que tiene que
+ * coincidir con `copy.contacto.formulario.tema.opciones`, en este orden
+ * (`copy.test.ts` lo comprueba). Sin ninguna marcada se envía `necesidad: ""`.
  */
 export const CONTACT_NEEDS = {
-  diagnostico: "Necesito ayuda para definir mi proyecto",
+  diagnostico: "Todavía no lo tengo claro",
   operativa: "Organizar la gestión",
   automatizacion: "Quitar trabajo repetido",
   web: "Una web o una aplicación nueva",
 } as const;
-/** Temas que el selector ofrece, en el orden de los servicios. */
-export const CONTACT_NEEDS_LISTED = ["operativa", "automatizacion", "web"] as const;
+/** Píldoras que ofrece el formulario, en el orden en que se pintan. */
+export const CONTACT_NEEDS_LISTED = ["diagnostico", "operativa", "automatizacion", "web"] as const;
+/**
+ * Proyectos que se pueden citar como referencia (`?proyecto=`). El nombre es
+ * el titular de su ficha (`projects.ts`, lo comprueba `projects.test.ts`):
+ * es el que ve el visitante en «Proyecto de referencia:» y el que llega en
+ * el email de aviso. Aquí se repite porque este módulo lo comparten cliente
+ * y servidor y no debe importar los datos de las fichas.
+ */
 export const CONTACT_PROJECTS = {
-  "asistente-ia-gestion-proyectos": "Asistente de IA para gestión de proyectos",
-  "plataforma-clubes-padel": "Plataforma de gestión para clubes de pádel",
-  "wms-almacen": "Sistema de gestión de almacén",
-  "web-boda": "Web de evento",
+  "asistente-ia-gestion-proyectos": "Asistente para la gestión de proyectos",
+  "plataforma-clubes-padel": "Padel Club OS",
+  "wms-almacen": "Gestión de almacén",
+  "web-boda": "Web para un evento",
   "web-radio": "Web para un programa de radio",
 } as const;
 export type ContactNeed = keyof typeof CONTACT_NEEDS;
@@ -81,7 +91,7 @@ export function validateContactPayload(payload: unknown): ValidationResult {
   if (!value.nombre) fields.nombre = "Indica tu nombre.";
   if (!value.email) fields.email = "Indica un email para poder responderte.";
   else if (!EMAIL_RE.test(value.email)) fields.email = "Revisa el email, parece incompleto.";
-  if (!value.mensaje) fields.mensaje = "Cuéntame brevemente qué necesitas resolver.";
+  if (!value.mensaje) fields.mensaje = "Cuéntanos brevemente qué necesitas resolver.";
   if (Object.keys(fields).length) {
     return { ok: false, error: "Revisa los campos señalados antes de enviar.", fields };
   }

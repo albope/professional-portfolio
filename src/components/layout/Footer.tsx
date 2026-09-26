@@ -1,107 +1,106 @@
-import Link from "next/link";
-import { nav, legalLinks, ctaHref, site } from "@/data/site";
+import { copyEs, rellenar } from "@/data/copy";
+import { legalLinks, nav, site } from "@/data/site";
 import { booking } from "@/data/booking";
-import { copyEs, partirFlecha } from "@/data/copy";
 import { Wordmark } from "@/components/ui/Wordmark";
+import { BaseLink } from "@/components/ui/BaseLink";
+import { SectionLink } from "@/components/ui/SectionLink";
+import { buttonClasses } from "@/components/ui/Button";
 
 const { pie } = copyEs;
-const [rotuloHablemos, , rotuloReserva] = pie.contacto;
-const reserva = partirFlecha(rotuloReserva);
 
-const columnTitle = "mb-2 font-mono text-[11px] uppercase tracking-[0.12em] text-ink-mute";
+/**
+ * Títulos de columna: `h2` de 14 px peso 600, para no colgar del H2 de
+ * Contacto. El margen es corto porque cada enlace ya trae 40 px de alto.
+ */
+const columnTitle = "mb-1.5 text-caption font-semibold text-on-dark";
+/** 15 px `on-dark-2` con 40 px de alto táctil. El email puede partirse. */
 const columnLink =
-  "inline-flex min-h-9 items-center text-sm text-ink transition-colors duration-300 ease-editorial hover:text-cobalt";
+  "inline-flex min-h-10 items-center text-small text-on-dark-2 underline-offset-4 transition-colors duration-200 [overflow-wrap:anywhere] hover:text-white hover:underline";
 
+/**
+ * Pie compartido (especificación 3.9), sobre tinta. Rejilla: una columna en
+ * móvil, desde 700 px la marca a todo el ancho y tres columnas debajo, y
+ * desde 1180 px cuatro columnas `4fr 2fr 3fr 2fr`. Todas con `minmax(0, …)`
+ * para que el email no invada la columna vecina. El año se calcula al
+ * generar la página, así el pie no envejece solo.
+ */
 export function Footer() {
+  const year = new Date().getFullYear();
+
   return (
-    <footer className="relative z-[2] border-t border-line bg-paper">
-      <div className="container-editorial pb-5 pt-9 md:pb-7 md:pt-12">
-        <div className="grid gap-x-6 gap-y-8 md:grid-cols-3 wide:grid-cols-[424fr_200fr_200fr_424fr]">
-          <div className="md:col-span-3 wide:col-span-1">
-            <Link href="/" aria-label="BPM Tech, inicio" className="inline-flex min-h-11 items-center">
-              <Wordmark size={16} className="wide:hidden" />
-              <Wordmark size={17} className="hidden wide:inline-flex" />
-            </Link>
-            <p className="mt-2 max-w-[330px] text-[13px] leading-[1.55] text-ink-mute md:text-sm">
-              {pie.descriptor}
-            </p>
+    <footer data-surface="dark" className="bg-dark pb-8 pt-[72px] text-on-dark">
+      <div className="wrap">
+        <div className="grid gap-10 700:grid-cols-3 700:gap-x-8 1180:grid-cols-[minmax(0,4fr)_minmax(0,2fr)_minmax(0,3fr)_minmax(0,2fr)] 1180:gap-x-10">
+          <div className="grid max-w-[24em] content-start justify-items-start gap-[18px] 700:col-span-3 1180:col-span-1">
+            {/* Margen negativo: 40 px de alto táctil sin bajar el logo respecto
+                a los títulos de columna. */}
+            <SectionLink id="top" aria-label={copyEs.cabecera.logo_aria} className="-my-2.5 inline-flex min-h-10 items-center">
+              <Wordmark on="dark" />
+            </SectionLink>
+            <p className="text-small text-on-dark-2">{pie.descripcion}</p>
+            <SectionLink
+              id="contacto"
+              className={buttonClasses({ size: "sm", on: "dark", className: "mt-1.5" })}
+              trackLocation="footer"
+              trackDestination="contact"
+            >
+              {pie.cta}
+            </SectionLink>
           </div>
 
-          {/* Móvil: un único índice de dos columnas, sin títulos ni repetir el contacto. */}
-          <nav aria-label="Pie" className="mt-3 grid grid-cols-2 gap-x-4 md:hidden">
-            {[...nav, ...legalLinks].map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className="inline-flex min-h-11 items-center text-sm text-ink"
-              >
-                {link.label}
-              </Link>
-            ))}
+          <nav aria-labelledby="pie-web" className="min-w-0">
+            <h2 id="pie-web" className={columnTitle}>{pie.columnas.web}</h2>
+            <ul className="grid">
+              {nav.map((item) => (
+                <li key={item.id}>
+                  <SectionLink id={item.id} className={columnLink}>
+                    {item.label}
+                  </SectionLink>
+                </li>
+              ))}
+            </ul>
           </nav>
 
-          <nav aria-label="Índice" className="hidden min-w-0 flex-col md:flex">
-            <span className={columnTitle}>Índice</span>
-            {nav.map((item) => (
-              <Link key={item.href} href={item.href} className={columnLink}>
-                {item.label}
-              </Link>
-            ))}
-          </nav>
+          <div className="min-w-0">
+            <h2 className={columnTitle}>{pie.columnas.contacto}</h2>
+            <ul className="grid">
+              <li>
+                <a href={`mailto:${site.email}`} className={columnLink}>
+                  {site.email}
+                </a>
+              </li>
+              <li>
+                <BaseLink
+                  href={booking.url}
+                  external
+                  className={columnLink}
+                  trackLocation="footer"
+                  trackDestination="booking"
+                >
+                  {pie.reserva}
+                </BaseLink>
+              </li>
+              <li className="flex min-h-10 items-center text-small text-on-dark-2">{pie.ubicacion}</li>
+            </ul>
+          </div>
 
-          <nav aria-label="Contacto" className="hidden min-w-0 flex-col md:flex">
-            <span className={columnTitle}>Contacto</span>
-            <Link
-              href={ctaHref}
-              data-track="cta_click"
-              data-track-location="footer"
-              className={columnLink}
-            >
-              {rotuloHablemos}
-            </Link>
-            <a href={`mailto:${site.email}`} className={`${columnLink} underline underline-offset-4`}>
-              <span className="[overflow-wrap:anywhere]">{site.email}</span>
-            </a>
-            <a
-              href={booking.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              data-track="cta_click"
-              data-track-location="footer"
-              data-track-destination="booking"
-              className={columnLink}
-            >
-              {reserva.texto}&nbsp;<span aria-hidden>{reserva.flecha}</span>
-              <span className="sr-only"> (se abre en otra pestaña)</span>
-            </a>
-          </nav>
-
-          <nav aria-label="Legal" className="hidden min-w-0 flex-col md:flex">
-            <span className={columnTitle}>Legal</span>
-            {legalLinks.map((link) => (
-              <Link key={link.href} href={link.href} className={columnLink}>
-                {link.label}
-              </Link>
-            ))}
+          <nav aria-labelledby="pie-legal" className="min-w-0">
+            <h2 id="pie-legal" className={columnTitle}>{pie.columnas.legal}</h2>
+            <ul className="grid">
+              {legalLinks.map((link) => (
+                <li key={link.href}>
+                  <BaseLink href={link.href} className={columnLink}>
+                    {link.label}
+                  </BaseLink>
+                </li>
+              ))}
+            </ul>
           </nav>
         </div>
 
-        <div className="mt-5 flex items-center justify-between gap-4 border-t border-line pt-4 font-mono text-[11px] text-ink-mute md:mt-10 md:pt-5 md:text-xs">
-          {/* El año se calcula: el copy fija 2026 y el pie no puede envejecer solo. */}
-          <span>
-            © {new Date().getFullYear()} {site.name}
-            <span className="md:hidden"> · Valencia</span>
-          </span>
-          <div className="flex items-center gap-4">
-            <span className="hidden md:inline">{pie.ubicacion}</span>
-            <a
-              href="#top"
-              aria-label="Volver arriba"
-              className="flex h-11 w-11 items-center justify-center border border-line text-base text-ink transition-colors duration-300 ease-editorial hover:border-ink"
-            >
-              <span aria-hidden>↑</span>
-            </a>
-          </div>
+        <div className="mt-14 flex flex-wrap justify-between gap-x-6 gap-y-2.5 border-t border-[#2a2a30] pt-[22px] text-micro text-on-dark-3">
+          <p>{rellenar(pie.copyright, { anio: year })}</p>
+          <p>{pie.ubicacion}</p>
         </div>
       </div>
     </footer>

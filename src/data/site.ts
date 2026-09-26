@@ -1,13 +1,12 @@
 import { copyEs } from "@/data/copy";
+import type { ContactNeed, ContactProject } from "@/lib/contact";
 
 export const site = {
   name: "BPM Tech",
-  descriptor: "Software y webs a medida",
-  description:
-    "Software a medida, automatización e integraciones y webs para pymes. BPM Tech, en Valencia y en remoto: de la necesidad a una solución que puedas usar.",
+  /** Meta description de la portada y descripción del JSON-LD. */
+  description: copyEs.meta.descripcion,
   /** Versión corta para compartir: WhatsApp y redes cortan a dos líneas. */
-  share:
-    "Software y webs que encajan en tu negocio. Gestión, automatización y desarrollo web a medida, en Valencia y en remoto.",
+  share: copyEs.meta.compartir,
   url: process.env.NEXT_PUBLIC_SITE_URL || "https://www.bpmtechstudio.com",
   // Dirección pública autorizada para el contacto comercial y legal.
   email: "bpmtechstudio@gmail.com",
@@ -16,15 +15,18 @@ export const site = {
 } as const;
 
 /**
- * El trabajo va primero: Proyectos abre la navegación y la portada. Los
- * rótulos salen del copy y el destino vive aquí, así que la cabecera, el
- * diálogo móvil y el índice del pie comparten una sola lista.
+ * Las cinco secciones de la portada, en el orden de la página. Los rótulos
+ * salen del copy y el destino vive aquí, así que la cabecera, el menú móvil y
+ * el pie comparten una sola lista. `id` es el ancla de la sección: en la
+ * portada se enlaza como `#id` (salto nativo que conserva `?necesidad=`) y
+ * desde las demás páginas como `/#id`. `SectionLink` elige por ti.
  */
-const destinos = ["/#proyectos", "/#servicios", "/#metodo", "/#sobre"];
+const sectionIds = ["que-hacemos", "proyectos", "como-trabajamos", "quienes-somos", "preguntas"] as const;
+export type SectionId = (typeof sectionIds)[number] | "top" | "contacto";
 
-export const nav = copyEs.nav.enlaces.map((label, index) => ({
+export const nav = copyEs.cabecera.enlaces.map((label, index) => ({
   label,
-  href: destinos[index],
+  id: sectionIds[index],
 }));
 
 export const legalLinks = copyEs.pie.legal.map((label, index) => ({
@@ -32,5 +34,15 @@ export const legalLinks = copyEs.pie.legal.map((label, index) => ({
   href: ["/aviso-legal", "/privacidad"][index],
 }));
 
-export const ctaLabel = copyEs.hero.cta_primaria;
-export const ctaHref = "/#contacto";
+/**
+ * Enlace al formulario con el tema o el proyecto preseleccionados. Úsalo con
+ * `next/link`: el formulario lee `necesidad` y `proyecto` con
+ * `useSearchParams` y marca la píldora correspondiente.
+ */
+export function contactHref(context: { need?: ContactNeed; project?: ContactProject } = {}): string {
+  const params = new URLSearchParams();
+  if (context.need) params.set("necesidad", context.need);
+  if (context.project) params.set("proyecto", context.project);
+  const query = params.toString();
+  return query ? `/?${query}#contacto` : "/#contacto";
+}

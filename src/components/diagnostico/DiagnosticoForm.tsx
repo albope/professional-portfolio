@@ -17,8 +17,8 @@ const ctaEscrito = partirFlecha(d.resultado.cta_escrito);
 const REDUCED = "(prefers-reduced-motion: reduce)";
 const subscribe = () => () => {};
 const chip =
-  "min-h-10 border border-line-2 px-3.5 font-mono text-[11px] uppercase tracking-[0.08em] text-ink transition-colors duration-300 ease-editorial hover:border-cobalt hover:text-cobalt";
-const label = "font-mono text-[11px] uppercase tracking-[0.12em] text-ink-mute";
+  "min-h-10 border border-line-2 px-3.5 font-mono text-[11px] uppercase tracking-[0.08em] text-ink transition-colors duration-300 ease-soft hover:border-cobalt hover:text-cobalt";
+const label = "font-mono text-[11px] uppercase tracking-[0.12em] text-ink-3";
 const columnLabel = "font-mono text-[11px] uppercase tracking-[0.1em] text-ink";
 
 type Status = "idle" | "busy" | "done";
@@ -173,10 +173,10 @@ export function DiagnosticoForm() {
           placeholder={d.placeholders[0]}
           aria-invalid={Boolean(error)}
           aria-describedby={error ? `${id}-error` : undefined}
-          className="min-h-[168px] w-full resize-y border border-ink bg-paper px-6 py-[22px] text-[clamp(18px,1.7vw,24px)] font-medium leading-[1.4] tracking-[-0.01em] text-ink placeholder:text-ink-faint focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-cobalt"
+          className="min-h-[168px] w-full resize-y border border-ink bg-bg px-6 py-[22px] text-[clamp(18px,1.7vw,24px)] font-medium leading-[1.4] tracking-[-0.01em] text-ink placeholder:text-ink-3 focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-cobalt"
         />
         <div className="flex flex-wrap items-center gap-2">
-          <span className={`mr-1.5 ${label} text-ink-faint`}>{d.ejemplos_rotulo}</span>
+          <span className={`mr-1.5 ${label} text-ink-3`}>{d.ejemplos_rotulo}</span>
           {d.ejemplos.map((ejemplo) => (
             <button key={ejemplo.rotulo} type="button" onClick={() => pick(ejemplo.texto)} className={chip}>
               {ejemplo.rotulo}
@@ -184,10 +184,10 @@ export function DiagnosticoForm() {
           ))}
         </div>
         <div className="mt-1.5 flex flex-wrap items-center gap-x-7 gap-y-3.5">
-          <Button type="submit" size="lg" disabled={busy || !hydrated} className="w-full sm:w-auto">
+          <Button type="submit" size="lg" disabled={busy || !hydrated} className="w-full 600:w-auto">
             {busy ? d.boton_ocupado : result ? d.boton_repetir : d.boton}
           </Button>
-          <p className={`${label} text-ink-faint`}>{d.nota_boton}</p>
+          <p className={`${label} text-ink-3`}>{d.nota_boton}</p>
         </div>
         {error && (
           <p id={`${id}-error`} role="alert" className="text-sm text-error">
@@ -205,14 +205,14 @@ export function DiagnosticoForm() {
               return (
                 <span
                   key={i}
-                  className={`block h-3.5 w-3.5 border-2 transition-colors duration-300 ease-editorial ${
+                  className={`block h-3.5 w-3.5 border-2 transition-colors duration-300 ease-soft ${
                     on ? (last ? "border-cobalt bg-cobalt" : "border-ink bg-ink") : "border-ink bg-transparent"
                   }`}
                 />
               );
             })}
           </span>
-          <p className="font-mono text-xs uppercase tracking-[0.1em] text-ink-mute">
+          <p className="font-mono text-xs uppercase tracking-[0.1em] text-ink-3">
             {d.cargando[Math.floor(step / 4) % d.cargando.length]}…
           </p>
         </div>
@@ -225,12 +225,12 @@ export function DiagnosticoForm() {
           aria-live="polite"
           className="mt-11 border-t border-ink pt-[18px] focus:outline focus:outline-2 focus:outline-offset-4 focus:outline-cobalt"
         >
-          <div className="flex flex-wrap justify-between gap-x-6 gap-y-2 font-mono text-[11px] uppercase tracking-[0.12em] text-ink-mute">
+          <div className="flex flex-wrap justify-between gap-x-6 gap-y-2 font-mono text-[11px] uppercase tracking-[0.12em] text-ink-3">
             <span>{d.resultado.rotulo} · {fecha}</span>
             <span>{source === "ia" ? d.resultado.fuente_ia : d.resultado.fuente_plantilla}</span>
           </div>
-          <h3 className="display mt-7 max-w-[980px] text-[clamp(28px,3.6vw,56px)] leading-[0.96] text-ink">{result.titular}</h3>
-          <p className="mt-5 max-w-[720px] text-[clamp(16px,1.3vw,19px)] leading-[1.6] text-ink-soft">{result.lectura}</p>
+          <h3 className="mt-7 font-title tracking-[-0.026em] max-w-[980px] text-[clamp(28px,3.6vw,56px)] leading-[0.96] text-ink">{result.titular}</h3>
+          <p className="mt-5 max-w-[720px] text-[clamp(16px,1.3vw,19px)] leading-[1.6] text-ink-2">{result.lectura}</p>
 
           <div className="mt-10 grid grid-cols-[repeat(auto-fit,minmax(min(100%,240px),1fr))] gap-x-6 gap-y-7">
             {columnas.map((columna) => (
@@ -238,7 +238,7 @@ export function DiagnosticoForm() {
                 <p className={columnLabel}>{columna.label}</p>
                 <ul className="mt-3">
                   {columna.items.map((item) => (
-                    <li key={item} className="border-t border-line py-2.5 text-[15px] leading-[1.5] text-ink-soft">
+                    <li key={item} className="border-t border-line py-2.5 text-[15px] leading-[1.5] text-ink-2">
                       {item}
                     </li>
                   ))}
@@ -254,7 +254,7 @@ export function DiagnosticoForm() {
               return (
                 <li
                   key={fase.num}
-                  className={`border-t border-ink pb-6 pt-4 transition-[opacity,transform] duration-500 ease-editorial ${
+                  className={`border-t border-ink pb-6 pt-4 transition-[opacity,transform] duration-500 ease-soft ${
                     on ? "translate-y-0 opacity-100" : "translate-y-2 opacity-[0.18]"
                   }`}
                 >
@@ -268,8 +268,8 @@ export function DiagnosticoForm() {
                     <span className="font-mono text-xs text-cobalt">{fase.num}</span>
                   </div>
                   <p className="mt-3 text-lg font-semibold tracking-[-0.01em]">{fase.titulo}</p>
-                  <p className="mt-2 text-sm leading-[1.5] text-ink-soft">{fase.texto}</p>
-                  <p className="mt-3.5 font-mono text-xs leading-[1.5] text-ink-mute">
+                  <p className="mt-2 text-sm leading-[1.5] text-ink-2">{fase.texto}</p>
+                  <p className="mt-3.5 font-mono text-xs leading-[1.5] text-ink-3">
                     <span aria-hidden="true">↳ </span>
                     {fase.entregable}
                   </p>
@@ -279,7 +279,7 @@ export function DiagnosticoForm() {
           </ol>
 
           <div className="mt-6 grid grid-cols-[repeat(auto-fit,minmax(min(100%,320px),1fr))] items-end gap-x-[88px] gap-y-7">
-            <p className="border-l-2 border-cobalt pl-4 text-[15px] leading-[1.55] text-ink-soft">
+            <p className="border-l-2 border-cobalt pl-4 text-[15px] leading-[1.55] text-ink-2">
               <span className={columnLabel}>{d.resultado.pregunta} · </span>
               {result.pregunta}
             </p>
@@ -299,7 +299,7 @@ export function DiagnosticoForm() {
               </ArrowLink>
             </div>
           </div>
-          <p className="mt-7 max-w-[720px] text-[13px] leading-[1.55] text-ink-mute">{d.resultado.nota}</p>
+          <p className="mt-7 max-w-[720px] text-[13px] leading-[1.55] text-ink-3">{d.resultado.nota}</p>
         </article>
       )}
     </div>

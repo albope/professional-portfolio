@@ -1,0 +1,44 @@
+/*
+ * Propuesta por escrito (especificación 4.7). `data-state` lo escribe
+ * `PlayOnView` en el nodo que envuelve al SVG. Sin él, la hoja completa con
+ * las cuatro casillas macizas. `--i` (0 a 3) es el orden de cada punto.
+ */
+
+.line,
+.tick {
+  transform-box: fill-box;
+}
+
+.tick {
+  transform-origin: center;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  :global(.js) [data-state="idle"] .line {
+    opacity: 0;
+    transform: translateX(-8px);
+  }
+
+  :global(.js) [data-state="idle"] .tick {
+    opacity: 0;
+    transform: scale(0.4);
+  }
+
+  /* Cada línea entra desde 8 px a la izquierda, una cada 0,38 s desde los
+     0,25 s. */
+  :global(.js) [data-state="play"] .line {
+    transition:
+      opacity 0.5s var(--ease),
+      transform 0.6s var(--ease);
+    transition-delay: calc(0.25s + var(--i) * 0.38s);
+  }
+
+  /* Su casilla se rellena 0,25 s después con un pequeño rebote, algo más
+     marcado que `--ease-snap` porque el cuadrado es pequeño. */
+  :global(.js) [data-state="play"] .tick {
+    transition:
+      opacity 0.3s var(--ease),
+      transform 0.45s cubic-bezier(0.3, 1.4, 0.55, 1);
+    transition-delay: calc(0.5s + var(--i) * 0.38s);
+  }
+}

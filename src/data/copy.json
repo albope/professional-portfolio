@@ -1,98 +1,264 @@
 {
   "meta": {
-    "proyecto": "BPM Tech Studio",
-    "version": "Planos anotados · Trabajo real explicado",
-    "fecha": "2026-09-23",
-    "idioma": "es-ES"
+    "proyecto": "BPM Tech",
+    "version": "Orden · Del caos al orden",
+    "fecha": "2026-09-26",
+    "idioma": "es-ES",
+    "titulo": "BPM Tech · Software a medida para pymes",
+    "titulo_plantilla": "%s · BPM Tech",
+    "descripcion": "Software de gestión a medida, automatizaciones y webs para pymes. Presupuesto cerrado por escrito, plazo comprometido y soporte tras la entrega. Desde Valencia, en persona y en remoto.",
+    "compartir": "Software a medida, automatizaciones y webs para pymes. Presupuesto cerrado por escrito, plazo comprometido y soporte tras la entrega.",
+    "og_alt": "BPM Tech. Software a medida para ordenar la gestión de tu pyme."
   },
-  "nav": {
-    "wordmark": "BPM TECH",
+  "comun": {
+    "saltar": "Saltar al contenido",
+    "nueva_pestana": "(se abre en otra pestaña)"
+  },
+  "cabecera": {
+    "logo_aria": "BPM Tech, ir al inicio",
+    "nav_aria": "Principal",
     "enlaces": [
+      "Qué hacemos",
       "Proyectos",
-      "Servicios",
-      "Cómo trabajo",
-      "Sobre mí"
+      "Cómo trabajamos",
+      "Quiénes somos",
+      "Preguntas"
     ],
-    "cta": "Hablemos →",
-    "menu": "Menú"
+    "cta": "Hacer una consulta",
+    "cta_corto": "Consulta",
+    "menu_abrir": "Abrir el menú",
+    "menu_aria": "Menú",
+    "menu_reserva": "Reservar una llamada de 30 min"
   },
   "hero": {
-    "etiqueta": "Estudio de software para pymes",
-    "lugar": "Valencia, presencial y en remoto",
-    "h1": "Software a medida para lo que hoy haces a mano.",
-    "entradilla": "Reservas por WhatsApp, stock en hojas de cálculo que no cuadran, datos copiados de un programa a otro. Lo convierto en una aplicación, una automatización o una web, y me ocupo de cada proyecto de principio a fin.",
-    "cta_primaria": "Cuéntame qué necesitas",
-    "nota": "Primera conversación sin compromiso.",
-    "firma": {
-      "nombre": "Alberto Bort",
-      "rol": "BPM Tech · Consultoría y desarrollo"
+    "h1": "Software a medida para ordenar la gestión de tu pyme",
+    "entradilla": "Reservas por WhatsApp, cobros en una hoja de cálculo, pedidos apuntados en papel. Lo reunimos en una aplicación hecha para tu forma de trabajar y conectamos las herramientas que ya usas.",
+    "cta": "Hacer una consulta gratuita",
+    "reserva": "o reserva una llamada de 30 min",
+    "nota": "Primera conversación gratuita y sin compromiso, por videollamada o en persona en Valencia.",
+    "ilustracion": {
+      "pie": "Lo que hoy está repartido entre mensajes, hojas de cálculo y papel, reunido en una sola aplicación.",
+      "control": {
+        "pausar": "Pausar",
+        "pausar_aria": "Pausar la animación",
+        "reanudar": "Reanudar",
+        "reanudar_aria": "Reanudar la animación",
+        "repetir": "Ver de nuevo",
+        "repetir_aria": "Ver de nuevo la animación"
+      },
+      "escritorio": {
+        "titulo": "Un mensaje de WhatsApp, una hoja de cálculo, una nota en papel y un pósit se ordenan dentro de una aplicación de gestión como filas con su estado",
+        "menu": [
+          "Hoy",
+          "Reservas",
+          "Clientes",
+          "Cobros",
+          "Pedidos"
+        ],
+        "cabecera": "Hoy",
+        "actualizado": "Actualizado ahora",
+        "boton": "Nuevo",
+        "filas": [
+          {
+            "titulo": "Reserva, jueves 19:00",
+            "origen": "Antes, por WhatsApp",
+            "estado": "Confirmada",
+            "hecho": true
+          },
+          {
+            "titulo": "Cuotas de octubre",
+            "origen": "Antes, en una hoja de cálculo",
+            "estado": "Cobradas",
+            "hecho": true
+          },
+          {
+            "titulo": "Pedido de material",
+            "origen": "Antes, en un papel",
+            "estado": "Pendiente",
+            "hecho": false
+          },
+          {
+            "titulo": "Aviso al cliente",
+            "origen": "Antes, en un pósit",
+            "estado": "Enviado",
+            "hecho": true
+          }
+        ],
+        "piezas": {
+          "chat": {
+            "pregunta": "¿Tenéis hueco el jueves a las 19?",
+            "respuesta": "Lo miro y te digo"
+          },
+          "hoja": {
+            "columnas": [
+              "A",
+              "B",
+              "C"
+            ],
+            "numeros": [
+              "1",
+              "2",
+              "3",
+              "4"
+            ],
+            "cabeceras": [
+              "Cliente",
+              "Pagado",
+              "Mes"
+            ],
+            "valores": [
+              "sí",
+              "no",
+              "¿?"
+            ]
+          },
+          "nota": {
+            "lineas": [
+              "Pedido pendiente",
+              "¿quién lo pidió?"
+            ]
+          },
+          "postit": {
+            "lineas": [
+              "Avisar al",
+              "cliente",
+              "¡hoy!"
+            ]
+          }
+        }
+      },
+      "movil": {
+        "titulo": "Un mensaje de WhatsApp, una hoja de cálculo y una nota en papel se ordenan dentro de una aplicación de gestión como filas con su estado",
+        "cabecera": "Hoy",
+        "boton": "Nuevo",
+        "filas": [
+          {
+            "titulo": "Reserva del jueves",
+            "origen": "Antes, por WhatsApp",
+            "estado": "Confirmada",
+            "hecho": true
+          },
+          {
+            "titulo": "Cuotas de octubre",
+            "origen": "Antes, en una hoja de cálculo",
+            "estado": "Cobradas",
+            "hecho": true
+          },
+          {
+            "titulo": "Pedido de material",
+            "origen": "Antes, en un papel",
+            "estado": "Pendiente",
+            "hecho": false
+          }
+        ],
+        "piezas": {
+          "chat": {
+            "pregunta": "¿Tenéis hueco el jueves a las 19?"
+          },
+          "hoja": {
+            "columnas": [
+              "A",
+              "B"
+            ],
+            "numeros": [
+              "1",
+              "2",
+              "3"
+            ],
+            "cabeceras": [
+              "Cliente",
+              "Pagado"
+            ],
+            "valores": [
+              "sí",
+              "¿?"
+            ]
+          },
+          "nota": {
+            "lineas": [
+              "Pedido pendiente",
+              "¿quién lo pidió?"
+            ]
+          }
+        }
+      }
     },
-    "etiqueta_corta": "Software para pymes"
+    "compromisos": {
+      "aria": "Nuestros compromisos",
+      "items": [
+        {
+          "titulo": "Respuesta en 24 h laborables",
+          "texto": "A cada consulta que recibimos."
+        },
+        {
+          "titulo": "Presupuesto cerrado",
+          "texto": "Por escrito y antes de empezar."
+        },
+        {
+          "titulo": "Plazo de entrega comprometido",
+          "texto": "La fecha va escrita en la propuesta."
+        },
+        {
+          "titulo": "Soporte tras la entrega",
+          "texto": "Seguimos contigo con soporte y mantenimiento."
+        }
+      ]
+    }
   },
   "servicios": {
-    "kicker": "Servicios",
-    "h2": "¿Qué quieres mejorar?",
-    "apoyo": "No hace falta que sepas qué tecnología necesitas. Empezamos por lo que quieres conseguir.",
-    "ejemplos_rotulo": "Por ejemplo",
-    "prueba_rotulo": "Lo puedes ver en",
+    "h2": "Qué hacemos por tu empresa",
+    "entradilla": "No hace falta que sepas qué tecnología necesitas. Empezamos por lo que quieres conseguir y, si una herramienta que ya existe te sirve, te lo decimos.",
     "items": [
       {
-        "titulo": "Organizar la gestión",
-        "que_construimos": "Una aplicación que reúne en un solo sitio lo que hoy está repartido en hojas de cálculo, mensajes y papel.",
-        "ejemplos": "Reservas, inventario, clientes y paneles de gestión.",
-        "pruebas": [
-          {
-            "num": "01",
-            "que": "reservas, socios y cobros"
-          },
-          {
-            "num": "02",
-            "que": "inventario y ubicaciones"
-          }
-        ],
-        "cta": "Quiero organizar mi gestión →"
+        "titulo": "Aplicaciones de gestión a medida",
+        "para_cuando": "Para cuando la gestión vive entre hojas de cálculo, WhatsApp y papel.",
+        "descripcion": "Lo reunimos en una sola aplicación, hecha para tu forma de trabajar.",
+        "ejemplo": "Por ejemplo: reservas, inventario, clientes, cobros o un panel para ver cómo va el negocio.",
+        "consulta": "Consultar sobre gestión",
+        "caso": "Ver Padel Club OS",
+        "ilustracion": {
+          "aria": "Una agenda semanal en la que las reservas encajan cada una en su hueco",
+          "titulo": "Reservas de la semana",
+          "dias": [
+            "L",
+            "M",
+            "X",
+            "J",
+            "V"
+          ]
+        }
       },
       {
-        "titulo": "Quitar trabajo repetido",
-        "que_construimos": "Conectar las herramientas que ya usas para no copiar datos a mano. Uso IA solo cuando ahorra una tarea concreta.",
-        "ejemplos": "Socios que se cargan desde un Excel, avisos por email cuando alguien confirma y un asistente que reúne correo, mensajería y documentos.",
-        "pruebas": [
-          {
-            "num": "01",
-            "que": "carga los socios desde el Excel del club"
-          },
-          {
-            "num": "04",
-            "que": "avisa por email al confirmar"
-          },
-          {
-            "num": "05",
-            "que": "consulta el correo y la mensajería del equipo"
-          }
-        ],
-        "cta": "Quiero ahorrar trabajo manual →"
+        "titulo": "Automatizaciones e integraciones",
+        "para_cuando": "Para cuando alguien copia datos a mano de un programa a otro.",
+        "descripcion": "Conectamos las herramientas que ya usas para que los datos pasen solos de una a otra.",
+        "ejemplo": "Por ejemplo: cargar socios desde un Excel o enviar un aviso por email cuando alguien confirma. Usamos IA solo cuando ahorra una tarea concreta.",
+        "consulta": "Consultar sobre automatización",
+        "caso": "Ver la web del evento",
+        "ilustracion": {
+          "aria": "Datos que pasan solos de una hoja de cálculo a una aplicación",
+          "origen": "Hoja de cálculo",
+          "destino": "Tu aplicación",
+          "pie_origen": "Lo que ya usas",
+          "pie_destino": "Se actualiza solo"
+        }
       },
       {
-        "titulo": "Una web o una aplicación nueva",
-        "que_construimos": "Una web que explique bien tu negocio o una aplicación para poner en marcha tu idea.",
-        "ejemplos": "Webs con reservas, inscripciones o directo, y portales para tus clientes.",
-        "pruebas": [
-          {
-            "num": "03",
-            "que": "directo y archivo"
-          },
-          {
-            "num": "04",
-            "que": "confirmaciones en dos idiomas"
-          },
-          {
-            "num": "01",
-            "que": "portal para los jugadores"
-          }
-        ],
-        "cta": "Quiero crear una web o aplicación →"
+        "titulo": "Webs y aplicaciones nuevas",
+        "para_cuando": "Para cuando tu web no explica bien lo que haces o tienes una idea que lanzar.",
+        "descripcion": "Una web que explique bien tu negocio o una aplicación para poner en marcha una idea.",
+        "ejemplo": "Por ejemplo: reservas e inscripciones online, emisión en directo o un portal para tus clientes.",
+        "consulta": "Consultar sobre una web",
+        "caso": "Ver la web de radio",
+        "ilustracion": {
+          "aria": "Una web y su versión para móvil que se construyen pieza a pieza"
+        }
       }
-    ]
+    ],
+    "cierre": {
+      "texto": "¿No sabes en cuál encaja lo tuyo? Cuéntanos qué te gustaría mejorar y lo vemos juntos. Se puede empezar por una sola mejora.",
+      "boton": "Hacer una consulta"
+    }
   },
   "diagnostico": {
     "kicker": "Recurso opcional",
@@ -150,129 +316,189 @@
     },
     "mensaje_formulario": "Orientación del asistente",
     "resumen": "Probar el asistente de ideas",
-    "sin_js": "Para usar el asistente necesitas activar JavaScript. También puedes contármelo directamente en el formulario de contacto."
+    "sin_js": "Para usar el asistente necesitas activar JavaScript. También puedes contárnoslo directamente en el formulario de contacto."
   },
   "proyectos": {
-    "kicker": "Proyectos",
-    "h2": "Trabajo real, explicado.",
-    "apoyo": "Pantallas reales de cada proyecto, con datos de demo o con nombres y marcas difuminados. Cada nota explica por qué la pantalla funciona así.",
-    "indice_rotulo": "Los cinco proyectos",
-    "items": [
+    "h2": "Proyectos que hemos desarrollado",
+    "entradilla": "Son capturas reales de nuestro trabajo, con datos de demostración o con nombres y marcas difuminados.",
+    "destacado": {
+      "antetitulo": "Plataforma de gestión para clubes de pádel",
+      "nombre": "Padel Club OS",
+      "ficha": [
+        {
+          "termino": "Para el club",
+          "definicion": "Reservas, socios, cobros, competiciones y academia en un mismo panel. Los socios se cargan desde el Excel que ya tenía el club."
+        },
+        {
+          "termino": "Para el jugador",
+          "definicion": "Reserva pista y sigue sus clases desde el móvil, sin instalar nada."
+        },
+        {
+          "termino": "Hoy",
+          "definicion": "En producción. Funciona como servicio por suscripción para clubes."
+        }
+      ],
+      "alt_escritorio": "Panel de Padel Club OS: gestión de la academia con clases, grupos, profesores y asistencia",
+      "alt_movil": "Portal del jugador de Padel Club OS en el móvil, con sus clases y asistencia",
+      "caso": "Ver el caso completo",
+      "web": "padelclubos.com"
+    },
+    "tarjetas": [
       {
-        "descriptor": "Reservas, socios, pagos y competiciones",
-        "estado": "En producción"
+        "etiqueta": "Aplicación de gestión",
+        "titulo": "Gestión de almacén",
+        "descripcion": "Inventario, ubicaciones y movimientos en una sola aplicación. Las entradas se registran leyendo el código con un terminal, para que el stock del sistema sea el mismo que el de la estantería.",
+        "alt_principal": "Aplicación de almacén: listado de movimientos de entrada, salida y traspaso",
+        "alt_secundaria": "Pantalla del terminal de lectura para registrar la entrada de un producto",
+        "caso": "Ver el caso"
       },
       {
-        "descriptor": "Inventario, ubicaciones y lectura de códigos",
-        "estado": "Aplicación web"
+        "etiqueta": "Web a medida",
+        "titulo": "Web para un programa de radio",
+        "descripcion": "Emisión en directo, archivo de programas y un reproductor que sigue sonando mientras navegas por la web.",
+        "alt_principal": "Web de un programa de radio en el ordenador, con el reproductor fijo en la parte inferior. Marca difuminada",
+        "alt_secundaria": "La misma web en el móvil, con el reproductor del directo",
+        "caso": "Ver el caso"
       },
       {
-        "descriptor": "Directo, archivo y un reproductor que no se corta",
-        "estado": "Web a medida"
-      },
-      {
-        "descriptor": "Confirmación de invitados en dos idiomas",
-        "estado": "Web a medida"
-      },
-      {
-        "descriptor": "Consulta documentación y enseña sus fuentes",
-        "estado": "IA aplicada"
+        "etiqueta": "Web con automatización",
+        "titulo": "Web para un evento",
+        "descripcion": "Los invitados confirman su asistencia en dos idiomas y cada confirmación llega por email. Nadie tiene que revisar una lista a mano.",
+        "alt_principal": "Web de un evento con menú, cuenta atrás, selector de idioma y botón para confirmar asistencia",
+        "alt_secundaria": "",
+        "caso": "Ver el caso"
       }
     ],
-    "ver": "Ver el proyecto →",
-    "mas_rotulo": "También"
+    "tambien": {
+      "rotulo": "También:",
+      "texto": "un asistente para la gestión de proyectos que consulta la documentación y enseña de dónde sale cada respuesta.",
+      "caso": "Ver el caso"
+    }
   },
   "metodo": {
-    "kicker": "Cómo trabajo",
-    "h2": "Sabes qué viene después.",
-    "apoyo": "Hablas directamente conmigo durante todo el proyecto. Acordamos qué hacer y revisamos juntos cómo avanza.",
-    "fases": [
+    "h2": "Antes de empezar sabrás qué haremos, cuánto costará y cuándo estará listo",
+    "entradilla": "Trabajamos en cuatro pasos y en cada uno sabes qué recibes. El primero es una conversación gratuita.",
+    "propuesta": {
+      "titulo": "Ilustración de una propuesta por escrito que recoge alcance, precio cerrado, plazo de entrega y soporte, cada punto confirmado",
+      "cabecera": "Propuesta",
+      "subtitulo": "Por escrito, antes de empezar",
+      "lineas": [
+        "Alcance",
+        "Precio cerrado",
+        "Plazo de entrega",
+        "Soporte y mantenimiento"
+      ]
+    },
+    "pasos": [
       {
-        "num": "01",
-        "nombre": "Hablamos de tu necesidad",
-        "texto": "Me cuentas cómo trabajas, qué te frena y qué quieres conseguir. Vemos si puedo ayudarte y por dónde empezar.",
-        "entregable": "Un siguiente paso claro"
+        "titulo": "Hablamos",
+        "texto": "Nos cuentas cómo trabajas hoy y qué te frena. Por videollamada o en persona si estás en Valencia.",
+        "compromiso": "Respuesta en 24 h laborables y primera conversación gratuita"
       },
       {
-        "num": "02",
-        "nombre": "Recibes una propuesta",
-        "texto": "Qué se construye, cuánto cuesta y cómo se entrega. Por escrito, antes de empezar, para que decidas con todo delante.",
-        "entregable": "Alcance y presupuesto por escrito"
+        "titulo": "Te enviamos una propuesta",
+        "texto": "Qué vamos a hacer, cuánto cuesta y cuándo estará listo. Todo por escrito antes de empezar, para que decidas con calma.",
+        "compromiso": "Alcance, precio cerrado y plazo de entrega, por escrito"
       },
       {
-        "num": "03",
-        "nombre": "Lo construyo y lo revisamos",
-        "texto": "Pruebas los avances, revisamos juntos los detalles y pongo la solución en marcha. Acordamos también cómo mantenerla.",
-        "entregable": "Una solución que puedes usar"
+        "titulo": "Lo desarrollamos contigo",
+        "texto": "Te enseñamos los avances durante el desarrollo para que los revises y podamos ajustar a tiempo.",
+        "compromiso": "Revisiones de avances durante el desarrollo"
+      },
+      {
+        "titulo": "Lo ponemos en marcha",
+        "texto": "Lo dejamos funcionando en tu día a día y seguimos contigo cuando ya está en uso.",
+        "compromiso": "Soporte y mantenimiento tras la entrega"
       }
     ],
-    "entregable_rotulo": "Te llevas"
+    "cierre": {
+      "texto": "El primer paso es una conversación gratuita y sin compromiso. No hace falta preparar nada.",
+      "boton": "Hacer una consulta",
+      "reserva": "o reserva una llamada de 30 min"
+    }
   },
   "sobre": {
-    "kicker": "Sobre mí",
-    "h2": "Soy Alberto. Hablas con quien lo construye.",
-    "nombre": "Alberto Bort",
-    "rol": "Consultoría y desarrollo",
-    "parrafos": [
-      "Me ocupo de cada proyecto de principio a fin: entender cómo trabajas, diseñar la solución, desarrollarla y ponerla en marcha. Si una herramienta que ya existe te sirve, te lo digo."
+    "h2": "Siempre sabrás quién responde de tu proyecto",
+    "entradilla": "BPM Tech es una sociedad con sede en Valencia. Su fundador, Alberto Bort, es el responsable de cada proyecto.",
+    "parrafo": "Empezamos por lo que quieres conseguir, no por la tecnología. Si una herramienta que ya existe te sirve, te lo decimos.",
+    "ficha": [
+      {
+        "termino": "Responsable de los proyectos",
+        "definicion": "Alberto Bort, fundador"
+      },
+      {
+        "termino": "Sede",
+        "definicion": "Valencia, España"
+      },
+      {
+        "termino": "Forma de trabajo",
+        "definicion": "En persona en Valencia y en remoto"
+      },
+      {
+        "termino": "Razón social",
+        "definicion": "BORT PEREZ MULTI GESTION SOCIEDAD LIMITADA"
+      }
     ],
-    "datos": {
-      "Base": "Valencia, presencial y en remoto"
-    },
-    "cta": "Hablemos de tu proyecto ↓"
+    "reserva": "Reservar una llamada de 30 min",
+    "retrato": {
+      "alt": "Retrato de Alberto Bort, fundador de BPM Tech, con camisa de lino verde ante una pared clara",
+      "pie": "Alberto Bort, fundador de BPM Tech"
+    }
   },
   "preguntas": {
-    "kicker": "Antes de empezar",
-    "h2": "Lo que conviene tener claro.",
-    "apoyo": "Presupuesto, herramientas, alcance y mantenimiento.",
+    "h2": "Preguntas antes de empezar",
+    "entradilla": "Lo que suelen preguntarnos sobre precio, herramientas y mantenimiento.",
+    "nota": "¿Tienes otra duda? Escríbenos y te respondemos en 24 h laborables.",
+    "nota_enlace": "Escríbenos",
     "items": [
       {
-        "pregunta": "¿Cuánto puede costar mi proyecto?",
-        "respuesta": "Depende de lo que necesites construir y de las herramientas que haya que conectar. Tras entender tu caso, te preparo una propuesta con alcance y presupuesto por escrito. Si necesitas empezar con una inversión menor, podemos definir una primera versión más pequeña."
+        "pregunta": "¿Cuánto cuesta un proyecto?",
+        "respuesta": "Depende de lo que haya que construir y de las herramientas que haya que conectar, por eso no publicamos tarifas. Después de la primera conversación te enviamos una propuesta por escrito con alcance, precio cerrado y plazo de entrega. Sabes lo que vas a pagar antes de empezar. Si prefieres una inversión menor, definimos juntos una primera versión más pequeña."
       },
       {
         "pregunta": "¿Tengo que cambiar las herramientas que ya uso?",
-        "respuesta": "No necesariamente. Primero revisamos qué funciona y qué te está haciendo perder tiempo. A veces basta con conectar tus herramientas o automatizar un paso. Solo desarrollo algo a medida cuando mejora lo que ya existe."
+        "respuesta": "No necesariamente. Primero vemos qué te funciona y qué te hace perder tiempo. A veces basta con conectar tus herramientas o automatizar un paso. Solo desarrollamos algo a medida cuando mejora lo que ya tienes."
       },
       {
         "pregunta": "¿Podemos empezar por una sola mejora?",
-        "respuesta": "Sí. Podemos centrarnos en una tarea repetitiva, una parte de la gestión o la función principal de una aplicación. Así puedes probar la solución en tu día a día antes de decidir si merece la pena ampliarla."
+        "respuesta": "Sí. Podemos centrarnos en una tarea repetitiva, una parte de la gestión o la función principal de una aplicación. Así la pruebas en tu día a día antes de decidir si merece la pena ampliarla."
       },
       {
-        "pregunta": "¿Qué pasa con el mantenimiento y los costes posteriores?",
-        "respuesta": "En la propuesta verás también lo que hará falta después de la puesta en marcha: alojamiento, servicios externos y mantenimiento, si los hay, y su coste. Acordamos qué soporte se incluye y qué mejoras se presupuestan aparte."
+        "pregunta": "¿Qué pasa cuando el proyecto ya está entregado?",
+        "respuesta": "Seguimos contigo con soporte y mantenimiento. En la propuesta verás qué incluye, qué costes habrá después si los hay (alojamiento, servicios externos) y qué mejoras se presupuestan aparte."
       },
       {
-        "pregunta": "¿Y si todavía no sé exactamente lo que necesito?",
-        "respuesta": "Puedes empezar contándome cómo trabajas hoy, qué tarea te complica el día o qué te gustaría conseguir. No necesitas preparar un documento técnico. La primera conversación sirve para ordenar esa necesidad y ver qué siguiente paso tiene sentido."
+        "pregunta": "No sé exactamente qué necesito. ¿Puedo escribiros igualmente?",
+        "respuesta": "Sí. Cuéntanos cómo trabajas hoy y qué tarea te complica el día. No hace falta preparar ningún documento técnico. La primera conversación sirve para ordenar la necesidad y ver qué paso tiene sentido."
+      },
+      {
+        "pregunta": "¿Trabajáis solo en Valencia?",
+        "respuesta": "No. Nuestra sede está en Valencia y allí podemos reunirnos en persona. Con empresas de otras ciudades trabajamos en remoto, por videollamada."
+      },
+      {
+        "pregunta": "¿Usáis inteligencia artificial?",
+        "respuesta": "Solo cuando ahorra una tarea concreta, por ejemplo buscar información en tus documentos. Para la mayoría de problemas de gestión, una buena aplicación y unas cuantas automatizaciones bien pensadas son suficientes."
       }
     ]
   },
   "contacto": {
-    "kicker": "Contacto",
-    "h2": "Cuéntame qué necesitas.",
-    "apoyo": "No hace falta tener un proyecto definido. Cuéntame qué te gustaría mejorar y vemos por dónde empezar.",
-    "opcion_hablando": "Si prefieres hablar",
-    "opcion_escrito": "Escríbeme aquí",
-    "que_pasa_despues": {
-      "titulo": "¿Qué pasa después?",
-      "texto": "Leo tu consulta y te respondo para entender mejor la necesidad. Si encaja, recibirás una propuesta con el alcance y el presupuesto antes de empezar."
-    },
-    "llamada": {
-      "titulo": "Una primera conversación de 30 minutos",
-      "texto": "Hablamos de tu negocio, resolvemos dudas y vemos si puedo ayudarte. Sin compromiso.",
-      "cta": "Reservar una llamada de 30 min ↗"
-    },
-    "email_directo": "O escríbeme directamente: bpmtechstudio@gmail.com",
+    "h2": "Cuéntanos qué te gustaría mejorar",
+    "entradilla": "No hace falta tener un proyecto definido. Con unas frases sobre cómo trabajas hoy es suficiente para empezar.",
     "formulario": {
-      "campos": [
-        "Nombre",
-        "Empresa (opcional)",
-        "Email",
-        "Teléfono (opcional)"
-      ],
-      "selector": {
-        "etiqueta": "Tema (opcional)",
+      "titulo": "Envíanos tu consulta",
+      "nota": "Solo necesitamos tu nombre, tu email y unas líneas.",
+      "grupo": "Datos de tu consulta",
+      "campos": {
+        "nombre": "Nombre",
+        "email": "Email",
+        "empresa": "Empresa",
+        "telefono": "Teléfono",
+        "mensaje": "¿Qué necesitas resolver?"
+      },
+      "mensaje_ayuda": "Con unas frases es suficiente. Por ejemplo: llevamos las reservas por WhatsApp y los cobros en una hoja de cálculo, y queremos tenerlo todo en un sitio.",
+      "tema": {
+        "leyenda": "¿Qué te gustaría conseguir?",
+        "opcional": "(opcional)",
         "opciones": [
           "Todavía no lo tengo claro",
           "Organizar la gestión",
@@ -280,33 +506,120 @@
           "Una web o una aplicación nueva"
         ]
       },
-      "mensaje": {
-        "etiqueta": "¿Qué necesitas resolver?",
-        "ayuda": "Qué te gustaría mejorar o qué idea tienes. Con unas frases es suficiente."
+      "extra": {
+        "resumen": "Añadir empresa o teléfono",
+        "opcional": "(opcional)"
       },
-      "aviso_datos": "BPM Tech (BORT PEREZ MULTI GESTION SOCIEDAD LIMITADA) utilizará tus datos para responder a tu consulta y, si procede, preparar una propuesta. Cómo ejercer tus derechos y el resto de la información, en la política de privacidad.",
-      "boton": "Enviar consulta"
+      "proyecto_referencia": "Proyecto de referencia:",
+      "aviso": "BPM Tech (BORT PEREZ MULTI GESTION SOCIEDAD LIMITADA) usará tus datos solo para responder a tu consulta y, si procede, preparar una propuesta. Tienes el resto de la información en la política de privacidad.",
+      "aviso_enlace": "política de privacidad",
+      "boton": "Enviar consulta",
+      "boton_enviando": "Enviando…",
+      "nota_envio": "Te respondemos en 24 h laborables.",
+      "sin_js": "Para enviar este formulario necesitas activar JavaScript. Puedes escribirnos a bpmtechstudio@gmail.com o reservar una llamada.",
+      "sin_js_reserva": "reservar una llamada",
+      "estados": {
+        "enviando_aria": "Enviando tu consulta. Espera unos segundos.",
+        "revisa": "Revisa los campos señalados antes de enviar.",
+        "errores": {
+          "preparar": "No se ha podido preparar el envío. Conserva tu mensaje y vuelve a intentarlo desde una conexión segura.",
+          "limite": "Has enviado varias solicitudes. {espera} Tu mensaje sigue aquí.",
+          "espera_minutos": "Espera {minutos} min antes de reintentar.",
+          "espera": "Espera unos minutos antes de reintentar.",
+          "no_disponible": "El envío no está disponible en este momento. Tu mensaje sigue aquí, puedes copiarlo y volver más tarde.",
+          "tiempo": "La confirmación está tardando demasiado. Tu mensaje sigue aquí, puedes volver a enviarlo.",
+          "demasiado_grande": "El mensaje es demasiado grande. Acórtalo y vuelve a enviarlo.",
+          "confirmacion": "No se ha podido confirmar el envío. Tu mensaje sigue aquí, puedes volver a intentarlo.",
+          "conexion": "No se ha podido conectar. Revisa tu conexión y vuelve a intentarlo, tu mensaje sigue aquí."
+        }
+      },
+      "exito": {
+        "mensaje": "Gracias, hemos recibido tu consulta.",
+        "detalle": "Te responderemos en 24 h laborables al email que nos has indicado."
+      }
+    },
+    "lateral": {
+      "titulo": "Qué pasa después de escribirnos",
+      "pasos": [
+        {
+          "destacado": "Leemos tu consulta",
+          "resto": "y te respondemos en 24 h laborables."
+        },
+        {
+          "destacado": "Hablamos 30 minutos",
+          "resto": "para entender tu caso, por videollamada o en persona."
+        },
+        {
+          "destacado": "Te enviamos una propuesta",
+          "resto": "con alcance, precio cerrado y plazo de entrega."
+        }
+      ],
+      "llamada": {
+        "titulo": "¿Prefieres hablar directamente?",
+        "texto": "Reserva una videollamada de 30 min, gratuita y sin compromiso.",
+        "boton": "Reservar una llamada"
+      },
+      "email": "O escríbenos a bpmtechstudio@gmail.com"
+    }
+  },
+  "reserva": {
+    "enlace": "Reservar una llamada de 30 min",
+    "dialogo": {
+      "titulo": "Elige día y hora",
+      "descripcion": "Videollamada de 30 minutos, gratuita y sin compromiso.",
+      "cerrar": "Cerrar la agenda",
+      "cargando": "Cargando los horarios disponibles…",
+      "lento": "La agenda está tardando en cargar. Puedes abrirla directamente en Cal.com con el enlace de abajo.",
+      "fallo": "No se ha podido cargar la agenda aquí. Puedes abrirla directamente en Cal.com con el enlace de abajo.",
+      "gestion": "Reservas gestionadas por Cal.com",
+      "abrir": "Abrir en Cal.com",
+      "agenda_titulo": "Agenda de BPM Tech para una llamada de 30 minutos"
     }
   },
   "pie": {
-    "wordmark": "BPM TECH",
-    "descriptor": "Software, automatizaciones y webs para facilitar el día a día de tu negocio.",
-    "indice": [
-      "Proyectos",
-      "Servicios",
-      "Cómo trabajo",
-      "Sobre mí"
-    ],
-    "contacto": [
-      "Hablemos",
-      "bpmtechstudio@gmail.com",
-      "Reservar una llamada ↗"
-    ],
+    "descripcion": "Software a medida, automatizaciones y webs para pymes. Desde Valencia, en persona y en remoto.",
+    "cta": "Hacer una consulta",
+    "columnas": {
+      "web": "La web",
+      "contacto": "Contacto",
+      "legal": "Legal"
+    },
+    "reserva": "Reservar una llamada",
+    "ubicacion": "Valencia, España",
     "legal": [
       "Aviso legal",
       "Privacidad"
     ],
-    "copyright": "© 2026 BPM Tech",
-    "ubicacion": "Valencia, España"
+    "copyright": "© {anio} BPM Tech. BORT PEREZ MULTI GESTION SOCIEDAD LIMITADA."
+  },
+  "ficha": {
+    "volver": "Volver a proyectos",
+    "problema": {
+      "titulo": "Qué necesitaba resolver"
+    },
+    "desarrollo": {
+      "titulo": "Qué se desarrolló",
+      "funciones_aria": "Funciones desarrolladas"
+    },
+    "detalles": {
+      "titulo": "Detalles de interfaz"
+    },
+    "decision": {
+      "titulo": "Una decisión concreta",
+      "nota": "Para otro negocio:"
+    },
+    "cierre": {
+      "titulo": "¿Necesitas algo parecido?",
+      "boton": "Hacer una consulta",
+      "reserva": "o reserva una llamada de 30 min"
+    },
+    "og_alt": "BPM Tech. {nombre}. {tipo}.",
+    "og_alt_generico": "Proyecto desarrollado por BPM Tech."
+  },
+  "no_encontrada": {
+    "titulo": "Esta página no existe",
+    "texto": "La dirección no existe o ha cambiado. Puedes volver a la portada o ver los proyectos que hemos desarrollado.",
+    "boton": "Ir a la portada",
+    "enlace": "Ver los proyectos"
   }
 }

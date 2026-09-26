@@ -1,0 +1,93 @@
+/*
+ * Píldoras de tema (especificación 5.2): elección única con radios nativos.
+ * El radio real queda encima, transparente y del tamaño de la píldora, para
+ * que el clic, las flechas del teclado y el formulario sin JS funcionen como
+ * siempre. Aquí y no en utilidades de Tailwind porque el orden importa: una
+ * píldora marcada con el ratón encima tiene que seguir cobalto (con `peer-*`
+ * el hover se pintaría después y le pondría borde de tinta).
+ */
+
+.pill {
+  position: relative;
+  display: inline-flex;
+}
+
+.pill input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.pill input:disabled {
+  cursor: default;
+}
+
+.face {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+  padding: 6px 16px;
+  border: 1px solid var(--line-2);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--ink);
+  font-size: 0.9375rem;
+  line-height: 1.3;
+  text-align: center;
+  transition:
+    border-color 0.2s var(--ease),
+    background-color 0.2s var(--ease),
+    color 0.2s var(--ease);
+}
+
+/*
+ * Reserva el ancho del texto en negrita: al marcar la píldora el peso pasa a
+ * 600 y, sin esto, la píldora crecería y la fila podría saltar de línea. Una
+ * copia invisible del rótulo (fuera del árbol de accesibilidad por
+ * `visibility: hidden`) fija el ancho desde el principio.
+ */
+.face::after {
+  content: attr(data-label);
+  height: 0;
+  overflow: hidden;
+  visibility: hidden;
+  font-weight: 600;
+  pointer-events: none;
+  user-select: none;
+}
+
+@media (hover: hover) {
+  .pill input:hover + .face {
+    border-color: var(--ink);
+  }
+}
+
+.pill input:checked + .face {
+  border-color: var(--cobalt);
+  background: var(--cobalt);
+  color: #fff;
+  font-weight: 600;
+}
+
+@media (hover: hover) {
+  .pill input:checked:hover + .face {
+    border-color: var(--cobalt-600);
+    background: var(--cobalt-600);
+  }
+}
+
+.pill input:focus-visible + .face {
+  outline: 3px solid var(--cobalt);
+  outline-offset: 2px;
+}
+
+/* Enviando o sin JS: la píldora se ve apagada, como los campos (5.2). */
+.pill input:disabled + .face {
+  opacity: 0.6;
+}

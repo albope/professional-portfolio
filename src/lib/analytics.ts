@@ -6,7 +6,8 @@ export const ANALYTICS_EVENTS = [
 export type AnalyticsEventName = (typeof ANALYTICS_EVENTS)[number];
 
 const values = {
-  location: ["header", "hero", "service", "diagnostico", "projects", "case", "about", "contact", "footer"],
+  /** Dónde está el enlace. «method» es la banda de tinta «Cómo trabajamos». */
+  location: ["header", "hero", "service", "diagnostico", "projects", "method", "case", "about", "contact", "footer"],
   destination: ["contact", "projects", "booking", "diagnostico"],
   need: ["diagnostico", "operativa", "automatizacion", "web"],
   project: ["asistente-ia-gestion-proyectos", "plataforma-clubes-padel", "wms-almacen", "web-boda", "web-radio"],
@@ -19,6 +20,8 @@ const values = {
 export type AnalyticsProperties = {
   [K in keyof typeof values]?: (typeof values)[K][number];
 };
+/** Ubicación de un enlace medido (`data-track-location`). */
+export type AnalyticsLocation = NonNullable<AnalyticsProperties["location"]>;
 export interface AnalyticsEvent {
   name: AnalyticsEventName;
   properties: AnalyticsProperties;

@@ -1,0 +1,107 @@
+/*
+ * Datos que pasan solos (especificación 4.5). `data-state` lo escribe
+ * `ArtStage` en el escenario que envuelve al SVG.
+ *
+ * Estado estático (sin atributo): dos paquetes quietos a mitad de camino y
+ * ninguna fila marcada. Una pasada: la fila de origen se ilumina (`srcFl`),
+ * el paquete recorre 45 unidades (`travel`) y la fila de destino queda
+ * marcada (`dstFl`, que se mantiene al final). Retrasos de 0,3 s + i × 1,3 s:
+ * 4,5 s en total.
+ */
+
+.pk {
+  transform-box: fill-box;
+}
+
+.pk1 {
+  transform: translateX(12px);
+}
+
+.pk2 {
+  transform: translateX(31px);
+}
+
+.pk3,
+.src,
+.dst {
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  :global(.js) [data-state="idle"] .pk {
+    opacity: 0;
+  }
+
+  /* `paused` repite las mismas animaciones para poder congelarlas donde
+     estén: si cambiaran, el paquete saltaría al salir de pantalla. */
+  :global(.js) :is([data-state="play"], [data-state="paused"]) .pk {
+    animation: travel 1.6s cubic-bezier(0.45, 0, 0.3, 1) both;
+    animation-delay: calc(0.3s + var(--i) * 1.3s);
+  }
+
+  :global(.js) :is([data-state="play"], [data-state="paused"]) .src {
+    animation: srcFl 1.6s linear both;
+    animation-delay: calc(0.3s + var(--i) * 1.3s);
+  }
+
+  :global(.js) :is([data-state="play"], [data-state="paused"]) .dst {
+    animation: dstFl 1.6s linear both;
+    animation-delay: calc(0.3s + var(--i) * 1.3s);
+  }
+
+  :global(.js) [data-state="paused"] .pk,
+  :global(.js) [data-state="paused"] .src,
+  :global(.js) [data-state="paused"] .dst {
+    animation-play-state: paused;
+  }
+}
+
+@keyframes travel {
+  0% {
+    transform: translateX(0);
+    opacity: 0;
+  }
+
+  8% {
+    opacity: 1;
+  }
+
+  55% {
+    transform: translateX(45px);
+    opacity: 1;
+  }
+
+  65%,
+  100% {
+    transform: translateX(45px);
+    opacity: 0;
+  }
+}
+
+@keyframes srcFl {
+  0% {
+    opacity: 0;
+  }
+
+  6%,
+  40% {
+    opacity: 1;
+  }
+
+  60%,
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes dstFl {
+  0%,
+  50% {
+    opacity: 0;
+  }
+
+  60%,
+  100% {
+    opacity: 1;
+  }
+}

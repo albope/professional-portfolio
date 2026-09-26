@@ -1,28 +1,29 @@
 import { cn } from "@/lib/utils";
 
 interface WordmarkProps {
-  tone?: "ink" | "paper";
-  /** Cuerpo del wordmark: 19 header desktop · 17 footer · 16 móvil */
+  /** Fondo sobre el que va: `light` (por defecto) o `dark` (el pie). */
+  on?: "light" | "dark";
+  /** Cuerpo: 19 por defecto · 17 · 16 en la cabecera por debajo de 480 px. */
   size?: 19 | 17 | 16;
   className?: string;
 }
 
 /**
- * Lockup web de BPM Tech (opción 1b del handoff): BPMTECH en Fragment Mono
- * con TECH en cobalto, seguido del glifo de tres piezas (barra, cuadrado
- * hueco, cuadrado macizo cobalto). El lockup Archivo Black se reserva para
- * deck, papelería y OG image.
+ * Lockup web de BPM Tech, lo único intocable de la identidad: BPMTECH en
+ * Fragment Mono con TECH en cobalto, seguido del glifo de tres piezas (barra,
+ * cuadrado hueco y cuadrado macizo cobalto) con 5 px entre piezas.
  *
- * Sobre tinta (tone="paper") el acento pasa a cobalto brillante: el cobalto
- * normal se hunde contra el fondo oscuro y desequilibra la lectura de BPMTECH.
+ * Sobre claro: `#101013` + `#2743E0`. Sobre oscuro: `#F7F6F2` + `#6B83FF`,
+ * porque el cobalto normal se hunde contra la tinta. Es decorativo: el enlace
+ * que lo envuelve lleva su propio `aria-label`.
  */
-export function Wordmark({ tone = "ink", size = 19, className }: WordmarkProps) {
+export function Wordmark({ on = "light", size = 19, className }: WordmarkProps) {
   const s = size === 19 ? 11 : size === 17 ? 10 : 9;
   const barHeight = s >= 10 ? 3 : 2.5;
   const glyphGap = s >= 10 ? 5 : 4;
-  const onInk = tone === "paper";
-  const base = onInk ? "var(--paper)" : "var(--ink)";
-  const accent = onInk ? "var(--cobalt-bright)" : "var(--cobalt)";
+  const onDark = on === "dark";
+  const base = onDark ? "var(--on-dark)" : "var(--ink)";
+  const accent = onDark ? "var(--cobalt-bright)" : "var(--cobalt)";
 
   return (
     <span
@@ -30,7 +31,7 @@ export function Wordmark({ tone = "ink", size = 19, className }: WordmarkProps) 
       style={{ gap: size === 16 ? 8 : 10 }}
     >
       <span
-        className="font-mono leading-none tracking-[0.06em]"
+        className="font-mono font-normal leading-none tracking-[0.06em]"
         style={{ fontSize: size, color: base }}
       >
         BPM

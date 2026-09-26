@@ -1,0 +1,314 @@
+/*
+ * Ilustración del hero: del caos al orden (especificación 4.1 a 4.3).
+ *
+ * El estado por defecto de estas reglas es el FINAL ORDENADO: la aplicación
+ * con sus filas, sin piezas sueltas ni huecos punteados. Es lo que ven quien
+ * no tiene JS, quien pide movimiento reducido y los buscadores. Los estados
+ * del caos solo existen con `.js` en `<html>` y movimiento permitido, y los
+ * elige `data-state` en la figura (`HeroIllustration`):
+ *
+ * - `idle`: el caos quieto (las piezas aparecen con `pop`), a la espera de
+ *   que la ilustración entre en pantalla.
+ * - `play`: las piezas flotan y vuelan a su fila (4 s).
+ * - `live`: reposo ordenado. Con `data-reminder="n"` la pieza n reaparece y
+ *   vuelve a su fila, y con `data-flash` su fila destella.
+ * - `paused` y `done`: reposo ordenado, sin nada en marcha.
+ *
+ * Solo se animan `transform` y `opacity`.
+ */
+
+/* Ancla de los estados: la figura lleva `data-state`. */
+.figure {
+  position: relative;
+}
+
+.art {
+  width: 100%;
+  height: auto;
+  overflow: visible;
+  font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+}
+
+/* Texto dibujado (unidades del viewBox, se escala con la ilustración). */
+.tSide {
+  font-size: 13.5px;
+  fill: var(--ink-2);
+}
+
+.tSideOn {
+  fill: var(--cobalt);
+  font-weight: 600;
+}
+
+.tH {
+  font-size: 24px;
+  font-weight: 600;
+  fill: var(--ink);
+  letter-spacing: -0.02em;
+}
+
+.tSub,
+.tSrc {
+  font-size: 12.5px;
+  fill: var(--ink-3);
+}
+
+.tRow {
+  font-size: 14.5px;
+  font-weight: 600;
+  fill: var(--ink);
+  letter-spacing: -0.01em;
+}
+
+.tSt {
+  font-size: 13px;
+  fill: var(--ink-2);
+}
+
+.tBtn {
+  font-size: 13px;
+  font-weight: 600;
+  fill: #fff;
+}
+
+.tChat {
+  font-size: 14.5px;
+  fill: var(--ink);
+}
+
+.tCell {
+  font-size: 12.5px;
+  fill: var(--ink);
+}
+
+.tCellB {
+  font-weight: 600;
+}
+
+/* Letras de columna y números de fila de la hoja: decoración, `ink-4`. */
+.tCol {
+  font-size: 10.5px;
+  fill: var(--ink-4);
+}
+
+/* Letra «a mano»: la itálica de Schibsted, cargada aparte y sin precarga. */
+.tHand {
+  font-family: var(--font-sans-italic), var(--font-sans), ui-sans-serif, sans-serif;
+  font-size: 16px;
+  font-style: italic;
+  fill: var(--ink);
+  letter-spacing: -0.01em;
+}
+
+.tHandBold {
+  font-weight: 600;
+}
+
+/* Composición móvil: texto de 13 a 14 unidades, 11,4 px reales a 320. */
+.artMobile .tRow {
+  font-size: 14px;
+}
+
+.artMobile .tSrc,
+.artMobile .tSt {
+  font-size: 13px;
+}
+
+.artMobile .tChat {
+  font-size: 13.5px;
+}
+
+.artMobile .tHand {
+  font-size: 14.5px;
+}
+
+.artMobile .tH {
+  font-size: 22px;
+}
+
+/* Cada pieza y cada fila giran y escalan sobre su propio centro. */
+.piece,
+.pop,
+.row {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+/* Estado final ordenado: sin piezas, sin huecos y sin resaltes. */
+.piece,
+.ph,
+.hl {
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  /* Caos: piezas y huecos a la vista, filas todavía vacías. */
+  :global(.js) .figure:is([data-state="idle"], [data-state="play"]) :is(.piece, .ph) {
+    opacity: 1;
+  }
+
+  :global(.js) .figure:is([data-state="idle"], [data-state="play"]) .row {
+    opacity: 0;
+  }
+
+  /* La misma regla en `idle` y en `play`: al empezar no se reinicia. */
+  :global(.js) .figure:is([data-state="idle"], [data-state="play"]) .pop {
+    animation: pop 0.6s var(--ease) both;
+    animation-delay: calc(0.08s + var(--i) * 0.11s);
+  }
+
+  /* Red de seguridad: si el JS de la página no llega a hidratar, el caos se
+     recoge solo a los 7 s y queda la aplicación ordenada. Con la figura ya
+     hidratada no hace falta: la secuencia la lleva el componente. */
+  :global(.js) .figure[data-state="idle"]:not([data-hydrated]) :is(.piece, .ph) {
+    animation: fade 0.4s linear 7s forwards;
+  }
+
+  :global(.js) .figure[data-state="idle"]:not([data-hydrated]) .row {
+    animation: appear 0.4s linear 7s forwards;
+  }
+
+  /* Secuencia (4.1): flotan, vuelan a su fila, la fila entra con resalte y
+     los huecos se funden. */
+  :global(.js) .figure[data-state="play"] .bob {
+    animation: bob 3.2s ease-in-out infinite alternate;
+    animation-delay: calc(var(--i) * -0.8s);
+  }
+
+  :global(.js) .figure[data-state="play"] .piece {
+    animation: fly 0.85s var(--ease-io) forwards;
+    animation-delay: calc(1.1s + var(--i) * 0.32s);
+  }
+
+  :global(.js) .figure[data-state="play"] .row {
+    animation: rowIn 0.5s var(--ease) both;
+    animation-delay: calc(1.62s + var(--i) * 0.32s);
+  }
+
+  :global(.js) .figure[data-state="play"] .hl {
+    animation: hl 1.2s ease-out both;
+    animation-delay: calc(1.62s + var(--i) * 0.32s);
+  }
+
+  :global(.js) .figure[data-state="play"] .ph {
+    animation: fade 0.3s linear 3.1s forwards;
+  }
+
+  /* Recordatorios: una pieza cada vez reaparece en su sitio y vuelve a su
+     fila, que destella a los 2,65 s. */
+  :global(.js) .figure[data-state="live"][data-reminder="0"] .piece[data-i="0"],
+  :global(.js) .figure[data-state="live"][data-reminder="1"] .piece[data-i="1"],
+  :global(.js) .figure[data-state="live"][data-reminder="2"] .piece[data-i="2"],
+  :global(.js) .figure[data-state="live"][data-reminder="3"] .piece[data-i="3"] {
+    animation: reenter 3s var(--ease-io) forwards;
+  }
+
+  :global(.js) .figure[data-state="live"][data-reminder="0"][data-flash] .row[data-i="0"] .hl,
+  :global(.js) .figure[data-state="live"][data-reminder="1"][data-flash] .row[data-i="1"] .hl,
+  :global(.js) .figure[data-state="live"][data-reminder="2"][data-flash] .row[data-i="2"] .hl,
+  :global(.js) .figure[data-state="live"][data-reminder="3"][data-flash] .row[data-i="3"] .hl {
+    animation: hl 1.6s ease-out both;
+  }
+}
+
+@keyframes pop {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.94);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes bob {
+  from {
+    transform: translateY(0);
+  }
+
+  to {
+    transform: translateY(-4px);
+  }
+}
+
+@keyframes fly {
+  0% {
+    transform: translate(0, 0) rotate(0) scale(1);
+    opacity: 1;
+  }
+
+  72% {
+    opacity: 1;
+  }
+
+  100% {
+    transform: translate(var(--dx), var(--dy)) rotate(var(--rr)) scale(0.26);
+    opacity: 0;
+  }
+}
+
+@keyframes reenter {
+  0% {
+    opacity: 0;
+    transform: translate(0, 8px) scale(0.95);
+  }
+
+  14% {
+    opacity: 1;
+    transform: translate(0, 0) scale(1);
+  }
+
+  58% {
+    opacity: 1;
+    transform: translate(0, 0) rotate(0) scale(1);
+  }
+
+  88% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(var(--dx), var(--dy)) rotate(var(--rr)) scale(0.26);
+  }
+}
+
+@keyframes rowIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes hl {
+  0% {
+    opacity: 1;
+  }
+
+  35% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes fade {
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes appear {
+  to {
+    opacity: 1;
+  }
+}

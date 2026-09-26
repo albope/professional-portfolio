@@ -1,149 +1,229 @@
 import Image from "next/image";
-import type { CSSProperties } from "react";
+import type { CSSProperties, ReactNode } from "react";
 import { cn } from "@/lib/utils";
-import type { ProjectFigure as Figure, SceneTone } from "@/data/projects";
-
-/** El escenario toma el color del propio producto, nunca la paleta BPM. */
-const scene: Record<SceneTone, string> = {
-  padel: "bg-escena-padel",
-  wms: "bg-escena-wms",
-  evento: "bg-escena-evento border border-shot",
-  radio: "bg-escena-radio",
-  parrilla: "bg-escena-parrilla border-y border-escena-parrilla-borde lg:border",
-  papel: "bg-paper-2",
-};
-
-const legendTone: Record<SceneTone, string> = {
-  padel: "text-escena-padel-texto",
-  wms: "text-escena-wms-texto",
-  evento: "text-escena-evento-texto",
-  radio: "text-escena-radio-texto",
-  parrilla: "text-ink-mute",
-  papel: "text-ink-mute",
-};
-
-/** Solo las capturas de evento y radio llevan sombra; el resto, borde de 1 px. */
-const shotTone: Record<SceneTone, string> = {
-  padel: "border border-escena-padel-borde/55",
-  wms: "border border-escena-wms-borde",
-  evento:
-    "border border-escena-evento-texto/20 shadow-[0_10px_28px_rgba(88,3,1,0.18)] lg:shadow-[0_16px_40px_rgba(88,3,1,0.18)]",
-  radio: "shadow-[0_10px_28px_rgba(0,0,0,0.3)] lg:shadow-[0_16px_40px_rgba(0,0,0,0.3)]",
-  parrilla: "",
-  papel: "border border-shot",
-};
-
-const darkScenes: SceneTone[] = ["padel", "wms", "radio"];
-
-const legendClass =
-  "absolute left-4 top-4 font-mono text-[10px] uppercase tracking-[0.12em] lg:left-7 lg:top-6 lg:text-xs lg:tracking-[0.1em]";
+import type { DetailFigure, MainFigure, Rect } from "@/data/projects";
 
 /**
- * Captura dentro de su escenario. `principal` abre la ficha a sangre; los
- * detalles se reparten debajo. Las posiciones van en porcentaje del escenario
- * para que ninguna imagen sobresalga al reducir el ancho.
+ * Figuras de las fichas de proyecto, con el mismo lenguaje que la portada:
+ * escenario arena con radio, capturas con radio de 8 px y la sombra de la
+ * especificación (2.4), móviles con marco de tinta. Sin rótulos sobre la
+ * imagen, sin llamadas numeradas: lo que hay que leer va en el pie.
  */
-export function ProjectFigure({
-  figure,
-  size = "detalle",
-  className,
-}: {
-  figure: Figure;
-  size?: "principal" | "detalle";
-  className?: string;
-}) {
-  const principal = size === "principal";
-  const dark = darkScenes.includes(figure.scene);
 
-  // Detalle a escala 1:1 sobre la hoja de BPM: sin ampliar la captura.
-  if (figure.crop) {
-    const { crop } = figure;
+/**
+ * Anchos de pantalla que ocupa el escenario principal, que mide lo mismo que
+ * el contenedor: 1200 px desde 1312 (1200 + 2 × 56 de margen) y un 90 % de
+ * la ventana por debajo. `desktop` (desde 768 px) y `mobile` son la
+ * fracción del escenario que ocupa la imagen en cada tramo (0,84 = el 84 %
+ * de su ancho), para que el navegador pida los píxeles que va a pintar.
+ */
+function stageSizes(desktop: number, mobile: number) {
+  return [
+    `(min-width: 1312px) ${Math.round(1200 * desktop)}px`,
+    `(min-width: 768px) ${Math.round(90 * desktop)}vw`,
+    `${Math.round(90 * mobile)}vw`,
+  ].join(", ");
+}
+
+/** Marco de una captura dentro del escenario: posición absoluta y fondo blanco mientras carga. */
+function Shot({ className, style, children }: { className: string; style?: CSSProperties; children: ReactNode }) {
+  return (
+    <div className={cn("absolute block overflow-hidden rounded-shot bg-surface shadow-capture", className)} style={style}>
+      {children}
+    </div>
+  );
+}
+
+/** La imagen ocupa el ancho de su marco y conserva su proporción. */
+const IMG = "block h-auto w-full";
+
+/**
+ * Proporción del escenario por composición: 4:3 en móvil, como las tarjetas
+ * de la portada, y más apaisado desde 768 px, donde el escenario ya mide lo
+ * que el contenedor. La franja del evento es baja y pide un escenario más
+ * ancho que alto.
+ */
+const stageAspect: Record<MainFigure["layout"], string> = {
+  "con-movil": "aspect-[4/3] 768:aspect-[16/10]",
+  // La web del ordenador es más apaisada que la del almacén: a 16:10 dejaba
+  // un tercio del escenario vacío bajo el móvil.
+  "movil-delante": "aspect-[4/3] 768:aspect-[16/9]",
+  franja: "aspect-[4/3] 768:aspect-[12/5]",
+  sola: "aspect-[4/3] 768:aspect-[16/9]",
+};
+
+/**
+ * Figura principal (especificación 3.4, llevada a la ficha): la captura del
+ * escritorio en su escenario y, según el proyecto, el móvil o el detalle
+ * ampliado. En móvil la captura desborda a la derecha para ganar tamaño, y
+ * el móvil la tapa por ese lado. Es la imagen grande de la parte alta de la
+ * ficha, así que la del escritorio se pide con prioridad alta.
+ */
+export function ProjectMainFigure({ figure, className }: { figure: MainFigure; className?: string }) {
+  return (
+    <figure className={cn("m-0", className)}>
+      <div className={cn("relative overflow-hidden rounded-feature bg-sand", stageAspect[figure.layout])}>
+        <MainLayers figure={figure} />
+      </div>
+      <figcaption className="mt-3.5 max-w-[46em] text-caption text-ink-2">{figure.caption}</figcaption>
+    </figure>
+  );
+}
+
+function MainLayers({ figure }: { figure: MainFigure }) {
+  const { shot } = figure;
+
+  if (figure.layout === "franja") {
+    const { strip, zoom } = figure;
+    // Las dos capas piden la misma URL (el mismo `sizes`), así que la captura
+    // se descarga una sola vez: el detalle es la imagen entera a unas 3,6
+    // veces el escenario en móvil y 1,6 veces desde 768 px.
+    const scale = shot.width / zoom.w;
+    const sizes = stageSizes(0.32 * scale, 0.72 * scale);
     return (
-      <figure className={cn("m-0", className)}>
-        {/* Imagen y pie apilados: el detalle vive en la columna estrecha de la
-            rejilla (424 px a 1440) y ahí no caben lado a lado. */}
-        <div className="grid gap-6 border-y border-ink bg-paper-2 px-4 py-8 md:border-x lg:px-10 lg:py-10">
-          <div
-            className="plate-crop w-full outline outline-1 -outline-offset-1 outline-ink/60"
-            style={{ "--cx": crop.x, "--cy": crop.y, "--cw": crop.w, "--ch": crop.h, "--iw": figure.shot.width, maxWidth: crop.w } as CSSProperties}
-          >
-            <Image {...figure.shot} alt={figure.shot.alt} sizes={`${figure.shot.width}px`} />
-          </div>
-          <figcaption className="max-w-[460px]">
-            <span className="label-mono block text-[10.5px] text-ink sm:text-xs">{figure.captionLabel}</span>
-            <span className="mt-3 block text-base leading-relaxed text-ink-soft lg:text-[17px]">{figure.caption}</span>
-          </figcaption>
+      <>
+        {/* Solo la franja clara de arriba, sin el bloque inferior. */}
+        <Shot
+          className="left-[7%] top-[11%] w-[128%] 768:left-[6%] 768:top-[8%] 768:w-[88%]"
+          style={{ aspectRatio: `${shot.width} / ${strip}` }}
+        >
+          <Image {...shot} alt={shot.alt} sizes={sizes} fetchPriority="high" loading="eager" className={IMG} />
+        </Shot>
+        {/* Detalle ampliado del selector de idioma y del botón de confirmar.
+            El fondo es el de la propia web, para que no parpadee en blanco
+            mientras carga. Repite lo que dice el `alt` de la franja. Desde
+            768 px la franja ya se lee casi a tamaño real y el detalle se
+            queda en un 32 %, para no ampliar la captura más de 1,7 veces. */}
+        <div
+          aria-hidden="true"
+          className="absolute right-[6%] top-[60%] w-[72%] overflow-hidden rounded-[6px] bg-[#E9E9E1] shadow-[0_0_0_1px_rgba(16,16,19,.08),0_24px_40px_-18px_rgba(16,16,19,.45)] 768:top-[64%] 768:w-[32%]"
+          style={{ aspectRatio: `${zoom.w} / ${zoom.h}` }}
+        >
+          <Image
+            src={shot.src}
+            width={shot.width}
+            height={shot.height}
+            alt=""
+            sizes={sizes}
+            className="block h-auto max-w-none"
+            style={{
+              width: `${scale * 100}%`,
+              // Los márgenes en porcentaje se miden sobre el ancho del marco.
+              marginLeft: `${(-zoom.x / zoom.w) * 100}%`,
+              marginTop: `${(-zoom.y / zoom.w) * 100}%`,
+            }}
+          />
         </div>
-      </figure>
+      </>
     );
   }
 
+  if (figure.layout === "sola") {
+    return (
+      <Shot className="left-[6%] top-[10%] w-[120%] 768:top-[8%] 768:w-[88%]">
+        <Image {...shot} alt={shot.alt} sizes={stageSizes(0.88, 1.2)} fetchPriority="high" loading="eager" className={IMG} />
+      </Shot>
+    );
+  }
+
+  const { phone } = figure;
+  const front = figure.layout === "movil-delante";
   return (
-    <figure className={cn("m-0", className)}>
-      <div
-        data-tono={dark ? "oscuro" : undefined}
-        className={cn(
-          "relative overflow-hidden",
-          scene[figure.scene],
-          principal ? "h-[300px] lg:h-[640px]" : "h-[260px] lg:h-[520px]",
-          figure.variant === "movil" && "h-[380px] lg:h-[520px]"
-        )}
+    <>
+      <Shot
+        className={
+          front
+            ? "left-[6%] top-[11%] w-[104%] 768:top-[8%] 768:w-[88%]"
+            : "left-[6%] top-[10%] w-[104%] 768:top-[8%] 768:w-[84%]"
+        }
       >
-        <p className={cn(legendClass, legendTone[figure.scene])}>{figure.legend}</p>
-        {figure.legendRight && (
-          <p
-            className={cn(
-              legendClass,
-              legendTone[figure.scene],
-              "hidden lg:left-auto lg:right-7 lg:block"
-            )}
+        <Image
+          {...shot}
+          alt={shot.alt}
+          sizes={stageSizes(front ? 0.88 : 0.84, 1.04)}
+          fetchPriority="high"
+          loading="eager"
+          className={IMG}
+        />
+      </Shot>
+      <Shot
+        className={
+          front
+            ? // Delante y en el centro, tapando la portada difuminada.
+              "left-[34%] top-[18%] w-[36%] rounded-card shadow-phone 768:left-[40%] 768:top-[14%] 768:w-[25%] 768:rounded-[18px] 768:shadow-phone-lg"
+            : // Abajo a la derecha, asomando por el borde del escenario.
+              "-bottom-[24%] right-[5%] w-[30%] rounded-card shadow-phone 600:-bottom-[18%] 600:w-[22%] 600:rounded-[18px] 600:shadow-phone-lg"
+        }
+      >
+        <Image {...phone} alt={phone.alt} sizes={stageSizes(front ? 0.25 : 0.22, front ? 0.36 : 0.3)} className={IMG} />
+      </Shot>
+    </>
+  );
+}
+
+/**
+ * `sizes` de un recorte: el ancho del marco por el factor entre la imagen
+ * entera y el recorte. El marco mide lo que la columna de contenido (8fr
+ * desde 980 px, unos 660 px útiles con el contenedor a 1200, o la mitad si
+ * comparte fila con otro detalle) sin pasar de `maxWidth`, y por debajo un
+ * 80 % de la ventana (un 40 % en pareja desde 700 px).
+ */
+function cropSizes(crop: Rect, maxWidth: number, imageWidth: number, pair: boolean) {
+  const ratio = imageWidth / crop.w;
+  const desktop = Math.min(maxWidth, pair ? 290 : 660);
+  return [
+    `(min-width: 980px) ${Math.round(desktop * ratio)}px`,
+    pair ? `(min-width: 700px) ${Math.round(40 * ratio)}vw` : "",
+    `${Math.round(80 * ratio)}vw`,
+  ]
+    .filter(Boolean)
+    .join(", ");
+}
+
+/**
+ * Detalle de interfaz: la parte que en la figura principal no se lee, en su
+ * propio escenario y con un pie que empieza por su nombre en negrita.
+ *
+ * - `recorte`: la zona se pinta dentro de un marco con la proporción del
+ *   recorte y nunca más ancho que el recorte en píxeles, así que la captura
+ *   solo se reduce, nunca se amplía.
+ * - `movil`: la pantalla entera con el marco de tinta de la especificación.
+ *
+ * `pair` indica que comparte fila con otro detalle desde 700 px. Entonces la
+ * figura hereda las dos filas de la rejilla (`subgrid`): los dos escenarios
+ * miden lo mismo y los pies empiezan a la misma altura aunque el contenido
+ * sea distinto. El contenedor pone las dos columnas y quita su hueco
+ * vertical en ese tramo.
+ */
+export function ProjectDetailFigure({ figure, pair = false }: { figure: DetailFigure; pair?: boolean }) {
+  return (
+    <figure className={cn("m-0 grid grid-rows-[1fr_auto] gap-y-3.5", pair && "700:row-span-2 700:grid-rows-subgrid")}>
+      <div className="flex items-center justify-center rounded-card bg-sand px-[clamp(20px,4vw,40px)] py-[clamp(28px,5vw,48px)]">
+        {figure.variant === "recorte" ? (
+          <div
+            className="relative w-full overflow-hidden rounded-shot bg-surface shadow-capture"
+            style={{ maxWidth: figure.maxWidth ?? figure.crop.w, aspectRatio: `${figure.crop.w} / ${figure.crop.h}` }}
           >
-            {figure.legendRight}
-          </p>
-        )}
-
-        {figure.variant === "ancha" && (
-          <Image
-            {...figure.shot}
-            alt={figure.shot.alt}
-            sizes={principal ? "(min-width: 1440px) 1080px, 92vw" : "(min-width: 900px) 46vw, 92vw"}
-            className={cn(
-              shotTone[figure.scene],
-              "absolute right-0 top-12 h-auto w-[74%] border-r-0",
-              "lg:left-[9.09%] lg:right-auto lg:top-[11.25%] lg:w-[81.8%] lg:border-r"
-            )}
-          />
-        )}
-
-        {figure.variant === "movil" && (
-          <Image
-            {...figure.shot}
-            alt={figure.shot.alt}
-            sizes="(min-width: 1440px) 228px, 220px"
-            className={cn(
-              shotTone[figure.scene],
-              "absolute left-1/2 top-7 h-auto w-[46%] max-w-[200px] -translate-x-1/2",
-              "lg:top-10 lg:w-[42.5%] lg:max-w-[228px]"
-            )}
-          />
-        )}
-
-        {/* Detalle ampliado: la captura desborda el escenario a propósito. */}
-        {figure.variant === "recorte" && (
-          <Image
-            {...figure.shot}
-            alt={figure.shot.alt}
-            sizes="(min-width: 900px) 1120px, 185vw"
-            className="absolute left-[-38.5%] top-[-11.5%] h-auto w-[185%] max-w-none lg:left-[-5.26%] lg:top-[-10.8%] lg:w-[147%]"
-          />
+            <Image
+              {...figure.shot}
+              alt={figure.shot.alt}
+              sizes={cropSizes(figure.crop, figure.maxWidth ?? figure.crop.w, figure.shot.width, pair)}
+              className="absolute block h-auto max-w-none"
+              style={{
+                width: `${(figure.shot.width / figure.crop.w) * 100}%`,
+                left: `${(-figure.crop.x / figure.crop.w) * 100}%`,
+                top: `${(-figure.crop.y / figure.crop.h) * 100}%`,
+              }}
+            />
+          </div>
+        ) : (
+          <div className="w-[min(72%,240px)] overflow-hidden rounded-[18px] bg-surface shadow-phone-lg 768:w-[min(80%,280px)]">
+            <Image {...figure.shot} alt={figure.shot.alt} sizes="(min-width: 768px) 280px, 240px" className={IMG} />
+          </div>
         )}
       </div>
-
-      <figcaption className="mt-3 px-4 text-[13px] leading-[1.55] text-ink-mute md:px-0 lg:mt-3.5 lg:max-w-[600px] lg:text-sm">
-        <span className="font-mono text-[10px] uppercase tracking-[0.1em] text-ink lg:text-[11px]">
-          {figure.captionLabel} ·{" "}
-        </span>
-        {figure.caption}
+      <figcaption className="max-w-[40em] text-small text-ink-2">
+        <strong className="font-semibold text-ink">{figure.label}</strong> {figure.caption}
       </figcaption>
     </figure>
   );

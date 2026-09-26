@@ -1,59 +1,71 @@
 "use client";
 
 import { Suspense, useEffect, useRef, useState, useSyncExternalStore } from "react";
-import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { Check } from "lucide-react";
-import { SquareWord } from "@/components/ui/SquareWord";
-import { copyEs } from "@/data/copy";
+import type { Copy } from "@/data/copy";
 import { booking } from "@/data/booking";
-import { site } from "@/data/site";
 import { trackEvent, type AnalyticsProperties } from "@/lib/analytics";
+import { partirEnlace, rellenar } from "@/lib/copy-helpers";
 import { DIAGNOSTICO_EVENT } from "@/lib/diagnostico";
+import { sinCortes } from "@/lib/sin-cortes";
+import { Button } from "@/components/ui/Button";
+import { TextLink } from "@/components/ui/TextLink";
 import {
-  CONTACT_LIMITS, CONTACT_NEEDS, CONTACT_NEEDS_LISTED, CONTACT_PROJECTS, CONTACT_TIMEOUTS,
+  CONTACT_LIMITS, CONTACT_NEEDS_LISTED, CONTACT_PROJECTS, CONTACT_TIMEOUTS,
   getContactContext, isAcceptedContactResponse, validateContactPayload,
   type ContactContext, type ContactField, type ContactFieldErrors, type ContactNeed,
 } from "@/lib/contact";
+import styles from "./ContactForm.module.css";
+
+export type ContactFormTexts = Copy["contacto"]["formulario"];
+
+interface ContactFormProps {
+  /** `copyEs.contacto.formulario`, pasado por la sección (servidor). */
+  texts: ContactFormTexts;
+  /** Email público para el aviso sin JS (`site.email`). */
+  email: string;
+}
 
 type Status = "idle" | "sending" | "success" | "error";
-const fieldBase = "w-full min-h-12 bg-transparent px-4 py-3.5 text-base leading-[1.5] text-paper transition-colors duration-300 ease-editorial focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-cobalt-bright disabled:text-paper/35 sm:min-h-[52px] lg:min-h-12 lg:text-[15px]";
-const fieldOk = "border border-paper/40 focus:border-cobalt-bright disabled:border-paper/20";
-const fieldBad = "border border-error focus:border-error";
-const labelClasses = "font-mono text-[11px] uppercase tracking-[0.12em] text-paper/78 [fieldset:disabled_&]:text-paper/50 lg:text-xs";
 const fields: ContactField[] = ["nombre", "empresa", "email", "telefono", "mensaje"];
 
-const formulario = copyEs.contacto.formulario;
-const [rotuloNombre, rotuloEmpresa, rotuloEmail, rotuloTelefono] = formulario.campos;
-/** La primera opcion del selector es el marcador; las siguientes, CONTACT_NEEDS_LISTED. */
-const [sinDecidir] = formulario.selector.opciones;
-/**
- * El aviso de datos termina enlazando a la politica. Se parte por esa frase
- * exacta para poder pintar el enlace sin reescribir el texto. `copy.test.ts`
- * comprueba que la frase sigue estando.
+/*
+ * Campos (especificación 5.2): fondo `bg`, borde `line-2`, radio 9, relleno
+ * 13×14 y 16 px de letra (por debajo iOS hace zoom al enfocar). Al enfocar,
+ * fondo blanco, borde cobalto y anillo `cobalt-100` en lugar del contorno
+ * global. Los colores de borde y anillo van solo en `fieldOk` o en
+ * `fieldBad`, nunca en los dos: dos utilidades del mismo tipo en una misma
+ * clase las resuelve el orden del CSS generado, no el del atributo.
  */
-const ENLACE_PRIVACIDAD = "politica de privacidad";
-const avisoPartido = (() => {
-  const texto = formulario.aviso_datos;
-  const normalizado = texto.normalize("NFD").replace(/\p{Diacritic}/gu, "").toLowerCase();
-  const at = normalizado.indexOf(ENLACE_PRIVACIDAD);
-  if (at === -1) return { antes: texto, enlace: "", despues: "" };
-  return {
-    antes: texto.slice(0, at),
-    enlace: texto.slice(at, at + ENLACE_PRIVACIDAD.length),
-    despues: texto.slice(at + ENLACE_PRIVACIDAD.length),
-  };
-})();
-const subscribe = () => () => {};
+const fieldBase =
+  "w-full rounded-control border bg-bg px-3.5 py-[13px] text-base text-ink transition-[border-color,background-color,box-shadow] duration-200 ease-soft focus:bg-surface focus:outline-none disabled:opacity-60";
+const fieldOk = "border-line-2 hover:border-ink-4 focus:border-cobalt focus:shadow-[0_0_0_3px_var(--cobalt-100)]";
+/** En error el borde se queda en `error` y el anillo de foco toma su tono. */
+const fieldBad = "border-error focus:shadow-[0_0_0_3px_rgb(179_38_30/0.14)]";
+const labelClasses = "text-small font-semibold text-ink";
+const FORM_TITLE_ID = "contact-form-title";
+
+function subscribe() {
+  return () => {};
+}
 const noContext: ContactContext = { necesidad: "", proyecto: "" };
 
-function ContactFormContent({ context, forceDisabled = false }: { context: ContactContext; forceDisabled?: boolean }) {
+function ContactFormContent({
+  texts,
+  email,
+  context,
+  forceDisabled = false,
+}: ContactFormProps & { context: ContactContext; forceDisabled?: boolean }) {
   const hydrated = useSyncExternalStore(subscribe, () => true, () => false);
   const [status, setStatus] = useState<Status>("idle");
   const [errors, setErrors] = useState<ContactFieldErrors>({});
   const [serverError, setServerError] = useState("");
-  const [selectedNeed, setSelectedNeed] = useState<ContactNeed | "" | null>(null);
-  const need = selectedNeed ?? context.necesidad;
+  // La píldora que marca el visitante manda mientras el tema de la URL siga
+  // siendo el mismo con el que la marcó. Si después sigue otro enlace
+  // «Consultar sobre…» (cambia `?necesidad=`), gana el tema del enlace.
+  const [choice, setChoice] = useState<{ need: ContactNeed | ""; from: ContactNeed | "" } | null>(null);
+  const urlNeed = context.necesidad;
+  const need = choice && choice.from === urlNeed ? choice.need : urlNeed;
   const retry = useRef<{ body: string; id: string } | null>(null);
   const started = useRef(false);
   const activeRequest = useRef<AbortController | null>(null);
@@ -61,6 +73,10 @@ function ContactFormContent({ context, forceDisabled = false }: { context: Conta
   const errorRef = useRef<HTMLDivElement>(null);
   const mensajeRef = useRef<HTMLTextAreaElement>(null);
   const disabled = forceDisabled || !hydrated || status === "sending";
+  const { errores } = texts.estados;
+  const aviso = partirEnlace(texts.aviso, texts.aviso_enlace);
+  const sinJs = partirEnlace(texts.sin_js, email);
+  const sinJsReserva = partirEnlace(sinJs.despues, texts.sin_js_reserva);
 
   useEffect(() => () => activeRequest.current?.abort(), []);
   useEffect(() => {
@@ -75,7 +91,7 @@ function ContactFormContent({ context, forceDisabled = false }: { context: Conta
       if (typeof detail !== "string" || !el) return;
       el.value = detail.slice(0, CONTACT_LIMITS.mensaje);
       setErrors((previous) => ({ ...previous, mensaje: undefined }));
-      setSelectedNeed("diagnostico");
+      setChoice({ need: "diagnostico", from: urlNeed });
       if (!started.current && hydrated && !forceDisabled) {
         started.current = true;
         trackEvent("form_start", { location: "contact", need: "diagnostico" });
@@ -84,7 +100,7 @@ function ContactFormContent({ context, forceDisabled = false }: { context: Conta
     };
     window.addEventListener(DIAGNOSTICO_EVENT, onDiagnostico);
     return () => window.removeEventListener(DIAGNOSTICO_EVENT, onDiagnostico);
-  }, [hydrated, forceDisabled]);
+  }, [hydrated, forceDisabled, urlNeed]);
 
   function analyticsContext(): AnalyticsProperties {
     return { location: "contact", ...(need ? { need } : {}), ...(context.proyecto ? { project: context.proyecto } : {}) };
@@ -112,7 +128,7 @@ function ContactFormContent({ context, forceDisabled = false }: { context: Conta
   }
 
   function fieldError(field: ContactField) {
-    return errors[field] ? <span id={`contact-${field}-error`} className="text-sm text-error-soft">{errors[field]}</span> : null;
+    return errors[field] ? <span id={`contact-${field}-error`} className="text-caption text-error">{errors[field]}</span> : null;
   }
 
   function showError(message: string, code: AnalyticsProperties["code"]) {
@@ -152,7 +168,7 @@ function ContactFormContent({ context, forceDisabled = false }: { context: Conta
         retry.current = attempt;
       }
     } catch {
-      showError("No se ha podido preparar el envío. Conserva tu mensaje y vuelve a intentarlo desde una conexión segura.", "invalid_request");
+      showError(errores.preparar, "invalid_request");
       return;
     }
     const controller = new AbortController();
@@ -174,135 +190,182 @@ function ContactFormContent({ context, forceDisabled = false }: { context: Conta
       if (response.status === 429) {
         const seconds = Number(response.headers.get("Retry-After"));
         const delay = Number.isFinite(seconds) && seconds > 0 && seconds <= 900
-          ? `Espera ${Math.ceil(seconds / 60)} min antes de reintentar.` : "Espera unos minutos antes de reintentar.";
-        showError(`Has enviado varias solicitudes. ${delay} Tu mensaje sigue aquí.`, "rate_limited");
+          ? rellenar(errores.espera_minutos, { minutos: Math.ceil(seconds / 60) })
+          : errores.espera;
+        showError(rellenar(errores.limite, { espera: delay }), "rate_limited");
       } else if (response.status === 503) {
-        showError("El envío no está disponible en este momento. Tu mensaje sigue aquí, puedes copiarlo y volver más tarde.", "unavailable");
+        showError(errores.no_disponible, "unavailable");
       } else if (response.status === 408 || response.status === 504) {
-        showError("La confirmación está tardando demasiado. Tu mensaje sigue aquí, puedes volver a enviarlo.", "timeout");
+        showError(errores.tiempo, "timeout");
       } else if (response.status === 413) {
-        showError("El mensaje es demasiado grande. Acórtalo y vuelve a enviarlo.", "too_large");
+        showError(errores.demasiado_grande, "too_large");
       } else {
-        showError("No se ha podido confirmar el envío. Tu mensaje sigue aquí, puedes volver a intentarlo.", response.ok ? "unexpected" : "provider");
+        showError(errores.confirmacion, response.ok ? "unexpected" : "provider");
       }
     } catch {
-      showError(controller.signal.aborted
-        ? "La confirmación está tardando demasiado. Tu mensaje sigue aquí, puedes volver a enviarlo."
-        : "No se ha podido conectar. Revisa tu conexión y vuelve a intentarlo, tu mensaje sigue aquí.",
-      controller.signal.aborted ? "timeout" : "network");
+      showError(controller.signal.aborted ? errores.tiempo : errores.conexion,
+        controller.signal.aborted ? "timeout" : "network");
     } finally {
       clearTimeout(timer);
       activeRequest.current = null;
     }
   };
 
+  /*
+   * Enviado (3.8): el bloque `cobalt-50` sustituye todo el contenido de la
+   * tarjeta, título incluido, y recibe el foco para que el lector de
+   * pantalla lo lea y el teclado siga desde ahí. El anillo se ve con
+   * cualquier foco (no solo `:focus-visible`): tras enviar con el ratón
+   * también señala dónde ha quedado.
+   */
   if (status === "success") {
     return (
-      <div ref={successRef} tabIndex={-1} role="status" className="focus:outline-none lg:pt-2">
-        <span className="flex h-11 w-11 items-center justify-center border border-cobalt-bright">
-          <Check className="h-5 w-5 text-cobalt-bright" strokeWidth={1.5} strokeLinecap="square" aria-hidden />
-        </span>
-        <h3 className="mt-6 font-display text-[26px] uppercase leading-none tracking-[-0.01em] text-paper lg:text-[30px]">
-          Mensaje <SquareWord word="enviado" tone="dark" />
-        </h3>
-        <p className="mt-4 max-w-[520px] text-[15px] leading-[1.6] text-paper/78">
-          Gracias por contarme qué necesitas. El siguiente paso es revisarlo y responderte al
-          email que has indicado.
-        </p>
-        <Link href="/#proyectos" className="mt-6 inline-flex min-h-12 items-center gap-2.5 border border-paper/45 px-[22px] text-sm font-semibold text-paper transition-colors duration-300 ease-editorial hover:border-cobalt-bright hover:text-cobalt-bright focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cobalt-bright">
-          Ver los proyectos <span aria-hidden>↑</span>
-        </Link>
+      <div ref={successRef} tabIndex={-1} role="status" className="grid gap-2.5 rounded-[12px] bg-cobalt-50 p-[18px] text-ink focus:outline focus:outline-[3px] focus:outline-offset-[3px] focus:outline-cobalt">
+        <strong className="font-semibold">{texts.exito.mensaje}</strong>
+        <p className="text-ink-2">{sinCortes(texts.exito.detalle)}</p>
       </div>
     );
   }
 
+  const hasFieldErrors = Object.values(errors).some(Boolean);
+
   return (
-    <form action="/api/contact" method="post" onSubmit={handleSubmit} onFocusCapture={markStarted} aria-busy={status === "sending"} className="flex flex-col gap-[18px] lg:gap-[22px]" noValidate>
-      <noscript>
-        <p className="border border-paper/40 p-4 text-sm leading-relaxed text-paper">
-          Para enviar este formulario necesitas activar JavaScript. Los campos están deshabilitados y no se enviará ningún dato.
-          Puedes escribirme a <a href={`mailto:${site.email}`} className="underline underline-offset-4">{site.email}</a> o{" "}
-          <a href={booking.url} className="underline underline-offset-4">reservar una llamada</a>.
-        </p>
-      </noscript>
-      <fieldset disabled={disabled} className="flex min-w-0 flex-col gap-[18px] lg:gap-[22px]">
-        <legend className="sr-only">Cuéntame qué necesitas resolver</legend>
-        <div className="grid gap-[18px] lg:grid-cols-2 lg:gap-[22px]">
-          <label className="flex flex-col gap-2" htmlFor="contact-nombre">
-            <span className={labelClasses}>{rotuloNombre}</span>
-            <input {...fieldProps("nombre")} type="text" required autoComplete="name" />
-            {fieldError("nombre")}
-          </label>
-          <label className="flex flex-col gap-2" htmlFor="contact-email">
-            <span className={labelClasses}>{rotuloEmail}</span>
-            <input {...fieldProps("email")} type="email" required autoComplete="email" />
-            {fieldError("email")}
-          </label>
-        </div>
-        <label className="flex flex-col gap-2" htmlFor="contact-necesidad">
-          <span className={labelClasses}>{formulario.selector.etiqueta}</span>
-          <select id="contact-necesidad" name="necesidad" value={need} onChange={(event) => setSelectedNeed(getContactContext(event.target.value, "").necesidad)} className={`campo-select bg-ink ${fieldBase} ${fieldOk}`}>
-            <option value="" className="bg-ink">{sinDecidir}</option>
-            {need === "diagnostico" && <option value="diagnostico" className="bg-ink">{CONTACT_NEEDS.diagnostico}</option>}
-            {CONTACT_NEEDS_LISTED.map((value) => <option key={value} value={value} className="bg-ink">{CONTACT_NEEDS[value]}</option>)}
-          </select>
-        </label>
-        {context.proyecto && <p className="text-sm leading-relaxed text-paper/72">Proyecto de referencia: <span className="text-paper">{CONTACT_PROJECTS[context.proyecto]}</span></p>}
-        <div className="flex flex-col gap-2">
-          <label className={labelClasses} htmlFor="contact-mensaje">{formulario.mensaje.etiqueta}</label>
-          <span id="contact-message-help" className="text-sm leading-[1.5] text-paper/78">{formulario.mensaje.ayuda}</span>
-          <textarea {...fieldProps("mensaje")} ref={mensajeRef} required rows={5} className={`${fieldBase} ${errors.mensaje ? fieldBad : fieldOk} min-h-[132px] resize-y lg:min-h-[140px]`} />
-          {fieldError("mensaje")}
-        </div>
-        <details className="border-y border-paper/28 py-1" open={errors.empresa || errors.telefono ? true : undefined}>
-          <summary className="group/extra flex min-h-11 cursor-pointer list-none items-center justify-between gap-4 py-3 text-sm text-paper/78 marker:content-none [&::-webkit-details-marker]:hidden">
-            Empresa y teléfono (opcional)
-            <span aria-hidden className="font-mono text-base text-cobalt-bright">
-              <span className="[details[open]_&]:hidden">+</span>
-              <span className="hidden [details[open]_&]:inline">−</span>
-            </span>
-          </summary>
-          <div className="grid gap-[18px] pb-4 pt-2 lg:grid-cols-2 lg:gap-[22px]">
-            <label className="flex flex-col gap-2" htmlFor="contact-empresa">
-              <span className={labelClasses}>{rotuloEmpresa}</span>
-              <input {...fieldProps("empresa")} type="text" autoComplete="organization" />
-              {fieldError("empresa")}
-            </label>
-            <label className="flex flex-col gap-2" htmlFor="contact-telefono">
-              <span className={labelClasses}>{rotuloTelefono}</span>
-              <input {...fieldProps("telefono")} type="tel" inputMode="tel" autoComplete="tel" />
-              {fieldError("telefono")}
-            </label>
+    <div className="grid gap-5">
+      <div className="grid gap-2">
+        <h3 id={FORM_TITLE_ID} className="text-[1.25rem] font-semibold leading-[1.6] tracking-[-0.015em]">{texts.titulo}</h3>
+        <p className="text-caption leading-[1.6] text-ink-2">{texts.nota}</p>
+      </div>
+      <form action="/api/contact" method="post" onSubmit={handleSubmit} onFocusCapture={markStarted} aria-busy={status === "sending"} aria-labelledby={FORM_TITLE_ID} className="grid gap-5" noValidate>
+        <noscript>
+          <p className="rounded-control border border-line-2 bg-bg p-4 text-small text-ink">
+            {sinJs.antes}
+            {sinJs.enlace && <a href={`mailto:${email}`} className="underline underline-offset-4">{sinJs.enlace}</a>}
+            {sinJsReserva.antes}
+            {sinJsReserva.enlace && <a href={booking.url} className="underline underline-offset-4">{sinJsReserva.enlace}</a>}
+            {sinJsReserva.despues}
+          </p>
+        </noscript>
+        <fieldset disabled={disabled} className="grid min-w-0 gap-5">
+          <legend className="sr-only">{texts.grupo}</legend>
+          <div className="grid gap-5 min-[560px]:grid-cols-2">
+            <div className="grid content-start gap-2">
+              <label className={labelClasses} htmlFor="contact-nombre">{texts.campos.nombre}</label>
+              <input {...fieldProps("nombre")} type="text" required autoComplete="name" />
+              {fieldError("nombre")}
+            </div>
+            <div className="grid content-start gap-2">
+              <label className={labelClasses} htmlFor="contact-email">{texts.campos.email}</label>
+              <input {...fieldProps("email")} type="email" required autoComplete="email" />
+              {fieldError("email")}
+            </div>
           </div>
-        </details>
-        <div className="hidden" aria-hidden="true">
-          <label htmlFor="contact-web">Web</label>
-          <input id="contact-web" name="web" type="text" tabIndex={-1} autoComplete="off" />
-        </div>
-      </fieldset>
-      {Object.values(errors).some(Boolean) && <p role="alert" className="text-sm text-error-soft">Revisa los campos señalados antes de enviar.</p>}
-      {status === "error" && <div ref={errorRef} tabIndex={-1} className="border border-error px-5 py-4 focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-error" role="alert"><p className="text-sm leading-[1.5] text-paper">{serverError}</p></div>}
-      <p className="text-xs leading-[1.55] text-paper/78 lg:text-[13px]">
-        {avisoPartido.antes}
-        {avisoPartido.enlace && (
-          <a href="/privacidad" target="_blank" rel="noopener noreferrer" className="text-paper underline underline-offset-4 transition-colors duration-300 hover:text-cobalt-bright focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cobalt-bright">{avisoPartido.enlace}<span className="sr-only"> (se abre en otra pestaña)</span></a>
+          {/* Tema: píldoras de elección única (radios nativos, 5.2). Llegan
+              marcadas desde `?necesidad=` y, sin ninguna, se envía vacío. */}
+          <fieldset className="min-w-0">
+            <legend className={`${labelClasses} mb-2.5`}>
+              {texts.tema.leyenda} <span className="font-normal text-ink-2">{texts.tema.opcional}</span>
+            </legend>
+            <div className="flex flex-wrap gap-2">
+              {CONTACT_NEEDS_LISTED.map((value, index) => {
+                const label = texts.tema.opciones[index];
+                return (
+                  <label key={value} className={styles.pill}>
+                    <input
+                      type="radio"
+                      name="necesidad"
+                      value={value}
+                      checked={need === value}
+                      onChange={() => setChoice({ need: getContactContext(value, "").necesidad, from: urlNeed })}
+                    />
+                    <span className={styles.face} data-label={label}>{label}</span>
+                  </label>
+                );
+              })}
+            </div>
+          </fieldset>
+          {/* Desde una ficha de proyecto (`?proyecto=`), el proyecto de
+              referencia se ve justo antes de escribir. */}
+          {context.proyecto && (
+            <p className="text-caption text-ink-2">
+              {texts.proyecto_referencia} <span className="font-medium text-ink">{CONTACT_PROJECTS[context.proyecto]}</span>
+            </p>
+          )}
+          <div className="grid gap-2">
+            <label className={labelClasses} htmlFor="contact-mensaje">{texts.campos.mensaje}</label>
+            <p id="contact-message-help" className="text-micro leading-[1.45] text-ink-2">{texts.mensaje_ayuda}</p>
+            <textarea {...fieldProps("mensaje")} ref={mensajeRef} required rows={5} className={`${fieldBase} ${errors.mensaje ? fieldBad : fieldOk} min-h-[132px] resize-y leading-normal`} />
+            {fieldError("mensaje")}
+          </div>
+          {/* Empresa y teléfono, plegados: el formulario pide lo mínimo. Se
+              abre solo si alguno de los dos tiene error. */}
+          <details className="group/extra border-y border-line" open={errors.empresa || errors.telefono ? true : undefined}>
+            <summary className="flex min-h-11 cursor-pointer list-none items-center gap-3 py-3 text-small font-semibold transition-colors duration-200 hover:text-cobalt [&::-webkit-details-marker]:hidden">
+              <span aria-hidden="true" className="relative h-3 w-3 flex-none before:absolute before:inset-x-0 before:top-[5px] before:h-0.5 before:bg-current after:absolute after:inset-x-0 after:top-[5px] after:h-0.5 after:rotate-90 after:bg-current after:transition-transform after:duration-300 after:ease-soft group-open/extra:after:rotate-0" />
+              <span>{texts.extra.resumen} <span className="font-normal text-ink-2">{texts.extra.opcional}</span></span>
+            </summary>
+            <div className="grid gap-5 pb-5 pt-1 min-[560px]:grid-cols-2">
+              <div className="grid content-start gap-2">
+                <label className={labelClasses} htmlFor="contact-empresa">{texts.campos.empresa}</label>
+                <input {...fieldProps("empresa")} type="text" autoComplete="organization" />
+                {fieldError("empresa")}
+              </div>
+              <div className="grid content-start gap-2">
+                <label className={labelClasses} htmlFor="contact-telefono">{texts.campos.telefono}</label>
+                <input {...fieldProps("telefono")} type="tel" inputMode="tel" autoComplete="tel" />
+                {fieldError("telefono")}
+              </div>
+            </div>
+          </details>
+          <div className="hidden" aria-hidden="true">
+            <label htmlFor="contact-web">Web</label>
+            <input id="contact-web" name="web" type="text" tabIndex={-1} autoComplete="off" />
+          </div>
+        </fieldset>
+        <p className="text-micro text-ink-2">
+          {aviso.antes}
+          {aviso.enlace && <TextLink href="/privacidad">{aviso.enlace}</TextLink>}
+          {aviso.despues}
+        </p>
+        {/* Los avisos van justo encima del botón, donde está la mirada al
+            enviar. El de campos acompaña al foco, que salta al primer campo
+            con error. El del servidor recibe el foco él mismo. */}
+        {hasFieldErrors && <p role="alert" className="text-caption font-medium text-error">{texts.estados.revisa}</p>}
+        {status === "error" && (
+          <div ref={errorRef} tabIndex={-1} role="alert" className="rounded-control border border-error bg-surface px-[18px] py-3.5 focus:outline focus:outline-[3px] focus:outline-offset-[3px] focus:outline-error">
+            <p className="text-small text-ink">{serverError}</p>
+          </div>
         )}
-        {avisoPartido.despues}
-      </p>
-      <button type="submit" disabled={disabled} className="min-h-[52px] w-full border border-transparent bg-paper px-[30px] text-[15px] font-semibold text-ink transition-colors duration-300 ease-editorial hover:bg-cobalt-bright active:translate-y-[1px] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cobalt-bright disabled:pointer-events-none disabled:opacity-60 md:w-auto md:self-start">
-        {status === "sending" ? "Enviando…" : formulario.boton}
-      </button>
-      <p role="status" aria-live="polite" className="sr-only">{status === "sending" ? "Enviando tu consulta. Espera unos segundos." : ""}</p>
-    </form>
+        <div className="flex flex-wrap items-center gap-x-5 gap-y-3">
+          <Button type="submit" size="lg" arrow disabled={disabled} className="max-[559px]:w-full">
+            {status === "sending" ? texts.boton_enviando : texts.boton}
+          </Button>
+          <span className="text-caption text-ink-2">{sinCortes(texts.nota_envio)}</span>
+        </div>
+        <p role="status" aria-live="polite" className="sr-only">{status === "sending" ? texts.estados.enviando_aria : ""}</p>
+      </form>
+    </div>
   );
 }
 
-function ContextualContactForm() {
+function ContextualContactForm(props: ContactFormProps) {
   const searchParams = useSearchParams();
   const context = getContactContext(searchParams.get("necesidad"), searchParams.get("proyecto"));
-  return <ContactFormContent context={context} />;
+  return <ContactFormContent {...props} context={context} />;
 }
 
-export function ContactForm() {
-  return <Suspense fallback={<ContactFormContent context={noContext} forceDisabled />}><ContextualContactForm /></Suspense>;
+/**
+ * Formulario de contacto (especificación 3.8). Conserva la lógica del
+ * anterior: validación compartida con el servidor (`validateContactPayload`),
+ * `POST /api/contact` con `Idempotency-Key` y reintento con el mismo id,
+ * límites y tiempos de `CONTACT_LIMITS` y `CONTACT_TIMEOUTS`, foco al primer
+ * error, al error del servidor y al mensaje de enviado, y eventos de
+ * analítica. Lee `?necesidad=` y `?proyecto=` para preseleccionar tema y
+ * proyecto. Sin JS los campos quedan deshabilitados y se ofrece el email.
+ */
+export function ContactForm(props: ContactFormProps) {
+  return (
+    <Suspense fallback={<ContactFormContent {...props} context={noContext} forceDisabled />}>
+      <ContextualContactForm {...props} />
+    </Suspense>
+  );
 }

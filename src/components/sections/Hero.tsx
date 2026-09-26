@@ -1,89 +1,80 @@
-import Image from "next/image";
+import { copyEs } from "@/data/copy";
 import { Button } from "@/components/ui/Button";
 import { BookingLink } from "@/components/booking/BookingLink";
-import { PlateNotes, TitleBlock } from "@/components/ui/Plate";
-import { PlateStage } from "@/components/ui/PlateStage";
-import { SquareWord } from "@/components/ui/SquareWord";
-import { copyEs, partirUltimaPalabra } from "@/data/copy";
-import { padelPlate } from "@/data/plates";
-import { ctaHref } from "@/data/site";
+import { HeroArt } from "@/components/hero/HeroArt";
+import { HeroIllustration } from "@/components/hero/HeroIllustration";
+import { sinCortes } from "@/lib/sin-cortes";
 
 const { hero } = copyEs;
-/** El cuadrado cobalto hace de punto final del titular. */
-const titular = partirUltimaPalabra(hero.h1.replace(/\.$/, ""));
 
 /**
- * El primer pantallazo es un plano: la oferta a todo el ancho y, debajo, una
- * pantalla real de Padel Club OS con tres notas sobre sus decisiones. La
- * prueba y el contacto se ven sin animación ni interacción.
+ * Hero (especificación 3.2). Orden en el DOM, que es también el visual en
+ * móvil: H1 → cuerpo (entradilla, botones, nota) → figura → compromisos.
  *
- * Rejilla: en móvil, entradilla, lámina y firma. Entre 768 y 1279 la firma
- * acompaña a la entradilla en su fila y la lámina va debajo a todo el ancho.
- * Desde 1280, entradilla y firma en la primera columna (424) y la lámina en
- * la segunda (872, desde x 508 a 1440).
+ * - Hasta 1179 px, una columna: la ilustración móvil (hasta 767 px, 440 px
+ *   como máximo) o la de escritorio centrada a 600 px.
+ * - Desde 1180 px, dos columnas `11fr / 12fr` (`10fr / 13fr` y H1 a 48 px
+ *   hasta 1279) con áreas `"title art" / "body art"`: H1 abajo en su celda,
+ *   cuerpo arriba e ilustración centrada y desbordando a la derecha. El hero
+ *   ocupa `min(100svh - cabecera, 900px)` con los compromisos abajo.
+ *
+ * El H1 y la entradilla no se animan: son el LCP. La ilustración es la única
+ * parte cliente (`HeroIllustration`) y el SVG lo pinta el servidor.
  */
 export function Hero() {
   return (
-    <section aria-labelledby="hero-title" className="pagina-interior bg-paper">
-      <div className="container-editorial pb-10 pt-7 md:pb-14 md:pt-10 lg:pb-20 wide:pt-9">
-        <p className="label-mono text-[10.5px] leading-relaxed text-ink-mute sm:text-xs">
-          <span aria-hidden className="mr-3 inline-block h-2 w-2 bg-cobalt" />
-          <span className="sm:hidden">{hero.etiqueta_corta}</span>
-          <span className="hidden sm:inline">{hero.etiqueta}</span>
-          <span aria-hidden className="mx-3 hidden text-line-2 sm:inline">/</span>
-          <span className="sr-only">. </span>
-          <span className="block sm:inline">{hero.lugar}</span>
-        </p>
-
-        <h1 id="hero-title" className="display mt-5 text-display-hero text-ink md:mt-6">
-          {titular.antes}
-          <SquareWord word={titular.ultima} />
+    <section
+      id="top"
+      aria-labelledby="hero-titulo"
+      className="bg-bg pb-[clamp(56px,7vw,80px)] pt-[clamp(24px,4.5vw,64px)] 1180:grid 1180:min-h-[min(calc(100svh_-_var(--head-h)),900px)] 1180:grid-rows-[1fr_auto] 1180:items-center 1180:gap-y-10 1180:pb-10 1180:pt-[clamp(24px,3vw,48px)]"
+    >
+      <div className="wrap grid gap-y-[22px] 1180:grid-cols-[minmax(0,11fr)_minmax(0,12fr)] 1180:gap-x-[clamp(40px,4.5vw,72px)] 1180:gap-y-[30px] 1180:[grid-template-areas:'title_art'_'body_art'] 1180:max-[1279px]:grid-cols-[minmax(0,10fr)_minmax(0,13fr)]">
+        <h1
+          id="hero-titulo"
+          className="max-w-[12em] text-h1 1180:self-end 1180:[grid-area:title] 1180:max-[1279px]:text-[3rem]"
+        >
+          {hero.h1}
         </h1>
 
-        <div className="mt-8 grid gap-y-8 md:mt-10 md:grid-cols-[minmax(0,7fr)_minmax(0,5fr)] md:items-end md:gap-x-10 md:gap-y-10 xl:grid-cols-[424fr_872fr] xl:grid-rows-[auto_1fr] xl:items-start xl:gap-x-6 xl:gap-y-8">
-          <div className="flex flex-col items-start md:col-start-1 md:row-start-1">
-            <p className="text-[17px] leading-[1.6] text-ink-soft md:text-lg xl:text-[17px] wide:text-lg">{hero.entradilla}</p>
-            <div className="mt-7 flex w-full flex-col items-stretch gap-3 sm:w-auto sm:items-start">
-              <Button href={ctaHref} size="lg" trackLocation="hero" className="w-full sm:w-auto">
-                {hero.cta_primaria} <span aria-hidden>↓</span>
-              </Button>
-              <BookingLink location="hero" tone="paper" />
-            </div>
-            <p className="mt-3 text-sm text-ink-mute">{hero.nota}</p>
+        <div className="grid max-w-[34em] gap-5 600:gap-6 1180:self-start 1180:[grid-area:body]">
+          <p className="text-lead text-ink-2">{hero.entradilla}</p>
+          <div className="flex flex-wrap items-center gap-x-[22px] gap-y-3.5">
+            <Button
+              href="#contacto"
+              size="lg"
+              arrow
+              trackLocation="hero"
+              className="max-[599px]:w-full max-[399px]:whitespace-normal max-[399px]:px-3.5 max-[399px]:text-button max-[399px]:leading-[1.2]"
+            >
+              {hero.cta}
+            </Button>
+            <BookingLink location="hero" variant="link" label={sinCortes(hero.reserva)} />
           </div>
-
-          {/* En móvil la firma va detrás de la lámina, para que la prueba
-              entre antes en pantalla. */}
-          <div className="order-last flex w-full items-center gap-4 border-t border-line-2 pt-4 md:order-none md:col-start-2 md:row-start-1 xl:col-start-1 xl:row-start-2">
-            <Image
-              src="/sobre/retrato-1x1.jpg"
-              width={716}
-              height={716}
-              alt="Retrato de Alberto Bort"
-              sizes="64px"
-              className="h-16 w-16 shrink-0 object-cover"
-            />
-            <p className="text-sm leading-snug text-ink-soft">
-              <span className="block text-base font-semibold text-ink">{hero.firma.nombre}</span>
-              {hero.firma.rol}
-            </p>
-          </div>
-
-          <figure
-            aria-labelledby="lamina-01"
-            className="plate m-0 -mx-4 min-w-0 md:col-span-2 md:mx-0 md:row-start-2 xl:col-span-1 xl:col-start-2 xl:row-span-2 xl:row-start-1"
-          >
-            <PlateStage plate={padelPlate} labelId="lamina-01" labelAs="h2" eager className="border-x-0 md:border-x" />
-            <div className="px-4 md:px-0">
-              <PlateNotes notes={padelPlate.notes} className="mt-4 hidden lg:grid lg:grid-cols-3 lg:gap-x-6" />
-              <TitleBlock
-                entries={padelPlate.block}
-                className="mt-2 grid-cols-2 md:grid-cols-3 [&>div:first-child]:col-span-2 md:[&>div:first-child]:col-span-1"
-              />
-            </div>
-          </figure>
+          <p className="text-small text-ink-2">{hero.nota}</p>
         </div>
+
+        <HeroIllustration
+          pie={hero.ilustracion.pie}
+          control={hero.ilustracion.control}
+          className="mt-3 600:mx-auto 600:mt-6 600:w-full 600:max-w-[600px] 1180:m-0 1180:-mr-[clamp(0px,3.4vw,48px)] 1180:w-auto 1180:max-w-none 1180:self-center 1180:[grid-area:art]"
+        >
+          <HeroArt ilustracion={hero.ilustracion} />
+        </HeroIllustration>
       </div>
+
+      <ul
+        aria-label={hero.compromisos.aria}
+        className="wrap mt-12 grid grid-cols-2 gap-x-5 gap-y-[22px] max-[359px]:grid-cols-1 1024:grid-cols-4 1024:gap-8 1180:mt-0"
+      >
+        {hero.compromisos.items.map((item) => (
+          <li key={item.titulo} className="grid content-start gap-1 border-t border-line-2 pt-4">
+            <strong className="text-small font-semibold leading-[1.35] tracking-[-0.005em]">
+              {sinCortes(item.titulo)}
+            </strong>
+            <span className="text-caption text-ink-2">{item.texto}</span>
+          </li>
+        ))}
+      </ul>
     </section>
   );
 }

@@ -1,0 +1,37 @@
+/*
+ * Línea del proceso (especificación 4.8). `data-state` lo escribe
+ * `PlayOnView` en el bloque de los pasos. Sin él, línea completa y marcas
+ * macizas. `--i` (0 a 3) es el orden de cada paso.
+ */
+
+@media (prefers-reduced-motion: no-preference) {
+  /* En móvil la línea es vertical y se dibuja de arriba abajo. */
+  :global(.js) [data-state="idle"] .fill {
+    transform: scaleY(0);
+  }
+
+  :global(.js) [data-state="play"] .fill {
+    transition: transform 2.2s var(--ease) 0.15s;
+  }
+
+  /* Cada marca empieza hueca (fondo de la banda y borde `on-dark-3`) y se
+     rellena de `cobalt-bright`, una cada 0,55 s desde los 0,2 s. */
+  :global(.js) [data-state="idle"] .mark {
+    background-color: var(--dark);
+    border-color: var(--on-dark-3);
+  }
+
+  :global(.js) [data-state="play"] .mark {
+    transition:
+      background-color 0.35s var(--ease),
+      border-color 0.35s var(--ease);
+    transition-delay: calc(0.2s + var(--i) * 0.55s);
+  }
+}
+
+/* Desde 980 px la línea es horizontal y se dibuja de izquierda a derecha. */
+@media (prefers-reduced-motion: no-preference) and (min-width: 980px) {
+  :global(.js) [data-state="idle"] .fill {
+    transform: scaleX(0);
+  }
+}

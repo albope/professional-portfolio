@@ -1,25 +1,24 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import type { ReactNode } from "react";
 import { notFound } from "next/navigation";
 import { projects, getProject } from "@/data/projects";
-import { site } from "@/data/site";
-import { SquareWord } from "@/components/ui/SquareWord";
-import { ProjectFigure } from "@/components/ui/ProjectFigure";
-import { PlateNotes } from "@/components/ui/Plate";
-import { PlateStage } from "@/components/ui/PlateStage";
-import { platesBySlug } from "@/data/plates";
+import { copyEs, rellenar } from "@/data/copy";
+import { contactHref, site } from "@/data/site";
+import { ProjectDetailFigure, ProjectMainFigure } from "@/components/ui/ProjectFigure";
 import { Button } from "@/components/ui/Button";
+import { TextLink } from "@/components/ui/TextLink";
+import { BaseLink } from "@/components/ui/BaseLink";
+import { ArrowIcon } from "@/components/ui/ArrowIcon";
+import { arrowLinkClasses, arrowLinkLabelClasses } from "@/components/ui/ArrowLink";
 import { BookingLink } from "@/components/booking/BookingLink";
+import { sinCortes } from "@/lib/sin-cortes";
+import { cn } from "@/lib/utils";
+
+const { ficha } = copyEs;
 
 interface PageProps {
   params: Promise<{ slug: string }>;
 }
-
-/** Los escenarios sangran en móvil y recuperan el margen del lienzo arriba. */
-const inset = "mx-auto w-full max-w-[1440px] md:px-10 wide:px-[60px]";
-const dtClass = "font-mono text-[10px] uppercase tracking-[0.12em] text-ink-mute lg:text-[11px] lg:tracking-[0.1em]";
-const titleClass = "text-xl font-semibold leading-[1.2] tracking-[-0.015em] lg:text-[26px] lg:leading-[1.15] wide:text-[30px]";
-const pairClass = "rejilla-editorial";
 
 export function generateStaticParams() {
   return projects.map((project) => ({ slug: project.slug }));
@@ -34,7 +33,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     url: `${path}/opengraph-image`,
     width: 1200,
     height: 630,
-    alt: `${project.title} · ${site.name}`,
+    alt: rellenar(ficha.og_alt, { nombre: project.name, tipo: project.kicker }),
   };
 
   return {
@@ -59,186 +58,177 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   };
 }
 
+/**
+ * Bloque de lectura de la ficha: desde 980 px el titular va en una columna
+ * izquierda de 4fr y el contenido en la de 8fr, siempre en la misma
+ * vertical, con un filete arriba. Por debajo, apilados. Es la rejilla de
+ * Preguntas en la portada, para que la ficha se lea igual que la home.
+ */
+function Block({ id, title, children }: { id: string; title: string; children: ReactNode }) {
+  return (
+    <section
+      aria-labelledby={id}
+      className="grid gap-y-6 border-t border-line pt-8 980:grid-cols-[minmax(0,4fr)_minmax(0,8fr)] 980:gap-x-16"
+      data-reveal
+    >
+      <h2 id={id} className="max-w-[12em] text-feature-name">
+        {title}
+      </h2>
+      <div className="min-w-0">{children}</div>
+    </section>
+  );
+}
+
+/**
+ * Ficha de proyecto con el sistema de la portada (especificación 5.6): tipo
+ * frase, Schibsted Grotesk, papel, tinta y cobalto, capturas en escenarios
+ * arena. Se lee de arriba abajo como un caso contado a un dueño de pyme:
+ *
+ * 1. Volver a proyectos, antetítulo, titular y entradilla. Solo Padel Club OS
+ *    lleva su estado y el enlace a su web.
+ * 2. La figura principal, con la misma composición que su tarjeta en la
+ *    portada para que el proyecto se reconozca.
+ * 3. Qué necesitaba resolver, qué se desarrolló (con sus funciones) y los
+ *    detalles de interfaz que en la figura principal no se leen.
+ * 4. Una decisión concreta, en la banda blanca.
+ * 5. El cierre en la banda de tinta, con la consulta que llega al formulario
+ *    con el proyecto de referencia (`/?proyecto=<slug>#contacto`) y la
+ *    reserva de la llamada.
+ *
+ * Todo el texto sale de `projects.ts` (el caso) y de `copy.ficha` (los
+ * rótulos comunes). Nada se anima en la parte alta: el titular y la figura
+ * se pintan en su sitio. Los bloques de abajo aparecen al hacer scroll con
+ * `data-reveal`.
+ */
 export default async function ProjectPage({ params }: PageProps) {
   const { slug } = await params;
   const project = getProject(slug);
   if (!project) notFound();
-  const contactHref = `/?proyecto=${project.slug}#contacto`;
-  const plate = platesBySlug[project.slug];
-  // Con lámina, la figura principal es la lámina anotada y los detalles no
-  // repiten las capturas que ya enseña.
-  const enLamina = new Set(plate?.views.map((view) => view.shot.src));
-  const [principal, ...resto] = project.figures;
-  const detalles = plate ? project.figures.filter((figure) => !enLamina.has(figure.shot.src)) : resto;
+  const { details } = project;
+  const pair = details.length > 1;
 
   return (
-    <article className="pagina-interior">
-      <header className="container-editorial pt-6 lg:pt-12">
-        <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between md:gap-6">
-          <Link
-            href="/#proyectos"
-            className="inline-flex min-h-11 items-center self-start font-mono text-[11px] uppercase tracking-[0.1em] text-ink-mute underline-offset-4 transition-colors duration-300 ease-editorial hover:text-ink hover:underline lg:text-xs"
-          >
-            ← Proyectos
-          </Link>
-          <p className="flex flex-wrap items-center gap-x-3.5 gap-y-2 font-mono text-[10px] uppercase tracking-[0.12em] text-ink-mute md:flex-nowrap md:whitespace-nowrap lg:text-xs lg:tracking-[0.1em]">
-            <span className="md:hidden">{project.metaShort}</span>
-            {project.meta.map((item, index) => (
-              <span key={item} className="hidden md:inline">
-                {index > 0 && <span aria-hidden className="mr-3.5 text-line-2">/</span>}
-                {item}
-              </span>
-            ))}
-            {project.externalUrl && (
-              <a
-                href={project.externalUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex min-h-11 items-center gap-1.5 normal-case tracking-[0.04em] text-ink"
-              >
-                <span className="border-b border-ink">{project.externalLabel}</span> <span aria-hidden>↗</span>
-                <span className="sr-only"> (se abre en otra pestaña)</span>
-              </a>
-            )}
-          </p>
-        </div>
+    <article aria-labelledby="ficha-titulo">
+      <header className="wrap pt-[clamp(24px,4vw,56px)]">
+        {/* La flecha apunta hacia atrás y retrocede 3 px al pasar el ratón. */}
+        <BaseLink href="/#proyectos" className={arrowLinkClasses({ className: "-ml-px text-small" })}>
+          <ArrowIcon className="h-[15px] w-[15px] rotate-180 transition-transform duration-[250ms] ease-soft group-hover/arrow:-translate-x-[3px]" />
+          <span className={arrowLinkLabelClasses}>{ficha.volver}</span>
+        </BaseLink>
 
-        <h1 className="display mt-5 max-w-[1000px] text-[clamp(28px,9.4vw,34px)] leading-[0.98] text-ink lg:mt-10 lg:text-[clamp(2.75rem,3.75vw,3.375rem)] wide:text-[54px]">
-          {project.heroPre} <SquareWord word={project.heroWord} />
+        <p className="mt-[clamp(24px,4vw,48px)] text-small text-ink-2">{project.kicker}</p>
+        <h1 id="ficha-titulo" className="mt-2.5 max-w-[14em] text-h1">
+          {project.name}
         </h1>
+        <p className="mt-6 max-w-[38em] text-lead text-ink-2">{project.intro}</p>
 
-        <div className="mt-5 lg:mt-8 lg:grid lg:grid-cols-[872fr_424fr] lg:items-end lg:gap-x-6">
-          <p className="max-w-[760px] text-base leading-[1.55] text-ink-soft lg:text-[19px]">{project.intro}</p>
-          {project.aside && (
-            <p className="mt-4 border-l-2 border-cobalt pl-4 text-sm leading-[1.55] text-ink-mute lg:mt-0">
-              {project.aside}
-            </p>
-          )}
-        </div>
+        {(project.status || project.externalUrl) && (
+          <div className="mt-5 flex flex-wrap items-center gap-x-7 gap-y-1">
+            {project.status && (
+              <p className="py-2.5 text-small text-ink">
+                {/* «Hecho» con el cuadrado macizo del glifo, como en la portada.
+                    En línea con el texto, para que siga a la primera línea si
+                    la frase se parte. */}
+                <span aria-hidden="true" className="mr-2 inline-block h-[9px] w-[9px] bg-cobalt align-[1px]" />
+                {project.status}
+              </p>
+            )}
+            {project.externalUrl && project.externalLabel && (
+              <TextLink href={project.externalUrl} external standalone className="text-small">
+                {project.externalLabel}
+              </TextLink>
+            )}
+          </div>
+        )}
       </header>
 
-      {plate ? (
-        <figure aria-labelledby="lamina-ficha" className="plate container-editorial m-0 mt-6 lg:mt-12">
-          <PlateStage plate={plate} labelId="lamina-ficha" eager className="-mx-4 border-x-0 md:mx-0 md:border-x" />
-          <PlateNotes notes={plate.notes} className="mt-4 hidden lg:grid lg:grid-cols-3 lg:gap-x-6" />
-        </figure>
-      ) : (
-        <ProjectFigure figure={principal} size="principal" className={`mt-6 lg:mt-12 ${inset}`} />
-      )}
-
-      <div className="container-editorial">
-        <dl className="mt-8 grid grid-cols-2 gap-x-4 gap-y-5 border-y border-b-line border-t-ink pb-6 pt-5 lg:mt-12 lg:grid-cols-4 lg:gap-x-6 lg:pb-7 lg:pt-6">
-          {project.ficha.map((entry) => (
-            <div key={entry.label}>
-              <dt className={dtClass}>{entry.label}</dt>
-              <dd className="mt-1.5 text-sm leading-[1.5] text-ink-soft lg:mt-2.5 lg:text-[15px]">
-                {entry.body}
-              </dd>
-            </div>
-          ))}
-        </dl>
-
-        <section
-          aria-label="Desarrollo del proyecto"
-          className="flex flex-col gap-9 pt-12 lg:gap-16 lg:pt-24 wide:gap-20 wide:pt-[120px]"
-        >
-          <div className={pairClass}>
-            <h2 className={titleClass}>Qué necesitaba resolver</h2>
-            <p className="mt-2.5 text-[15px] leading-[1.6] text-ink-soft lg:mt-0 lg:max-w-[680px] lg:text-[17px] lg:leading-[1.65]">
-              {project.problem}
-            </p>
-          </div>
-
-          <div className={pairClass}>
-            <h2 className={titleClass}>Qué se desarrolló</h2>
-            <div className="mt-2.5 lg:mt-0 lg:max-w-[680px]">
-              <p className="text-[15px] leading-[1.6] text-ink-soft lg:text-[17px] lg:leading-[1.65]">
-                {project.built.body}
-              </p>
-              <ul className="mt-4 grid gap-x-6 text-sm leading-[1.5] text-ink-soft lg:mt-6 lg:grid-cols-2 lg:text-[15px]">
-                {project.built.features.map((feature, index, all) => (
-                  <li
-                    key={feature}
-                    className={`border-t border-line py-2 lg:py-2.5 ${
-                      index === all.length - 1 ? "border-b" : ""
-                    } ${index === all.length - 2 && all.length % 2 === 0 ? "lg:border-b" : ""}`}
-                  >
-                    {feature}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        </section>
+      <div className="wrap mt-[clamp(36px,5vw,64px)]">
+        <ProjectMainFigure figure={project.figure} />
       </div>
 
-      {detalles.length > 0 && (
-        <section
-          aria-label="Detalles de interfaz"
-          className={`grid items-start gap-y-8 pt-12 lg:pt-24 wide:pt-[120px] ${inset} ${
-            detalles.length > 1 ? "min-[900px]:grid-cols-[872fr_424fr] min-[900px]:gap-x-6" : ""
-          }`}
-        >
-          {detalles.map((figure) => (
-            <ProjectFigure key={figure.captionLabel} figure={figure} />
-          ))}
-        </section>
-      )}
+      <div className="wrap mt-[clamp(72px,9vw,128px)] grid gap-[clamp(56px,7vw,96px)]">
+        <Block id="ficha-problema" title={ficha.problema.titulo}>
+          <p className="max-w-[36em] text-lead text-ink-2">{project.problem}</p>
+        </Block>
 
-      {/* Banda a sangre: el título cae en la primera columna y el texto en la
-          segunda, en la misma vertical que el resto de la ficha. */}
-      <section aria-label="Una decisión concreta" className="mt-12 bg-paper-2 lg:mt-24 wide:mt-[120px]">
-        <div className={`container-editorial pb-8 pt-7 lg:pb-12 lg:pt-11 ${pairClass}`}>
-          <h2 className={titleClass}>Una decisión concreta</h2>
-          <div className="lg:max-w-[720px]">
-            <p className="mt-2.5 text-[15px] leading-[1.6] text-ink-soft lg:mt-0 lg:text-[17px] lg:leading-[1.65]">
-              {project.decision.body}
-            </p>
-            <p className="mt-4 text-sm leading-[1.55] text-ink-mute lg:mt-5 lg:text-[15px]">
-              <span className="font-mono text-[10px] uppercase tracking-[0.1em] text-ink lg:text-[11px]">
-                Para otro negocio ·{" "}
-              </span>
-              {project.decision.note}
+        <Block id="ficha-desarrollo" title={ficha.desarrollo.titulo}>
+          <p className="max-w-[40em] text-body text-ink-2">{project.built.body}</p>
+          <ul
+            aria-label={ficha.desarrollo.funciones_aria}
+            className="mt-7 grid border-t border-line 600:grid-cols-2 600:gap-x-8"
+          >
+            {project.built.features.map((feature) => (
+              <li key={feature} className="border-b border-line py-3 text-small text-ink">
+                {feature}
+              </li>
+            ))}
+          </ul>
+        </Block>
+
+        {details.length > 0 && (
+          <Block id="ficha-detalles" title={ficha.detalles.titulo}>
+            <div className={cn("grid gap-10", pair && "700:grid-cols-2 700:gap-x-6 700:gap-y-0")}>
+              {details.map((figure) => (
+                <ProjectDetailFigure key={figure.label} figure={figure} pair={pair} />
+              ))}
+            </div>
+          </Block>
+        )}
+      </div>
+
+      <section
+        aria-labelledby="ficha-decision"
+        className="mt-[clamp(80px,10vw,136px)] border-y border-line bg-surface py-[clamp(56px,7vw,96px)]"
+      >
+        <div
+          className="wrap grid gap-y-6 980:grid-cols-[minmax(0,4fr)_minmax(0,8fr)] 980:gap-x-16"
+          data-reveal
+        >
+          <h2 id="ficha-decision" className="max-w-[12em] text-feature-name">
+            {ficha.decision.titulo}
+          </h2>
+          <div className="min-w-0">
+            <p className="max-w-[36em] text-lead text-ink">{project.decision.body}</p>
+            <p className="mt-7 max-w-[44em] border-t border-line pt-5 text-small text-ink-2">
+              <strong className="font-semibold text-ink">{ficha.decision.nota}</strong> {project.decision.note}
             </p>
           </div>
         </div>
       </section>
 
-      <section
-        id="contacto"
-        aria-labelledby="ficha-cta"
-        className="mt-12 scroll-mt-6 bg-ink text-paper lg:mt-24 wide:mt-[120px]"
-      >
-        <div className="container-editorial rejilla-editorial pb-16 pt-14 lg:pb-[104px] lg:pt-24">
-          <div>
-            <h2
-              id="ficha-cta"
-              className="font-display text-[28px] uppercase leading-none tracking-[-0.01em] text-paper lg:text-[40px]"
-            >
-              ¿Necesitas resolver algo parecido?
+      {/* Banda de tinta, como «Cómo trabajamos». El pie va justo debajo y es
+          del mismo color: el filete inferior, dentro del contenedor, separa
+          el cierre del pie. */}
+      <section aria-labelledby="ficha-cierre" className="bg-dark text-on-dark">
+        <div
+          className="wrap section grid gap-9 border-b border-line-dark 980:grid-cols-[minmax(0,1fr)_auto] 980:items-end 980:gap-x-16"
+          data-reveal
+        >
+          <div className="grid content-start gap-[18px]">
+            <h2 id="ficha-cierre" className="max-w-[14em] text-h2">
+              {ficha.cierre.titulo}
             </h2>
-            <p className="mt-4 max-w-[560px] text-[15px] leading-[1.6] text-paper/78 lg:mt-6 lg:text-[17px]">
-              {project.nextStep}
-            </p>
+            <p className="max-w-[30em] text-lead text-on-dark-2">{project.nextStep}</p>
           </div>
-          <div className="mt-6 flex flex-col items-stretch gap-2.5 sm:max-w-[340px] lg:mt-0 lg:gap-3 lg:pt-2">
+          {/* Por debajo de 600 px, botón a todo el ancho y el enlace debajo. */}
+          <div className="flex flex-wrap items-center gap-x-[26px] gap-y-3.5 max-[599px]:flex-col max-[599px]:items-stretch">
             <Button
-              href={contactHref}
-              tone="paper"
-              size="lg"
+              href={contactHref({ project: project.slug })}
+              variant="light"
+              arrow
               trackLocation="case"
               trackProject={project.slug}
-              className="w-full lg:px-7"
             >
-              Contar mi caso por escrito
+              {ficha.cierre.boton}
             </Button>
-            <BookingLink location="case" project={project.slug} className="min-h-[52px] w-full lg:px-6" />
-            <Link
-              href="/#proyectos"
-              className="mt-1.5 inline-flex min-h-11 items-center self-start text-sm text-paper underline underline-offset-4 transition-colors duration-300 ease-editorial hover:text-cobalt-bright lg:mt-3"
-            >
-              Ver otros proyectos
-            </Link>
+            <BookingLink
+              location="case"
+              project={project.slug}
+              variant="link"
+              on="dark"
+              label={sinCortes(ficha.cierre.reserva)}
+              className="max-[599px]:self-start"
+            />
           </div>
         </div>
       </section>

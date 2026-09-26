@@ -21,3 +21,10 @@ test("measurement accepts only a fixed vocabulary, never form values or arbitrar
   assert.equal(parseAnalyticsEvent({ name: "contact_provider_accepted", properties: {} }), null);
   assert.equal(parseAnalyticsEvent({ name: "cta_click", properties: {}, message: "private" }), null);
 });
+
+/** La banda «Cómo trabajamos» mide sus enlaces como «method». */
+test("the method band is part of the location vocabulary", () => {
+  assert.deepEqual(parseAnalyticsEvent({ name: "cta_click", properties: { location: "method", destination: "booking" } }), {
+    name: "cta_click", properties: { location: "method", destination: "booking" },
+  });
+});

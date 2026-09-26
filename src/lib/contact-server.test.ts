@@ -43,9 +43,20 @@ describe("endpoint de contacto, proveedor siempre simulado", () => {
     assert.equal(sent.reply_to, "ana@example.com");
     assert.match(sent.text, /Nombre: Ana\n/);
     assert.match(sent.text, /Necesidad: Organizar/);
-    assert.match(sent.text, /Proyecto de referencia: Sistema de gestión de almacén/);
+    assert.match(sent.text, /Proyecto de referencia: Gestión de almacén/);
     assert.equal(new Headers(calls[0].init?.headers).get("Idempotency-Key"), `contact/${requestId}`);
     assert.deepEqual(accepted, [{ providerId, need: "operativa", project: "wms-almacen" }]);
+  });
+
+  it("nombra el tema con el rótulo de su píldora y mantiene el asunto", async () => {
+    const { handler, calls } = harness();
+    await handler(request({ ...valid, necesidad: "diagnostico", empresa: "Taller Norte" }));
+    const sent = JSON.parse(String(calls[0].init?.body));
+    assert.match(sent.text, /Necesidad: Todavía no lo tengo claro\n/);
+    assert.equal(sent.subject, "Nueva consulta — Taller Norte");
+    const { handler: sinTema, calls: sinTemaCalls } = harness();
+    await sinTema(request({ ...valid, necesidad: "" }));
+    assert.match(JSON.parse(String(sinTemaCalls[0].init?.body)).text, /Necesidad: Por concretar\n/);
   });
 
   it("reutiliza clave y cuerpo al reintentar; los logs se deduplican por providerId", async () => {
