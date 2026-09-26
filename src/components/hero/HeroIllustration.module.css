@@ -29,6 +29,25 @@
   font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
 }
 
+/*
+ * Portátiles bajos (desde 1180 px de ancho y hasta 880 de alto, como los
+ * huecos compactos de `Hero.tsx`): la ilustración se limita al alto que dejan la cabecera, el
+ * pie y la franja de compromisos (unos 260 px) y se centra en su columna. El
+ * pie se estrecha igual para que su relleno del 6,875 % siga alineado con la
+ * ventana dibujada. 64 / 54 es la proporción del viewBox de escritorio.
+ * El límite nunca baja de 500 px: en 1366 × 657, el portátil más común, la
+ * fórmula daba unos 385 px y el texto de las filas quedaba ilegible. Ahí
+ * manda la ilustración y la franja de compromisos puede quedar bajo el
+ * pliegue (los compromisos se repiten en «Cómo trabajamos»).
+ */
+@media (min-width: 1180px) and (max-height: 880px) {
+  .art,
+  .caption {
+    max-width: max(500px, calc((100svh - var(--head-h) - 260px) * 64 / 54));
+    margin-inline: auto;
+  }
+}
+
 /* Texto dibujado (unidades del viewBox, se escala con la ilustración). */
 .tSide {
   font-size: 13.5px;
@@ -91,11 +110,15 @@
   fill: var(--ink-4);
 }
 
-/* Letra «a mano»: la itálica de Schibsted, cargada aparte y sin precarga. */
+/* Letra «a mano»: la itálica de Schibsted, cargada aparte y sin precarga.
+   Redonda por defecto: las notas solo se ven en el caos, que existe con JS y
+   movimiento permitido (abajo pasa a itálica). Sin JS o con movimiento
+   reducido el navegador no llega a pedir la itálica (50 KB) para un texto
+   que está a opacidad 0. */
 .tHand {
   font-family: var(--font-sans-italic), var(--font-sans), ui-sans-serif, sans-serif;
   font-size: 16px;
-  font-style: italic;
+  font-style: normal;
   fill: var(--ink);
   letter-spacing: -0.01em;
 }
@@ -141,7 +164,11 @@
   opacity: 0;
 }
 
-@media (prefers-reduced-motion: no-preference) {
+@media screen and (prefers-reduced-motion: no-preference) {
+  :global(.js) .tHand {
+    font-style: italic;
+  }
+
   /* Caos: piezas y huecos a la vista, filas todavía vacías. */
   :global(.js) .figure:is([data-state="idle"], [data-state="play"]) :is(.piece, .ph) {
     opacity: 1;
@@ -190,6 +217,12 @@
     animation-delay: calc(1.62s + var(--i) * 0.32s);
   }
 
+  /* En móvil las piezas de arriba (hoja y nota) tapan las primeras filas
+     hasta que se funden: cada fila entra después, cuando ya han salido. */
+  :global(.js) .figure[data-state="play"] .artMobile :is(.row, .hl) {
+    animation-delay: calc(2.1s + var(--i) * 0.28s);
+  }
+
   :global(.js) .figure[data-state="play"] .ph {
     animation: fade 0.3s linear 3.1s forwards;
   }
@@ -233,14 +266,22 @@
   }
 }
 
+/* La pieza se funde en pleno vuelo, del 35 al 55 % del tiempo (con
+   `--ease-io`, del 20 al 74 % del recorrido), antes de cruzar una fila ya
+   visible o el título de la suya: así nunca queda texto encima de texto. La
+   trayectoria (`--dx`, `--dy`, 0 → 100 %) es la de la especificación. */
 @keyframes fly {
   0% {
     transform: translate(0, 0) rotate(0) scale(1);
     opacity: 1;
   }
 
-  72% {
+  35% {
     opacity: 1;
+  }
+
+  55% {
+    opacity: 0;
   }
 
   100% {
@@ -265,8 +306,14 @@
     transform: translate(0, 0) rotate(0) scale(1);
   }
 
-  88% {
+  /* El vuelo (del 58 al 100 %) se funde como en `fly`, del 35 al 55 % de su
+     tiempo, antes de pasar por encima de la fila ya visible. */
+  73% {
     opacity: 1;
+  }
+
+  81% {
+    opacity: 0;
   }
 
   100% {

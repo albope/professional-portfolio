@@ -6,7 +6,10 @@ import { cn } from "@/lib/utils";
 const DESKTOP = "(min-width: 1180px)";
 
 interface MobileMenuProps {
-  /** `aria-label` del botón: «Abrir el menú». */
+  /**
+   * `aria-label` del botón: «Menú». Neutro a propósito: el estado abierto o
+   * cerrado ya lo anuncia el propio `<details>` («Menú, expandido»).
+   */
   label: string;
   /** Enlaces y acciones del panel, pintados por el servidor. */
   children: ReactNode;
@@ -19,6 +22,8 @@ interface MobileMenuProps {
  * - se cierra al elegir un enlace del panel,
  * - Escape lo cierra y devuelve el foco al botón,
  * - un clic fuera lo cierra,
+ * - si el foco sale del menú (Tab más allá de su último enlace) se cierra,
+ *   para que el panel fijo no tape el control enfocado (WCAG 2.4.11),
  * - si la ventana crece hasta 1180 px se cierra (allí manda la navegación).
  * El botón es de 44 × 44 y sus dos barras giran a aspa en 0,25 s.
  */
@@ -39,6 +44,13 @@ export function MobileMenu({ label, children, className }: MobileMenuProps) {
     const onClick = (event: globalThis.MouseEvent) => {
       if (event.target instanceof Node && !details.contains(event.target)) details.open = false;
     };
+    // `focusin` en el documento y no `focusout` en el menú: Safari no enfoca
+    // los enlaces al hacer clic, así que el botón perdería el foco hacia
+    // `body`, el panel se cerraría antes del `click` y el clic se perdería.
+    // Aquí solo cuenta un foco que llega a otro control de la página.
+    const onFocusIn = (event: FocusEvent) => {
+      if (event.target instanceof Node && !details.contains(event.target)) details.open = false;
+    };
     const desktop = window.matchMedia(DESKTOP);
     const onDesktop = () => {
       if (desktop.matches) details.open = false;
@@ -46,10 +58,12 @@ export function MobileMenu({ label, children, className }: MobileMenuProps) {
 
     document.addEventListener("keydown", onKeyDown);
     document.addEventListener("click", onClick);
+    document.addEventListener("focusin", onFocusIn);
     desktop.addEventListener("change", onDesktop);
     return () => {
       document.removeEventListener("keydown", onKeyDown);
       document.removeEventListener("click", onClick);
+      document.removeEventListener("focusin", onFocusIn);
       desktop.removeEventListener("change", onDesktop);
     };
   }, [open]);
@@ -72,9 +86,11 @@ export function MobileMenu({ label, children, className }: MobileMenuProps) {
         aria-label={label}
         className="grid h-11 w-11 cursor-pointer list-none place-items-center rounded-control border border-line-2 transition-colors duration-200 hover:border-ink [&::-webkit-details-marker]:hidden"
       >
+        {/* En colores forzados el fondo de las barras pasaría al del lienzo:
+            `CanvasText` las mantiene a la vista. */}
         <span
           aria-hidden="true"
-          className="relative h-3 w-[18px] before:absolute before:inset-x-0 before:top-0.5 before:h-0.5 before:bg-ink before:transition-[transform,top] before:duration-[250ms] before:ease-soft after:absolute after:inset-x-0 after:top-2 after:h-0.5 after:bg-ink after:transition-[transform,top] after:duration-[250ms] after:ease-soft group-open/menu:before:top-[5px] group-open/menu:before:rotate-45 group-open/menu:after:top-[5px] group-open/menu:after:-rotate-45"
+          className="relative h-3 w-[18px] forced-colors:before:bg-[CanvasText] forced-colors:after:bg-[CanvasText] before:absolute before:inset-x-0 before:top-0.5 before:h-0.5 before:bg-ink before:transition-[transform,top] before:duration-[250ms] before:ease-soft after:absolute after:inset-x-0 after:top-2 after:h-0.5 after:bg-ink after:transition-[transform,top] after:duration-[250ms] after:ease-soft group-open/menu:before:top-[5px] group-open/menu:before:rotate-45 group-open/menu:after:top-[5px] group-open/menu:after:-rotate-45"
         />
       </summary>
       <div

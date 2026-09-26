@@ -48,7 +48,7 @@ export function ConnectArt({ aria, origen, destino, pie_origen, pie_destino }: C
     <svg className="h-full w-full" viewBox="0 0 360 240" role="img" aria-label={aria}>
       {/* Hoja de cálculo */}
       <rect x="24.5" y="50.5" width="129" height="139" rx="12" fill={color.surface} stroke={color.line2} />
-      <text className="fill-ink text-[12.5px] font-semibold" x="40" y="76">
+      <text className="fill-ink text-[14px] font-semibold" x="40" y="76">
         {origen}
       </text>
       <line x1="25" y1="88.5" x2="153" y2="88.5" stroke={color.line} />
@@ -88,7 +88,7 @@ export function ConnectArt({ aria, origen, destino, pie_origen, pie_destino }: C
 
       {/* Tu aplicación */}
       <rect x="206.5" y="50.5" width="129" height="139" rx="12" fill={color.surface} stroke={color.line2} />
-      <text className="fill-ink text-[12.5px] font-semibold" x="222" y="76">
+      <text className="fill-ink text-[14px] font-semibold" x="222" y="76">
         {destino}
       </text>
       <line x1="207" y1="88.5" x2="335" y2="88.5" stroke={color.line} />
@@ -115,10 +115,10 @@ export function ConnectArt({ aria, origen, destino, pie_origen, pie_destino }: C
         />
       ))}
 
-      <text className="fill-ink-2 text-[11px]" x="89" y="212" textAnchor="middle">
+      <text className="fill-ink-2 text-[13.5px]" x="89" y="212" textAnchor="middle">
         {pie_origen}
       </text>
-      <text className="fill-ink-2 text-[11px]" x="271" y="212" textAnchor="middle">
+      <text className="fill-ink-2 text-[13.5px]" x="271" y="212" textAnchor="middle">
         {pie_destino}
       </text>
     </svg>

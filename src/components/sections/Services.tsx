@@ -63,9 +63,9 @@ function ServiceArt({ ilustracion }: { ilustracion: ServicioItem["ilustracion"] 
  *
  * Tres servicios. Cada uno cuenta para cuándo sirve antes de qué es, pone un
  * ejemplo y ofrece dos salidas: la consulta con su tema ya marcado en el
- * formulario (`/?necesidad=<clave>#contacto`, que funciona también como
- * navegación completa sin JS) y el caso de esta misma página que lo
- * demuestra. Una columna hasta 699 px, ilustración | texto de 700 a 1023 y
+ * formulario (`/?necesidad=<clave>#contacto`: sin JS el enlace lleva al
+ * formulario, pero marcar el tema necesita JS) y el caso de esta misma
+ * página que lo demuestra. Una columna hasta 699 px, ilustración | texto de 700 a 1023 y
  * tres columnas desde 1024.
  *
  * El cierre recoge a quien no sabe en qué servicio encaja: botón fantasma con
@@ -96,14 +96,17 @@ export function Services() {
                 <ServiceArt ilustracion={item.ilustracion} />
                 {/* De 700 a 1023 el texto va al lado de la ilustración y centrado con
                     ella: ahí sobra el aire de arriba que la separa cuando va debajo. */}
-                <div className="grid content-start gap-2.5 pt-[26px] 700:pt-0 1024:pt-[26px]">
+                {/* Desde 1024 px los tres artículos miden lo mismo (la fila de la
+                    rejilla) y el texto se estira hasta abajo: los enlaces van
+                    al fondo (`mt-auto`) y forman línea en las tres columnas. */}
+                <div className="grid content-start gap-2.5 pt-[26px] 700:pt-0 1024:flex 1024:flex-1 1024:flex-col 1024:pt-[26px]">
                   <h3 className="text-h3">{item.titulo}</h3>
                   <p className="text-base font-medium leading-[1.45]">{item.para_cuando}</p>
                   <p className="text-base leading-[1.55] text-ink-2">{item.descripcion}</p>
                   <p className="text-small leading-[1.55] text-ink-2">{item.ejemplo}</p>
                   {/* Cada enlace mide 40 px de alto táctil (5.3): el margen de arriba
                       descuenta ese aire para que el primero quede donde en la referencia. */}
-                  <div className="mt-1 flex flex-col items-start text-small">
+                  <div className="mt-1 flex flex-col items-start text-small 1024:mt-auto 1024:pt-1">
                     <ArrowLink
                       href={contactHref({ need })}
                       tone="cobalt"

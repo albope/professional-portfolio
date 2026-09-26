@@ -78,7 +78,9 @@ export function Contact() {
             })}
           </ol>
 
-          <div className="grid gap-3.5 rounded-card border border-line-2 p-[22px]">
+          {/* Por debajo de 360 px el relleno baja a 16: a 320 el botón se
+              quedaba 2 px corto y partía «llamada» en otra línea. */}
+          <div className="grid gap-3.5 rounded-card border border-line-2 p-[22px] max-[359px]:p-4">
             <p className="text-small text-ink-2">
               <strong className="mb-0.5 block text-[1.0625rem] font-semibold leading-[1.4] text-ink">
                 {lateral.llamada.titulo}

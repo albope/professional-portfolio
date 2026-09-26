@@ -1,11 +1,11 @@
 "use client";
 
-import { useEffect, useId, useRef, useState, type MouseEvent } from "react";
+import { useEffect, useId, useRef, useState, useSyncExternalStore, type MouseEvent } from "react";
 import { booking } from "@/data/booking";
 import type { Copy } from "@/data/copy";
 import { cn } from "@/lib/utils";
 import { ArrowIcon } from "@/components/ui/ArrowIcon";
-import { BaseLink } from "@/components/ui/BaseLink";
+import { BaseLink, NEW_TAB_NOTE_ID, trackingAttributes } from "@/components/ui/BaseLink";
 import { ButtonArrow, buttonClasses, type ButtonSize } from "@/components/ui/Button";
 import { ArrowLinkIcon, arrowLinkClasses, arrowLinkLabelClasses } from "@/components/ui/ArrowLink";
 import { textLinkClasses } from "@/components/ui/TextLink";
@@ -35,6 +35,8 @@ const calendarUi = {
   },
 } as const;
 
+const sinSuscripcion = () => () => {};
+
 export type BookingVariant = "link" | "ghost" | "arrow";
 export type BookingSurface = "light" | "dark";
 
@@ -56,7 +58,10 @@ export interface BookingDialogLinkProps {
  *
  * El enlace es un enlace normal a Cal.com: funciona antes de hidratar, sin JS
  * o abierto en otra pestaña. Con JS, un clic normal abre el diálogo y carga
- * el embed solo entonces.
+ * el embed solo entonces. Por eso se anuncia distinto antes y después de
+ * hidratar: en el HTML del servidor es un enlace que se abre en otra pestaña
+ * (con el aviso, como los demás externos) y, con JS, un disparador de
+ * diálogo (`aria-haspopup`, `aria-expanded`).
  */
 export function BookingDialogLink({
   location,
@@ -76,6 +81,7 @@ export function BookingDialogLink({
   const [open, setOpen] = useState(false);
   const [Embed, setEmbed] = useState<CalEmbed | null>(null);
   const [status, setStatus] = useState<LoadStatus>("loading");
+  const hidratado = useSyncExternalStore(sinSuscripcion, () => true, () => false);
 
   useEffect(() => {
     if (!open) return;
@@ -155,13 +161,11 @@ export function BookingDialogLink({
         href={booking.url}
         target="_blank"
         rel="noopener noreferrer"
-        aria-haspopup="dialog"
-        aria-expanded={open}
+        aria-haspopup={hidratado ? "dialog" : undefined}
+        aria-expanded={hidratado ? open : undefined}
+        aria-describedby={hidratado ? undefined : NEW_TAB_NOTE_ID}
         onClick={openBooking}
-        data-track="cta_click"
-        data-track-location={location}
-        data-track-destination="booking"
-        data-track-project={project}
+        {...trackingAttributes({ trackLocation: location, trackDestination: "booking", trackProject: project })}
         className={trigger.className}
       >
         {trigger.content}
@@ -193,7 +197,16 @@ export function BookingDialogLink({
             </button>
           </div>
 
-          <div ref={embedRef} className="relative min-h-0 overflow-y-auto overscroll-contain bg-surface p-1 600:p-3" aria-busy={status === "loading"}>
+          {/* Región con nombre: mientras carga (o si falla) el contenedor ya
+              tiene scroll y Chrome lo vuelve una parada de tabulación. Así
+              esa parada dice qué es en lugar de ser un bloque sin rol. */}
+          <div
+            ref={embedRef}
+            role="region"
+            aria-label={texts.agenda_titulo}
+            className="relative min-h-0 overflow-y-auto overscroll-contain bg-surface p-1 600:p-3"
+            aria-busy={status === "loading"}
+          >
             {status !== "ready" && (
               <p role="status" className="px-4 py-6 text-center text-small text-ink-2">
                 {status === "loading" ? texts.cargando : status === "slow" ? texts.lento : texts.fallo}

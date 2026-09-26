@@ -4,14 +4,17 @@
  * macizas. `--i` (0 a 3) es el orden de cada paso.
  */
 
-@media (prefers-reduced-motion: no-preference) {
+@media screen and (prefers-reduced-motion: no-preference) {
   /* En móvil la línea es vertical y se dibuja de arriba abajo. */
   :global(.js) [data-state="idle"] .fill {
     transform: scaleY(0);
   }
 
+  /* Avance lineal: la línea llega a cada columna (0, 26, 52 y 78 %) a los
+     0,15, 0,72, 1,29 y 1,87 s, a la vez que se rellena su marca. Con
+     `--ease`, que arranca muy rápido, iba hasta un segundo por delante. */
   :global(.js) [data-state="play"] .fill {
-    transition: transform 2.2s var(--ease) 0.15s;
+    transition: transform 2.2s linear 0.15s;
   }
 
   /* Cada marca empieza hueca (fondo de la banda y borde `on-dark-3`) y se
@@ -30,7 +33,7 @@
 }
 
 /* Desde 980 px la línea es horizontal y se dibuja de izquierda a derecha. */
-@media (prefers-reduced-motion: no-preference) and (min-width: 980px) {
+@media screen and (prefers-reduced-motion: no-preference) and (min-width: 980px) {
   :global(.js) [data-state="idle"] .fill {
     transform: scaleX(0);
   }

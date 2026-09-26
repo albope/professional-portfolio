@@ -77,14 +77,14 @@ export function AgendaArt({ aria, titulo, dias }: AgendaArtProps) {
   return (
     <svg className="h-full w-full" viewBox="0 0 360 240" role="img" aria-label={aria}>
       <rect x="28.5" y="22.5" width="303" height="195" rx="12" fill={color.surface} stroke={color.line2} />
-      <text className="fill-ink text-[12.5px] font-semibold" x="46" y="50">
+      <text className="fill-ink text-[14px] font-semibold" x="46" y="50">
         {titulo}
       </text>
       <rect x="284" y="40" width="9" height="9" fill="none" stroke={color.ink} strokeWidth="1.5" />
       <rect x="300" y="40" width="9" height="9" fill={color.cobalt} />
 
       {dias.map((dia, i) => (
-        <text key={i} className="fill-ink-2 text-[11px]" x={COLUMNAS[i] + 25} y="77" textAnchor="middle">
+        <text key={i} className="fill-ink-2 text-[13px]" x={COLUMNAS[i] + 25} y="77" textAnchor="middle">
           {dia}
         </text>
       ))}

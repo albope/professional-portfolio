@@ -7,8 +7,10 @@ import {
   proyectoDestacado,
   proyectoTambien,
   proyectoTarjetas,
+  rellenar,
   type ProyectoTarjeta,
 } from "@/data/copy";
+import { CONTACT_PROJECTS } from "@/lib/contact";
 import { cn } from "@/lib/utils";
 
 const { proyectos } = copyEs;
@@ -74,8 +76,8 @@ const IMG = "block h-auto w-full";
 /**
  * Reencuadre de cada tarjeta (especificación 3.4, ajuste 9 del jurado), en el
  * orden de `copy.proyectos.tarjetas`. Las posiciones son las del prototipo.
- * - Almacén: el listado de movimientos desborda a la derecha y el terminal
- *   de lectura asoma por abajo.
+ * - Almacén: el listado de movimientos desborda a la derecha y el lector de
+ *   códigos del móvil asoma por abajo.
  * - Radio: la web de escritorio al fondo, para que se vean el menú y el
  *   reproductor fijo, y el móvil delante tapando la zona difuminada.
  * - Evento: solo la franja clara de la web (sin el bloque granate) y un
@@ -145,9 +147,11 @@ const reencuadres: ReadonlyArray<(tarjeta: ProyectoTarjeta) => ReactNode> = [
         />
       </Shot>
       {/* Recorta la zona x 897..1120, y 2..40 del original. El fondo es el de la
-          propia web, para que el recorte no parpadee en blanco mientras carga. */}
+          propia web, para que el recorte no parpadee en blanco mientras carga.
+          Nunca pasa de 266 px (1,2 veces los 222 del recorte): la captura es
+          de 1120 px y, más ampliada, el selector y el botón se ven borrosos. */}
       <div
-        className="absolute right-[6%] top-[60%] aspect-[222/38] w-[72%] overflow-hidden rounded-[6px] bg-[#E9E9E1] shadow-[0_0_0_1px_rgba(16,16,19,.08),0_24px_40px_-18px_rgba(16,16,19,.45)]"
+        className="absolute right-[6%] top-[60%] aspect-[222/38] w-[72%] max-w-[266px] overflow-hidden rounded-[6px] bg-[#E9E9E1] shadow-[0_0_0_1px_rgba(16,16,19,.08),0_24px_40px_-18px_rgba(16,16,19,.45)]"
         aria-hidden="true"
       >
         <Image
@@ -232,11 +236,18 @@ export function Work() {
                   className="grid grid-cols-1 gap-1 border-b border-line py-3.5 600:grid-cols-[8.5em_minmax(0,1fr)] 600:gap-4"
                 >
                   <dt className="text-small font-semibold">{termino}</dt>
-                  <dd className={cn("text-small leading-[1.55]", index === FILA_HOY ? "text-ink" : "text-ink-2")}>
-                    {index === FILA_HOY && (
-                      <i className="mr-2 inline-block size-[9px] bg-cobalt align-[1px]" aria-hidden="true" />
+                  {/* «Hoy»: el cuadrado va aparte (flex) y la frase, si parte,
+                      sigue en el mismo eje en lugar de volver bajo el cuadrado. */}
+                  <dd
+                    className={cn(
+                      "text-small leading-[1.55]",
+                      index === FILA_HOY ? "flex items-start gap-2 text-ink" : "text-ink-2",
                     )}
-                    {definicion}
+                  >
+                    {index === FILA_HOY && (
+                      <i className="mt-[0.45em] size-[9px] flex-none bg-cobalt" aria-hidden="true" />
+                    )}
+                    {index === FILA_HOY ? <span>{definicion}</span> : definicion}
                   </dd>
                 </div>
               ))}
@@ -257,14 +268,17 @@ export function Work() {
           </div>
         </article>
 
-        <div className="grid gap-12 1024:grid-cols-3">
+        {/* Desde 1024 px cada tarjeta ocupa cinco filas de la rejilla
+            (`subgrid`): etiquetas, títulos, textos y «Ver el caso» comparten
+            línea en las tres columnas aunque un texto sea más largo. */}
+        <div className="grid gap-12 1024:grid-cols-3 1024:gap-x-12 1024:gap-y-3.5">
           {proyectos.tarjetas.map((tarjeta, index) => {
             const { ancla, slug } = proyectoTarjetas[index];
             return (
               <article
                 key={ancla}
                 id={ancla}
-                className="grid content-start gap-3.5 700:max-[1023px]:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] 700:max-[1023px]:content-center 700:max-[1023px]:items-start 700:max-[1023px]:gap-x-9 700:max-[1023px]:gap-y-2.5"
+                className="grid content-start gap-3.5 1024:row-span-5 1024:grid-rows-subgrid 700:max-[1023px]:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] 700:max-[1023px]:content-center 700:max-[1023px]:items-start 700:max-[1023px]:gap-x-9 700:max-[1023px]:gap-y-2.5"
                 data-reveal
                 style={{ "--rd": index } as CSSProperties}
               >
@@ -285,6 +299,10 @@ export function Work() {
                   trackProject={slug}
                 >
                   {tarjeta.caso}
+                  {/* «Ver el caso» se repite en las tres tarjetas: en la lista de
+                      enlaces del lector de pantalla o con control por voz,
+                      cada uno lleva el nombre de su proyecto. */}
+                  <span className="sr-only"> {rellenar(proyectos.caso_contexto, { titulo: tarjeta.titulo })}</span>
                 </ArrowLink>
               </article>
             );
@@ -304,6 +322,7 @@ export function Work() {
             trackProject={proyectoTambien.slug}
           >
             {proyectos.tambien.caso}
+            <span className="sr-only"> {rellenar(proyectos.caso_contexto, { titulo: CONTACT_PROJECTS[proyectoTambien.slug] })}</span>
           </TextLink>
         </p>
       </div>

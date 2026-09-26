@@ -50,7 +50,7 @@ export const capturas = {
     src: "/proyectos/padel/reservas.png",
     width: 1280,
     height: 720,
-    alt: "Parrilla de reservas: franjas horarias por pista con su estado, una reserva habitual con trama y una clase de academia",
+    alt: "Parrilla de reservas: franjas horarias por pista con su estado, una reserva habitual con rayado y una clase de academia",
   },
   portalMovil: {
     src: "/proyectos/padel/portal-movil.png",
@@ -68,7 +68,7 @@ export const capturas = {
     src: "/proyectos/almacen/rf-entrada.png",
     width: 960,
     height: 1600,
-    alt: "Pantalla del terminal de lectura en el móvil para registrar la entrada de un producto escaneando su código",
+    alt: "Pantalla del lector de códigos en el móvil para registrar la entrada de un producto escaneando su código",
   },
   eventoCuenta: {
     src: "/proyectos/evento/cuenta-anonima.jpg",
@@ -92,7 +92,7 @@ export const capturas = {
     src: "/proyectos/asistente/traza-sin-marcas.png",
     width: 1343,
     height: 638,
-    alt: "Pantalla del asistente: el agente de gestión de proyectos con la traza de pasos y fuentes consultadas. Las conversaciones, los nombres y el contenido de la respuesta aparecen difuminados",
+    alt: "Pantalla del asistente de gestión de proyectos con los pasos y las fuentes consultadas para una respuesta. Las conversaciones, los nombres y el contenido de la respuesta aparecen difuminados",
   },
 } satisfies Record<string, Shot>;
 
@@ -127,8 +127,12 @@ export type MainFigure =
  * - `recorte`: una zona de la captura, sin ampliarla nunca por encima de su
  *   tamaño original.
  * - `movil`: la pantalla del móvil entera, con su marco.
+ *
+ * `soloMovil`: el detalle repite lo que la figura principal ya enseña legible
+ * desde 768 px (el móvil entero, la cuenta atrás). Solo se muestra por
+ * debajo, donde la figura principal se lee pequeña.
  */
-export type DetailFigure = { label: string; caption: string } & (
+export type DetailFigure = { label: string; caption: string; soloMovil?: boolean } & (
   | {
       variant: "recorte";
       shot: Shot;
@@ -192,21 +196,24 @@ export const projects: Project[] = [
       {
         variant: "recorte",
         shot: capturas.reservas,
-        crop: { x: 300, y: 40, w: 380, h: 430 },
+        // Los tres estados de una franja: libre, clase de academia y reserva
+        // habitual con rayado. Se pinta a su tamaño (1:1): la captura es a 1x.
+        crop: { x: 320, y: 248, w: 340, h: 200 },
         label: "Parrilla de reservas.",
         caption:
-          "Cada franja muestra la hora y el estado de la pista. Las reservas habituales llevan trama, no solo color.",
+          "Cada franja muestra la hora y el estado de la pista. Las reservas habituales se distinguen con un rayado, no solo por el color.",
       },
       {
         variant: "movil",
         shot: capturas.portalMovil,
+        soloMovil: true,
         label: "Portal del jugador.",
         caption:
-          "Funciona en el navegador del móvil y se puede instalar como app. Clases, reservas y perfil en la barra inferior.",
+          "Funciona en el navegador del móvil y, si el jugador quiere, se añade a la pantalla de inicio. Clases, reservas y perfil en la barra inferior.",
       },
     ],
     problem:
-      "Una reserva afecta a varias partes del negocio: la disponibilidad de una pista, los datos del jugador, el pago y la agenda del club. Había que reunir esos procesos en una aplicación con dos perspectivas, la de quien reserva y la de quien administra.",
+      "Una reserva afecta a varias partes del negocio: la disponibilidad de una pista, los datos del jugador, el pago y la agenda del club. Había que reunir esos procesos en una aplicación con dos vistas, la de quien reserva y la de quien administra.",
     built: {
       body:
         "El portal del jugador y el panel de gestión del club, conectados entre sí: lo que hace el jugador llega al instante a la información que administra el club.",
@@ -215,7 +222,7 @@ export const projects: Project[] = [
         "Socios, con importación desde Excel",
         "Ligas y torneos con clasificación automática",
         "Cobros presenciales y reservas pendientes",
-        "Portal móvil del jugador, sin instalar app",
+        "Portal del jugador en el móvil, sin descargar nada",
         "Estadísticas de ocupación e ingresos",
         "Noticias y blog del club",
         "Permisos para gerencia, personal y socios",
@@ -241,7 +248,7 @@ export const projects: Project[] = [
       shot: capturas.movimientos,
       phone: capturas.rfEntrada,
       caption:
-        "El libro de movimientos y el terminal de lectura en el móvil. Capturas reales con datos de demostración y la marca difuminada.",
+        "El libro de movimientos y el lector de códigos en el móvil. Capturas reales con datos de demostración y la marca difuminada.",
     },
     details: [
       {
@@ -312,6 +319,7 @@ export const projects: Project[] = [
           alt: "Detalle de la cuenta atrás de la web: días, horas, minutos y segundos que faltan para el evento",
         },
         crop: { x: 330, y: 50, w: 460, h: 180 },
+        soloMovil: true,
         label: "Cuenta atrás.",
         caption:
           "La portada recuerda cuánto falta para el evento. La navegación y el botón de confirmar acompañan al invitado durante todo el recorrido de la página.",
@@ -347,7 +355,7 @@ export const projects: Project[] = [
     name: "Web para un programa de radio",
     title: "Web para un programa de radio con directo",
     intro:
-      "Emisión en directo, archivo de programas y un reproductor que sigue sonando mientras se recorre la web. Con identidad propia y instalable como app en el móvil.",
+      "Emisión en directo, archivo de programas y un reproductor que sigue sonando mientras navegas por la web. Con identidad propia y instalable como app en el móvil.",
     figure: {
       layout: "movil-delante",
       shot: capturas.radioPortada,
@@ -359,6 +367,7 @@ export const projects: Project[] = [
       {
         variant: "movil",
         shot: capturas.radioMovil,
+        soloMovil: true,
         label: "En el móvil.",
         caption: "La misma escucha en el teléfono, instalable como app desde el propio navegador.",
       },
@@ -367,19 +376,19 @@ export const projects: Project[] = [
       "Había que reunir la identidad del programa, la emisión en directo y los contenidos archivados en una web propia. El audio forma parte central del recorrido por el sitio, no es un añadido.",
     built: {
       body:
-        "La web con reproductor en directo, archivo histórico y soporte para instalarla como app. El reproductor permanece durante la navegación interna.",
+        "La web con reproductor en directo, archivo histórico y la opción de instalarla como app en el móvil. El reproductor sigue sonando mientras cambias de página.",
       features: [
         "Emisión en directo",
         "Archivo de programas",
         "Galería histórica",
-        "Reproductor persistente",
+        "Reproductor que no se corta al cambiar de página",
         "Instalación como app en el móvil",
         "Identidad propia del programa",
       ],
     },
     decision: {
       body:
-        "El reproductor permanece mientras se navega: se puede explorar el archivo sin cortar la escucha. Esa decisión condiciona cómo se cargan las páginas internas y cómo sigue sonando el audio al cambiar de página.",
+        "El reproductor no se corta al cambiar de página: se puede explorar el archivo sin dejar de escuchar. Esa decisión condiciona cómo está construida la web entera, no solo el reproductor.",
       note:
         "El origen de la emisión, la organización del archivo y el comportamiento del reproductor determinan buena parte del alcance. En un proyecto nuevo revisamos esas piezas junto con la experiencia móvil y la forma de publicar nuevos programas.",
     },
@@ -391,19 +400,19 @@ export const projects: Project[] = [
     name: "Asistente para la gestión de proyectos",
     title: "Asistente con IA para la gestión de proyectos",
     intro:
-      "Una aplicación con dos agentes, uno de gestión de proyectos y otro de conocimiento de producto. Consulta la documentación y las herramientas de trabajo, y cada respuesta enseña sus pasos y sus fuentes.",
+      "Un asistente que responde preguntas sobre los proyectos a partir de la documentación, el correo y las herramientas de trabajo, y enseña de dónde sale cada respuesta.",
     figure: {
       layout: "sola",
       shot: capturas.asistenteTraza,
       caption:
-        "El agente de gestión de proyectos con la traza de la respuesta: pasos, memoria, correo, mensajería y base de conocimiento. Captura real con el contenido difuminado.",
+        "El asistente de gestión de proyectos con el recorrido de una respuesta: pasos, memoria, correo, mensajería y base de conocimiento. Captura real con el contenido difuminado.",
     },
     details: [],
     problem:
       "Preparar una reunión, explicar un retraso o valorar un cambio suele exigir revisar documentos, conversaciones, compromisos y tareas. La aplicación se ocupa de ese trabajo previo: lleva a cada consulta el contexto que importa y ordena una respuesta que la persona pueda revisar.",
     built: {
       body:
-        "Una aplicación de conversación con historial, adjuntos, respuesta progresiva, cancelación y reintento, sobre dos agentes con responsabilidades distintas: gestión de proyectos y conocimiento de producto. Cada uno recibe instrucciones, fuentes y herramientas acordes con su función.",
+        "Una aplicación de conversación con historial y adjuntos, con dos asistentes, uno para la gestión de proyectos y otro para las dudas sobre el producto. Cada uno recibe instrucciones, fuentes y herramientas acordes con su función.",
       features: [
         "Consultar el conocimiento interno",
         "Preparar el seguimiento de un proyecto",
@@ -415,7 +424,7 @@ export const projects: Project[] = [
     },
     decision: {
       body:
-        "Las tareas siguen un flujo de propuesta y confirmación: el agente prepara, explica sus supuestos y señala lo que falta, pero la decisión la toma siempre una persona. La traza de fuentes ayuda a revisar el recorrido, aunque no garantiza por sí sola la exactitud de cada afirmación.",
+        "El asistente propone y una persona confirma: prepara el trabajo, explica sus supuestos y señala lo que falta, pero la decisión la toma siempre una persona. Ver los pasos y las fuentes de cada respuesta ayuda a revisarla, aunque no garantiza por sí solo la exactitud de cada afirmación.",
       note:
         "Una primera versión puede centrarse en una tarea concreta: preparar el estado semanal de un proyecto, responder dudas internas o estructurar una estimación. El alcance define qué fuentes se pueden consultar, qué resultado espera la persona y cómo se revisa.",
     },

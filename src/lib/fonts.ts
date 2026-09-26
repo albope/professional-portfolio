@@ -17,9 +17,12 @@ export const sans = Schibsted_Grotesk({
 
 /**
  * La itálica solo aparece en la «letra a mano» de las notas dibujadas en el
- * hero (clase `.t-hand`). Va en una instancia aparte para no precargarla:
- * así no compite con la redonda, que pinta el H1 (el LCP). Si llega tarde,
- * `display: swap` la cambia sin mover nada, porque vive dentro de un SVG.
+ * hero (clase `.tHand` de `HeroIllustration.module.css`). Va en una
+ * instancia aparte para no precargarla: se pide al pintar las notas, no
+ * antes. La CSS solo la pone en itálica con JS y movimiento permitido, que es
+ * cuando las notas se ven: sin JS o con movimiento reducido no se descarga.
+ * Si llega tarde, `display: swap` la cambia dentro del SVG sin mover el resto
+ * de la página.
  */
 export const sansItalic = Schibsted_Grotesk({
   subsets: ["latin"],

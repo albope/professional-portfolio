@@ -93,10 +93,11 @@ function MainLayers({ figure }: { figure: MainFigure }) {
             El fondo es el de la propia web, para que no parpadee en blanco
             mientras carga. Repite lo que dice el `alt` de la franja. Desde
             768 px la franja ya se lee casi a tamaño real y el detalle se
-            queda en un 32 %, para no ampliar la captura más de 1,7 veces. */}
+            queda en un 32 %. En ningún ancho pasa de 266 px, 1,2 veces el
+            recorte: la captura es de 1120 px y más ampliada se ve borrosa. */}
         <div
           aria-hidden="true"
-          className="absolute right-[6%] top-[60%] w-[72%] overflow-hidden rounded-[6px] bg-[#E9E9E1] shadow-[0_0_0_1px_rgba(16,16,19,.08),0_24px_40px_-18px_rgba(16,16,19,.45)] 768:top-[64%] 768:w-[32%]"
+          className="absolute right-[6%] top-[60%] w-[72%] max-w-[266px] overflow-hidden rounded-[6px] bg-[#E9E9E1] shadow-[0_0_0_1px_rgba(16,16,19,.08),0_24px_40px_-18px_rgba(16,16,19,.45)] 768:top-[64%] 768:w-[32%]"
           style={{ aspectRatio: `${zoom.w} / ${zoom.h}` }}
         >
           <Image
@@ -168,9 +169,9 @@ function MainLayers({ figure }: { figure: MainFigure }) {
  * comparte fila con otro detalle) sin pasar de `maxWidth`, y por debajo un
  * 80 % de la ventana (un 40 % en pareja desde 700 px).
  */
-function cropSizes(crop: Rect, maxWidth: number, imageWidth: number, pair: boolean) {
+function cropSizes(crop: Rect, maxWidth: number, imageWidth: number, pair: boolean, pairDesktop: boolean) {
   const ratio = imageWidth / crop.w;
-  const desktop = Math.min(maxWidth, pair ? 290 : 660);
+  const desktop = Math.min(maxWidth, pairDesktop ? 290 : 660);
   return [
     `(min-width: 980px) ${Math.round(desktop * ratio)}px`,
     pair ? `(min-width: 700px) ${Math.round(40 * ratio)}vw` : "",
@@ -194,20 +195,51 @@ function cropSizes(crop: Rect, maxWidth: number, imageWidth: number, pair: boole
  * miden lo mismo y los pies empiezan a la misma altura aunque el contenido
  * sea distinto. El contenedor pone las dos columnas y quita su hueco
  * vertical en ese tramo.
+ *
+ * `pairEscritorio` dice si sigue en pareja desde 768 px, donde los detalles
+ * `soloMovil` se ocultan. Un recorte que se queda solo no se estira a lo
+ * ancho de la columna: el escenario mide lo que la imagen a su tamaño, sin
+ * una franja de arena vacía a cada lado.
  */
-export function ProjectDetailFigure({ figure, pair = false }: { figure: DetailFigure; pair?: boolean }) {
+export function ProjectDetailFigure({
+  figure,
+  pair = false,
+  pairEscritorio = pair,
+}: {
+  figure: DetailFigure;
+  pair?: boolean;
+  pairEscritorio?: boolean;
+}) {
+  const ancho = figure.variant === "recorte" ? (figure.maxWidth ?? figure.crop.w) : 0;
+  const ajustado = figure.variant === "recorte" && !pairEscritorio;
   return (
-    <figure className={cn("m-0 grid grid-rows-[1fr_auto] gap-y-3.5", pair && "700:row-span-2 700:grid-rows-subgrid")}>
-      <div className="flex items-center justify-center rounded-card bg-sand px-[clamp(20px,4vw,40px)] py-[clamp(28px,5vw,48px)]">
+    <figure
+      className={cn(
+        "m-0 grid grid-rows-[1fr_auto] gap-y-3.5",
+        pair && "700:row-span-2 700:grid-rows-subgrid",
+        figure.soloMovil && "768:hidden",
+      )}
+    >
+      <div
+        className={cn(
+          "flex items-center justify-center rounded-card bg-sand px-[clamp(20px,4vw,40px)] py-[clamp(28px,5vw,48px)]",
+          ajustado && "768:w-fit 768:max-w-full",
+        )}
+      >
         {figure.variant === "recorte" ? (
           <div
-            className="relative w-full overflow-hidden rounded-shot bg-surface shadow-capture"
-            style={{ maxWidth: figure.maxWidth ?? figure.crop.w, aspectRatio: `${figure.crop.w} / ${figure.crop.h}` }}
+            className={cn(
+              "relative w-full max-w-[min(var(--ancho),100%)] overflow-hidden rounded-shot bg-surface shadow-capture",
+              // Solo, el marco pide su ancho: con `w-full` dentro de un
+              // escenario que se ajusta a su contenido mediría cero.
+              ajustado && "768:w-[var(--ancho)]",
+            )}
+            style={{ "--ancho": `${ancho}px`, aspectRatio: `${figure.crop.w} / ${figure.crop.h}` } as CSSProperties}
           >
             <Image
               {...figure.shot}
               alt={figure.shot.alt}
-              sizes={cropSizes(figure.crop, figure.maxWidth ?? figure.crop.w, figure.shot.width, pair)}
+              sizes={cropSizes(figure.crop, ancho, figure.shot.width, pair, pairEscritorio)}
               className="absolute block h-auto max-w-none"
               style={{
                 width: `${(figure.shot.width / figure.crop.w) * 100}%`,

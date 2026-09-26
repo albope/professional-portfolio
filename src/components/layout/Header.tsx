@@ -11,7 +11,7 @@ const { cabecera } = copyEs;
 
 /** 15 px `ink-2`, subrayado que crece desde la izquierda. 40 px de alto táctil. */
 const navLink =
-  "relative inline-flex min-h-10 items-center text-small text-ink-2 transition-colors duration-200 hover:text-ink after:absolute after:inset-x-0 after:bottom-[3px] after:h-px after:origin-left after:scale-x-0 after:bg-current after:transition-transform after:duration-300 after:ease-soft hover:after:scale-x-100 aria-[current=page]:text-ink aria-[current=page]:after:scale-x-100";
+  "relative inline-flex min-h-10 items-center text-small text-ink-2 transition-colors duration-200 hover:text-ink after:absolute after:inset-x-0 after:bottom-[3px] after:h-px after:origin-left after:scale-x-0 after:bg-current after:transition-transform after:duration-300 after:ease-soft hover:after:scale-x-100 aria-[current]:text-ink aria-[current]:after:scale-x-100";
 
 /** 18 px, peso 500, filete entre enlaces. */
 const menuLink =
@@ -65,7 +65,7 @@ export function Header() {
             <span className="400:hidden">{cabecera.cta_corto}</span>
           </SectionLink>
 
-          <MobileMenu label={cabecera.menu_abrir} className="1180:hidden">
+          <MobileMenu label={cabecera.menu_boton} className="1180:hidden">
             <nav aria-label={cabecera.menu_aria}>
               {nav.map((item) => (
                 <SectionLink key={item.id} id={item.id} className={menuLink}>

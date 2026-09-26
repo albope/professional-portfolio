@@ -26,8 +26,8 @@
     ],
     "cta": "Hacer una consulta",
     "cta_corto": "Consulta",
-    "menu_abrir": "Abrir el menú",
-    "menu_aria": "Menú",
+    "menu_boton": "Menú",
+    "menu_aria": "Secciones",
     "menu_reserva": "Reservar una llamada de 30 min"
   },
   "hero": {
@@ -327,7 +327,7 @@
       "ficha": [
         {
           "termino": "Para el club",
-          "definicion": "Reservas, socios, cobros, competiciones y academia en un mismo panel. Los socios se cargan desde el Excel que ya tenía el club."
+          "definicion": "Reservas, socios, cobros, competiciones y academia en un mismo panel. Los socios se pueden cargar desde un Excel."
         },
         {
           "termino": "Para el jugador",
@@ -347,9 +347,9 @@
       {
         "etiqueta": "Aplicación de gestión",
         "titulo": "Gestión de almacén",
-        "descripcion": "Inventario, ubicaciones y movimientos en una sola aplicación. Las entradas se registran leyendo el código con un terminal, para que el stock del sistema sea el mismo que el de la estantería.",
+        "descripcion": "Inventario, ubicaciones y movimientos en una sola aplicación. Las entradas se registran leyendo el código de barras con una pistola lectora o con el móvil, sin teclear referencias.",
         "alt_principal": "Aplicación de almacén: listado de movimientos de entrada, salida y traspaso",
-        "alt_secundaria": "Pantalla del terminal de lectura para registrar la entrada de un producto",
+        "alt_secundaria": "Pantalla del lector de códigos en el móvil para registrar la entrada de un producto",
         "caso": "Ver el caso"
       },
       {
@@ -363,12 +363,13 @@
       {
         "etiqueta": "Web con automatización",
         "titulo": "Web para un evento",
-        "descripcion": "Los invitados confirman su asistencia en dos idiomas y cada confirmación llega por email. Nadie tiene que revisar una lista a mano.",
+        "descripcion": "Los invitados confirman su asistencia en dos idiomas y cada confirmación llega por email.",
         "alt_principal": "Web de un evento con menú, cuenta atrás, selector de idioma y botón para confirmar asistencia",
         "alt_secundaria": "",
         "caso": "Ver el caso"
       }
     ],
+    "caso_contexto": "de {titulo}",
     "tambien": {
       "rotulo": "También:",
       "texto": "un asistente para la gestión de proyectos que consulta la documentación y enseña de dónde sale cada respuesta.",
@@ -522,15 +523,15 @@
         "enviando_aria": "Enviando tu consulta. Espera unos segundos.",
         "revisa": "Revisa los campos señalados antes de enviar.",
         "errores": {
-          "preparar": "No se ha podido preparar el envío. Conserva tu mensaje y vuelve a intentarlo desde una conexión segura.",
-          "limite": "Has enviado varias solicitudes. {espera} Tu mensaje sigue aquí.",
-          "espera_minutos": "Espera {minutos} min antes de reintentar.",
-          "espera": "Espera unos minutos antes de reintentar.",
-          "no_disponible": "El envío no está disponible en este momento. Tu mensaje sigue aquí, puedes copiarlo y volver más tarde.",
-          "tiempo": "La confirmación está tardando demasiado. Tu mensaje sigue aquí, puedes volver a enviarlo.",
+          "preparar": "No hemos podido preparar el envío. Escríbenos a bpmtechstudio@gmail.com y te respondemos en 24 h laborables.",
+          "limite": "Has enviado varias consultas seguidas. {espera} Tu mensaje sigue aquí. También puedes enviarlo a bpmtechstudio@gmail.com.",
+          "espera_minutos": "Espera {minutos} min antes de enviar otra.",
+          "espera": "Espera unos minutos antes de enviar otra.",
+          "no_disponible": "El envío no está disponible en este momento. Tu mensaje sigue aquí. Puedes copiarlo y enviarlo a bpmtechstudio@gmail.com.",
+          "tiempo": "La confirmación está tardando demasiado. Tu mensaje sigue aquí, puedes volver a enviarlo o escribirnos a bpmtechstudio@gmail.com.",
           "demasiado_grande": "El mensaje es demasiado grande. Acórtalo y vuelve a enviarlo.",
-          "confirmacion": "No se ha podido confirmar el envío. Tu mensaje sigue aquí, puedes volver a intentarlo.",
-          "conexion": "No se ha podido conectar. Revisa tu conexión y vuelve a intentarlo, tu mensaje sigue aquí."
+          "confirmacion": "No se ha podido confirmar el envío. Tu mensaje sigue aquí, puedes volver a enviarlo o escribirnos a bpmtechstudio@gmail.com.",
+          "conexion": "No se ha podido conectar. Tu mensaje sigue aquí, revisa tu conexión y vuelve a enviarlo o escríbenos a bpmtechstudio@gmail.com."
         }
       },
       "exito": {
@@ -595,17 +596,17 @@
   "ficha": {
     "volver": "Volver a proyectos",
     "problema": {
-      "titulo": "Qué necesitaba resolver"
+      "titulo": "Qué había que resolver"
     },
     "desarrollo": {
-      "titulo": "Qué se desarrolló",
+      "titulo": "Qué desarrollamos",
       "funciones_aria": "Funciones desarrolladas"
     },
     "detalles": {
-      "titulo": "Detalles de interfaz"
+      "titulo": "De cerca"
     },
     "decision": {
-      "titulo": "Una decisión concreta",
+      "titulo": "Por qué lo hicimos así",
       "nota": "Para otro negocio:"
     },
     "cierre": {
@@ -617,6 +618,7 @@
     "og_alt_generico": "Proyecto desarrollado por BPM Tech."
   },
   "no_encontrada": {
+    "pestana": "Página no encontrada",
     "titulo": "Esta página no existe",
     "texto": "La dirección no existe o ha cambiado. Puedes volver a la portada o ver los proyectos que hemos desarrollado.",
     "boton": "Ir a la portada",

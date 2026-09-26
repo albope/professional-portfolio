@@ -10,10 +10,11 @@ const nota = partirEnlace(preguntas.nota, preguntas.nota_enlace);
 /**
  * Icono más que pasa a menos (4.9): dos barras de 2 px y la vertical gira
  * 90° en 0,3 s al abrir. Hereda el color, así que se vuelve cobalto con el
- * hover de la pregunta.
+ * hover de la pregunta. En colores forzados las barras van en `CanvasText`:
+ * como fondos, el navegador las pintaría del color del lienzo.
  */
 const masMenos =
-  "relative h-3.5 w-3.5 flex-none before:absolute before:inset-x-0 before:top-1.5 before:h-0.5 before:bg-current after:absolute after:inset-x-0 after:top-1.5 after:h-0.5 after:rotate-90 after:bg-current after:transition-transform after:duration-300 after:ease-soft group-open:after:rotate-0";
+  "relative h-3.5 w-3.5 flex-none forced-colors:before:bg-[CanvasText] forced-colors:after:bg-[CanvasText] before:absolute before:inset-x-0 before:top-1.5 before:h-0.5 before:bg-current after:absolute after:inset-x-0 after:top-1.5 after:h-0.5 after:rotate-90 after:bg-current after:transition-transform after:duration-300 after:ease-soft group-open:after:rotate-0";
 
 /**
  * Preguntas (especificación 3.7): las objeciones del dueño de una pyme
@@ -38,7 +39,11 @@ export function Faq() {
           <p className="text-lead text-ink-2">{preguntas.entradilla}</p>
           <p className="text-small text-ink-2">
             {nota.antes}
-            {nota.enlace && <TextLink href="#contacto">{nota.enlace}</TextLink>}
+            {nota.enlace && (
+              <TextLink href="#contacto" trackLocation="faq" trackDestination="contact">
+                {nota.enlace}
+              </TextLink>
+            )}
             {sinCortes(nota.despues)}
           </p>
         </div>

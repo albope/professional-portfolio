@@ -2,6 +2,20 @@
 
 Actualizado: 24 de septiembre de 2026, con el rediseño «Planos anotados» tras dos pasadas de crítica. El proceso, las direcciones descartadas, la verificación y lo pendiente están en [rediseno/README.md](rediseno/README.md). Este documento describe el árbol local. No acredita despliegue, entrega de correo ni resultados comerciales.
 
+## Pendiente de validar por Alberto (rediseño «Orden», 26 de septiembre de 2026)
+
+La especificación del rediseño «Orden» (apartado 6.4) pedía validar tres frases de resultado antes de publicarlas. No hay constancia de esa validación, así que la web publica versiones que solo afirman hechos del brief:
+
+| Dónde | Frase original, pendiente | Texto publicado mientras tanto |
+|---|---|---|
+| Portada, Padel Club OS | «Los socios se cargan desde el Excel que ya tenía el club.» | «Los socios se pueden cargar desde un Excel.» |
+| Portada, almacén | «… leyendo el código con un terminal, para que el stock del sistema sea el mismo que el de la estantería.» | «… leyendo el código de barras con una pistola lectora o con el móvil, sin teclear referencias.» |
+| Portada, evento | «… cada confirmación llega por email. Nadie tiene que revisar una lista a mano.» | «… cada confirmación llega por email.» |
+
+Si Alberto las confirma, se pueden recuperar en `src/data/copy.json`. Siguen pendientes de su visto bueno el resto de frases de 6.4 que ya están publicadas («Te enseñamos los avances durante el desarrollo…», «Con empresas de otras ciudades trabajamos en remoto…» y «Si prefieres una inversión menor, definimos juntos una primera versión más pequeña.») y el objeto del aviso legal (`src/app/aviso-legal/page.tsx`), que ahora enumera los tres servicios de la portada en lugar de «inteligencia artificial aplicada» y «consultoría tecnológica».
+
+El resto de este documento describe la dirección anterior («Planos anotados») y está pendiente de actualizar.
+
 ## Dirección comercial y de arte
 
 BPM Tech presenta software a medida, automatizaciones e integraciones, y webs para pymes. El titular es «Software a medida para lo que hoy haces a mano.» y la entradilla nombra problemas reconocibles (reservas por WhatsApp, stock en hojas de cálculo que no cuadran, datos copiados de un programa a otro). La acción principal es «Cuéntame qué necesitas». La alternativa discreta es la llamada de 30 minutos. La primera conversación se ofrece sin compromiso. El copy habla en primera persona del singular: detrás está Alberto.

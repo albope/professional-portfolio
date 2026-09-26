@@ -17,6 +17,12 @@ const { hero } = copyEs;
  *   hasta 1279) con áreas `"title art" / "body art"`: H1 abajo en su celda,
  *   cuerpo arriba e ilustración centrada y desbordando a la derecha. El hero
  *   ocupa `min(100svh - cabecera, 900px)` con los compromisos abajo.
+ * - En portátiles bajos (hasta 880 px de alto: un MacBook Air con Chrome
+ *   deja 789) los huecos verticales se compactan y la ilustración se limita
+ *   al alto que queda (`HeroIllustration.module.css`), para que los
+ *   compromisos quepan en el primer pantallazo. El H1 no cambia: es el LCP.
+ *   La variante va anidada en `1180:` (`1180:[@media(max-height:880px)]:`)
+ *   para que Tailwind la escriba después de las de `1180:` y les gane.
  *
  * El H1 y la entradilla no se animan: son el LCP. La ilustración es la única
  * parte cliente (`HeroIllustration`) y el SVG lo pinta el servidor.
@@ -26,9 +32,9 @@ export function Hero() {
     <section
       id="top"
       aria-labelledby="hero-titulo"
-      className="bg-bg pb-[clamp(56px,7vw,80px)] pt-[clamp(24px,4.5vw,64px)] 1180:grid 1180:min-h-[min(calc(100svh_-_var(--head-h)),900px)] 1180:grid-rows-[1fr_auto] 1180:items-center 1180:gap-y-10 1180:pb-10 1180:pt-[clamp(24px,3vw,48px)]"
+      className="bg-bg pb-[clamp(56px,7vw,80px)] pt-[clamp(24px,4.5vw,64px)] 1180:grid 1180:min-h-[min(calc(100svh_-_var(--head-h)),900px)] 1180:grid-rows-[1fr_auto] 1180:items-center 1180:gap-y-10 1180:pb-10 1180:pt-[clamp(24px,3vw,48px)] 1180:[@media(max-height:880px)]:gap-y-6 1180:[@media(max-height:880px)]:pb-7 1180:[@media(max-height:880px)]:pt-3"
     >
-      <div className="wrap grid gap-y-[22px] 1180:grid-cols-[minmax(0,11fr)_minmax(0,12fr)] 1180:gap-x-[clamp(40px,4.5vw,72px)] 1180:gap-y-[30px] 1180:[grid-template-areas:'title_art'_'body_art'] 1180:max-[1279px]:grid-cols-[minmax(0,10fr)_minmax(0,13fr)]">
+      <div className="wrap grid gap-y-[22px] 1180:grid-cols-[minmax(0,11fr)_minmax(0,12fr)] 1180:gap-x-[clamp(40px,4.5vw,72px)] 1180:gap-y-[30px] 1180:[grid-template-areas:'title_art'_'body_art'] 1180:max-[1279px]:grid-cols-[minmax(0,10fr)_minmax(0,13fr)] 1180:[@media(max-height:880px)]:gap-y-[18px]">
         <h1
           id="hero-titulo"
           className="max-w-[12em] text-h1 1180:self-end 1180:[grid-area:title] 1180:max-[1279px]:text-[3rem]"
@@ -36,7 +42,7 @@ export function Hero() {
           {hero.h1}
         </h1>
 
-        <div className="grid max-w-[34em] gap-5 600:gap-6 1180:self-start 1180:[grid-area:body]">
+        <div className="grid max-w-[34em] gap-5 600:gap-6 1180:self-start 1180:[grid-area:body] 1180:[@media(max-height:880px)]:gap-[18px]">
           <p className="text-lead text-ink-2">{hero.entradilla}</p>
           <div className="flex flex-wrap items-center gap-x-[22px] gap-y-3.5">
             <Button
@@ -64,10 +70,16 @@ export function Hero() {
 
       <ul
         aria-label={hero.compromisos.aria}
-        className="wrap mt-12 grid grid-cols-2 gap-x-5 gap-y-[22px] max-[359px]:grid-cols-1 1024:grid-cols-4 1024:gap-8 1180:mt-0"
+        className="wrap mt-12 grid grid-cols-2 gap-x-5 gap-y-[22px] max-[359px]:grid-cols-1 1024:grid-cols-4 1024:gap-x-8 1024:gap-y-1 1180:mt-0"
       >
+        {/* Desde 1024 px, en una fila de cuatro, cada compromiso ocupa dos filas
+            de la lista (`subgrid`): si un título parte en dos líneas, las
+            descripciones siguen empezando a la misma altura. */}
         {hero.compromisos.items.map((item) => (
-          <li key={item.titulo} className="grid content-start gap-1 border-t border-line-2 pt-4">
+          <li
+            key={item.titulo}
+            className="grid content-start gap-1 border-t border-line-2 pt-4 1024:row-span-2 1024:grid-rows-subgrid 1180:[@media(max-height:880px)]:pt-3"
+          >
             <strong className="text-small font-semibold leading-[1.35] tracking-[-0.005em]">
               {sinCortes(item.titulo)}
             </strong>

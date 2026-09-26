@@ -6,14 +6,14 @@ import { useEffect, useState, useSyncExternalStore, type RefObject } from "react
  *   ilustraciones que se reproducen una vez (agenda, web, propuesta, proceso).
  * - `each`: es `true` mientras el elemento está en pantalla y la pestaña
  *   visible, y vuelve a `false` al salir o al ocultar la pestaña. Para lo que
- *   se repite en cada entrada (conexión de datos) o debe pararse fuera de
- *   pantalla (hero).
+ *   se repite en cada entrada (conexión de datos). El hero no lo usa: lleva
+ *   su propio observador en `HeroIllustration`.
  */
 export type InViewMode = "once" | "each";
 
 export interface InViewOptions {
   mode?: InViewMode;
-  /** Parte visible necesaria: 0,3 el hero, 0,35 las de una vez, 0,5 la conexión. */
+  /** Parte visible necesaria: 0,35 las de una vez, 0,5 la conexión. */
   threshold?: number;
   rootMargin?: string;
   /** Con `false` no observa. Útil para no armar nada con movimiento reducido. */

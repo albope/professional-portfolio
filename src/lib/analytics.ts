@@ -6,8 +6,8 @@ export const ANALYTICS_EVENTS = [
 export type AnalyticsEventName = (typeof ANALYTICS_EVENTS)[number];
 
 const values = {
-  /** Dónde está el enlace. «method» es la banda de tinta «Cómo trabajamos». */
-  location: ["header", "hero", "service", "diagnostico", "projects", "method", "case", "about", "contact", "footer"],
+  /** Dónde está el enlace. «method» es la banda de tinta «Cómo trabajamos» y «faq», Preguntas. */
+  location: ["header", "hero", "service", "diagnostico", "projects", "method", "case", "about", "faq", "contact", "footer"],
   destination: ["contact", "projects", "booking", "diagnostico"],
   need: ["diagnostico", "operativa", "automatizacion", "web"],
   project: ["asistente-ia-gestion-proyectos", "plataforma-clubes-padel", "wms-almacen", "web-boda", "web-radio"],

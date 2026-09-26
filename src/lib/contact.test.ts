@@ -1,6 +1,23 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
-import { CONTACT_LIMITS, getContactContext, isAcceptedContactResponse, isContactRequestId, safeSubjectFragment, validateContactPayload } from "./contact";
+import { CONTACT_LIMITS, getContactContext, isAcceptedContactResponse, isContactRequestId, resolveContactNeed, safeSubjectFragment, validateContactPayload } from "./contact";
+
+describe("resolveContactNeed", () => {
+  it("sin elección del visitante manda el tema de la URL", () => {
+    assert.equal(resolveContactNeed(null, "web"), "web");
+    assert.equal(resolveContactNeed(null, ""), "");
+  });
+
+  it("la píldora elegida manda mientras la URL no cambie de tema", () => {
+    assert.equal(resolveContactNeed({ need: "operativa", from: "web" }, "web"), "operativa");
+    assert.equal(resolveContactNeed({ need: "", from: "" }, ""), "");
+  });
+
+  it("un enlace «Consultar sobre…» de otro tema gana a la píldora elegida", () => {
+    assert.equal(resolveContactNeed({ need: "operativa", from: "web" }, "automatizacion"), "automatizacion");
+    assert.equal(resolveContactNeed({ need: "operativa", from: "" }, "web"), "web");
+  });
+});
 
 describe("validateContactPayload", () => {
   it("normaliza un contacto válido", () => {

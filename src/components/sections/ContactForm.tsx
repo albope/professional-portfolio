@@ -12,8 +12,8 @@ import { Button } from "@/components/ui/Button";
 import { TextLink } from "@/components/ui/TextLink";
 import {
   CONTACT_LIMITS, CONTACT_NEEDS_LISTED, CONTACT_PROJECTS, CONTACT_TIMEOUTS,
-  getContactContext, isAcceptedContactResponse, validateContactPayload,
-  type ContactContext, type ContactField, type ContactFieldErrors, type ContactNeed,
+  getContactContext, isAcceptedContactResponse, resolveContactNeed, validateContactPayload,
+  type ContactContext, type ContactField, type ContactFieldErrors, type ContactNeedChoice,
 } from "@/lib/contact";
 import styles from "./ContactForm.module.css";
 
@@ -40,8 +40,13 @@ const fields: ContactField[] = ["nombre", "empresa", "email", "telefono", "mensa
 const fieldBase =
   "w-full rounded-control border bg-bg px-3.5 py-[13px] text-base text-ink transition-[border-color,background-color,box-shadow] duration-200 ease-soft focus:bg-surface focus:outline-none disabled:opacity-60";
 const fieldOk = "border-line-2 hover:border-ink-4 focus:border-cobalt focus:shadow-[0_0_0_3px_var(--cobalt-100)]";
-/** En error el borde se queda en `error` y el anillo de foco toma su tono. */
-const fieldBad = "border-error focus:shadow-[0_0_0_3px_rgb(179_38_30/0.14)]";
+/**
+ * En error el borde se queda en `error` en todos los campos, así que el foco
+ * no puede ser un halo claro: con varios campos en rojo no se distinguiría
+ * cuál lo tiene. El campo enfocado suma 2 px macizos de `error` a su borde
+ * (3 px en total, 6,5:1 sobre blanco) frente a 1 px en los demás.
+ */
+const fieldBad = "border-error focus:shadow-[0_0_0_2px_var(--error)]";
 const labelClasses = "text-small font-semibold text-ink";
 const FORM_TITLE_ID = "contact-form-title";
 
@@ -49,6 +54,30 @@ function subscribe() {
   return () => {};
 }
 const noContext: ContactContext = { necesidad: "", proyecto: "" };
+
+/**
+ * Enlaces de la propia portada al formulario con tema o proyecto
+ * (`/?necesidad=web#contacto`, «Consultar sobre…» y «Hacer una consulta» de
+ * Qué hacemos). Van con `next/link`, que cambia la URL pero no mueve el foco.
+ */
+const ENLACE_AL_FORMULARIO = /^\/\?[^#]*#contacto$/;
+
+/**
+ * Lleva la vista a Contacto y el foco al título de la tarjeta, así el
+ * siguiente Tab cae en «Nombre» y el lector de pantalla anuncia dónde está.
+ * No se enfoca el campo: en móvil abriría el teclado. Si Next ya ha hecho el
+ * salto, `scrollIntoView` no se mueve. Si no lo ha hecho (la navegación sale
+ * antes de terminar la precarga del enlace), lo garantiza. Va en el
+ * siguiente fotograma, después del salto de Next, y solo si la URL sigue
+ * apuntando al formulario con la búsqueda esperada.
+ */
+function irAlFormulario(search: string) {
+  requestAnimationFrame(() => {
+    if (window.location.hash !== "#contacto" || window.location.search !== search) return;
+    document.getElementById("contacto")?.scrollIntoView();
+    document.getElementById(FORM_TITLE_ID)?.focus({ preventScroll: true });
+  });
+}
 
 function ContactFormContent({
   texts,
@@ -61,11 +90,12 @@ function ContactFormContent({
   const [errors, setErrors] = useState<ContactFieldErrors>({});
   const [serverError, setServerError] = useState("");
   // La píldora que marca el visitante manda mientras el tema de la URL siga
-  // siendo el mismo con el que la marcó. Si después sigue otro enlace
-  // «Consultar sobre…» (cambia `?necesidad=`), gana el tema del enlace.
-  const [choice, setChoice] = useState<{ need: ContactNeed | ""; from: ContactNeed | "" } | null>(null);
+  // siendo el mismo con el que la marcó (`resolveContactNeed`).
+  const [choice, setChoice] = useState<ContactNeedChoice | null>(null);
   const urlNeed = context.necesidad;
-  const need = choice && choice.from === urlNeed ? choice.need : urlNeed;
+  const need = resolveContactNeed(choice, urlNeed);
+  /** Búsqueda (`?necesidad=…`) del enlace al formulario que acaba de pulsar el visitante. */
+  const llegada = useRef<string | null>(null);
   const retry = useRef<{ body: string; id: string } | null>(null);
   const started = useRef(false);
   const activeRequest = useRef<AbortController | null>(null);
@@ -77,8 +107,41 @@ function ContactFormContent({
   const aviso = partirEnlace(texts.aviso, texts.aviso_enlace);
   const sinJs = partirEnlace(texts.sin_js, email);
   const sinJsReserva = partirEnlace(sinJs.despues, texts.sin_js_reserva);
+  const errorServidor = partirEnlace(serverError, email);
 
   useEffect(() => () => activeRequest.current?.abort(), []);
+
+  // Clic en un enlace de la portada al formulario. Si la URL va a cambiar,
+  // se anota y actúa el efecto de abajo cuando llega el tema nuevo. Si es la
+  // misma (el visitante marcó otra píldora y vuelve a pulsar el mismo
+  // «Consultar sobre…»), no cambia nada que React vea: se devuelve la
+  // píldora del enlace y se va al formulario desde aquí.
+  useEffect(() => {
+    const onClick = (event: MouseEvent) => {
+      if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+      const link = event.target instanceof Element ? event.target.closest("a") : null;
+      if (!link || window.location.pathname !== "/" || !ENLACE_AL_FORMULARIO.test(link.getAttribute("href") ?? "")) return;
+      const { search } = new URL(link.href);
+      if (search === window.location.search) {
+        setChoice(null);
+        irAlFormulario(search);
+      } else {
+        llegada.current = search;
+      }
+    };
+    document.addEventListener("click", onClick);
+    return () => document.removeEventListener("click", onClick);
+  }, []);
+
+  // Llega el tema o el proyecto del enlace pulsado. Solo tras un clic en la
+  // portada: la primera carga la resuelve el ancla y el historial (Atrás)
+  // restaura su propia posición.
+  useEffect(() => {
+    const search = llegada.current;
+    if (search === null) return;
+    llegada.current = null;
+    irAlFormulario(search);
+  }, [urlNeed, context.proyecto]);
   useEffect(() => {
     if (status === "success") successRef.current?.focus();
   }, [status]);
@@ -232,7 +295,9 @@ function ContactFormContent({
   return (
     <div className="grid gap-5">
       <div className="grid gap-2">
-        <h3 id={FORM_TITLE_ID} className="text-[1.25rem] font-semibold leading-[1.6] tracking-[-0.015em]">{texts.titulo}</h3>
+        {/* Enfocable por programa: destino del foco al llegar desde un
+            «Consultar sobre…» (`irAlFormulario`). */}
+        <h3 id={FORM_TITLE_ID} tabIndex={-1} className="text-[1.25rem] font-semibold leading-[1.6] tracking-[-0.015em] focus:outline-none">{texts.titulo}</h3>
         <p className="text-caption leading-[1.6] text-ink-2">{texts.nota}</p>
       </div>
       <form action="/api/contact" method="post" onSubmit={handleSubmit} onFocusCapture={markStarted} aria-busy={status === "sending"} aria-labelledby={FORM_TITLE_ID} className="grid gap-5" noValidate>
@@ -300,7 +365,7 @@ function ContactFormContent({
               abre solo si alguno de los dos tiene error. */}
           <details className="group/extra border-y border-line" open={errors.empresa || errors.telefono ? true : undefined}>
             <summary className="flex min-h-11 cursor-pointer list-none items-center gap-3 py-3 text-small font-semibold transition-colors duration-200 hover:text-cobalt [&::-webkit-details-marker]:hidden">
-              <span aria-hidden="true" className="relative h-3 w-3 flex-none before:absolute before:inset-x-0 before:top-[5px] before:h-0.5 before:bg-current after:absolute after:inset-x-0 after:top-[5px] after:h-0.5 after:rotate-90 after:bg-current after:transition-transform after:duration-300 after:ease-soft group-open/extra:after:rotate-0" />
+              <span aria-hidden="true" className="relative h-3 w-3 flex-none forced-colors:before:bg-[CanvasText] forced-colors:after:bg-[CanvasText] before:absolute before:inset-x-0 before:top-[5px] before:h-0.5 before:bg-current after:absolute after:inset-x-0 after:top-[5px] after:h-0.5 after:rotate-90 after:bg-current after:transition-transform after:duration-300 after:ease-soft group-open/extra:after:rotate-0" />
               <span>{texts.extra.resumen} <span className="font-normal text-ink-2">{texts.extra.opcional}</span></span>
             </summary>
             <div className="grid gap-5 pb-5 pt-1 min-[560px]:grid-cols-2">
@@ -323,7 +388,9 @@ function ContactFormContent({
         </fieldset>
         <p className="text-micro text-ink-2">
           {aviso.antes}
-          {aviso.enlace && <TextLink href="/privacidad">{aviso.enlace}</TextLink>}
+          {/* En otra pestaña: quien la consulta antes de enviar no pierde lo
+              que ya ha escrito al volver. */}
+          {aviso.enlace && <TextLink href="/privacidad" external>{aviso.enlace}</TextLink>}
           {aviso.despues}
         </p>
         {/* Los avisos van justo encima del botón, donde está la mirada al
@@ -332,7 +399,13 @@ function ContactFormContent({
         {hasFieldErrors && <p role="alert" className="text-caption font-medium text-error">{texts.estados.revisa}</p>}
         {status === "error" && (
           <div ref={errorRef} tabIndex={-1} role="alert" className="rounded-control border border-error bg-surface px-[18px] py-3.5 focus:outline focus:outline-[3px] focus:outline-offset-[3px] focus:outline-error">
-            <p className="text-small text-ink">{serverError}</p>
+            {/* Todos los errores del servidor ofrecen el email como salida: si
+                el envío falla, la consulta no se pierde. */}
+            <p className="text-small text-ink">
+              {errorServidor.antes}
+              {errorServidor.enlace && <TextLink href={`mailto:${email}`} className="[overflow-wrap:anywhere]">{errorServidor.enlace}</TextLink>}
+              {errorServidor.despues}
+            </p>
           </div>
         )}
         <div className="flex flex-wrap items-center gap-x-5 gap-y-3">

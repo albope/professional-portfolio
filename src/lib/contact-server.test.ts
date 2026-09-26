@@ -53,7 +53,8 @@ describe("endpoint de contacto, proveedor siempre simulado", () => {
     await handler(request({ ...valid, necesidad: "diagnostico", empresa: "Taller Norte" }));
     const sent = JSON.parse(String(calls[0].init?.body));
     assert.match(sent.text, /Necesidad: Todavía no lo tengo claro\n/);
-    assert.equal(sent.subject, "Nueva consulta — Taller Norte");
+    assert.equal(sent.subject, "Nueva consulta: Taller Norte");
+    assert.match(sent.text, /Teléfono: Sin indicar\n/);
     const { handler: sinTema, calls: sinTemaCalls } = harness();
     await sinTema(request({ ...valid, necesidad: "" }));
     assert.match(JSON.parse(String(sinTemaCalls[0].init?.body)).text, /Necesidad: Por concretar\n/);

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useId, useRef, useState, useSyncExternalStore, type ReactNode } from "react";
+import { useEffect, useId, useRef, useState, type ReactNode } from "react";
 import type { Copy } from "@/data/copy";
 import { cn } from "@/lib/utils";
 import { REDUCED_MOTION, useReducedMotion } from "@/lib/useInView";
@@ -40,7 +40,23 @@ const TIEMPO = {
 /** Parte visible del SVG para arrancar (4.1): en la práctica, al cargar. */
 const UMBRAL = 0.3;
 
-const sinSuscripcion = () => () => {};
+/** Momento en que la red de seguridad de la CSS empieza a recoger el caos. */
+const RED_DE_SEGURIDAD = 7000;
+
+/**
+ * ¿La red de seguridad de la CSS ya ha empezado a recoger el caos? Pasa si
+ * la hidratación llega tarde (red móvil lenta): el visitante ya ve la
+ * aplicación ordenada y no hay que devolverle el caos para repetirlo.
+ */
+function redYaActuo(figure: HTMLElement) {
+  if (typeof figure.getAnimations !== "function") return false;
+  return figure.getAnimations({ subtree: true }).some(
+    (animation) =>
+      animation instanceof CSSAnimation &&
+      animation.animationName.includes("fade") &&
+      Number(animation.currentTime ?? 0) >= RED_DE_SEGURIDAD,
+  );
+}
 
 type Modo = "pausar" | "reanudar" | "repetir";
 
@@ -87,12 +103,17 @@ interface HeroIllustrationProps {
  * - Solo escribe `data-state`, `data-reminder` y `data-flash` en la figura:
  *   el SVG lo pinta el servidor y la CSS hace el resto.
  * - Nada corre fuera de pantalla ni con la pestaña oculta: al salir se
- *   limpian los temporizadores y el recordatorio en curso, y al volver se
- *   retoma el siguiente. También se limpia todo al desmontar.
+ *   limpian los temporizadores y el recordatorio en curso (o se corta la
+ *   secuencia y queda el orden), y al volver se retoma el siguiente
+ *   recordatorio. También se limpia todo al desmontar.
+ * - Si al hidratar la red de seguridad de la CSS ya ha recogido el caos, se
+ *   queda en `done`: el visitante ve el orden y puede pulsar «Ver de nuevo».
  * - Con movimiento reducido no se arma: el control sigue oculto y la CSS deja
  *   el estado final.
- * - El control (WCAG 2.2.2) nace con `hidden` y solo aparece cuando la
- *   animación ha empezado. Actúa sobre la composición visible.
+ * - El control (WCAG 2.2.2) solo se ve y recibe foco cuando la animación ha
+ *   empezado. Antes ocupa su sitio invisible (`inert`), para que el pie no
+ *   cambie de ancho ni parta otra línea al aparecer. Sin JS o con movimiento
+ *   reducido no ocupa nada. Actúa sobre la composición visible.
  */
 export function HeroIllustration({ children, pie, control, className }: HeroIllustrationProps) {
   const figureRef = useRef<HTMLElement>(null);
@@ -100,9 +121,11 @@ export function HeroIllustration({ children, pie, control, className }: HeroIllu
   const accionRef = useRef<(() => void) | null>(null);
   const [vista, setVista] = useState<Vista>({ fase: "idle", recordatorio: null, destello: false });
   const reducido = useReducedMotion();
-  // `false` en el servidor y al hidratar, `true` después: apaga la red de
-  // seguridad de la CSS, que recoge el caos si el JS no llega a hidratar.
-  const hidratado = useSyncExternalStore(sinSuscripcion, () => true, () => false);
+  // `false` en el servidor y al hidratar. Pasa a `true` con la primera
+  // notificación del observador y apaga la red de seguridad de la CSS, que
+  // recoge el caos si el JS no llega a hidratar. Antes se mira si esa red ya
+  // ha actuado: apagarla cancela su animación y no quedaría rastro de ella.
+  const [hidratado, setHidratado] = useState(false);
 
   useEffect(() => {
     const figure = figureRef.current;
@@ -115,9 +138,12 @@ export function HeroIllustration({ children, pie, control, className }: HeroIllu
       return;
     }
 
+    const recogido = redYaActuo(figure);
+    let primera = true;
+
     const artes = Array.from(figure.querySelectorAll<SVGSVGElement>("svg[data-hero-art]"));
     const enPantalla = new Set<Element>();
-    let fase: Fase = "idle";
+    let fase: Fase = recogido ? "done" : "idle";
     let siguiente = 0;
     let visible = false;
     let temporizadores: number[] = [];
@@ -173,6 +199,13 @@ export function HeroIllustration({ children, pie, control, className }: HeroIllu
       visible = ahora;
       if (visible && fase === "idle") {
         empezar();
+      } else if (fase === "play" && !visible) {
+        // Sale de pantalla en plena secuencia (el visitante pulsa «Hacer una
+        // consulta» nada más llegar): se corta y queda el orden. Al volver,
+        // la rama de `live` retoma los recordatorios.
+        limpiar();
+        fase = "live";
+        pintar();
       } else if (fase === "live") {
         limpiar();
         pintar();
@@ -188,6 +221,14 @@ export function HeroIllustration({ children, pie, control, className }: HeroIllu
           // arrancarían con la figura asomando apenas.
           if (entry.isIntersecting && entry.intersectionRatio >= UMBRAL - 0.01) enPantalla.add(entry.target);
           else enPantalla.delete(entry.target);
+        }
+        // La primera llega nada más observar. Si la red ya había recogido el
+        // caos, `done` y la red apagada van en el mismo render: el visitante
+        // no ve volver las piezas.
+        if (primera) {
+          primera = false;
+          setHidratado(true);
+          if (recogido) pintar();
         }
         actualizar();
       },
@@ -220,6 +261,7 @@ export function HeroIllustration({ children, pie, control, className }: HeroIllu
   }, [reducido]);
 
   const modo: Modo = vista.fase === "paused" ? "reanudar" : vista.fase === "done" ? "repetir" : "pausar";
+  const esperando = vista.fase === "idle";
   const rotulo = { pausar: control.pausar, reanudar: control.reanudar, repetir: control.repetir }[modo];
   const nombre = { pausar: control.pausar_aria, reanudar: control.reanudar_aria, repetir: control.repetir_aria }[modo];
 
@@ -236,17 +278,25 @@ export function HeroIllustration({ children, pie, control, className }: HeroIllu
       aria-labelledby={pieId}
     >
       {children}
-      <figcaption className="mt-4 flex items-start justify-between gap-x-5 gap-y-3 max-[767px]:mx-auto max-[767px]:max-w-[440px] 768:px-[6.875%]">
+      <figcaption className={cn(styles.caption, "mt-4 flex items-start justify-between gap-x-5 gap-y-3 max-[767px]:mx-auto max-[767px]:max-w-[440px] 768:px-[6.875%]")}>
         <span id={pieId} className="max-w-[32em] text-caption leading-normal text-ink-2">
           {pie}
         </span>
-        {/* 32 px de alto como pide 4.3; el `::before` amplía el área táctil a 40. */}
+        {/* 32 px de alto como pide 4.3; el `::before` amplía el área táctil a
+            40. Solo existe con JS y movimiento permitido (`.js`, que pone el
+            layout antes de pintar): mientras espera en `idle` ocupa su sitio
+            sin verse ni recibir foco. */}
         <button
           type="button"
-          hidden={reducido || vista.fase === "idle"}
+          hidden={reducido}
+          inert={esperando}
+          aria-hidden={esperando || undefined}
           aria-label={nombre}
           onClick={() => accionRef.current?.()}
-          className="relative inline-flex h-8 shrink-0 items-center gap-[7px] rounded-pill border border-line-2 bg-transparent pl-2.5 pr-3 text-micro font-semibold leading-none text-ink transition-[border-color] duration-200 before:absolute before:inset-x-0 before:-inset-y-1 before:content-[''] hover:border-ink"
+          className={cn(
+            "relative hidden h-8 shrink-0 items-center gap-[7px] rounded-pill border border-line-2 bg-transparent pl-2.5 pr-3 text-micro font-semibold leading-none text-ink transition-[border-color] duration-200 before:absolute before:inset-x-0 before:-inset-y-1 before:content-[''] hover:border-ink motion-safe:[.js_&]:inline-flex",
+            esperando && "invisible",
+          )}
         >
           <IconoControl modo={modo} />
           <span>{rotulo}</span>

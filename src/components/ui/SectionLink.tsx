@@ -15,7 +15,9 @@ interface SectionLinkProps extends TrackingProps {
   "aria-label"?: string;
   /**
    * Prefijo de ruta en el que este enlace es la sección actual: la cabecera
-   * marca «Proyectos» con `aria-current` dentro de `/proyectos/...`.
+   * marca «Proyectos» con `aria-current` dentro de `/proyectos/...`. Es
+   * `"true"` y no `"page"`: el enlace lleva a `/#proyectos`, que no es la
+   * página en la que está el visitante.
    */
   currentWhen?: string;
 }
@@ -30,7 +32,7 @@ interface SectionLinkProps extends TrackingProps {
  */
 export function SectionLink({ id, children, currentWhen, ...rest }: SectionLinkProps) {
   const pathname = usePathname();
-  const current = currentWhen && pathname.startsWith(currentWhen) ? "page" : undefined;
+  const current = currentWhen && pathname.startsWith(currentWhen) ? "true" : undefined;
   return (
     <BaseLink href={pathname === "/" ? `#${id}` : `/#${id}`} aria-current={current} {...rest}>
       {children}

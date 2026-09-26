@@ -16,14 +16,19 @@ interface WordmarkProps {
  * Sobre claro: `#101013` + `#2743E0`. Sobre oscuro: `#F7F6F2` + `#6B83FF`,
  * porque el cobalto normal se hunde contra la tinta. Es decorativo: el enlace
  * que lo envuelve lleva su propio `aria-label`.
+ *
+ * Los colores van en clases y no en `style`: en colores forzados (alto
+ * contraste de Windows) el navegador pinta los fondos del color del lienzo,
+ * y la barra y el cuadrado macizo desaparecerían. `forced-colors:` los pasa
+ * a `CanvasText`, y una clase no puede ganar a un estilo en línea.
  */
 export function Wordmark({ on = "light", size = 19, className }: WordmarkProps) {
   const s = size === 19 ? 11 : size === 17 ? 10 : 9;
   const barHeight = s >= 10 ? 3 : 2.5;
   const glyphGap = s >= 10 ? 5 : 4;
   const onDark = on === "dark";
-  const base = onDark ? "var(--on-dark)" : "var(--ink)";
-  const accent = onDark ? "var(--cobalt-bright)" : "var(--cobalt)";
+  const pieza = cn(onDark ? "bg-on-dark" : "bg-ink", "forced-colors:bg-[CanvasText]");
+  const maciza = cn(onDark ? "bg-cobalt-bright" : "bg-cobalt", "forced-colors:bg-[CanvasText]");
 
   return (
     <span
@@ -31,19 +36,19 @@ export function Wordmark({ on = "light", size = 19, className }: WordmarkProps) 
       style={{ gap: size === 16 ? 8 : 10 }}
     >
       <span
-        className="font-mono font-normal leading-none tracking-[0.06em]"
-        style={{ fontSize: size, color: base }}
+        className={cn("font-mono font-normal leading-none tracking-[0.06em]", onDark ? "text-on-dark" : "text-ink")}
+        style={{ fontSize: size }}
       >
         BPM
-        <span style={{ color: accent }}>TECH</span>
+        <span className={onDark ? "text-cobalt-bright" : "text-cobalt"}>TECH</span>
       </span>
       <span aria-hidden className="flex items-center" style={{ gap: glyphGap }}>
-        <span style={{ width: s, height: barHeight, background: base }} />
+        <span className={pieza} style={{ width: s, height: barHeight }} />
         <span
-          className="box-border"
-          style={{ width: s, height: s, border: `2px solid ${base}` }}
+          className={cn("box-border border-2", onDark ? "border-on-dark" : "border-ink")}
+          style={{ width: s, height: s }}
         />
-        <span style={{ width: s, height: s, background: accent }} />
+        <span className={maciza} style={{ width: s, height: s }} />
       </span>
     </span>
   );

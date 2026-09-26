@@ -36,14 +36,17 @@ export function About() {
           </h2>
           <p className="text-lead text-ink">{sobre.entradilla}</p>
           <p className="text-ink-2">{sobre.parrafo}</p>
-          {/* Ficha: término a la izquierda (14em) y dato a la derecha. Por
-              debajo de 600 px el término va encima. `overflow-wrap` evita que
+          {/* Ficha: término a la izquierda (14em) y dato a la derecha, de 600
+              a 799 px (una columna) y desde 1180. Por debajo de 600 y de 800 a
+              1179, donde el texto va en la columna estrecha de 6fr, el término
+              va encima: con los 14em el dato se quedaba en unos 140 px y la
+              razón social partía en cuatro líneas. `overflow-wrap` evita que
               la razón social desborde a 320 px. */}
           <dl className="mt-2.5 border-t border-line">
             {sobre.ficha.map(({ termino, definicion }) => (
               <div
                 key={termino}
-                className="grid gap-0.5 border-b border-line py-[13px] text-small 600:grid-cols-[14em_minmax(0,1fr)] 600:gap-4"
+                className="grid gap-0.5 border-b border-line py-[13px] text-small 600:max-[799px]:grid-cols-[14em_minmax(0,1fr)] 600:max-[799px]:gap-4 1180:grid-cols-[14em_minmax(0,1fr)] 1180:gap-4"
               >
                 <dt className="text-ink-2">{termino}</dt>
                 <dd className="font-medium [overflow-wrap:anywhere]">{definicion}</dd>

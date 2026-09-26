@@ -1,8 +1,18 @@
+import type { Metadata } from "next";
 import { copyEs } from "@/data/copy";
 import { Button } from "@/components/ui/Button";
 import { ArrowLink } from "@/components/ui/ArrowLink";
 
 const { no_encontrada: texto } = copyEs;
+
+/**
+ * Título propio de la pestaña («Página no encontrada · BPM Tech», con la
+ * plantilla del layout). Sin él heredaba el de la portada, y quien llega
+ * desde un enlace roto con lector de pantalla no sabía que la página no
+ * existe hasta leer el titular. Next lee `metadata` del módulo `not-found`
+ * como último elemento de la cadena de metadatos.
+ */
+export const metadata: Metadata = { title: texto.pestana };
 
 /**
  * Ventana de aplicación con el vocabulario del glifo: la fila que falta es un

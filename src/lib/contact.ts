@@ -66,6 +66,16 @@ export function getContactContext(need: unknown, project: unknown): ContactConte
     proyecto: typeof project === "string" && Object.hasOwn(CONTACT_PROJECTS, project) ? project as ContactProject : "",
   };
 }
+/** Píldora que marca el visitante y tema de la URL (`?necesidad=`) que había al marcarla. */
+export type ContactNeedChoice = { need: ContactNeed | ""; from: ContactNeed | "" };
+/**
+ * Tema marcado en el formulario. La píldora que elige el visitante manda
+ * mientras la URL siga con el tema con el que la eligió. Si después sigue
+ * otro enlace «Consultar sobre…» (cambia `?necesidad=`), gana el del enlace.
+ */
+export function resolveContactNeed(choice: ContactNeedChoice | null, urlNeed: ContactNeed | ""): ContactNeed | "" {
+  return choice && choice.from === urlNeed ? choice.need : urlNeed;
+}
 export function validateContactPayload(payload: unknown): ValidationResult {
   if (!payload || typeof payload !== "object" || Array.isArray(payload)) {
     return { ok: false, error: "Solicitud no válida.", fields: {} };

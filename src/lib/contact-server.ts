@@ -8,6 +8,8 @@ import {
 const RATE_WINDOW_MS = 15 * 60 * 1_000;
 const RATE_LIMIT = 5;
 const RATE_MAX_ENTRIES = 2_000;
+/** Relleno del email de aviso para los campos opcionales que llegan vacíos. */
+export const SIN_INDICAR = "Sin indicar";
 
 /** Per-process protection only. No persistent IPs and no shared infrastructure. */
 export function createContactRateLimiter(options: {
@@ -155,11 +157,12 @@ export function createContactHandler(options: ContactHandlerOptions = {}) {
       return fail(503, "unavailable", "El envío no está disponible en este momento. Conserva el mensaje e inténtalo más tarde.");
     }
     const { nombre, empresa, email, telefono, mensaje, necesidad, proyecto } = validation.value;
+    // Sin rayas, como el resto del copy: lo que falta se dice con palabras.
     const body = [
-      `Nombre: ${nombre}`, `Empresa: ${empresa || "—"}`, `Email: ${email}`,
-      `Teléfono: ${telefono || "—"}`,
+      `Nombre: ${nombre}`, `Empresa: ${empresa || SIN_INDICAR}`, `Email: ${email}`,
+      `Teléfono: ${telefono || SIN_INDICAR}`,
       `Necesidad: ${necesidad ? CONTACT_NEEDS[necesidad] : "Por concretar"}`,
-      `Proyecto de referencia: ${proyecto ? CONTACT_PROJECTS[proyecto] : "—"}`,
+      `Proyecto de referencia: ${proyecto ? CONTACT_PROJECTS[proyecto] : SIN_INDICAR}`,
       "", mensaje,
     ].join("\n");
     const controller = new AbortController();
@@ -173,7 +176,7 @@ export function createContactHandler(options: ContactHandlerOptions = {}) {
         },
         body: JSON.stringify({
           from: from || "BPM Tech <onboarding@resend.dev>", to: [contactEmail],
-          reply_to: email, subject: `Nueva consulta — ${safeSubjectFragment(empresa || nombre)}`,
+          reply_to: email, subject: `Nueva consulta: ${safeSubjectFragment(empresa || nombre)}`,
           text: body,
         }),
       });

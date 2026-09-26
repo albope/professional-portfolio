@@ -22,6 +22,13 @@ test("measurement accepts only a fixed vocabulary, never form values or arbitrar
   assert.equal(parseAnalyticsEvent({ name: "cta_click", properties: {}, message: "private" }), null);
 });
 
+/** «Escríbenos» de Preguntas lleva al formulario y se mide como «faq». */
+test("the questions section is part of the location vocabulary", () => {
+  assert.deepEqual(parseAnalyticsEvent({ name: "cta_click", properties: { location: "faq", destination: "contact" } }), {
+    name: "cta_click", properties: { location: "faq", destination: "contact" },
+  });
+});
+
 /** La banda «Cómo trabajamos» mide sus enlaces como «method». */
 test("the method band is part of the location vocabulary", () => {
   assert.deepEqual(parseAnalyticsEvent({ name: "cta_click", properties: { location: "method", destination: "booking" } }), {

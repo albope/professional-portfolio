@@ -44,9 +44,16 @@ export function ProcessLine({ pasos }: { pasos: readonly PasoMetodo[] }) {
       >
         <i className={`${s.fill} absolute inset-0 origin-top bg-cobalt-bright 980:origin-left`} />
       </span>
-      <ol className="grid gap-11 980:grid-cols-4 980:gap-9">
+      {/* Desde 980 px cada paso ocupa tres filas de la lista (`subgrid`):
+          títulos, textos y compromisos comparten línea en las cuatro columnas
+          aunque un título o un texto parta en más líneas que los demás. */}
+      <ol className="grid gap-11 980:grid-cols-4 980:gap-x-9 980:gap-y-2.5">
         {pasos.map((paso, i) => (
-          <li key={paso.titulo} className="relative grid content-start gap-2.5" style={{ "--i": i } as CSSProperties}>
+          <li
+            key={paso.titulo}
+            className="relative grid content-start gap-2.5 980:row-span-3 980:grid-rows-subgrid"
+            style={{ "--i": i } as CSSProperties}
+          >
             <span
               className={`${s.mark} absolute -left-11 top-1 z-[1] size-[18px] border-2 border-cobalt-bright bg-cobalt-bright 980:-top-12 980:left-0`}
               aria-hidden="true"

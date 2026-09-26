@@ -87,6 +87,18 @@
   outline-offset: 2px;
 }
 
+/* Colores forzados (alto contraste de Windows): fondo, texto y borde pasan a
+   los del sistema y la píldora marcada solo se distinguiría por la negrita.
+   Se pinta con el color de selección del sistema. */
+@media (forced-colors: active) {
+  .pill input:checked + .face {
+    forced-color-adjust: none;
+    border-color: Highlight;
+    background: Highlight;
+    color: HighlightText;
+  }
+}
+
 /* Enviando o sin JS: la píldora se ve apagada, como los campos (5.2). */
 .pill input:disabled + .face {
   opacity: 0.6;

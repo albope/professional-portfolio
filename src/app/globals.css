@@ -11,9 +11,9 @@
  * Convención para las secciones: las reglas propias de cada ilustración
  * (estados `data-state`, keyframes) van en un CSS Module junto al componente,
  * no aquí. Los estados ocultos se escriben siempre dentro de
- * `@media (prefers-reduced-motion: no-preference)` y colgando de
- * `:global(.js)`, para que sin JS o con movimiento reducido quede el estado
- * final estático.
+ * `@media screen and (prefers-reduced-motion: no-preference)` y colgando de
+ * `:global(.js)`, para que sin JS, con movimiento reducido o al imprimir
+ * (donde `no-preference` también se cumple) quede el estado final estático.
  */
 
 @layer base {
@@ -78,10 +78,12 @@
     scroll-padding-top: calc(var(--head-h) + 8px);
   }
 
-  /* Desplazamiento suave a las anclas salvo con movimiento reducido. En los
-     cambios de ruta Next lo desactiva (`data-scroll-behavior` en el layout). */
+  /* Desplazamiento suave a las anclas salvo con movimiento reducido. Solo
+     desde que la página ha cargado (`data-smooth`, lo pone el script en línea
+     del layout): el salto de una carga directa a `/#contacto` es inmediato.
+     En los cambios de ruta Next lo desactiva (`data-scroll-behavior`). */
   @media (prefers-reduced-motion: no-preference) {
-    html {
+    html[data-smooth] {
       scroll-behavior: smooth;
     }
   }
@@ -129,6 +131,13 @@
 }
 
 @layer components {
+  /* En las fichas, el cierre «¿Necesitas algo parecido?» ya ofrece «Hacer una
+     consulta» y el pie va justo debajo, del mismo color: el botón del pie
+     sería el mismo a unos 350 px. */
+  body:has(#ficha-cierre) [data-footer-cta] {
+    display: none;
+  }
+
   /* Contenedor (2.3): 1200 px como máximo, centrado y con `--pad` a cada lado. */
   .wrap {
     width: min(100% - 2 * var(--pad), var(--maxw));
@@ -156,14 +165,15 @@
  * quieres escalonar, `style={{ "--rd": 1 }}`: 90 ms por paso). Nunca en el
  * hero, que es el LCP.
  *
- * Solo se oculta con JS (`.js`, que pone el script en línea del layout),
- * cuando `RevealObserver` ya está vigilando (`.reveal-ready`) y con movimiento
- * permitido. Así, sin JS, con movimiento reducido o si el JS de la página no
- * llega a cargar, el contenido se ve siempre. El observador marca cada bloque
+ * Solo se oculta en pantalla, con JS (`.js`, que pone el script en línea del
+ * layout), cuando `RevealObserver` ya está vigilando (`.reveal-ready`) y con
+ * movimiento permitido. Así, sin JS, con movimiento reducido, al imprimir o
+ * guardar en PDF, o si el JS de la página no llega a cargar, el contenido se
+ * ve siempre. El observador marca cada bloque
  * con `data-revealed` al entrar en pantalla (y en el acto los que ya lo
  * están), y es React quien nunca toca ese atributo.
  */
-@media (prefers-reduced-motion: no-preference) {
+@media screen and (prefers-reduced-motion: no-preference) {
   .js.reveal-ready [data-reveal]:not([data-revealed]) {
     opacity: 0;
     transform: translateY(16px);

@@ -38,6 +38,13 @@ const validacion: Array<[string, string]> = (() => {
 const visible = [...todo, ...validacion];
 
 /**
+ * Errores del envío que llegan del servidor o de la red. Todos ofrecen el
+ * email público como salida, para que la consulta no se pierda si el envío
+ * falla (el formulario lo pinta como enlace `mailto:`).
+ */
+const ERRORES_CON_EMAIL = ["preparar", "limite", "no_disponible", "tiempo", "confirmacion", "conexion"] as const;
+
+/**
  * Regla de estilo del sistema: sin punto y coma en ningún texto. Alcanza a
  * los `alt`, `aria-label`, `<title>` de los SVG y metadatos, que también
  * viven en el JSON.
@@ -52,6 +59,17 @@ test("no copy string uses a semicolon", () => {
 test("no copy string uses a dash", () => {
   for (const [path, value] of visible) {
     assert.equal(/[—–]/.test(value), false, `Raya en ${path}: «${value}»`);
+  }
+});
+
+/**
+ * Y al email de aviso que genera el formulario (asunto y relleno de los
+ * campos vacíos): lo lee Alberto, no el visitante, pero es texto de la web.
+ */
+test("the notification email uses no dashes", () => {
+  for (const file of ["src/lib/contact-server.ts", "src/lib/contact.ts"]) {
+    const source = readFileSync(join(process.cwd(), file), "utf8");
+    assert.equal(/[—–]/.test(source), false, `Raya en ${file}`);
   }
 });
 
@@ -130,6 +148,7 @@ test("only the authorised project, email and booking service name a domain", () 
   const allowedPaths = [
     "proyectos.destacado.web",
     "contacto.formulario.sin_js",
+    ...ERRORES_CON_EMAIL.map((clave) => `contacto.formulario.estados.errores.${clave}`),
     "contacto.lateral.email",
     "reserva.dialogo.lento",
     "reserva.dialogo.fallo",
@@ -266,6 +285,7 @@ test("copy keeps the fragments its links are painted over", () => {
     [formulario.sin_js, formulario.sin_js_reserva],
     [lateral.email, site.email],
     [copyEs.preguntas.nota, copyEs.preguntas.nota_enlace],
+    ...ERRORES_CON_EMAIL.map((clave): [string, string] => [formulario.estados.errores[clave], site.email]),
   ];
   for (const [frase, fragmento] of casos) {
     const partes = partirEnlace(frase, fragmento);
@@ -281,7 +301,7 @@ test("copy templates keep their placeholders", () => {
   const { errores } = copyEs.contacto.formulario.estados;
   assert.match(errores.limite, /\{espera\}/);
   assert.match(errores.espera_minutos, /\{minutos\}/);
-  assert.equal(rellenar(errores.espera_minutos, { minutos: 3 }), "Espera 3 min antes de reintentar.");
+  assert.equal(rellenar(errores.espera_minutos, { minutos: 3 }), "Espera 3 min antes de enviar otra.");
   assert.equal(rellenar("Hola {nadie}", {}), "Hola {nadie}");
   assert.match(copyEs.meta.titulo_plantilla, /%s/);
 });

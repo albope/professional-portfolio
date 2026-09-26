@@ -93,10 +93,19 @@ const structuredData = {
 /**
  * `.js` en `<html>` antes del primer pintado. Los estados iniciales ocultos de
  * las animaciones solo existen con esta clase y con movimiento permitido: sin
- * JS se ve el estado final. `suppressHydrationWarning` acepta que el `<html>`
- * del navegador lleve una clase que el servidor no pintó.
+ * JS se ve el estado final.
+ *
+ * `data-smooth` activa el desplazamiento suave de las anclas (`globals.css`)
+ * solo después de la carga: con un enlace compartido a `/#contacto`, el salto
+ * inicial es inmediato y no recorre la página entera revelando bloques.
+ *
+ * `suppressHydrationWarning` acepta que el `<html>` del navegador lleve una
+ * clase y un atributo que el servidor no pintó.
  */
-const MARK_JS = "document.documentElement.classList.add('js')";
+const MARK_JS =
+  "(function(d){d.classList.add('js');" +
+  "addEventListener('load',function(){requestAnimationFrame(function(){d.setAttribute('data-smooth','')})})" +
+  "})(document.documentElement)";
 
 export default function RootLayout({
   children,
@@ -116,7 +125,11 @@ export default function RootLayout({
           {copyEs.comun.saltar}
         </a>
         <Header />
-        <main id="contenido" tabIndex={-1} className="focus:outline-none">
+        <main>
+          {/* Destino de «Saltar al contenido». Va dentro de `main` pero no es
+              `main`: un ancestro enfocable recoge el foco de cualquier clic en
+              texto, y el siguiente Tab devolvería al visitante al hero. */}
+          <span id="contenido" tabIndex={-1} className="block focus:outline-none" />
           {children}
         </main>
         <Footer />

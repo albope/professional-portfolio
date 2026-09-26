@@ -24,6 +24,12 @@ export function generateStaticParams() {
   return projects.map((project) => ({ slug: project.slug }));
 }
 
+/**
+ * Solo existen las cinco fichas del build. Un slug inventado da 404 sin
+ * renderizarse ni escribirse en la caché (un bot que pruebe URLs la llenaría).
+ */
+export const dynamicParams = false;
+
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
   const project = getProject(slug);
@@ -64,11 +70,11 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
  * vertical, con un filete arriba. Por debajo, apilados. Es la rejilla de
  * Preguntas en la portada, para que la ficha se lea igual que la home.
  */
-function Block({ id, title, children }: { id: string; title: string; children: ReactNode }) {
+function Block({ id, title, className, children }: { id: string; title: string; className?: string; children: ReactNode }) {
   return (
     <section
       aria-labelledby={id}
-      className="grid gap-y-6 border-t border-line pt-8 980:grid-cols-[minmax(0,4fr)_minmax(0,8fr)] 980:gap-x-16"
+      className={cn("grid gap-y-6 border-t border-line pt-8 980:grid-cols-[minmax(0,4fr)_minmax(0,8fr)] 980:gap-x-16", className)}
       data-reveal
     >
       <h2 id={id} className="max-w-[12em] text-feature-name">
@@ -88,9 +94,10 @@ function Block({ id, title, children }: { id: string; title: string; children: R
  *    lleva su estado y el enlace a su web.
  * 2. La figura principal, con la misma composición que su tarjeta en la
  *    portada para que el proyecto se reconozca.
- * 3. Qué necesitaba resolver, qué se desarrolló (con sus funciones) y los
- *    detalles de interfaz que en la figura principal no se leen.
- * 4. Una decisión concreta, en la banda blanca.
+ * 3. Qué había que resolver, qué desarrollamos (con sus funciones) y, de
+ *    cerca, los detalles de interfaz que en la figura principal no se leen.
+ *    Los que la repiten desde 768 px (`soloMovil`) solo salen por debajo.
+ * 4. Por qué lo hicimos así, en la banda blanca.
  * 5. El cierre en la banda de tinta, con la consulta que llega al formulario
  *    con el proyecto de referencia (`/?proyecto=<slug>#contacto`) y la
  *    reserva de la llamada.
@@ -105,8 +112,12 @@ export default async function ProjectPage({ params }: PageProps) {
   const project = getProject(slug);
   if (!project) notFound();
   const { details } = project;
+  // Por debajo de 768 px salen todos los detalles, desde 768 solo los que no
+  // repiten la figura principal. Si en escritorio no queda ninguno, el
+  // bloque entero es solo de móvil, y si queda uno, va a una columna.
   const pair = details.length > 1;
-
+  const enEscritorio = details.filter((figure) => !figure.soloMovil).length;
+  const pairEscritorio = enEscritorio > 1;
   return (
     <article aria-labelledby="ficha-titulo">
       <header className="wrap pt-[clamp(24px,4vw,56px)]">
@@ -125,12 +136,12 @@ export default async function ProjectPage({ params }: PageProps) {
         {(project.status || project.externalUrl) && (
           <div className="mt-5 flex flex-wrap items-center gap-x-7 gap-y-1">
             {project.status && (
-              <p className="py-2.5 text-small text-ink">
-                {/* «Hecho» con el cuadrado macizo del glifo, como en la portada.
-                    En línea con el texto, para que siga a la primera línea si
-                    la frase se parte. */}
-                <span aria-hidden="true" className="mr-2 inline-block h-[9px] w-[9px] bg-cobalt align-[1px]" />
-                {project.status}
+              <p className="flex items-start gap-2 py-2.5 text-small text-ink">
+                {/* «Hecho» con el cuadrado macizo del glifo, como en la portada:
+                    a la altura de la primera línea y, si la frase se parte, la
+                    segunda empieza bajo el texto y no bajo el cuadrado. */}
+                <span aria-hidden="true" className="mt-[0.45em] size-[9px] flex-none bg-cobalt" />
+                <span>{project.status}</span>
               </p>
             )}
             {project.externalUrl && project.externalLabel && (
@@ -166,10 +177,16 @@ export default async function ProjectPage({ params }: PageProps) {
         </Block>
 
         {details.length > 0 && (
-          <Block id="ficha-detalles" title={ficha.detalles.titulo}>
-            <div className={cn("grid gap-10", pair && "700:grid-cols-2 700:gap-x-6 700:gap-y-0")}>
+          <Block id="ficha-detalles" title={ficha.detalles.titulo} className={cn(enEscritorio === 0 && "768:hidden")}>
+            <div
+              className={cn(
+                "grid gap-10",
+                pair && "700:grid-cols-2 700:gap-x-6 700:gap-y-0",
+                pair && !pairEscritorio && "768:grid-cols-1",
+              )}
+            >
               {details.map((figure) => (
-                <ProjectDetailFigure key={figure.label} figure={figure} pair={pair} />
+                <ProjectDetailFigure key={figure.label} figure={figure} pair={pair} pairEscritorio={pairEscritorio} />
               ))}
             </div>
           </Block>

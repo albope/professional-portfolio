@@ -21,8 +21,9 @@ const columnLink =
  * Pie compartido (especificación 3.9), sobre tinta. Rejilla: una columna en
  * móvil, desde 700 px la marca a todo el ancho y tres columnas debajo, y
  * desde 1180 px cuatro columnas `4fr 2fr 3fr 2fr`. Todas con `minmax(0, …)`
- * para que el email no invada la columna vecina. El año se calcula al
- * generar la página, así el pie no envejece solo.
+ * para que el email no invada la columna vecina. El año es el del último
+ * build: las páginas se generan estáticas, así que en enero hay que volver
+ * a publicar para que cambie.
  */
 export function Footer() {
   const year = new Date().getFullYear();
@@ -38,11 +39,14 @@ export function Footer() {
               <Wordmark on="dark" />
             </SectionLink>
             <p className="text-small text-on-dark-2">{pie.descripcion}</p>
+            {/* `data-footer-cta`: en las fichas se oculta (`globals.css`), porque
+                su cierre ya ofrece «Hacer una consulta» justo encima. */}
             <SectionLink
               id="contacto"
               className={buttonClasses({ size: "sm", on: "dark", className: "mt-1.5" })}
               trackLocation="footer"
               trackDestination="contact"
+              data-footer-cta=""
             >
               {pie.cta}
             </SectionLink>
