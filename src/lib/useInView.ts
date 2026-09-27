@@ -7,7 +7,7 @@ import { useEffect, useState, useSyncExternalStore, type RefObject } from "react
  * - `each`: es `true` mientras el elemento está en pantalla y la pestaña
  *   visible, y vuelve a `false` al salir o al ocultar la pestaña. Para lo que
  *   se repite en cada entrada (conexión de datos). El hero no lo usa: lleva
- *   su propio observador en `HeroIllustration`.
+ *   su propio observador en `HeroVideo`.
  */
 export type InViewMode = "once" | "each";
 

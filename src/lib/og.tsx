@@ -118,9 +118,10 @@ function Canvas({ children, footerWidth = W - 128 }: { children: ReactNode; foot
 const headline: CSSProperties = { fontWeight: 600, lineHeight: 1.04, letterSpacing: "-0.03em", color: C.ink };
 
 /**
- * Ventana ordenada del hero en su estado final (especificación 4.1): los
+ * Ventana ordenada de la ilustración del hero que sustituyó el vídeo: los
  * controles del glifo, «Hoy» y las cuatro filas con su línea de origen y su
- * estado. Todo el texto sale del copy del hero.
+ * estado. Todo el texto sale de `hero.ilustracion.escritorio` y ya no
+ * coincide con el final del vídeo.
  */
 function OrderedWindow() {
   const { escritorio } = copyEs.hero.ilustracion;
@@ -189,7 +190,7 @@ function OrderedWindow() {
 
 /**
  * Imagen de la portada: el titular del hero a la izquierda y, a la derecha,
- * la aplicación ordenada con la que termina su ilustración.
+ * la aplicación ordenada (`OrderedWindow`).
  */
 export async function homeImage() {
   return new ImageResponse(

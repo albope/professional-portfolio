@@ -47,6 +47,9 @@
         "repetir": "Ver de nuevo",
         "repetir_aria": "Ver de nuevo la animación"
       },
+      "video": {
+        "titulo": "Mensajes, hojas de cálculo y notas sueltas se reúnen en una aplicación de gestión. Un clic confirma una reserva, el aviso al cliente sale solo y todo queda al día"
+      },
       "escritorio": {
         "titulo": "Un mensaje de WhatsApp, una hoja de cálculo, una nota en papel y un pósit se ordenan dentro de una aplicación de gestión como filas con su estado",
         "menu": [

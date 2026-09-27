@@ -1,8 +1,7 @@
 import { copyEs } from "@/data/copy";
 import { Button } from "@/components/ui/Button";
 import { BookingLink } from "@/components/booking/BookingLink";
-import { HeroArt } from "@/components/hero/HeroArt";
-import { HeroIllustration } from "@/components/hero/HeroIllustration";
+import { HeroVideo } from "@/components/hero/HeroVideo";
 import { sinCortes } from "@/lib/sin-cortes";
 
 const { hero } = copyEs;
@@ -11,16 +10,16 @@ const { hero } = copyEs;
  * Hero (especificación 3.2). Orden en el DOM, que es también el visual en
  * móvil: H1 → cuerpo (entradilla, botones, nota) → figura → compromisos.
  *
- * - Hasta 1179 px, una columna: la ilustración móvil (hasta 767 px, 440 px
- *   como máximo) o la de escritorio centrada a 600 px.
+ * - Hasta 1179 px, una columna: el corte móvil del vídeo (hasta 767 px, 440 px
+ *   como máximo) o el de escritorio centrado a 600 px.
  * - Desde 1180 px, dos columnas `11fr / 12fr` (`10fr / 13fr` hasta 1279)
  *   con áreas `"title art" / "body art"`: H1 abajo en su celda,
- *   cuerpo arriba e ilustración centrada y desbordando a la derecha. El hero
+ *   cuerpo arriba y vídeo centrado y desbordando a la derecha. El hero
  *   ocupa `min(100svh - cabecera, 900px)` con los compromisos abajo.
  * - En portátiles bajos (hasta 880 px de alto: un MacBook Air con Chrome
- *   deja 789) los huecos verticales se compactan y la ilustración se limita
- *   al alto que queda (`HeroIllustration.module.css`), para que los
- *   compromisos quepan en el primer pantallazo. El H1 no cambia: es el LCP.
+ *   deja 789) los huecos verticales se compactan y el vídeo se limita
+ *   al alto que queda (`HeroVideo.module.css`), para que los
+ *   compromisos quepan en el primer pantallazo. El H1 no cambia de tamaño.
  *   La variante va anidada en `1180:` (`1180:[@media(max-height:880px)]:`)
  *   para que Tailwind la escriba después de las de `1180:` y les gane.
  *
@@ -30,8 +29,8 @@ const { hero } = copyEs;
  * arriba. Así quedan tres: «Software a medida / para ordenar la / gestión de
  * tu negocio».
  *
- * El H1 y la entradilla no se animan: son el LCP. La ilustración es la única
- * parte cliente (`HeroIllustration`) y el SVG lo pinta el servidor.
+ * El H1 y la entradilla no se animan. La figura es la única parte cliente
+ * (`HeroVideo`): el vídeo del caos al orden, con sus pósters.
  */
 export function Hero() {
   return (
@@ -65,13 +64,12 @@ export function Hero() {
           <p className="text-small text-ink-2">{hero.nota}</p>
         </div>
 
-        <HeroIllustration
+        <HeroVideo
+          titulo={hero.ilustracion.video.titulo}
           pie={hero.ilustracion.pie}
           control={hero.ilustracion.control}
           className="mt-3 600:mx-auto 600:mt-6 600:w-full 600:max-w-[600px] 1180:m-0 1180:-mr-[clamp(0px,3.4vw,48px)] 1180:w-auto 1180:max-w-none 1180:self-center 1180:[grid-area:art]"
-        >
-          <HeroArt ilustracion={hero.ilustracion} />
-        </HeroIllustration>
+        />
       </div>
 
       <ul

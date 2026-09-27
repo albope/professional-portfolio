@@ -1,0 +1,28 @@
+{
+  "name": "hero-orden",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Vídeo del hero de bpmtechstudio.com (del caos al orden), hecho con /brag-slim en Remotion",
+  "scripts": {
+    "studio": "remotion studio src/index.ts",
+    "typecheck": "tsc --noEmit",
+    "still": "node scripts/still.mjs",
+    "render": "node scripts/render.mjs",
+    "encode": "node scripts/encode.mjs"
+  },
+  "dependencies": {
+    "@fontsource-variable/schibsted-grotesk": "5.3.0",
+    "@fontsource/fragment-mono": "5.3.0",
+    "@remotion/bundler": "4.0.528",
+    "@remotion/cli": "4.0.528",
+    "@remotion/renderer": "4.0.528",
+    "react": "19.2.0",
+    "react-dom": "19.2.0",
+    "remotion": "4.0.528"
+  },
+  "devDependencies": {
+    "@types/react": "19.2.2",
+    "pngjs": "^7.0.0",
+    "typescript": "5.9.3"
+  }
+}

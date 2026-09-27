@@ -80,7 +80,7 @@ const config: Config = {
           /* Cobalto del logo sobre oscuro: marcas, casillas, checks y foco. */
           bright: "rgb(107 131 255 / <alpha-value>)",
         },
-        /* Solo el pósit del hero. */
+        /* Sin uso: era el pósit de la ilustración del hero, que sustituyó el vídeo. */
         postit: {
           DEFAULT: "rgb(243 232 197 / <alpha-value>)",
           2: "rgb(234 221 178 / <alpha-value>)",

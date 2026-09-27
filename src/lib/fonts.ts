@@ -15,23 +15,6 @@ export const sans = Schibsted_Grotesk({
   display: "swap",
 });
 
-/**
- * La itálica solo aparece en la «letra a mano» de las notas dibujadas en el
- * hero (clase `.tHand` de `HeroIllustration.module.css`). Va en una
- * instancia aparte para no precargarla: se pide al pintar las notas, no
- * antes. La CSS solo la pone en itálica con JS y movimiento permitido, que es
- * cuando las notas se ven: sin JS o con movimiento reducido no se descarga.
- * Si llega tarde, `display: swap` la cambia dentro del SVG sin mover el resto
- * de la página.
- */
-export const sansItalic = Schibsted_Grotesk({
-  subsets: ["latin"],
-  style: "italic",
-  variable: "--font-sans-italic",
-  display: "swap",
-  preload: false,
-});
-
 /** Fragment Mono se reserva al logo (`Wordmark`): nada más la usa. */
 export const mono = Fragment_Mono({
   subsets: ["latin"],
@@ -40,5 +23,5 @@ export const mono = Fragment_Mono({
   display: "swap",
 });
 
-/** Clases de las tres variables para el `<html>` del layout raíz. */
-export const fontVariables = `${sans.variable} ${sansItalic.variable} ${mono.variable}`;
+/** Clases de las dos variables para el `<html>` del layout raíz. */
+export const fontVariables = `${sans.variable} ${mono.variable}`;

@@ -4,7 +4,9 @@ import copy from "./copy.json";
  * Copy definitivo de la web pública. El texto vive en `copy.json` y los
  * componentes lo leen desde aquí: ningún componente escribe copy propio, ni
  * siquiera `alt`, `aria-label`, el `<title>` de un SVG o el texto dibujado
- * dentro de una ilustración. Las excepciones son las páginas legales, que
+ * dentro de una ilustración. Las excepciones son el texto de dentro del
+ * vídeo del hero, que vive en `video/hero-orden/src/textos.ts` y va cocido en
+ * el MP4 (su texto alternativo sí está aquí), las páginas legales, que
  * escriben su texto y su metadata en la propia página (`copy.test.ts` les
  * aplica las mismas reglas), y la etiqueta «Web» del campo trampa del
  * formulario, que nadie ve.

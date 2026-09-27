@@ -8,10 +8,10 @@ El estado funcional del repositorio se resume en [docs/contexto-actual.md](docs/
 
 - Node.js **24.x**, Next.js **16.3.3** con App Router, React **19.2.8** y TypeScript estricto.
 - Tailwind CSS 3. Los tokens de la web están en `tailwind.config.ts`, `src/app/globals.css` (variables CSS) y `src/lib/palette.ts` (hexadecimal para SVG e imágenes OG).
-- Schibsted Grotesk para todo el texto (con una instancia itálica solo para la letra «a mano» de la ilustración del hero, que se descarga únicamente con JavaScript y movimiento permitido) y Fragment Mono solo para el logo, cargadas con `next/font`.
+- Schibsted Grotesk para todo el texto y Fragment Mono solo para el logo, cargadas con `next/font`.
 - Renderizado del contenido en servidor y navegación mediante enlaces normales. El menú móvil es un `<details>` nativo que funciona sin JavaScript.
 - Scroll nativo y respeto a `prefers-reduced-motion`. No se utilizan Framer Motion, GSAP ni Lenis. El contenido permanece visible sin JavaScript.
-- Dirección de arte «Orden»: ilustraciones SVG propias que se animan con CSS al entrar en pantalla (del caos al orden en el hero, agenda, datos que pasan solos, una web que se construye, la propuesta por escrito y la línea del proceso) y capturas reales en escenarios arena. El marcado que pinta el servidor es siempre el estado final: sin JavaScript o con movimiento reducido se ve completo y quieto.
+- Dirección de arte «Orden»: en el hero, un vídeo mudo del caos al orden hecho con /brag-slim en Remotion (`video/hero-orden/`), que se reproduce una vez al verse y se queda en su último fotograma. En el resto, ilustraciones SVG propias que se animan con CSS al entrar en pantalla (agenda, datos que pasan solos, una web que se construye, la propuesta por escrito y la línea del proceso) y capturas reales en escenarios arena. El marcado que pinta el servidor es siempre el estado final: sin JavaScript o con movimiento reducido se ve completo y quieto (en el hero, el último fotograma del vídeo en imagen).
 - Antes del contacto hay siete preguntas frecuentes con desplegables nativos. El asistente de ideas se conserva sin montarse en la home.
 
 Con Node 24 activo:
@@ -36,7 +36,7 @@ Los tests de correo sustituyen al proveedor y no envían mensajes reales. El bui
 
 ## Contenido y estructura
 
-La home abre con la oferta, la ilustración del caos al orden y los cuatro compromisos (respuesta en 24 h laborables, presupuesto cerrado, plazo comprometido y soporte tras la entrega). Siguen «Qué hacemos» (tres servicios, cada uno con su consulta preseleccionada y el caso que lo demuestra), «Proyectos» (Padel Club OS, tres tarjetas y la mención del asistente), «Cómo trabajamos» (banda de tinta con la propuesta por escrito y los cuatro pasos), «Quiénes somos», «Preguntas» y «Contacto». Las decisiones que llevaron a este orden están en [docs/rediseno-orden/README.md](docs/rediseno-orden/README.md).
+La home abre con la oferta, el vídeo del caos al orden y los cuatro compromisos (respuesta en 24 h laborables, presupuesto cerrado, plazo comprometido y soporte tras la entrega). Siguen «Qué hacemos» (tres servicios, cada uno con su consulta preseleccionada y el caso que lo demuestra), «Proyectos» (Padel Club OS, tres tarjetas y la mención del asistente), «Cómo trabajamos» (banda de tinta con la propuesta por escrito y los cuatro pasos), «Quiénes somos», «Preguntas» y «Contacto». Las decisiones que llevaron a este orden están en [docs/rediseno-orden/README.md](docs/rediseno-orden/README.md).
 
 ```text
 src/
@@ -48,7 +48,7 @@ src/
     analytics/                 medición de enlaces y visitas a casos
     booking/                   acceso a la agenda y diálogo de reserva
     diagnostico/               formulario del diagnóstico en directo
-    hero/                      ilustración del hero y su máquina de estados
+    hero/                      vídeo del hero, sus pósters y su control
     layout/                    cabecera fija, menú móvil, pie y maqueta legal
     method/                    propuesta por escrito y línea del proceso
     sections/                  secciones de la home y formulario
@@ -58,7 +58,7 @@ src/
   lib/                         contacto, diagnóstico, eventos, tests, fuentes y OG
 ```
 
-El texto visible se edita en `src/data/copy.json` y el de cada ficha en `src/data/projects.ts`. Para publicar una captura nueva: declararla en `capturas` (`projects.ts`) con su tamaño real y su `alt`, usarla en la figura o en los detalles de la ficha y ejecutar `npm test`, que comprueba tamaños, recortes, que no haya archivos públicos sin declarar y las reglas del copy.
+El texto visible se edita en `src/data/copy.json` y el de cada ficha en `src/data/projects.ts`. El texto de dentro del vídeo del hero es la excepción: vive en `video/hero-orden/src/textos.ts` y cambiarlo exige regenerar el vídeo (ver `video/hero-orden/README.md`). Para publicar una captura nueva: declararla en `capturas` (`projects.ts`) con su tamaño real y su `alt`, usarla en la figura o en los detalles de la ficha y ejecutar `npm test`, que comprueba tamaños, recortes, que no haya archivos públicos sin declarar y las reglas del copy.
 
 ### Proyectos publicados por el código
 

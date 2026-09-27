@@ -1,0 +1,96 @@
+/*
+ * Vídeo del hero: del caos al orden (`HeroVideo`).
+ *
+ * El estado por defecto de estas reglas es el FOTOGRAMA FINAL, en imagen: es
+ * lo que ven quien no tiene JS, quien pide movimiento reducido y los
+ * buscadores. El vídeo y el póster del caos solo existen con `.js` en
+ * `<html>` y movimiento permitido. Tres capas, de abajo arriba: vídeo, póster
+ * del caos (primer fotograma) e imagen final (último fotograma).
+ */
+
+.figure {
+  position: relative;
+}
+
+/* Misma proporción que el SVG anterior: el hero no se mueve. */
+.stage {
+  position: relative;
+  aspect-ratio: 960 / 900;
+}
+
+@media (min-width: 768px) {
+  .stage {
+    aspect-ratio: 1280 / 1080;
+  }
+}
+
+.video,
+.inicio,
+.final,
+.inicio img,
+.final img {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.video {
+  display: none;
+  object-fit: contain;
+}
+
+.inicio {
+  display: none;
+}
+
+/*
+ * Portátiles bajos (desde 1180 px de ancho y hasta 880 de alto, como los
+ * huecos compactos de `Hero.tsx`): la figura se limita al alto que dejan la
+ * cabecera, el pie y la franja de compromisos (unos 260 px), nunca por debajo
+ * de 500 px de ancho, y se centra en su columna. 64 / 54 es la proporción del
+ * corte de escritorio.
+ */
+@media (min-width: 1180px) and (max-height: 880px) {
+  .stage,
+  .caption {
+    max-width: max(500px, calc((100svh - var(--head-h) - 260px) * 64 / 54));
+    margin-inline: auto;
+  }
+}
+
+@media screen and (prefers-reduced-motion: no-preference) {
+  :global(.js) .video,
+  :global(.js) .inicio {
+    display: block;
+  }
+
+  /* El vídeo ya pinta: su primer fotograma es el mismo que el póster. */
+  :global(.js) .figure[data-painting] .inicio {
+    visibility: hidden;
+  }
+
+  :global(.js) .final {
+    opacity: 0;
+  }
+
+  :global(.js) .figure[data-final] .final {
+    opacity: 1;
+  }
+
+  /* Red de seguridad: si el JS no llega a hidratar, el final a los 7 s. */
+  :global(.js) .figure:not([data-hydrated]) .final {
+    animation: red 0.4s ease 7s both;
+  }
+}
+
+@keyframes red {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}

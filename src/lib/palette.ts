@@ -5,9 +5,9 @@
  * las imágenes para compartir, que pinta Satori fuera del navegador.
  *
  * Son los mismos valores que `tailwind.config.ts` y `globals.css`: si cambia
- * un color, cambia en los tres sitios. Los tonos que solo existen dentro de
- * un dibujo (papel, renglones, celdas) no son token y viven en su
- * ilustración.
+ * un color, cambia en los tres sitios, y en la copia del vídeo del hero
+ * (`video/hero-orden/src/brand/tokens.ts`), que hay que regenerar. Los tonos
+ * que solo existen dentro de un dibujo no son token y viven en su ilustración.
  */
 export const color = {
   bg: "#F7F6F2",
@@ -38,7 +38,7 @@ export const color = {
 
 /**
  * Tonos de papel de las ilustraciones que no son token: la píldora vacía de
- * la barra de dirección (la comparten el hero y la web de «Qué hacemos») y la
+ * la barra de dirección (la de la web de «Qué hacemos») y la
  * arena oscura de las barras de texto simulado y de la conexión punteada.
  */
 export const dibujo = {
